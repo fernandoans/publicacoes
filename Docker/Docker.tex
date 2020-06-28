@@ -832,12 +832,14 @@ O Docker também estabelece um padrão de empacotamento de soluções e os cont�
 
 Foi citado nesta o que é o Docker e o que é possível fazer, porém não se deve utilizá-lo para tratar o contêiner como uma máquina virtual. É apenas um serviço, nada mais que um processo de ``host hospedeiro''. O contêiner não pode ter uma vida longa (uptime), como ele é um processo do host hospedeiro, ele precisa ser encerrado e iniciado quando possível. Não armazene dados dentro do , utilize sempre o parâmetro volumes para armazenar os dados dinâmicos. E por fim, assegure que o host hospedeiro possui os recursos necessários de segurança para acesso nos contêineres.
 
-Devido às propriedades de isolamento dos contêineres, podemos programar muitos deles em um único host sem nos preocuparmos com dependências conflitantes. Deste modo, economizaremos custos do servidor. Através do empacotamento dos componentes, das aplicações em seus próprios contêineres e da sua escalabilidade horizontal torna-se um simples processo de iniciar ou desligar múltiplas instâncias de cada componente. Sou um entusiasta do mundo Open Source e novas tecnologias. Veja outros artigos que publico sobre tecnologia através do meu Blog Oficial\cite{fernandoanselmo}.
+Devido às propriedades de isolamento dos contêineres, podemos programar muitos deles em um único host sem nos preocuparmos com dependências conflitantes. Deste modo, economizaremos custos do servidor. Através do empacotamento dos componentes, das aplicações em seus próprios contêineres e da sua escalabilidade horizontal torna-se um simples processo de iniciar ou desligar múltiplas instâncias de cada componente. 
+
+Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub\cite{fernandoanselmo}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial\cite{fernandoanselmo}.
 
 %--------------------------------------------------------------------------
 % REFERÊNCIAS
 %--------------------------------------------------------------------------
-\begin{thebibliography}{4}
+\begin{thebibliography}{5}
 
   \bibitem{dockeroficial} 
   Página Oficial do Docker \\
@@ -855,6 +857,9 @@ Devido às propriedades de isolamento dos contêineres, podemos programar muitos
   Encontre essa e outras publicações em \\
   \url{https://cetrex.academia.edu/FernandoAnselmo}
 
+  \bibitem{github} 
+  Repositório para os fontes da apostila \\
+  \url{https://github.com/fernandoans/publicacoes}
 \end{thebibliography}
   
 \end{document}
