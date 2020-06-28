@@ -19,7 +19,7 @@
 %--------------------------------------------------------------------------
 \begin{abstract}
   % O primeiro caractere deve vir com \initial{}
-	\initial{D}\textbf{ocker\cite{dockeroficial} veio para revolucionar a forma como é abordado o desenvolvimento e a implantação de aplicativos, de modo bem simples, é uma plataforma para construir e manter ambientes para a execução de sistemas distribuídos. Um projeto de código aberto que permite a criação de contêineres, a partir de imagens, leves e portáteis para diversas aplicações. Sua funcionalidade simplifica o uso dos LXC (LinuX Containers), que, basicamente, são uma forma de isolamento de processo e sistemas (quase como uma virtualização), porém mais integrada ao Sistema Operacional. Os contêineres isolam o SO Base (host) e toda pilha de dependências da aplicação (bibliotecas, servidores, entre outros) com ganhos de performance.}
+	\initial{D}\textbf{ocker \cite{dockeroficial} veio para revolucionar a forma como é abordado o desenvolvimento e a implantação de aplicativos, de modo bem simples, é uma plataforma para construir e manter ambientes para a execução de sistemas distribuídos. Um projeto de código aberto que permite a criação de contêineres, a partir de imagens, leves e portáteis para diversas aplicações. Sua funcionalidade simplifica o uso dos LXC (LinuX Containers), que, basicamente, são uma forma de isolamento de processo e sistemas (quase como uma virtualização), porém mais integrada ao Sistema Operacional. Os contêineres isolam o SO Base (host) e toda pilha de dependências da aplicação (bibliotecas, servidores, entre outros) com ganhos de performance.}
 \end{abstract}
 
 %--------------------------------------------------------------------------
@@ -46,7 +46,7 @@ Um contêiner não pode ser iniciado sem uma imagem. Através de uma imagem
 iniciada por um contêiner é possível gerar novas imagens, basta aplicar um 
 “commit“ a cada mudança realizada.
 
-Resumidamente:
+Resumidamente: \vspace{-1em}
 \begin{itemize}
 	\item \textbf{Imagem}: é uma template que define a estrutura para os contêineres.
 	\item \textbf{Contêiner}: simula o ambiente de execução como um todo, é uma ``instância'' da imagem.
@@ -57,7 +57,7 @@ Docker usa o termo ``Contêiner'' para representar um ambiente em execução e q
 
 Os contêineres são compostos de namespaces e grupos de controle do Linux que fornecem isolamento de outros contêineres e do host. LXC é um tipo de virtualização, em nível de sistema operacional, que proporciona a execução de múltiplas instâncias isoladas de um determinado SO dentro de um único host. O conceito é simples e antigo, e o comando ``chroot'' seu precursor mais famoso. Com o chroot é possível segregar os acessos de diretórios e evitar que o usuário tenha acesso à estrutura raiz (“/” ou root).
 
-Características dos contêineres:
+Características dos contêineres: \vspace{-1em}
 \begin{itemize}
   \item Definir recursos como memória, rede, sistema operacional, 
 aplicação ou serviço. 
@@ -70,7 +70,7 @@ execução.
 O contêiner é construído através de namepspaces, cgroups, chroot entre outras 
 funcionalidades do Kernel para construir uma área isolada para a aplicação.
 
-Os contêineres podem ser utilizados através de seguintes redes:
+Os contêineres podem ser utilizados através de seguintes redes: \vspace{-1em}
 \begin{itemize}
   \item \textbf{Bridge}. Cada contêiner iniciado no Docker é associado a uma rede especifica, e essa é a rede padrão para qualquer contêiner que não foi explicitamente especificado.
   \item \textbf{None}. Isola o contêiner para comunicações externas, ou seja, não receberá nenhuma interface para comunicação externa. A sua única interface de rede IP será a localhost.
@@ -78,7 +78,7 @@ Os contêineres podem ser utilizados através de seguintes redes:
 \end{itemize}
 
 \section{Instalação do Docker no Ubuntu}
-Nesta seção será instalado e configurado o Docker para o sistema operacional Ubuntu 18.04. A instalação pode ser realizada da seguinte forma:
+Nesta seção será instalado e configurado o Docker para o sistema operacional Ubuntu 18.04. A instalação pode ser realizada da seguinte forma: \vspace{-1em}
 \begin{enumerate}
   \item Instalar: {\ttfamily\$ sudo apt install docker docker.io}
   \item Adicionar seu usuário ao grupo docker: {\ttfamily\$ sudo usermod -aG docker [seu usuário]}
@@ -489,7 +489,7 @@ Veja mais referencias sobre essas construções\cite{constimagem}.
 \subsection{Trabalhar com Imagens derivadas do Alpine}
 Alpine é uma distribuição construída com musl libc e BusyBox, que é conhecida como canivete suíço, pois combina versões minúsculas de muitos utilitários comuns no UNIX em um único pequeno executável.
 
-Algumas características do Alpine:
+Algumas características do Alpine: \vspace{-1em}
 \begin{enumerate}
   \item Enquanto que a menor imagem do Docker ocupa cerca de 130 MB de espaço em disco, a Alpine precisa de no máximo 8 MB, isso faz com que, mesmo com a montagem de todo o ambiente, nunca terá o mesmo tamanho de uma imagem tradicional, isso deixa o ambiente mais limpo e simples para gerenciar.
   \item Possui apenas o necessário para o funcionamento da aplicação, se precisar de mais alguma biblioteca, deve ser instalada.
@@ -772,6 +772,7 @@ Modificar o arquivo \textbf{package.json} para:
  }
 }
 \end{lstlisting}
+
 Criar o arquivo \textbf{index.js} com a seguinte codificação:
 \begin{lstlisting}
 var express = require('express');
@@ -786,6 +787,7 @@ app.listen(port,function(){
 console.log('Listening on port:' + port);
 });
 \end{lstlisting}
+
 Criar o arquivo \textbf{Dockerfile} com a seguinte codificação:
 \begin{lstlisting}
 FROM node:6.5.0
@@ -800,7 +802,8 @@ RUN npm install
 
 EXPOSE 3000
 \end{lstlisting}
-E finalmente o arquivo \textbf{docker-compose.yml} com a seguinte codificação:
+
+E o arquivo \textbf{docker-compose.yml} com a seguinte codificação:
 \begin{lstlisting}
 db:
  image: mongo
@@ -817,6 +820,7 @@ web:
   - db
  command: nodemon /app/server.js
 \end{lstlisting}
+
 Observe que no arquivos juntamos o banco MongoDB, deste modo teremos um esqueleto completo para futuros projetos. 
 
 Subir os contêineres: \\
@@ -834,13 +838,12 @@ Foi citado nesta o que é o Docker e o que é possível fazer, porém não se de
 
 Devido às propriedades de isolamento dos contêineres, podemos programar muitos deles em um único host sem nos preocuparmos com dependências conflitantes. Deste modo, economizaremos custos do servidor. Através do empacotamento dos componentes, das aplicações em seus próprios contêineres e da sua escalabilidade horizontal torna-se um simples processo de iniciar ou desligar múltiplas instâncias de cada componente. 
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub\cite{fernandoanselmo}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial\cite{fernandoanselmo}.
+Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
 
 %--------------------------------------------------------------------------
 % REFERÊNCIAS
 %--------------------------------------------------------------------------
 \begin{thebibliography}{5}
-
   \bibitem{dockeroficial} 
   Página Oficial do Docker \\
   \url{https://www.docker.com/}

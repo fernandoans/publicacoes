@@ -1,151 +1,24 @@
 \documentclass[a4paper,11pt]{article}
 
-%-----------------------------------------------------------------------------
-% Pacotes Necessários
-%-----------------------------------------------------------------------------
+% Identificação
+\newcommand{\pbtitulo}{Sails.js}
+\newcommand{\pbversao}{1.0}
 
-\usepackage[brazil]{babel} % padronizar a linguagem
-\usepackage[utf8]{inputenc} % permitir a acentuação
-\usepackage[protrusion=true,expansion=true]{microtype} % obter melhor tipografia
-\usepackage[svgnames]{xcolor} % habitar cores para 'svgnames'
-\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % customizar captions acima/abaixo de tabelas ou figuras
-\usepackage{color}    % definir cores
-\usepackage{graphicx} % adicionar imagens
-\usepackage{fix-cm}   % customizar o tamanho das fontes
-\usepackage{sectsty}  % habilitar a customização dos títulos das seções
-\usepackage{fancyhdr} % definir cabeçalhos e rodapés
-\usepackage{listings} % listagens
-\usepackage[ddmmyyyy]{datetime} % mostrar a data
-\usepackage{lipsum} % gerar um texto randomico (será tirado ao final)
-\usepackage{titling} % Permite a configuração do título
-\usepackage{url} % codigo para as URLs
-\usepackage[a4paper, inner=1.5cm, outer=3cm, top=2cm, bottom=3cm, 
-bindingoffset=1cm]{geometry}
+\usepackage{../sty/tutorial}
 
-%-----------------------------------------------------------------------------
-% Definições Iniciais
-%-----------------------------------------------------------------------------
-% modificar toda a fonte de todas as seções
-\allsectionsfont{\usefont{OT1}{phv}{b}{n}}
-% habilitar a customização de cabeçalhos e rodapés
-\pagestyle{fancy} 
-
-\addto\captionsenglish{ % modificar os nomes do ingles
-  \renewcommand{\abstractname}{Resumo}
-  \renewcommand{\bibname}{Consulte também...}
-  \renewcommand{\contentsname}{Sumário}
-  \renewcommand{\listfigurename}{Figuras}
-  \renewcommand{\lstlistingname}{Listagem}
-  \renewcommand{\lstlistlistingname}{Listagens}
-  \renewcommand{\refname}{Referências}
-}
-
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-% Definição para as caixas de listagens
-\lstset {
- aboveskip=3mm,
- backgroundcolor=\color{backcolour},
- basicstyle={\small\ttfamily},
- belowskip=3mm,
- breaklines=true,
- breakatwhitespace=true,
- columns=flexible,
- commentstyle=\textit,
- extendedchars=true,
- frame=tb,
- keepspaces=true,
- keywordstyle=\color{blue}\bfseries,
- language=HTML,
- numbers=left,
- numbersep=5pt,
- numberstyle=\tiny\color{codegray},
- showstringspaces=false,
- showtabs=false,
- tabsize=3,
- literate=%
-  {á}{{\'a}}1
-  {é}{{\'e}}1
-  {í}{{\'i}}1
-  {ó}{{\'o}}1
-  {ú}{{\'u}}1
-  {ê}{{\^e}}1
-  {ã}{{\~a}}1
-  {õ}{{\~o}}1
-  {ç}{{\c{c}}}1
-  {Á}{{\'A}}1
-  {É}{{\'E}}1
-  {Í}{{\'I}}1
-  {Ó}{{\'O}}1
-  {Ú}{{\'U}}1
-  {Ê}{{\^E}}1
-  {Ã}{{\~A}}1
-  {Õ}{{\~O}}1
-  {Ç}{{\c{C}}}1
-}
-
-% Cabeçalhos - limpar tudo
-\lhead{}
-\chead{}
-\rhead{}
-
-% Rodapés
-\lfoot{\tiny Sails.js}
-\cfoot{\tiny Versão 1.0}
-\rfoot{\tiny Folha \thepage\ }
-
-\renewcommand{\headrulewidth}{0.0pt} % No header rule
-\renewcommand{\footrulewidth}{0.4pt} % Thin footer rule
-
-\usepackage{lettrine} % Package to accentuate the first letter of the text
-\newcommand{\initial}[1]{ % Defines the command and style for the first letter
-  \lettrine[lines=3,lhang=0.3,nindent=0em]{
-    \color{DarkGoldenrod}
-    {\textsf{#1}}
-  }{}
-}
-
-%-----------------------------------------------------------------------------
-% TÍTULO DO DOCUMENTO
-%-----------------------------------------------------------------------------
-
-% comando para as barras
-\newcommand{\HorRule}{\color{DarkGoldenrod} \rule{\linewidth}{1pt}} 
-
-% barra horizontal superior
-\pretitle{\vspace{-90pt} \begin{flushleft} \HorRule \fontsize{50}{50} 
-\usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont}
-
-% título do documento
-\title{Sails.js}
-\posttitle{\par\end{flushleft}\vskip 0.1em} % espaço abaixo do título
-
-% autor do documento
-\preauthor{\begin{flushleft}\large \lineskip 0.1em \usefont{OT1}{phv}{b}{sl} 
-\color{DarkRed}} % fonte do autor
-\author{Fernando Anselmo}
-\postauthor{\footnotesize \usefont{OT1}{phv}{m}{sl} \color{Black} \\
- \url{http://fernandoanselmo.orgfree.com/wordpress/} % endereço
-
-\par\end{flushleft}\HorRule} % barra horizontal inferior
-
-\date{Versão 1.0 em \today} % mostrar a data do artigo 
-
-%-----------------------------------------------------------------------------
-% INÍCIO DO DOCUMENTO
-%-----------------------------------------------------------------------------
-
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
 \begin{document}
-\maketitle % mostrar o título
-\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
-
+	
+	\maketitle % mostrar o título
+	\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+	
 %-----------------------------------------------------------------------------
 % RESUMO DO ARTIGO
 %-----------------------------------------------------------------------------
 
 \begin{abstract}
-  % O primeiro caractere deve vir com \initial{}
 \initial{S}\textbf{ails.js\cite{sailsoficial} é um framework Web que facilita 
 a criação de aplicativos Node.js customizados a nível empresarial. Projetado implementar a arquitetura MVC com suporte a um estilo mais moderno, orientado a dados e desenvolvimento serviços de API. Além disso, com Sails é necessário dominar somente uma linguagem de programação, porém todo o conhecimento de outras linguagens podem ser aproveitados para criar outras camadas de visões para acessar os serviços fornecidos pelo Sails.}
 \end{abstract}
@@ -155,44 +28,56 @@ a criação de aplicativos Node.js customizados a nível empresarial. Projetado 
 % CONTEÚDO DO ARTIGO
 %-----------------------------------------------------------------------------
 \section{Parte inicial}
-Sails é um framework abrangente que segue o padrão MVC para Node.js projetado especificamente para permitir um rápido desenvolvimento de aplicativos do lado do servidor e a disponibilização de serviços em JavaScript. Possui uma forte arquitetura Orientada a Serviços que fornece diferentes tipos de componentes no qual é possível utilizar para organizar o código e separar as responsabilidades. 
-\begin{center} 
-\includegraphics[width=0.6\textwidth]{sails.png} 
-\end{center}
-Vejamos algumas características do produto:
+Sails.js (doravante chamaremos apenas de \textbf{Sails}) é um framework abrangente que segue o padrão MVC para Node.js projetado especificamente para permitir um rápido desenvolvimento de aplicativos do lado do servidor e a disponibilização de serviços em JavaScript. Possui uma forte arquitetura Orientada a Serviços que fornece diferentes tipos de componentes no qual é possível utilizar para organizar o código e separar as responsabilidades. 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{imagens/sails.png}
+	\caption{Logo do Sails.js}
+\end{figure}
+
+Vejamos algumas características do produto: \vspace{-1em}
 \begin{itemize}
   \item É 100\% JavaScript.
-  \item É possível usar qualquer sistema de banco de dados: Sails possui um ORM nativo, Waterline, 
+  \item É possível usar qualquer sistema de banco de dados: possui um ORM nativo, Waterline, 
   que fornece uma camada de acesso a dados simples que funciona, não importa o banco de dados 
   que se está usando.
-  \item Auto-gerador de APIs REST: Sails vem com blueprint (projetos que apresenta a melhor forma de realizar algo) que ajudam a iniciar o backend da 
+  \item Auto-gerador de APIs REST: vem com blueprint (projetos que apresenta a melhor forma de realizar algo) que ajudam a iniciar o backend da 
   sua aplicação sem escrever qualquer código.
-  \item Suporte fácil ao WebSocket: Sails traduz mensagens de socket recebidas.
-  \item Políticas de segurança reutilizáveis: O Sails fornece uma segurança básica e controle de acesso baseado em funções por padrão que podem ser incrementadas com o uso de JWT.
+  \item Suporte fácil ao WebSocket: traduz mensagens de socket recebidas.
+  \item Políticas de segurança reutilizáveis: fornece uma segurança básica e controle de acesso baseado em funções por padrão que podem ser incrementadas com o uso de JWT.
   \item Compatível com qualquer estratégia de frontend; Seja esta Angular.js, Backbone, iOS / Object C, Android / Java, Windows Phone.
-  \item Pipeline de ativos flexíveis: navios Sails com Grunt - o que significa que todo o fluxo de trabalho de recursos do frontend é completamente personalizável.
+  \item Pipeline de ativos flexíveis: com o Grunt - significa que todo o fluxo de trabalho de recursos do frontend é completamente personalizável.
 \end{itemize}
-Sails fornece um benefício adicional de ser capaz de compartilhar seu código entre o servidor e o cliente. Isso pode ser muito útil, por exemplo, para implementar uma validação de dados onde é necessária as mesmas regras de validação no cliente e no servidor.
+
+Sails fornece um benefício adicional de ser capaz de compartilhar seu código entre o servidor e o cliente. Isso pode ser muito útil, por exemplo, para implementar uma validação de dados onde é necessária as mesmas regras no cliente e no servidor.
 
 \subsection{O que é o padrão MVC?}
-O Padrão de Projeto (Design Pattern) MVC define a separação de um sistema em três camadas, conforme a seguinte figura:
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{mvc.png}
-\end{center}
-\begin{itemize}
+O Padrão de Projeto (\textit{Design Pattern}) MVC define a separação de um sistema em três camadas, conforme a seguinte figura:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagens/mvc.png}
+	\caption{Modelo MVC}
+\end{figure}
+
+\begin{itemize} \vspace{-1em}
   \item \textbf{Camada de Modelo} (Model) é a responsável pela interação com o banco de dados. 
   \item \textbf{Camada de Visão} (View) é a responsável por mostrar os dados na tela.
   \item \textbf{Camada de Controle} (Controller) é quem gerencia toda a comunicação entre uma Modelo e uma Visão. Não é permitido uma Visão acessar diretamente uma Modelo ou vice-versa.
 \end{itemize}
+
 Simplificadamente pense em uma empresa na qual existe um cliente que deseja falar com um determinado funcionário, porém para acessar sua sala deve passar por uma Secretária. Esse funcionário deseja obter uma determinada informação de um arquivo, para isso deve solicitá-la a Secretária. Ou seja, a Secretária é a controladora de tudo o que será permitido visualizar ou obter de informação da empresa.
 
 \subsection{O que são Serviços}
 A tecnologia de Serviços Web fornece uma série consideráveis benefícios para o desenvolvimento de aplicativos, uma vez que propicia a agilidade requerida pelas empresas frente às mudanças que podem ocorrer no ambiente de negócios. A grande vantagem no uso dos serviços Web provém da capacidade de permitir uma rápida e independente construção de várias 'Visões' de sistemas nas mais diversas plataformas existentes. 
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{servicos.png}
-\end{center}
-Por exemplo, uma vez construída a camada de serviços, podemos utilizar o PhoneGap/Cordova para construir uma camada que será acessível pela plataforma Mobile, uma outra em Java/Swing para acessar via Desktop, uma terceira em Amber.js com um sistema Web, e todas utilizando a mesma camada de Serviço. \\[2mm]
-Um Serviço Web é atualmente utilizado para integração entre aplicações. O Web Service REST é uma das formas de se criar um Serviço Web, que é utilizada com o protocolo HTTP. O conjunto de operações, suportadas pelo serviço, podem ser de quatro tipos: 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/servicos.png}
+	\caption{Serviços que podem estar na nuvem ou não}
+\end{figure}
+
+Por exemplo, uma vez construída a camada de serviços, podemos utilizar o PhoneGap/Cordova para construir uma camada que será acessível pela plataforma Mobile, uma outra em Java/Swing para acessar via Desktop, uma terceira em Amber.js com um sistema Web, e todas utilizando a mesma camada de Serviço.
+
+Um Serviço Web é atualmente utilizado para integração entre aplicações. O Web Service REST é uma das formas de se criar um Serviço Web, que é utilizada com o protocolo HTTP. O conjunto de operações, suportadas pelo serviço, podem ser de quatro tipos: \vspace{-1em}
 \begin{itemize}
   \item \textbf{GET}. Listar todos os membros dos recursos de coleção ou recuperar uma 
   determinada representação de um recurso identificado como 1234.
@@ -200,57 +85,74 @@ Um Serviço Web é atualmente utilizado para integração entre aplicações. O 
   \item \textbf{PUT}. Atualizar (substituir) determinados campos de um recurso identificado como 1234.
   \item \textbf{DELETE}. Eliminar uma coleção ou um determinado recurso identificado como 1234.
 \end{itemize}
+
 Serviços Web se consolidaram como uma base para disponibilização de negócios eletrônicos, dentre as quais se destacam organizações que atuam em diversos mercados, tais como Google, Amazon, GM, Fedex, Governo Federal. Isso permite a construção de uma rede intra/interorganizacional de aplicações colaborativas e distribuídas, onde os Serviços Web, na forma de módulos auto-contidos, são descritos, publicados, localizados e dinamicamente invocados através de camadas de diversas visões.
 
 \section{Instalação do Sails.js}
 Para proceder a instalação do Sails é necessário primeiro instalar o Node.js
-que pode ser obtido em \url{https://nodejs.org/en/} e o NPM  em \url{https://www.npmjs.com/} \\[3mm]
+que pode ser obtido em \url{https://nodejs.org/en/} e o NPM  em \url{https://www.npmjs.com/} 
+
 Para instalar o Sails (lembrando que 'sudo' só necessário se estivermos em
-ambiente Linux), em uma janela de comandos, digitar o seguinte: \\[1mm]
-{\ttfamily\$ sudo npm install -g sails} \\[3mm]
+ambiente Linux), em uma janela de comandos, digitar o seguinte: \\
+{\ttfamily\$ sudo npm install -g sails}
+
 Pronto, simples assim.
 
 \subsection{Testar a instalação com um Projeto}
-Para criar um projeto: \\[1mm]
-{\ttfamily\$ sails new testProject --linker} \\[3mm]
-A opção '--linker' faz com que quaisquer recursos sob a pasta /assets sejam copiados para a pasta .tmp/public pelo Grunt quando Sails for levantado. Uma das grandes vantagens do Sails é que também podemos criar o projeto apenas como um provedor de Serviços, isto é, sem a Camada de Visão, para isso utilizamos a seguinte opção: \\[1mm]
-{\ttfamily\$ sails new myApi --no-frontend} \\[3mm]
-O próximo passo é acessar a pasta: \\[1mm]
-{\ttfamily\$ cd testProject} \\[3mm]
-Disponibilizar o bower para o projeto, de modo a instalarmos novos componentes (responda todas as perguntas de forma adequada): \\[1mm]
-{\ttfamily\$ bower init} \\[3mm]
-Iniciar o sails: \\[1mm]
-{\ttfamily\$ sails lift} \\[3mm]
-Se tudo estiver funcionando corretamente é possível acessar o site de boas vindas no endereço: \\[1mm]
-\url{http://localhost:1337/} \\[3mm]
+Para criar um projeto: \\
+{\ttfamily\$ sails new testProject --linker}
+
+A opção '--linker' faz com que quaisquer recursos sob a pasta /assets sejam copiados para a pasta .tmp/public pelo Grunt quando Sails for levantado. Uma das grandes vantagens do Sails é que também podemos criar o projeto apenas como um provedor de Serviços, isto é, sem a Camada de Visão, para isso utilizamos a seguinte opção: \\
+{\ttfamily\$ sails new myApi --no-frontend}
+
+O próximo passo é acessar a pasta: \\
+{\ttfamily\$ cd testProject}
+
+Disponibilizar o bower para o projeto, de modo a instalarmos novos componentes (responda todas as perguntas de forma adequada): \\
+{\ttfamily\$ bower init}
+
+Iniciar o sails: \\
+{\ttfamily\$ sails lift}
+
+Se tudo estiver funcionando corretamente é possível acessar o site de boas vindas no endereço: \\
+\url{http://localhost:1337/}
+
 Para interromper o servidor, realizar a seguinte sequencia {\ttfamily Ctrl+C} na janela de comandos.
 
 \subsection{Geração dos Artefatos}
-A maior vantagem em se utilizar o Sails é que este permite gerar as camadas MVC automaticamente, sem precisarmos perder tempo com configurações desnecessárias. A pasta /api contém todos os arquivos backend. A pasta /api/policies estão armazenadas regras para o acesso do usuário da aplicação. A pasta /api/responses contém arquivos como os erros do Servidor Web (404, 403, 500, entre outros). Adicionamos nessa pasta as funções que lidam com tarefas específicas, como decidir como gerenciar usuários com diferentes níveis de acesso. Poderia ser feito na Camada de Controle, mas não é uma boa prática controladores com um monte de lógica de negócios. \\[3mm]
-As camadas MVC do projeto gerado podem ser encontradas nas seguintes pastas:
+A maior vantagem em se utilizar o Sails é que este permite gerar as camadas MVC automaticamente, sem precisarmos perder tempo com configurações desnecessárias. A pasta /api contém todos os arquivos backend. A pasta /api/policies estão armazenadas regras para o acesso do usuário da aplicação. A pasta /api/responses contém arquivos como os erros do Servidor Web (404, 403, 500, entre outros). Adicionamos nessa pasta as funções que lidam com tarefas específicas, como decidir como gerenciar usuários com diferentes níveis de acesso. Poderia ser feito na Camada de Controle, mas não é uma boa prática controladores com um monte de lógica de negócios.
+
+As camadas MVC do projeto gerado podem ser encontradas nas seguintes pastas: \vspace{-1em}
 \begin{itemize}
   \item \textbf{Camada de Modelo} que está disponível na pasta /api/models do projeto gerado, arquivos no padrão .js
   \item \textbf{Camada de Controle} que está disponível na pasta /api/controllers do projeto gerado, arquivos no padrão .js
   \item \textbf{Camada de Visão} que está disponível na pasta /views do projeto gerado, arquivos no padrão .ejs 
   (esta camada não é gerada automaticamente)
 \end{itemize}
-Gerar a Model e a Controller: \\[1mm]
-{\ttfamily\$ sails generate api |Nome|} \\[3mm]
-Por exemplo: \\[1mm]
-{\ttfamily\$ sails generate model Pet} \\[3mm]
-Gerar a Controller: \\[1mm]
-{\ttfamily\$ sails generate controller |Nome| |Ação|} \\[3mm]
-Por exemplo: \\[1mm]
-{\ttfamily\$ sails generate controller Artigo create find update destroy} \\[1mm]
-{\ttfamily\$ sails generate controller Comentario create destroy tag like} \\[3mm]
-Gerar a Model: \\[1mm]
-{\ttfamily\$ sails generate model |Nome| |Attribute:Type|} \\[3mm]
-Por exemplo: \\[1mm]
+
+Gerar a Model e a Controller: \\
+{\ttfamily\$ sails generate api |Nome|}
+
+Por exemplo: \\
+{\ttfamily\$ sails generate model Pet}
+
+Gerar a Controller: \\
+{\ttfamily\$ sails generate controller |Nome| |Ação|}
+
+Por exemplo: \\
+{\ttfamily\$ sails generate controller Artigo create find update destroy} \\
+{\ttfamily\$ sails generate controller Comentario create destroy tag like}
+
+Gerar a Model: \\
+{\ttfamily\$ sails generate model |Nome| |Attribute:Type|}
+
+Por exemplo: \\
 {\ttfamily\$ sails generate model Cliente nome:string endereco:string idade:integer}
 
 \subsection{Um pequeno teste}
-Vamos criar uma simples estrutura apenas para verificarmos se tudo está bem fixado até aqui. Criar um projeto conforme descrito e neste executar o seguinte comando: \\[1mm]
-{\ttfamily\$ sails generate api teste} \\[3mm]
+Vamos criar uma simples estrutura apenas para verificarmos se tudo está bem fixado até aqui. Criar um projeto conforme descrito e neste executar o seguinte comando: \\
+{\ttfamily\$ sails generate api teste}
+
 Dois arquivos foram criados, um na pasta '/api/models' chamado 'Teste.js' e outro na pasta '/api/controllers' chamado 'TesteController.js'. No primeiro arquivo modificar a codificação 
 do modelo para:
 \begin{lstlisting}
@@ -262,13 +164,18 @@ module.exports = {
   }
 };
 \end{lstlisting}
-E finalmente ativar o sails: \\[1mm]
-{\ttfamily\$ sails lift} \\[3mm]
+
+E finalmente ativar o sails: \\
+{\ttfamily\$ sails lift}
+
 Agora será preciso utilizar um cliente para acessar os serviços expostos. Existem vários pessoalmente prefiro o 'Postman':
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{Postman.png} 
-\end{center}
-E com ele, podemos acessar os seguintes serviços:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/Postman.png}
+	\caption{Aplicativo Postman}
+\end{figure}
+
+E podemos acessar os seguintes serviços: \vspace{-1em}
 \begin{itemize}
   \item \textbf{http://localhost:1337/teste} método GET que traz todos os nomes cadastrados
   \item \textbf{http://localhost:1337/teste/1} método GET que traz o nome com o ID igual a 1
@@ -278,32 +185,39 @@ E com ele, podemos acessar os seguintes serviços:
 \end{itemize}
 
 \subsection{Arquivos de Configuração}
-Outros arquivos importantes serão bastante utilizados são:
+Outros arquivos importantes serão bastante utilizados são: \vspace{-1em}
 \begin{itemize}
   \item \textbf{/config/sockets.js}: este arquivo contém dois métodos, "onConnect" e "onDisconnect". Utilizamos este para proceder as conexões de socket.
   \item \textbf{/config/routes.js}: este arquivo nos permite a definição de URLs com as Visões e endpoints para os métodos da Camada de Controle.
   \item \textbf{/config/models.js}: este arquivo nos permite especificar os conectores para o Banco de Dados além de definir como migar os dados.
 \end{itemize}
-Por padrão o Sails acessa um ORM (Object Relational Mapper) chamado Waterline que podemos utilizar para realizar testes no sistema, não se preocupe pois é possível (através do uso de adaptadores) se conectar a, basicamente, todos os bancos conhecidos do mercado. \\[3mm]
-No arquivo /config/models.js é possível definirmos o modo como a base de dados irá tratar os dados, são eles:
+
+Por padrão o Sails acessa um ORM (Object Relational Mapper) chamado Waterline que podemos utilizar para realizar testes no sistema, não se preocupe pois é possível (através do uso de adaptadores) se conectar a, basicamente, todos os bancos conhecidos do mercado.
+
+No arquivo /config/models.js é possível definirmos o modo como a base de dados irá tratar os dados, são eles: \vspace{-1em}
 \begin{itemize}
   \item \textbf{safe}. Nunca migrar automaticamente a base de dados (usado por padrão, se nada for definido).
   \item \textbf{alter}. Migrar os dados, mas manter os dados já existentes (experimental).
   \item \textbf{drop}. Cada vez que o Servidor for reiniciado, eliminar TODOS os dados e reconstruir TODOS os modelos.
 )
 \end{itemize}
-Também podemos subir o servidor com um dessas opções. Por exemplo: \\[1mm]
+
+Também podemos subir o servidor com um dessas opções. Por exemplo: \\
 {\ttfamily\$ sails lift --models.migrate='alter'}
  
 \subsection{Acessar o MySQL no Docker}
-Antes de mais nada precisamos do banco MySQL rodando no Docker, para conseguir realizar isso assista o vídeo disponível no meu canal no endereço \url{https://www.youtube.com/watch?v=skx_Oxdw9i0&t=183s} e uma vez que o banco estiver configurado, acessar com o comando: \\[1mm]
-{\ttfamily\$ docker exec -it mybanco mysql -p} \\[3mm]
-Usar a senha 'root' para entrar e criar a base para este exemplo com o comando \\[1mm]
-{\ttfamily create database demo;} \\[3mm]
-Sair do MySQL com o comando: \\[1mm]
-{\ttfamily exit} \\[3mm]
-Criar um projeto para o Sails conforme descrito e neste executar o seguinte comando: \\[1mm]
-{\ttfamily\$ sails generate api cliente} \\[3mm]
+Antes de mais nada precisamos do banco MySQL rodando no Docker, para conseguir realizar isso assista o vídeo disponível no meu canal no endereço \url{https://www.youtube.com/watch?v=skx_Oxdw9i0&t=183s} e uma vez que o banco estiver configurado, acessar com o comando: \\
+{\ttfamily\$ docker exec -it mybanco mysql -p}
+
+Usar a senha 'root' para entrar e criar a base para este exemplo com o comando \\
+{\ttfamily create database demo;}
+
+Sair do MySQL com o comando: \\
+{\ttfamily exit}
+
+Criar um projeto para o Sails conforme descrito e neste executar o seguinte comando: \\
+{\ttfamily\$ sails generate api cliente}
+
 Modificar o arquivo 'connections.js' na pasta '/config' para a seguinte codificação:
 \begin{lstlisting}
 module.exports.connections = {
@@ -320,6 +234,7 @@ module.exports.connections = {
   }
 };
 \end{lstlisting}
+
 Modificar o arquivo 'models.js' na pasta '/config' para a seguinte codificação:
 \begin{lstlisting}
 module.exports.models = {
@@ -327,6 +242,7 @@ module.exports.models = {
   migrate: 'alter'
 };
 \end{lstlisting}
+
 E o arquivo 'Cliente.js' na pasta '/api/models' para a seguinte codificação:
 \begin{lstlisting}
 module.exports = {
@@ -343,11 +259,14 @@ module.exports = {
   }
 };
 \end{lstlisting}
-O último passo é adicionar a biblioteca de conexão com o MySQL com o seguinte comando: \\[1mm]
-{\ttfamily\$ npm install sails-mysql --save} \\[3mm]
-Executar o Sails: \\[1mm]
-{\ttfamily\$ sails lift} \\[3mm]
-E execute os seguintes comandos em um navegador (como complemento para \url{http://localhost:1337}):
+
+O último passo é adicionar a biblioteca de conexão com o MySQL com o seguinte comando: \\
+{\ttfamily\$ npm install sails-mysql --save}
+
+Executar o Sails: \\
+{\ttfamily\$ sails lift}
+
+E execute os seguintes comandos em um navegador (como complemento para \url{http://localhost:1337}): \vspace{-1em}
 \begin{itemize}
   \item \textbf{/cliente/create?nome=Fernando\&email=anselmo@gmail.com} \\
   cadastrar um novo cliente com o nome: 'Fernando' e email: 'anselmo@gmail.com'.
@@ -356,7 +275,7 @@ E execute os seguintes comandos em um navegador (como complemento para \url{http
   \item \textbf{/cliente/destroy/1} \\
   eliminar o cliente com o ID igual a 1 do banco.
 \end{itemize}
-Observe que automaticamente o Sails cria no banco alguns campos como chave primária e datas de atualização, podemos não desejar que ele se comporte dessa forma para isso, no modelo, entre a instrução ``exports'' e ``atributes'' colocamos as seguintes instruções:
+Observe que automaticamente o Sails cria no banco alguns campos como chave primária e datas de atualização, podemos não desejar que ele se comporte dessa forma para isso, no modelo, entre a instrução ``exports'' e ``atributes'' colocamos as seguintes instruções: \vspace{-1em}
 \begin{itemize}
   \item \textbf{autoCreateAt: false,}: para não criar a data de criação do registro
   \item \textbf{autoUpdateAt: false,}: para não criar a data de atualização do registro
@@ -364,8 +283,9 @@ Observe que automaticamente o Sails cria no banco alguns campos como chave prim�
 \end{itemize}
 
 \subsection{Ajuste da saída Dados}
-Com o Sails podemos criar uma controller com dois passos simples (se a Model já tiver pronta então será apenas um passo) para nos devolver basicamente qualquer conjunto de dados que desejemos. Por exemplo uma nova saída com base em uma consulta SQL que agrupe os dados. Vamos aproveitar o projeto visto com o banco MySQL para realizar essa tarefa. Adicione uma nova Model e Controler com o seguinte comando: \\[1mm]
-{\ttfamily\$ sails generate api Conta} \\[3mm]
+Com o Sails podemos criar uma controller com dois passos simples (se a Model já tiver pronta então será apenas um passo) para nos devolver basicamente qualquer conjunto de dados que desejemos. Por exemplo uma nova saída com base em uma consulta SQL que agrupe os dados. Vamos aproveitar o projeto visto com o banco MySQL para realizar essa tarefa. Adicione uma nova Model e Controler com o seguinte comando: \\
+{\ttfamily\$ sails generate api Conta}
+
 Modificar o arquivo 'Conta.js' na pasta '/api/models' para a seguinte codificação:
 \begin{lstlisting}
 module.exports = {
@@ -381,6 +301,7 @@ module.exports = {
   }
 };
 \end{lstlisting}
+
 Crie a maior quantidade de dados que desejar variando as informações de ``data de entrada'' e ``valor'' o máximo possível. O segundo passo é adicionar um novo método de chamada no arquivo 'ContaController.js' na pasta '/api/controllers' com a seguinte codificação:
 \begin{lstlisting}
 module.exports = {
@@ -404,17 +325,23 @@ module.exports = {
   });
 }
 \end{lstlisting}
+
 Selecionamos da base de dados, mês a mês o somatório dos valores e montamos para a saída um JSON com dois arrays ``mes'' e ``valor'', é ideal para carregar uma visão com o \textbf{Chart.js} com a montagem de um gráfico.
 
 \subsection{Adicionar o Bootstrap e a JQuery ao projeto}
-O Bootstrap e a JQuery consolidaram-se como padrões de mercado, para disponibilizá-los em nosso projeto devemos seguir os seguintes passos: \\[3mm]
-1. Criar na raiz do projeto um arquivo chamado .bowerrc com o seguinte conteúdo: \\[1mm]
-\textbraceleft {\ttfamily ``directory'' : ``assets/vendor''} \textbraceright \\[3mm]
-2. Instalar o Bootstrap com o comando (é instalada a JQuery automaticamente): \\[1mm]
-{\ttfamily\$ bower install bootstrap --save --production} \\[3mm]
-3. Adicionar a linha no arquivo /assets/styles/importer.less: \\[1mm]
-{\ttfamily @import '../vendor/bootstrap/less/bootstrap.less';} \\[3mm]
-4. Copiar a pasta /assets/vendor/bootstrap/fonts embaixo da pasta /assets. \\[3mm]
+O Bootstrap e a JQuery consolidaram-se como padrões de mercado, para disponibilizá-los em nosso projeto devemos seguir os seguintes passos:
+
+1. Criar na raiz do projeto um arquivo chamado .bowerrc com o seguinte conteúdo: \\
+\textbraceleft {\ttfamily ``directory'' : ``assets/vendor''} \textbraceright
+
+2. Instalar o Bootstrap com o comando (é instalada a JQuery automaticamente): \\
+{\ttfamily\$ bower install bootstrap --save --production}
+
+3. Adicionar a linha no arquivo /assets/styles/importer.less: \\
+{\ttfamily @import '../vendor/bootstrap/less/bootstrap.less';}
+
+4. Copiar a pasta /assets/vendor/bootstrap/fonts embaixo da pasta /assets.
+
 5. Adicionar os seguintes comandos no arquivo /tasks/pipeline.js, após a instrução 'sails.io.js':
 \begin{lstlisting}
 'js/dependencies/sails.io.js',
@@ -423,6 +350,7 @@ O Bootstrap e a JQuery consolidaram-se como padrões de mercado, para disponibil
 // Adicionar o Bootstrap JS
 'vendor/bootstrap/dist/js/bootstrap.min.js',
 \end{lstlisting}
+
 Agora o projeto conta com o poder do Bootstrap e da JQuery.
 
 \subsection{Mais um teste da Instalação}
@@ -463,6 +391,7 @@ Iremos realizar um exemplo mais completo para verificar se tudo está funcionand
       </footer>
     </div>  
 \end{lstlisting}
+
 Definimos aqui um cabeçalho e rodapé padrão para todas as páginas do projeto. Criar uma nova pasta abaixo dessa pasta chamada '/static' e nesta criar um arquivo chamado 'index.ejs' com o seguinte conteúdo:
 \begin{lstlisting}
 <div class="jumbotron">
@@ -472,36 +401,45 @@ Definimos aqui um cabeçalho e rodapé padrão para todas as páginas do projeto
   </div>
 </div>
 \end{lstlisting}
+
 Modificar a rota padrão, no arquivo de rotas (/config/routes.js), para:
 \begin{lstlisting}
   '/': {
     view: 'static/index'
   }
 \end{lstlisting}
+
 E ao levantar o Sails teremos o seguinte resultado na página inicial:
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{sailsEx01.png}
-\end{center}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/sailsEx01.png}
+	\caption{Página Inicial}
+\end{figure}
 
 \section{Modelagem de Dados}
 Agora que sabemos como instalar, criar e configurar corretamente um projeto no
 Sails. Vamos criar um exemplo para testar um modelo de dados como forma de conhecer melhor suas potencialidades.
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{hero_squid.png} 
-\end{center}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagens/hero_squid.png}
+	\caption{Projeto Completo}
+\end{figure}
+
 A empresa MeuPet deseja melhorar os serviços de implantação de sua intranet 
 com buscas no aprimoramento de disponibilização de serviços. A estrutura da 
-base de dados foi definida através do rascunho das seguintes tabelas: \\[3mm]
-{\ttfamily Cliente}
-\begin{itemize}
+base de dados foi definida através do rascunho das seguintes tabelas:
+
+{\ttfamily Cliente} \vspace{-1em}
+\begin{itemize}[nolistsep]
   \item \textbf{priNome}. String (obrigatório), primeiro nome
   \item \textbf{ultNome}. String (obrigatório), último nome
   \item \textbf{endereco}.  Text, endereço de residência
   \item \textbf{email}. String (válido), endereço eletrônico de contato
   \item \textbf{telefone}. String (obrigatório), número do telefone de contato
 \end{itemize}
-{\ttfamily Pet}
-\begin{itemize}
+
+{\ttfamily Pet} \vspace{-1em}
+\begin{itemize}[nolistsep]
   \item \textbf{idDono}. String (obrigatório), campo de associação com o cliente
   \item \textbf{genero}. String, gênero do animal que só deve permitir: 'Macho' ou 'Fêmea'
   \item \textbf{datNascimento}. Date, contendo a data nascimento
@@ -509,8 +447,9 @@ base de dados foi definida através do rascunho das seguintes tabelas: \\[3mm]
   \item \textbf{raca}. String, descricao da raça do animal
   \item \textbf{caracteristica}. Text, campo livre para observações sobre o animal
 \end{itemize}
-{\ttfamily Servico}
-\begin{itemize}
+
+{\ttfamily Servico} \vspace{-1em}
+\begin{itemize}[nolistsep]
   \item \textbf{inicial}. Date, data e hora inicial do serviço
   \item \textbf{idpet}. String (obrigatório), campo de associação com o animal
   \item \textbf{tipo}. String, tipo do serviço que só deve permitir: 'Consulta', 'Banho' ou 'Tosa'
@@ -519,37 +458,48 @@ base de dados foi definida através do rascunho das seguintes tabelas: \\[3mm]
   \item \textbf{buscar}. Boolean, se é ou não para buscar o animal
   \item \textbf{levar}. Boolean, se é ou não para levar o animal ao término do serviço
 \end{itemize}
-Todas as tabelas possuem dois campos obrigatórios que não são informados no cadastro:
-\begin{itemize}
+
+Todas as tabelas possuem dois campos obrigatórios que não são informados no cadastro: \vspace{-1em}
+\begin{itemize}[nolistsep]
   \item \textbf{id}. String, chave única
   \item \textbf{adicionadoEm}. Date, contendo a data de cadastro
 \end{itemize}
 
 \subsection{Implementando para o Banco de Dados}
-Como banco de dados usaremos o RethinkDB, um banco de dados ORM, open-source, escalável com foco na criação de aplicativos em tempo real mais fácil. Qual a diferença para o MongoDB? Um gerenciador que nos permite controla visualmente o banco, ou seja, temos uma maior capacidade administrativa, mas não se preocupe esse projeto pode ser adaptado para qualquer banco que deseje. \\[3mm]
-Para instalar o banco usaremo uma imagem do Docker, então com o Docker já instalado podemos digitar simplesmente o seguinte comando para baixarmos a imagem oficial: \\[1mm]
-{\ttfamily\$ docker pull rethinkdb} \\[3mm]
-E o seguinte comando para rodá-la e ativar o banco: \\[1mm]
-{\ttfamily\$ docker run -d -p 8080:8080 -p 28015:28015 -p 29015:29015 --name } \\[1mm]
-{\ttfamily rethink1 rethinkdb} \\[3mm]
+Como banco de dados usaremos o RethinkDB, um banco de dados ORM, open-source, escalável com foco na criação de aplicativos em tempo real mais fácil. Qual a diferença para o MongoDB? Um gerenciador que nos permite controla visualmente o banco, ou seja, temos uma maior capacidade administrativa, mas não se preocupe esse projeto pode ser adaptado para qualquer banco. 
+
+Para instalar o banco usaremo uma imagem do Docker, então com o Docker já instalado podemos digitar simplesmente o seguinte comando para baixarmos a imagem oficial: \\
+{\ttfamily\$ docker pull rethinkdb}
+
+E o seguinte comando para rodá-la e ativar o banco: \\
+{\ttfamily\$ docker run -d -p 8080:8080 -p 28015:28015 -p 29015:29015 --name } \\
+{\ttfamily rethink1 rethinkdb}
+
 O banco está ativo na porta 28015, a porta 29015 é de controle do RethinkDB e a porta
 8080 é sua parte administrativa, abra um navegador e acesse o endereço 
 \url{http://localhost:8080} e veremos a seguinte imagem:
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{Rethinkdb.png} 
-\end{center}
-Se deseja parar o banco de dados basta digitar o seguinte comando: \\[1mm]
-{\ttfamily\$ docker stop rethink1} \\[3mm]
-E para ativá-lo novamente: \\[1mm]
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/Rethinkdb.png}
+	\caption{Banco RethinkDB}
+\end{figure}
+
+Se deseja parar o banco de dados basta digitar o seguinte comando: \\
+{\ttfamily\$ docker stop rethink1}
+
+E para ativá-lo novamente: \\
 {\ttfamily\$ docker start rethink1}
 
 \subsection{Configurar o Banco de Dados}
-Na pasta do projeto, adicionar os seguintes módulos necessários para realizar a conexão com o banco: \\[1mm]
-{\ttfamily\$ npm install thinky thinky-loader --save} \\[3mm]
-No arquivo 'package.json' adicione a seguinte linha na seção 'dependencies': \\[1mm]
-{\ttfamily "sails-rethinkdb": "github:gutenye/sails-rethinkdb\#master",} \\[3mm]
-E instale esta dependência: \\[1mm]
-{\ttfamily\$ npm install} \\[3mm]
+Na pasta do projeto, adicionar os seguintes módulos necessários para realizar a conexão com o banco: \\
+{\ttfamily\$ npm install thinky thinky-loader --save}
+
+No arquivo 'package.json' adicione a seguinte linha na seção 'dependencies': \\
+{\ttfamily "sails-rethinkdb": "github:gutenye/sails-rethinkdb\#master",}
+
+E instale esta dependência: \\
+{\ttfamily\$ npm install}
+
 Após a instalação corrigir um erro que cria tabelas duplicadas, editar a classe 'connection.js' na pasta /node\_modules/sails-rethinkdb/lib e comentar as seguintes instruções na função \_setupTables(tables):
 \begin{lstlisting}
   this.db.tableCreate(name).run(this.conn, err => {
@@ -557,6 +507,7 @@ Após a instalação corrigir um erro que cria tabelas duplicadas, editar a clas
       throw err
   })
 \end{lstlisting}
+
 Com essa primeira parte pronta vamos realizar as seguintes modificações nos arquivos do projeto. No arquivo 'config/connections.js' adicionar a seguinte instrução (abaixo da expressão de 'localDiskDb'):
 \begin{lstlisting}
   rethinkdb: {
@@ -565,6 +516,7 @@ Com essa primeira parte pronta vamos realizar as seguintes modificações nos ar
     db: 'petshop'
   }
 \end{lstlisting}
+
 Criar uma pasta chamada '/hooks' abaixo da pasta '/api'. Nesta pasta criar um arquivo chamado 'thinkhook.js', com as seguintes instruções:
 \begin{lstlisting}
 module.exports = function(sails){
@@ -601,6 +553,7 @@ module.exports = function(sails){
   }
 }  
 \end{lstlisting}
+
 Na inicialização também é possível passar o comando 'orm.initialize(ormConfig, thinky)' que repassa uma instância do thinky para uma configuração adicional. Nosso próximo passo é modificar o arquivo '/config/models.js':
 \begin{lstlisting}
 module.exports.models = {
@@ -608,42 +561,47 @@ module.exports.models = {
   migrate: 'safe'
 };  
 \end{lstlisting}
-Se tudo está funcionando corretamente, ao reiniciar o servidor é recebida a seguinte mensagem: \\[3mm]
-{\ttfamily Creating a pool connected to localhost:28015} \\[1mm]
-{\ttfamily RethinkDB está pronto para uso!} \\[1mm]
+
+Se tudo está funcionando corretamente, ao reiniciar o servidor é recebida a seguinte mensagem: 
+{\ttfamily Creating a pool connected to localhost:28015 \\
+RethinkDB está pronto para uso!}
+
 Além disso no Administrador do RethinkDB, na seção Tables, é mostrada a base de 
 dados 'petshop'.
 
 \subsection{Criação dos Modelos e Controles}
-Começaremos criando os três modelos/controles necessários: \\[3mm]
-{\ttfamily\$ sails generate api Cliente} \\[1mm]
-{\ttfamily\$ sails generate api Pet} \\[1mm]
-{\ttfamily\$ sails generate api Servico} \\[3mm]
+Começaremos criando os três modelos/controles necessários:
+{\ttfamily\$ sails generate api Cliente} \\
+{\ttfamily\$ sails generate api Pet} \\
+{\ttfamily\$ sails generate api Servico}
+
 Agora vamos alterar cada uma dos modelos (na pasta /api/models) para criar
-corretamente a estrutura das nossas tabelas conforme definido. \\[3mm]
+corretamente a estrutura das nossas tabelas conforme definido.
+
 {\ttfamily Arquivo: Cliente.js}
 \begin{lstlisting}
- module.exports = function() {
-   let thinky = this.thinky;
-   let validator = require('validator');
-   let type = this.thinky.type;
-   let models = this.models;
-   return {
-     tableName: 'cliente',
-     schema: {
-       id: type.string(),
-       priNome: type.string().required(),
-       ultNome: type.string().required(),
-       endereco: type.string(),
-       email: type.string().validator(validator.isEmail),
-       telefone: type.string().required(),
-       adicionadoEm: type.date().default(new Date())
-     },
-     options: {},
-     init: function(model) { }
-   };
- };
- \end{lstlisting}
+module.exports = function() {
+  let thinky = this.thinky;
+  let validator = require('validator');
+  let type = this.thinky.type;
+  let models = this.models;
+  return {
+    tableName: 'cliente',
+    schema: {
+      id: type.string(),
+      priNome: type.string().required(),
+      ultNome: type.string().required(),
+      endereco: type.string(),
+      email: type.string().validator(validator.isEmail),
+      telefone: type.string().required(),
+      adicionadoEm: type.date().default(new Date())
+    },
+    options: {},
+    init: function(model) { }
+  };
+};
+\end{lstlisting}
+
 {\ttfamily Arquivo: Pet.js}
 \begin{lstlisting}
 module.exports = function() {
@@ -670,6 +628,7 @@ module.exports = function() {
   };
 };
 \end{lstlisting}
+
 {\ttfamily Arquivo: Servico.js}
 \begin{lstlisting}
 module.exports = function() {
@@ -697,30 +656,32 @@ module.exports = function() {
   };
 };
 \end{lstlisting}
+
 Se tudo está funcionando corretamente ao reiniciar o servidor é mostrada as mensagens de criação e inicialização das tabelas. Além disso no Administrador do RethinkDB, na seção Tables veremos na base de dados 'petshop' com as tabelas criadas conforme a seguinte imagem:
-\begin{center} 
-\includegraphics[width=0.8\textwidth]{tabelas.png} 
-\end{center}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/tabelas.png}
+	\caption{Tabelas Criadas}
+\end{figure}
+
 Se desejar um teste mais completo pode usar um aplicativo como o 'Postman' (ou outro aplicativo similar) para acessar os serviços que já estão criados, para cada tabela existe um CRUD completo pronto e funcionando, com métodos: GET, POST, PUT e DELETE.
 
 \section{Conclusão}
-Sails é um framework JavaScript que facilita a criação de aplicativos com o servidor Node.js a nível empresarial fornece um monte de recursos poderosos por padrão, para que possamos começar a desenvolver um aplicativo sem ter que pensar sobre a configuração. Foi projetado com base no conhecido padrão MVC e com um suporte aos requisitos de aplicativos modernos: APIs orientadas a dados com uma arquitetura escalonável orientada a serviços. É possível usá-lo para qualquer projeto de aplicativo da Web. \\[3mm]
-Um desenvolvedor que possua experiência com aplicações frontend e está procurando um servidor ágil de JavaScript, pode encontrar no Sails uma boa solução. Este atende também aos que possuem experiência com aplicações backend em um idioma diferente de JavaScript e está procurando expandir seus conhecimentos em Node.js. Em ambos os casos, a familiaridade com Serviços Web pode ser o quisito mais importante sobre como construir uma aplicação web. \\[3mm]
-Um conjunto de pequenos módulos trabalham em conjunto com o Sails para fornecer simplicidade, facilidade de manutenção e convenções estruturais aos aplicativos Node.js. Além disso o Sails é altamente configurável, assim não seremos forçados a manter toda uma funcionalidade que não é necessária para o projeto. Sou um entusiasta do mundo Open Source e novas tecnologias. Veja outros artigos que publico sobre tecnologia acessando meu Blog Oficial \cite{fernandoanselmo}.
+Sails é um framework JavaScript que facilita a criação de aplicativos com o servidor Node.js a nível empresarial fornece um monte de recursos poderosos por padrão, para que possamos começar a desenvolver um aplicativo sem ter que pensar sobre a configuração. Foi projetado com base no conhecido padrão MVC e com um suporte aos requisitos de aplicativos modernos: APIs orientadas a dados com uma arquitetura escalonável orientada a serviços. É possível usá-lo para qualquer projeto de aplicativo da Web.
+
+Um desenvolvedor que possua experiência com aplicações frontend e está procurando um servidor ágil de JavaScript, pode encontrar no Sails uma boa solução. Este atende também aos que possuem experiência com aplicações backend em um idioma diferente de JavaScript e está procurando expandir seus conhecimentos em Node.js. Em ambos os casos, a familiaridade com Serviços Web pode ser o quisito mais importante sobre como construir uma aplicação web.
+
+Um conjunto de pequenos módulos trabalham em conjunto com o Sails para fornecer simplicidade, facilidade de manutenção e convenções estruturais aos aplicativos Node.js. Além disso o Sails é altamente configurável, assim não seremos forçados a manter toda uma funcionalidade que não é necessária para o projeto. 
+
+Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
 %-----------------------------------------------------------------------------
-
-\begin{thebibliography}{5}
-
+\begin{thebibliography}{7}
   \bibitem{sailsoficial} 
   Página do Sails.js \\
   \url{http://sailsjs.com/}
-
-  \bibitem{fernandoanselmo} 
-  Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br/}
 
   \bibitem{bootstrapoficial} 
   Página do Bootstrap \\
@@ -734,6 +695,17 @@ Um conjunto de pequenos módulos trabalham em conjunto com o Sails para fornecer
   Página do RethinkDB \\
   \url{https://www.rethinkdb.com/}
 
+  \bibitem{fernandoanselmo} 
+  Fernando Anselmo - Blog Oficial de Tecnologia \\
+  \url{http://www.fernandoanselmo.blogspot.com.br/}
+
+  \bibitem{publicacao} 
+  Encontre essa e outras publicações em \\
+  \url{https://cetrex.academia.edu/FernandoAnselmo}
+
+  \bibitem{github} 
+  Repositório para os fontes da apostila \\
+  \url{https://github.com/fernandoans/publicacoes}
 \end{thebibliography}
   
 \end{document}

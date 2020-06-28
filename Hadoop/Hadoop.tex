@@ -25,14 +25,16 @@
 
 \section{Como surgiu o Hadoop?}
 Nos últimos anos o termo Big Data vem se tornando um assunto cada vez mais discutido em reuniões de planejamento estratégico em empresas de todos os portes. Hadoop é uma plataforma de software de código aberto para o armazenamento distribuído e processamento distribuído de grandes conjuntos de dados em clusters de computadores construídos a partir de hardware a um custo acessível (\textit{commodity}). serviços Hadoop fornecem para armazenamento de dados, processamento de dados, acesso a dados, governança de dados, segurança e operações.
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{imgHadoop/logo.png}
 	\caption{Logo do Hadoop}
 \end{figure}
-A gênese do Hadoop veio do papel \textbf{Google File System}, que foi publicado em Outubro de 2003. Este trabalho deu origem a outro trabalho de pesquisa do Google – \textbf{MapReduce: simplificado Processamento de Dados em grandes aglomerados}. Desenvolvimento começou no projeto Apache Nutch, mas foi transferido para o novo subprojeto Hadoop em janeiro de 2006. A primeira committer adicionado ao projeto Hadoop foi Owen O’Malley\footnote{Em 2011, Rob Bearden firmou parceria com a Yahoo! para fundar a Hortonworks com 24 engenheiros da equipe original Hadoop, dentre eles os fundadores Alan Gates, Arun Murthy, Devaraj Das, Mahadev Konar, Owen O’Malley, Sanjay Radia e Suresh Srinivas.} em março de 2006. Hadoop 0.1.0 foi lançado em abril de 2006 e continua a ser evoluiu por muitos contribuintes para o projeto Apache Hadoop. Curiosidade: O nome Hadoop veio do nome do elefante de brinquedo do fundador. \\[2mm]
-Algumas das organizações razões usar Hadoop é a sua capacidade de armazenar, gerenciar e analisar grandes quantidades de dados estruturados ou não estruturados de forma rápida, confiável, flexível e de baixo custo:
-\begin{itemize}[noitemsep]
+
+A gênese do Hadoop veio do papel \textbf{Google File System}, que foi publicado em Outubro de 2003. Este trabalho deu origem a outro trabalho de pesquisa do Google – \textbf{MapReduce: simplificado Processamento de Dados em grandes aglomerados}. Desenvolvimento começou no projeto Apache Nutch, mas foi transferido para o novo subprojeto Hadoop em janeiro de 2006. A primeira committer adicionado ao projeto Hadoop foi Owen O’Malley\footnote{Em 2011, Rob Bearden firmou parceria com a Yahoo! para fundar a Hortonworks com 24 engenheiros da equipe original Hadoop, dentre eles os fundadores Alan Gates, Arun Murthy, Devaraj Das, Mahadev Konar, Owen O’Malley, Sanjay Radia e Suresh Srinivas.} em março de 2006. Hadoop 0.1.0 foi lançado em abril de 2006 e continua a ser evoluiu por muitos contribuintes para o projeto Apache Hadoop. Curiosidade: O nome Hadoop veio do nome do elefante de brinquedo do fundador.
+
+Algumas das organizações razões usar Hadoop é a sua capacidade de armazenar, gerenciar e analisar grandes quantidades de dados estruturados ou não estruturados de forma rápida, confiável, flexível e de baixo custo: \vspace{-1em}
+\begin{itemize}
 	\item \textbf{Escalabilidade e desempenho} – tratamento de dados distribuídos em um local para cada nó em um cluster Hadoop permite armazenar, gerenciar, processar e analisar dados em escala petabyte.
 	\item \textbf{Confiabilidade} – clusters de computação de grande porte são propensos a falhas de nós individuais no cluster. Hadoop é fundamentalmente resistente, quando um nó falha de processamento é redirecionado para os nós restantes no cluster e os dados são automaticamente re-replicado em preparação para falhas de nó futuras.
 	\item \textbf{Flexibilidade} – ao contrário de sistemas de gerenciamento de banco de dados relacionais tradicionais, no Hadoop não existem esquemas estruturados criados antes de armazenar dados. Pode-se armazenar dados em qualquer formato, incluindo formatos semi-estruturados ou não estruturados, e em seguida, analisar e aplicar esquema para os dados quando ler.
@@ -40,30 +42,33 @@ Algumas das organizações razões usar Hadoop é a sua capacidade de armazenar,
 \end{itemize}
 
 \section{HDFS e MapReduce}
-"Hadoop é composto de dois componentes principais: um sistema distribuído de arquivos conhecido como HDFS e um framework distribuído de processamento chamado MapReduce" (Hadoop for Dummies). Na verdade no ecosistema do Hadoop são 3 os componentes principais:
-\begin{itemize}[noitemsep]
+"Hadoop é composto de dois componentes principais: um sistema distribuído de arquivos conhecido como HDFS e um framework distribuído de processamento chamado MapReduce" (Hadoop for Dummies). Na verdade no ecosistema do Hadoop são 3 os componentes principais: \vspace{-1em}
+\begin{itemize}
 	\item \textbf{Hadoop Common (core libraries)} - São as bibliotecas básicas do sistema.
 	\item \textbf{HDFS} (Hadoop Distributed File Systems) - Sistema de Arquivos.
 	\item \textbf{Hadoop MapReduce} - Modelo de Programação.
 \end{itemize}
 
 \subsection{HDFS}
-\textit{Hadoop Distributed File System} fornece armazenamento de arquivos escalável e tolerância a falhas, possui um custo eficiente para um grande conjunto de dados. Foi projetado para abranger clusters de servidores de baixo custo. Distribui o armazenamento através de muitos servidores permitindo que o recurso de armazenamento cresça linearmente.
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.8\textwidth]{imgHadoop/hdfs.png}
-	\caption{Arquitetura do HDFS}
-\end{figure} \\
-Este sistema distribuído de arquivos do Hadoop que nasceu a partir da ideia do GFS, e possui as seguintes características:
-\begin{itemize}[noitemsep]
+\textit{Hadoop Distributed File System} fornece armazenamento de arquivos escalável e tolerância a falhas, possui um custo eficiente para um grande conjunto de dados. Foi projetado para abranger clusters de servidores de baixo custo. Distribui o armazenamento através de muitos servidores permitindo que este recurso cresça linearmente.
+
+Este sistema distribuído de arquivos do Hadoop que nasceu a partir da ideia do GFS, e possui as seguintes características: \vspace{-1em}
+\begin{itemize}
 	\item Apenas lida com arquivos não sendo um banco de dados.
 	\item Sistema Escalável (Volume, Velocidade, Variedade)
 	\item Organização de arquivos hierárquica
 	\item Leitura intensiva
 	\item Altamente otimizado
 \end{itemize}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imgHadoop/hdfs.png}
+	\caption{Arquitetura do HDFS}
+\end{figure}
+
 O sistema tem por base os seguintes princípios:
-\begin{enumerate}
+
+\begin{enumerate} \vspace{-1em}
 	\item Para uma escalabilidade eficiente não trata da coordenação e comunicação de outros componentes.
 	\item Um nó não sabe nada sobre outros nós, que dados possuem ou tarefas estão executando.
 	\item A tarefa de organização fica a cargo de um servidor master chamado de \textbf{Name Node}.
@@ -73,31 +78,29 @@ O sistema tem por base os seguintes princípios:
 
 \subsection{MapReduce}
 "MapReduce é um modelo de programação para processamento de dados." (Hadoop - The Definitive Guide). MapReduce é um framework para escrever aplicações paralelas que processam grandes quantidades de dados estruturados e não estruturados armazenados no HDFS. MapReduce tira vantagem da localidade de dados, ao processá-los perto do local onde é armazenado em cada nó no cluster, a fim de reduzir a distância do que deve ser transmitido.
-\begin{figure}[!htb]
-	\centering
-	\includegraphics[width=0.8\textwidth]{imgHadoop/mapReduce.png}
-	\caption{Arquitetura do MapReduce}
-\end{figure} \\
-É uma técnica criada para ajudar no processamento paralelo:
-\begin{itemize}[noitemsep]
+
+É uma técnica criada para ajudar no processamento paralelo: \vspace{-1em}
+\begin{itemize}
 	\item Considerado um novo paradigma da programação.
 	\item Utiliza o HDFS para entrada e saída de dados
 	\item Usa a ideia de MAPA - Chave + Valor
 \end{itemize}
-Como funciona?
+
+Como funciona? \vspace{-1em}
 \begin{enumerate}
 	\item Um processo que é disparado é uma tarefa que o hadoop deve executar chamada de "Map Reduce Job".
 	\item Transforma dados maiores em menores, agrupando-os, sintetizando-os, somando-os e transformando-os em um segundo conjunto de dados.
 	\item O job executa programas MapReduce construídos com poucas linhas de código em Java, Python, C++ entre outras.
 \end{enumerate}
 
-\section{Outros produtos do Ecosistema}
-O Hadoop conta ainda com os seguintes produtos no seu ecosistema para acrescentar funcionalidades complementares e obtermos uma camada de abstração a nível mais alto:
-\begin{figure}[!htb]
+\begin{figure}[H]
 	\centering
-	\includegraphics[width=1.0\textwidth]{imgHadoop/ecosistema.png}
-	\caption{Ecosistema completo do Hadoop}
+	\includegraphics[width=0.8\textwidth]{imgHadoop/mapReduce.png}
+	\caption{Arquitetura do MapReduce}
 \end{figure}
+
+\section{Outros produtos do Ecosistema}
+O Hadoop conta ainda com os seguintes produtos no seu ecosistema para acrescentar funcionalidades complementares e obtermos uma camada de abstração a nível mais alto: \vspace{-1em}
 \begin{description}
 	\item[Hive e Drill] Data warehouse para consultas SQL, que possui uma camada de abstração em linguagem Hive Query Language (HiveQL), é executado nos bastidores e nasceu nos laboratórios do Facebook.
 	\item[Mahout e Spark MLlib] Serviços de Machine Learning.
@@ -114,12 +117,19 @@ O Hadoop conta ainda com os seguintes produtos no seu ecosistema para acrescenta
 	\item[Sqoop] Realiza a importação e exportação para bancos estruturados.
 \end{description}
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{imgHadoop/ecosistema.png}
+	\caption{Ecosistema completo do Hadoop}
+\end{figure}
+
 \section{Hadoop no Docker}
 O modo mais simples de se conseguir trabalhar com o Hadoop é utilizando o Docker, para baixar a imagem do Hadoop: \\
 {\ttfamily\$ docker pull sequenceiq/hadoop-docker:2.7.1}
 
 E para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-{\ttfamily\$ docker run -it --name hadoop -v \$(pwd):/home/tsthadoop \\ sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash} \\[2mm]
+{\ttfamily\$ docker run -it --name hadoop -v \$(pwd):/home/tsthadoop \\ sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash}
+
 Uma vez interrompido o contêiner: \\
 {\ttfamily\$ docker stop hadoop}
 
@@ -130,23 +140,27 @@ Podemos executá-lo novamente com os seguintes comandos: \\
 \subsection{No bash do Hadoop}
 A primeira vez é necessário configurar a variável de ambiente e um caminho para a pasta de saída, para tanto, usamos os seguintes comandos: \\
 {\ttfamily bash-4.1\# cd ~ \\
- \ttfamily bash-4.1\# vi .bashrc} \\[2mm]
+ \ttfamily bash-4.1\# vi .bashrc}
+
 E inserimos [i] as seguintes linhas:
 \begin{lstlisting}
 export HADOOP_PREFIX=/usr/local/hadoop
 export PATH=$PATH:$HADOOP_PREFIX/bin
 cd /home/tsthadoop/
 \end{lstlisting}
+
 Gravar [esc] [:w] e sair [:q] do Editor VI. E podemos sair do bash com o comando: \\
 {\ttfamily bash-4.1\# exit}
 
 \subsection{Testando o ambiente}
 Primeiramente, devemos ter ciência do que o Hadoop consome verificando a memória: \\
-{\ttfamily\$ free -m} \\[2mm]
+{\ttfamily\$ free -m}
+
 Em seguida verificar seu endereço padrão: \\
-{\ttfamily\$ docker inspect hadoop | grep IP} \\[2mm]
-E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos testar os seguintes endereços:
-\begin{itemize}[noitemsep]
+{\ttfamily\$ docker inspect hadoop | grep IP}
+
+E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos testar os seguintes endereços: \vspace{-1em}
+\begin{itemize}
 	\item HDFS: \url{http://172.17.0.2:50070}
 	\item Cluster: \url{http://172.17.0.2:8088}
 	\item Nodes: \url{http://172.17.0.2:8042}
@@ -155,7 +169,7 @@ E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos
 Além desses ainda temos o endereço de acesso ao HDFS: \url{hdfs://172.17.0.2:9000}.
 
 \subsection{Arquivos de Configuração}
-Estes são os arquivos de configuração do Hadoop:
+Estes são os arquivos de configuração do Hadoop: \vspace{-1em}
 \begin{itemize}
 	\item \textbf{hadoop-env.sh} - Variáveis de configuração que são usadas para executar os scripts.
 	\item \textbf{core-site.xml} - Definições de configuração para o Hadoop Core, como configurações de E/S que são comuns ao HDFS e MapReduce.
@@ -166,7 +180,9 @@ Estes são os arquivos de configuração do Hadoop:
 	\item \textbf{hadoop-metrics.properties} - Propriedades para controlar quais métricas são publicadas no Hadoop.
 	\item \textbf{log4j.properties} - Propriedades para o registros (logfiles) do sistema, registro de auditoria do \textit{NameNode}, e os registros de tarefas para os processos do \textit{tasktracker}.
 \end{itemize}
-Nesta imagem os arquivos se encontram na pasta: /usr/local/hadoop-2.7.0/etc/hadoop
+
+Nesta imagem os arquivos se encontram na pasta: \\
+{\ttfamily /usr/local/hadoop-2.7.0/etc/hadoop}
 
 \subsection{Comandos básicos no bash}
 Se o Hadoop está rodando corretamente: \\
@@ -195,15 +211,17 @@ Remover todos arquivos do diretório de saída: \\
 
 Listagem dos arquivos \\
 {\ttfamily bash-4.1\# hdfs dfs -ls /}
+
 E podemos sair do bash com o comando: \\
 {\ttfamily bash-4.1\# exit}
 
-\subsection{Exemplo Completo}
+\section{Exemplo Completo}
 Acessamos os dados disponibilizados pelo Portal da Transparência\cite{portaltransp} sobre o Bolsa Família (acessar a opção "Benefícios ao Cidadão" - "Bolsa Família - Pagamentos") baixar qualquer mês/ano desejado e temos um arquivo CSV para trabalhar (colocamos o arquivo em uma pasta a partir do \$PWD - usado na associação do Docker - /Aplicativo/hadoop-model/bolsa).
 
-\subsubsection{Fora do Hadoop}
+\subsection{Fora do Hadoop}
 O primeiro tratamento que fazemos é convertê-lo para um formato UTF-8 com o comando: \\
-{\ttfamily\$ iconv -f ISO-8859-1 -t UTF-8 [arqOriginal].csv > 2018\_Pagamento.utf8.csv} \\[2mm]
+{\ttfamily\$ iconv -f ISO-8859-1 -t UTF-8 [arqOriginal].csv > 2018\_Pagamento.utf8.csv}
+
 Observamos que este arquivo é gigante para realizarmos um teste (demandará muito tempo de processamento), então usaremos o seguinte programa para gerar um arquivo AMOSTRA de 20.000 elementos (com base na técnica de Amostragem Sistemática). Listagem para o \textbf{amostra.py} (em linguagem Python):
 \begin{lstlisting}
 #!/usr/bin/env python
@@ -234,8 +252,10 @@ with open(saida, 'w+') as file:
 print(lin, 'gravadas')
 file.close()
 \end{lstlisting}
+
 Executamos da seguinte forma: \\
-{\ttfamily\$ cat 2018\_Pagamento.utf8.csv | ./mapper.py} \\[2mm]
+{\ttfamily\$ cat 2018\_Pagamento.utf8.csv | ./mapper.py}
+
 Utilizaremos este arquivo para o exemplo, mas se desejar pode utilizar o arquivo completo com a realização das devidas alterações no nome deste. Para processar o MapReduce precisamos criar dois arquivos. Listagem para o \textbf{mapper.py}:
 \begin{lstlisting}
 #!/usr/bin/env python
@@ -251,8 +271,10 @@ for line in sys.stdin:
 	valor = str(valor.replace(",","."))
 	print("%s\t%s" % (estado,valor))
 \end{lstlisting}
+
 Podemos testar este com a seguinte linha de código: \\
-{\ttfamily\$ cat 201808\_BF\_Amostra.csv | ./mapper.py} \\[2mm]
+{\ttfamily\$ cat 201808\_BF\_Amostra.csv | ./mapper.py}
+
 Observe que o resultado desta primeira fase fornece como saída o par "chave + valor" (estado e o valor pago) para cada linha encontrada no arquivo. E a listagem para o \textbf{reducer.py}:
 \begin{lstlisting}
 #!/usr/bin/env python
@@ -272,36 +294,48 @@ for line in sys.stdin:
 		sum = count
 print("%s\t%s" % (previous_value, sum))
 \end{lstlisting}
+
 Testamos este programa com a seguinte linha de código: \\
-{\ttfamily\$ cat 201808\_BF\_Amostra.csv | ./mapper.py | sort | ./reducer.py} \\[2mm]
+{\ttfamily\$ cat 201808\_BF\_Amostra.csv | ./mapper.py | sort | ./reducer.py}
+
 Como não estamos executando no Hadoop precisamos usar o comando "sort" para ordenar os valores, e a saída desta segunda fase será os valores pagos totais agrupados do estado.
 
-\subsubsection{No Hadoop}
+\subsection{No Hadoop}
 Iniciar o contêiner: \\
-{\ttfamily\$ docker start hadoop} \\[2mm]
+{\ttfamily\$ docker start hadoop}
+
 Executar o bash do Hadoop: \\
-{\ttfamily\$ docker exec -it hadoop /etc/bootstrap.sh -bash} \\[2mm]
+{\ttfamily\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
+
 Verificar a pasta na qual estamos: \\
-{\ttfamily bash-4.1\# pwd} \\[2mm]
-E como resposta devemos obter: \textbf{/home/tsthadoop} que é a pasta que nos liga ao sistema externo.
-Selecionar a pasta aonde se localizam os arquivos: \\
-{\ttfamily bash-4.1\# cd Aplicativos/hadoop-model/bolsa} \\[2mm]
+{\ttfamily bash-4.1\# pwd}
+
+E como resposta devemos obter: \textbf{/home/tsthadoop} que é a pasta que nos liga ao sistema externo. Selecionar a pasta aonde se localizam os arquivos: \\
+{\ttfamily bash-4.1\# cd Aplicativos/hadoop-model/bolsa}
+
 Verificar a existência dos arquivos com o comando: \\
-{\ttfamily bash-4.1\# ls} \\[2mm]
+{\ttfamily bash-4.1\# ls}
+
 Adicionar os arquivos no HDFS: \\
 {\ttfamily bash-4.1\# hadoop fs -put mapper.py \\
 bash-4.1\# hadoop fs -put reducer.py \\
-bash-4.1\# hadoop fs -put 201808\_BF\_Amostra.csv} \\[2mm]
+bash-4.1\# hadoop fs -put 201808\_BF\_Amostra.csv}
+
 Verificar os arquivos no HDFS: \\
-{\ttfamily bash-4.1\# hdfs dfs -ls} \\[2mm]
+{\ttfamily bash-4.1\# hdfs dfs -ls}
+
 Executar o MapReduce: \\
-{\ttfamily bash-4.1\# hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.0.jar -mapper "python mapper.py" \- -reducer "python reducer.py" \- -input 201808\_BF\_Amostra.csv -output OutputDir -file mapper.py -file reducer.py -file 201808\_BF\_Amostra.csv} \\[2mm]
+{\ttfamily bash-4.1\# hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.0.jar -mapper "python mapper.py" \- -reducer "python reducer.py" \- -input 201808\_BF\_Amostra.csv -output OutputDir -file mapper.py -file reducer.py -file 201808\_BF\_Amostra.csv}
+
 Verificar o diretório de saída: \\
-{\ttfamily bash-4.1\# hadoop fs -ls OutputDir} \\[2mm]
+{\ttfamily bash-4.1\# hadoop fs -ls OutputDir}
+
 Verificar a informação de saída: \\
-{\ttfamily bash-4.1\# hadoop fs -cat OutputDir/part-00000 | head} \\[2mm]
+{\ttfamily bash-4.1\# hadoop fs -cat OutputDir/part-00000 | head}
+
 Baixar o arquivo para a pasta local: \\
-{\ttfamily bash-4.1\# hadoop fs -getmerge OutputDir/ my-local-file.txt} \\[2mm]
+{\ttfamily bash-4.1\# hadoop fs -getmerge OutputDir/ my-local-file.txt}
+
 Para remover os arquivos do HDFS: \\
 {\ttfamily bash-4.1\# hdfs dfs -rm mapper1.py \\
 bash-4.1\# hdfs dfs -rm reducer1.py \\
@@ -309,12 +343,13 @@ bash-4.1\# hdfs dfs -rm 2018\_Pagamento.utf8.csv \\
 bash-4.1\# hdfs dfs -rm -r OutputDir}
 
 \section{Conclusão}
-"Big Data" é um termo que ganha cada vez mais espaço no vocabulário das empresas de TI e entre administradores de data centers. Afinal de contas, o volume de dados gerado hoje, graças à facilidade de acesso à internet a partir de quase qualquer lugar, é maior do que se podia imaginar há alguns anos atrás. \\[2mm]
-O que o Hadoop faz é organizar melhor esse volume exaustivo de dados para encontrar informações específicas sobre eles de maneira mais rápida e eficiente. Trata-se de conjuntos de clusters que trabalham com um hardware barato para executar um grande número de tarefas simultâneas sem comprometer a infraestrutura de processamento da rede. \\[2mm]
-Sou um entusiasta do mundo Open Source e novas tecnologias. Veja outros artigos que publico sobre tecnologia através do meu Blog Oficial\cite{fernandoanselmo}.
+"Big Data" é um termo que ganha cada vez mais espaço no vocabulário das empresas de TI e entre administradores de data centers. Afinal de contas, o volume de dados gerado hoje, graças à facilidade de acesso à internet a partir de quase qualquer lugar, é maior do que se podia imaginar há alguns anos atrás.
 
-\begin{thebibliography}{4}
-	
+O que o Hadoop faz é organizar melhor esse volume exaustivo de dados para encontrar informações específicas sobre eles de maneira mais rápida e eficiente. Trata-se de conjuntos de clusters que trabalham com um hardware barato para executar um grande número de tarefas simultâneas sem comprometer a infraestrutura de processamento da rede. 
+
+Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+
+\begin{thebibliography}{5}
 	\bibitem{hadoopoficial} 
 	Página Oficial do Apache Hadoop \\
 	\url{http://hadoop.apache.org/}
@@ -330,7 +365,9 @@ Sou um entusiasta do mundo Open Source e novas tecnologias. Veja outros artigos 
 	\bibitem{publicacao} 
 	Encontre essa e outras publicações em \\
 	\url{https://cetrex.academia.edu/FernandoAnselmo}
-	
-\end{thebibliography}
 
+	\bibitem{github} 
+	Repositório para os fontes da apostila \\
+	\url{https://github.com/fernandoans/publicacoes}	
+	\end{thebibliography}
 \end{document}

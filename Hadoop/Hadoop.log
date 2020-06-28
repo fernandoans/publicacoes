@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.5.9)  20 JUN 2020 16:13
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.5.9)  28 JUN 2020 15:00
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -751,6 +751,16 @@ File: md-frame-1.mdf 2013/07/01\ 1.9b: md-frame-1
 \c@mdf@zref@counter=\count320
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
+\col@sep=\dimen266
+\ar@mcellbox=\box67
+\extrarowheight=\dimen267
+\NC@list=\toks41
+\extratabsurround=\skip133
+\backup@length=\skip134
+\ar@cellbox=\box68
+)
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 )
@@ -767,30 +777,30 @@ Package: minifp 2013/12/30 v0.96. Macros for real number operations and a stack
 )
 \c@DefaultLines=\count322
 \c@DefaultDepth=\count323
-\DefaultFindent=\dimen266
-\DefaultNindent=\dimen267
-\DefaultSlope=\dimen268
-\DiscardVskip=\dimen269
-\L@lbox=\box67
-\L@tbox=\box68
+\DefaultFindent=\dimen268
+\DefaultNindent=\dimen269
+\DefaultSlope=\dimen270
+\DiscardVskip=\dimen271
+\L@lbox=\box69
+\L@tbox=\box70
 \c@L@lines=\count324
 \c@L@depth=\count325
-\L@Pindent=\dimen270
-\L@Findent=\dimen271
-\L@Nindent=\dimen272
-\L@lraise=\dimen273
-\L@first=\dimen274
-\L@next=\dimen275
-\L@slope=\dimen276
-\L@height=\dimen277
-\L@novskip=\dimen278
-\L@target@ht=\dimen279
-\L@target@dp=\dimen280
-\L@target@tht=\dimen281
-\LettrineWidth=\dimen282
-\LettrineHeight=\dimen283
-\LettrineDepth=\dimen284
-\Llist@everypar=\toks41
+\L@Pindent=\dimen272
+\L@Findent=\dimen273
+\L@Nindent=\dimen274
+\L@lraise=\dimen275
+\L@first=\dimen276
+\L@next=\dimen277
+\L@slope=\dimen278
+\L@height=\dimen279
+\L@novskip=\dimen280
+\L@target@ht=\dimen281
+\L@target@dp=\dimen282
+\L@target@tht=\dimen283
+\LettrineWidth=\dimen284
+\LettrineHeight=\dimen285
+\LettrineDepth=\dimen286
+\Llist@everypar=\toks42
 
 Loading lettrine.cfg
 (/usr/share/texlive/texmf-dist/tex/latex/lettrine/lettrine.cfg))) (./Hadoop.aux
@@ -829,16 +839,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count326
-\scratchdimen=\dimen285
-\scratchbox=\box69
+\scratchdimen=\dimen287
+\scratchbox=\box71
 \nofMPsegments=\count327
 \nofMParguments=\count328
-\everyMPshowfont=\toks42
+\everyMPshowfont=\toks43
 \MPscratchCnt=\count329
-\MPscratchDim=\dimen286
+\MPscratchDim=\dimen288
 \MPnumerator=\count330
 \makeMPintoPDFobject=\count331
-\everyMPtoPDFconversion=\toks43
+\everyMPtoPDFconversion=\toks44
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -889,7 +899,7 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box70
+\AtBeginShipoutBox=\box72
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Trying to load font information for OT1+phv on input line 1
 4.
@@ -926,81 +936,80 @@ File: imgHadoop/logo.png Graphic file (type png)
 Package pdftex.def Info: imgHadoop/logo.png  used on input line 30.
 (pdftex.def)             Requested size: 281.68517pt x 70.18782pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <10.95> on input line 33.
+(Font)              <10.95> on input line 34.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 33.
+(Font)              <8> on input line 34.
  [1
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./imgHadoop/logo.png>]
-<imgHadoop/hdfs.png, id=23, 288.1164pt x 133.2177pt>
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map} <./imgHadoop/logo.png>] [2]
+<imgHadoop/hdfs.png, id=27, 288.1164pt x 133.2177pt>
 File: imgHadoop/hdfs.png Graphic file (type png)
 <use imgHadoop/hdfs.png>
-Package pdftex.def Info: imgHadoop/hdfs.png  used on input line 54.
+Package pdftex.def Info: imgHadoop/hdfs.png  used on input line 65.
 (pdftex.def)             Requested size: 375.57784pt x 173.67082pt.
- [2]
-<imgHadoop/mapReduce.png, id=28, 308.352pt x 229.8186pt>
-File: imgHadoop/mapReduce.png Graphic file (type png)
-<use imgHadoop/mapReduce.png>
-Package pdftex.def Info: imgHadoop/mapReduce.png  used on input line 78.
-(pdftex.def)             Requested size: 375.57784pt x 279.92941pt.
 
-Overfull \hbox (19.45796pt too wide) in paragraph at lines 90--91
+Overfull \hbox (19.45796pt too wide) in paragraph at lines 92--93
 []\OT1/cmr/m/n/10.95 (-20) Transforma da-dos mai-o-res em me-no-res, agrupando-
 os, sintetizando-os, somando-os e transformando-
  []
 
-<imgHadoop/ecosistema.png, id=29, 196.5744pt x 153.9351pt>
+[3 <./imgHadoop/hdfs.png>]
+<imgHadoop/mapReduce.png, id=32, 308.352pt x 229.8186pt>
+File: imgHadoop/mapReduce.png Graphic file (type png)
+<use imgHadoop/mapReduce.png>
+Package pdftex.def Info: imgHadoop/mapReduce.png  used on input line 98.
+(pdftex.def)             Requested size: 375.57784pt x 279.92941pt.
+ [4 <./imgHadoop/mapReduce.png>]
+<imgHadoop/ecosistema.png, id=37, 196.5744pt x 153.9351pt>
 File: imgHadoop/ecosistema.png Graphic file (type png)
 <use imgHadoop/ecosistema.png>
-Package pdftex.def Info: imgHadoop/ecosistema.png  used on input line 98.
+Package pdftex.def Info: imgHadoop/ecosistema.png  used on input line 122.
 (pdftex.def)             Requested size: 469.4705pt x 367.65723pt.
-[3 <./imgHadoop/hdfs.png>]
 Package microtype Info: Loading generic protrusion settings for font family
 (microtype)             `cmtt' (encoding: TS1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
- [4 <./imgHadoop/mapReduce.png>] [5 <./imgHadoop/ecosistema.png (PNG copy)>] [6
-] [7] [8]
-Overfull \hbox (36.12659pt too wide) in paragraph at lines 280--310
+ [5 <./imgHadoop/ecosistema.png (PNG copy)>] [6] [7] [8] [9]
+Overfull \hbox (36.12659pt too wide) in paragraph at lines 327--329
 \OT1/cmtt/m/n/10.95 bash-4.1# hadoop jar /usr/local/hadoop/share/hadoop/tools/l
 ib/hadoop-streaming-2.7.0.jar
  []
 
 
-Overfull \hbox (7.03822pt too wide) in paragraph at lines 280--310
+Overfull \hbox (7.03822pt too wide) in paragraph at lines 327--329
 \OT1/cmtt/m/n/10.95 -mapper "python mapper.py"- -reducer "python reducer.py"- -
 input 201808[]BF[]Amostra.csv
  []
 
-[9] [10] (./Hadoop.aux) ) 
+[10] [11] (./Hadoop.aux) ) 
 Here is how much of TeX's memory you used:
- 21729 strings out of 483090
- 403284 string characters out of 5963930
- 929646 words of memory out of 5000000
- 36230 multiletter control sequences out of 15000+600000
- 553425 words of font info for 111 fonts, out of 8000000 for 9000
+ 21782 strings out of 483090
+ 403853 string characters out of 5963930
+ 919589 words of memory out of 5000000
+ 36284 multiletter control sequences out of 15000+600000
+ 551741 words of font info for 108 fonts, out of 8000000 for 9000
  61 hyphenation exceptions out of 8191
- 86i,11n,92p,1047b,1351s stack positions out of 5000i,500n,10000p,200000b,80000s
- </home/fernando/.texlive2019/texmf-var/fonts/pk/ljfou
-r/jknappen/ec/tctt1000.600pk> </home/fernando/.texlive2019/texmf-var/fonts/pk/l
-jfour/jknappen/ec/tctt1000.657pk> </home/fernando/.texlive2019/texmf-var/fonts/
-pk/ljfour/jknappen/ec/tcrm1000.657pk>{/usr/share/texlive/texmf-dist/fonts/enc/d
-vips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/
-cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.
-pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-d
-ist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/share/texlive/texmf-dist/
-fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texlive/texmf-dist/fonts/
-type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/
-public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/he
-lvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo
-8a.pfb>
-Output written on Hadoop.pdf (10 pages, 856933 bytes).
+ 86i,11n,92p,1047b,1349s stack positions out of 5000i,500n,10000p,200000b,80000s
+ </home/fernando/.texlive2019/texmf-var/fonts/pk/ljfo
+ur/jknappen/ec/tctt1000.600pk> </home/fernando/.texlive2019/texmf-var/fonts/pk/
+ljfour/jknappen/ec/tctt1000.657pk> </home/fernando/.texlive2019/texmf-var/fonts
+/pk/ljfour/jknappen/ec/tcrm1000.657pk>{/usr/share/texlive/texmf-dist/fonts/enc/
+dvips/base/8r.enc}</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm
+/cmbx10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10
+.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></
+usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/shar
+e/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texlive/texmf-
+dist/fonts/type1/public/amsfonts/cm/cmsltt10.pfb></usr/share/texlive/texmf-dist
+/fonts/type1/public/amsfonts/cm/cmss17.pfb></usr/share/texlive/texmf-dist/fonts
+/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/h
+elvetic/uhvb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb
+o8a.pfb>
+Output written on Hadoop.pdf (11 pages, 858218 bytes).
 PDF statistics:
- 113 PDF objects out of 1000 (max. 8388607)
- 77 compressed objects within 1 object stream
+ 116 PDF objects out of 1000 (max. 8388607)
+ 79 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 26657 words of extra memory for PDF output out of 29859 (max. 10000000)
+ 26145 words of extra memory for PDF output out of 29859 (max. 10000000)
 

@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.5.9)  20 JUN 2020 16:26
+This is pdfTeX, Version 3.14159265-2.6-1.40.20 (TeX Live 2019/Debian) (preloaded format=pdflatex 2020.5.9)  28 JUN 2020 14:56
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -751,6 +751,16 @@ File: md-frame-1.mdf 2013/07/01\ 1.9b: md-frame-1
 \c@mdf@zref@counter=\count320
 Package zref Info: New property: mdf@pagevalue on input line 895.
 )
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2019/08/31 v2.4l Tabular extension package (FMi)
+\col@sep=\dimen266
+\ar@mcellbox=\box67
+\extrarowheight=\dimen267
+\NC@list=\toks41
+\extratabsurround=\skip133
+\backup@length=\skip134
+\ar@cellbox=\box68
+)
 (/usr/share/texlive/texmf-dist/tex/latex/listings/lstlang1.sty
 File: lstlang1.sty 2019/09/10 1.8c listings language file
 )
@@ -767,30 +777,30 @@ Package: minifp 2013/12/30 v0.96. Macros for real number operations and a stack
 )
 \c@DefaultLines=\count322
 \c@DefaultDepth=\count323
-\DefaultFindent=\dimen266
-\DefaultNindent=\dimen267
-\DefaultSlope=\dimen268
-\DiscardVskip=\dimen269
-\L@lbox=\box67
-\L@tbox=\box68
+\DefaultFindent=\dimen268
+\DefaultNindent=\dimen269
+\DefaultSlope=\dimen270
+\DiscardVskip=\dimen271
+\L@lbox=\box69
+\L@tbox=\box70
 \c@L@lines=\count324
 \c@L@depth=\count325
-\L@Pindent=\dimen270
-\L@Findent=\dimen271
-\L@Nindent=\dimen272
-\L@lraise=\dimen273
-\L@first=\dimen274
-\L@next=\dimen275
-\L@slope=\dimen276
-\L@height=\dimen277
-\L@novskip=\dimen278
-\L@target@ht=\dimen279
-\L@target@dp=\dimen280
-\L@target@tht=\dimen281
-\LettrineWidth=\dimen282
-\LettrineHeight=\dimen283
-\LettrineDepth=\dimen284
-\Llist@everypar=\toks41
+\L@Pindent=\dimen272
+\L@Findent=\dimen273
+\L@Nindent=\dimen274
+\L@lraise=\dimen275
+\L@first=\dimen276
+\L@next=\dimen277
+\L@slope=\dimen278
+\L@height=\dimen279
+\L@novskip=\dimen280
+\L@target@ht=\dimen281
+\L@target@dp=\dimen282
+\L@target@tht=\dimen283
+\LettrineWidth=\dimen284
+\LettrineHeight=\dimen285
+\LettrineDepth=\dimen286
+\Llist@everypar=\toks42
 
 Loading lettrine.cfg
 (/usr/share/texlive/texmf-dist/tex/latex/lettrine/lettrine.cfg)))
@@ -829,16 +839,16 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 (/usr/share/texlive/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count326
-\scratchdimen=\dimen285
-\scratchbox=\box69
+\scratchdimen=\dimen287
+\scratchbox=\box71
 \nofMPsegments=\count327
 \nofMParguments=\count328
-\everyMPshowfont=\toks42
+\everyMPshowfont=\toks43
 \MPscratchCnt=\count329
-\MPscratchDim=\dimen286
+\MPscratchDim=\dimen288
 \MPnumerator=\count330
 \makeMPintoPDFobject=\count331
-\everyMPtoPDFconversion=\toks43
+\everyMPtoPDFconversion=\toks44
 ) (/usr/share/texlive/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty
 Package: epstopdf-base 2020-01-24 v2.11 Base part for package epstopdf
 Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 4
@@ -889,7 +899,7 @@ Package caption Info: End \AtBeginDocument code.
 * \@reversemarginfalse
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
-\AtBeginShipoutBox=\box70
+\AtBeginShipoutBox=\box72
 ABD: EveryShipout initializing macros
 LaTeX Font Info:    Trying to load font information for OT1+phv on input line 1
 4.
@@ -1025,10 +1035,10 @@ Package pdftex.def Info: imagens/projetoCompleto.png  used on input line 527.
 [15 <./imagens/pipelineFinal.png> <./imagens/projetoCompleto.png>] [16]
 (./Jenkins.aux) ) 
 Here is how much of TeX's memory you used:
- 21827 strings out of 483090
- 405111 string characters out of 5963930
- 964649 words of memory out of 5000000
- 36294 multiletter control sequences out of 15000+600000
+ 21885 strings out of 483090
+ 405771 string characters out of 5963930
+ 965592 words of memory out of 5000000
+ 36350 multiletter control sequences out of 15000+600000
  552689 words of font info for 121 fonts, out of 8000000 for 9000
  61 hyphenation exceptions out of 8191
  86i,12n,92p,1048b,1782s stack positions out of 5000i,500n,10000p,200000b,80000s
@@ -1048,7 +1058,7 @@ blic/amsfonts/cm/cmss17.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
 msfonts/cm/cmti10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfont
 s/cm/cmtt10.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvb8a.
 pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/helvetic/uhvbo8a.pfb>
-Output written on Jenkins.pdf (16 pages, 640180 bytes).
+Output written on Jenkins.pdf (16 pages, 641113 bytes).
 PDF statistics:
  157 PDF objects out of 1000 (max. 8388607)
  93 compressed objects within 1 object stream
