@@ -1,0 +1,347 @@
+Instalar:
+
+* Ubuntu: 
+$ sudo apt-get install software-properties-common 
+$ sudo apt-add-repository ppa:ansible/ansible 
+$ sudo apt-get update 
+$ sudo apt-get install ansible
+
+Comunidade: http://galaxy.ansible.com
+
+Arquivo: hosts
+
+----------------------- bof 
+[webservers]
+10.42.0.6
+
+[dbservers]
+10.42.0.7
+
+[lbservers]
+10.42.0.100
+----------------------- eof
+
+Pedir as senhas e verificar o gerenciamento dos grupos:
+$ ansible all|grupo --ask-pass -m ping
+
+Executar um comando em um grupo:
+$ ansible webservers --ask-pass -m shell -a "touch /tmp/opa"
+
+Pingar nos servidores
+$ ansible all -i hosts -u vagrant -m ping
+
+Mostra todas as informações
+$ ansible all -i hosts -u vagrant -m setup
+
+Instalar coisas
+$ ansible webservers -i hosts -u vagrant -m yum -a "name=httpd state=present" -b
+
+Remover coisas
+$ ansible webservers -i hosts -u vagrant -m yum -a "name=httpd state=absent" -b
+
+Playbook: site.yml
+----------------------- bof 
+---
+- name: install and start apache
+  hosts: webservers
+  remote_user: vagrant
+  become: yes
+
+  tasks:
+  - name: install epel repo
+    yum: name=epel-release state=present
+
+  - name: install python bindings for SELinux
+    yum: name={{item}} state=present
+    with_items:
+    - libselinux-python
+    - libsemanage-python
+
+  - name: test to see if SeLinux is run
+    command: getenforce
+    register: sestatus
+    changed_when: false 
+
+  - name: install apache
+    yum: name=httpd state=present
+
+  - name: start apache
+    service: name=httpd state=started enabled=yes
+----------------------- eof 
+
+--------------------------------------------------------------------------------------------------------------------
+INSTALAR O APACHE E O MYSQL
+--------------------------------------------------------------------------------------------------------------------
+
+$ cd /etc/ansible/playbooks
+$ sudo nano apache.yml
+
+----------------------- bof 
+---
+- hosts: webservers
+  remote_user: root
+  tasks:
+    - name: install Apache and MySQL
+      apt: name{{ item }} state=present
+      with_items:
+        - apache2
+        - mysql-server
+        - python-mysqldb
+
+    - name: Start Apache and MySQL
+      service: name={{ item }} state=started enabled=yes
+      with_items:
+        - apache2
+        - mysql
+
+    - name: Create a Database Test
+      mysql_db: name=testeDB state=present
+
+    - name: Create an User for MySQL
+      mysql_user: name=fernando password=123456 priv=*.*:ALL state=present
+----------------------- eof 
+
+Para executar:
+$ sudo ansible-playbook apache.yml --ask-pass
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------
+TRABALHANDO COM ROLES
+--------------------------------------------------------------------------------------------------------------------
+
+Criar um diretorio para conter
+$ mkdir roles
+$ cd lamp_haproxy/roles/
+$ ansible-galaxy init --help
+
+Criar dois roles
+$ ansible-galaxy init common
+$ ansible-galaxy init apache
+
+criar 2 arquivos:
+lamp_haproxy/roles/common/tasks/ntp.yml
+lamp_haproxy/roles/common/tasks/selinux.yml
+
+Em lamp_haproxy/roles/common/tasks/selinux.yml
+----------------------- bof 
+---
+- name: install python bindings for SELinux
+  yum: name={{item}} state=present
+  with_items:
+  - libselinux-python
+  - libsemanage-python
+
+- name: test to see if SeLinux is run
+  command: getenforce
+  register: sestatus
+  changed_when: false 
+----------------------- eof 
+
+Em lamp_haproxy/roles/common/tasks/ntp.yml
+----------------------- bof 
+---
+- name: install ntp
+  yum: name=ntp state=present
+
+- name: configure ntp file
+  template: src=ntp.conf.j2 dest=/etc/ntp.conf
+  notify: restart ntp
+
+- name: start ntp
+  service: name=ntpd state=started
+----------------------- eof 
+
+Em lamp_haproxy/roles/common/handlers/main.yml
+----------------------- bof 
+---
+- name: restart ntp
+  service: name=ntpd state=restarted
+----------------------- eof 
+
+Em lamp_haproxy/roles/common/templates/ntp.conf.j2
+----------------------- bof 
+driftfile /var/lib/ntp/drift
+
+restrict 127.0.0.1
+restrict -6 ::1
+
+server {{ ntpserver }}
+
+includefile /etc/ntp/crypto/pw
+
+keys /etc/ntp/keys
+----------------------- eof 
+
+Em lamp_haproxy/roles/common/tasks/main.yml
+----------------------- bof 
+- name: install epel repo
+  yum: name=epel-release state=present
+
+- include: selinux.yml
+- include: ntp.yml
+----------------------- eof 
+
+Em lamp_haproxy/roles/apache/tasks/main.yml
+----------------------- bof 
+---
+- name: install apache
+  yum: name=httpd state=present
+
+- name: create sites directories
+  file: path={{item}} state=directory
+  with_items: "{{apache_dirs}}"
+
+- name: copy an index.html
+  template: src=index.html.j2 dest={{apache_docroot}}/index.html
+
+- name: copy httpd conf
+  template: src=httpd.conf-{{ansible_os_family}}.j2 dest={{apache_config}}
+  notify: restart apache
+
+- name: start apache
+  service: name=httpd state=started enabled=yes
+----------------------- eof 
+
+Criar o arquivo:
+lamp_haproxy/roles/apache/templates/index.html.j2
+----------------------- bof 
+{{ apache_test_message }} {{ ansible_distribution }} {{ ansible_distribution_version }} <br>
+Current Host: {{ ansible_hostname }} <br>
+Server list:  <br>
+{% for host in groups.webservers %}
+{{ host }} <br>
+{% endfor %}
+----------------------- eof 
+
+Criar os arquivos (com a estrutura de httpd.conf necessária):
+lamp_haproxy/roles/apache/templates/httpd.conf-Ubuntu.j2 
+lamp_haproxy/roles/apache/templates/httpd.conf-RedHat.j2
+
+Em lamp_haproxy/roles/apache/handlers/main.yml
+----------------------- bof 
+---
+- name: restart apache
+  service: name=httpd state=restarted
+----------------------- eof 
+ 
+Ver IMAGEM folder
+
+Em lamp_haproxy/group_vars/all
+----------------------- bof 
+---
+# Variables here are applicable to all host groups
+
+httpd_port: 80
+ntpserver: 192.168.1.2
+----------------------- eof 
+
+Em lamp_haproxy/group_vars/webservers
+----------------------- bof 
+---
+iface: '{{ ansible_default_ipv4.interface }}'
+
+apache_test_message: This is a test -
+apache_max_keep_alive_resquests: 115
+apache_docroot: /var/www/html
+apache_config: /etc/httpd/conf/httpd.conf
+sites_available: /etc/httpd/conf/sites-available
+sites_enabled: /etc/httpd/conf/sites-enabled
+
+lameapp_version: 1.1
+----------------------- eof 
+
+Criar uma nova role:
+$ ansible-galaxy init web
+
+Em lamp_haproxy/roles/web/tasks/main.yml
+----------------------- bof 
+---
+- name: install git
+  yum: name=git state=present
+
+- name: checkout lameapp
+  git: repo=https://github.com/jsmartin/lameapp.git version="{{lameapp_version|string}}"
+
+- name: set permissions on the app
+  file: name=/var/www/lameapp/lame.py mode=0755
+
+- name: add apache config file
+  copy: src=lameapp.conf dest={{sites_available}}
+  notify: restart apache
+
+- name: link app config
+  file: src="{{sites_available}}/lameapp.conf" dest="{{sites_enabled}}/lameapp.conf" state=link
+
+- meta:flush_handlers
+
+- name: check for proper response
+  uri:
+    url: http://localhost/lame
+    return_content: yes
+  register: result
+  until: '"Hello Moon" in result.content'
+----------------------- eof 
+
+Em lamp_haproxy/roles/web/files/lameapp.conf
+
+----------------------- bof 
+<Directory /var/www/lameapp>
+Options +ExecCGI
+AddHandler cgi_script.py
+</Directory>
+ScriptAlias /lame "/var/www/lameapp/lame.py"
+----------------------- eof 
+
+Em lamp_haproxy/roles/web/handlers\main.yml
+----------------------- bof 
+---
+- name: restart apache
+  service: name=httpd state=restarted
+----------------------- eof 
+
+Em lamp_haproxy/roles/site.yml
+----------------------- bof 
+---
+- name: apply the common configuration to all hosts
+  hosts: all
+  remote_user: vagrant
+  become: yes
+
+  roles:
+  - common
+
+- name: apply the database configuration
+  hosts: dbservers
+  remote_user: vagrant
+  become: yes
+
+  roles:
+  - mariadb
+
+- name: apply the apache and the web roles
+  hosts: webservers
+  remote_user: vagrant
+  become: yes
+
+  roles:
+  - apache
+  - web
+
+- name: apply the lb configuration
+  hosts: lbservers
+  remote_user: vagrant
+  become: yes
+
+  roles:
+  - haproxy
+----------------------- eof 
+
+Executar:
+$ ansible-playbook -i hosts site.yml
+
+
+

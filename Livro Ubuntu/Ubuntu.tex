@@ -1,0 +1,133 @@
+%------------------------------------------------------------------------------------
+%	Pacotes e Outras Configurações
+%------------------------------------------------------------------------------------
+\documentclass[a4paper,11pt]{book} % Fonte do livro
+\input{structure} % Arquivo de Pacotes e comandos
+
+\begin{document}
+
+%------------------------------------------------------------------------------------
+%	TITLE PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{background2}};
+\draw (current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Instalei o Ubuntu e agora?\\[15pt] % Titulo
+{\Large Atualizado para a versão 20.04}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%------------------------------------------------------------------------------------
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\noindent Copyright \copyright\ 2020 Fernando Anselmo% Copyright
+
+\noindent \textsc{Publicação Independente} % Publicado por
+
+\noindent \url{http:\\fernandoanselmo.orgfree.com} % URL
+
+\noindent \\ É permitido a total distribuição, cópia e compartilhamento deste arquivo, desde que se preserve os seguintes direitos, conforme a licença da Creative Commons 3.0. \textbf{Ubuntu} é marca registrada da \textit{Canonical Inc}. E todos os seus direitos de marca são reservados. Logos, ícones e outros itens inseridos nesta obra, são de responsabilidade de seus proprietários. Não possuo a menor intenção em me apropriar da autoria de nenhum artigo de terceiros. Caso não tenha citado a fonte correta de algum texto que coloquei em qualquer seção, basta me enviar um e-mail que farei as devidas retratações, algumas partes podem ter sido cópias (ou baseadas na ideia) de artigos que li na Internet e que me ajudaram a esclarecer muitas dúvidas, considere este como um documento de pesquisa que resolvi compartilhar para ajudar os outros usuários e não é minha intenção tomar crédito de terceiros. % License information
+
+%------------------------------------------------------------------------------------
+%	SUMARIO
+%------------------------------------------------------------------------------------
+
+% Para nao usar imagem nos capitulos
+% \usechapterimagefalse 
+
+\chapterimage{header01.png} % Imagem
+\pagestyle{empty} % Sem Cabecalho
+\tableofcontents % Mostra a tabela de conteudo
+\cleardoublepage % Forca que a primeira pagina seja iniciada em um numero impar
+\pagestyle{fancy} % Volta a imprimir o Cabecalho
+\clearpage % Forca que a primeira pagina seja iniciada em um numero impar
+
+%------------------------------------------------------------------------------------
+%	PARTES
+%------------------------------------------------------------------------------------
+
+% \part{Parte Um - O Básico}
+\input{capitulo01.tex}
+\input{capitulo02.tex}
+\input{capitulo03.tex}
+% 
+% \part{Parte Dois - O Avançado}
+\input{capitulo04.tex}
+\input{capitulo05.tex}
+\input{capitulo06.tex}
+% 
+\appendix
+\chapter{Considerações Finais}
+\begin{remark}
+Nenhum computador tem consciência do que faz. 
+Mas, na maior parte do tempo, nós também não. (Marvin Minsky)
+\end{remark}
+Os artigos deste livro foram selecionados das diversas publicações que fiz em meus sites e de outras encontradas em outros sites que foram nesta obra explicitamente citadas. Segue o  endereço de alguns blogs que visito frequentemente, além dos que já citei durante todo esse livro (descritos em ordem alfabética) todos estão no meu \textbf{LifeRea} e aprendi muito com eles:
+\begin{itemize}[noitemsep]
+ \item Blog do Edivaldo: \url{http://www.edivaldobrito.com.br}
+ \item Buteco Open Source: \url{http://blog.butecopensource.com}
+ \item Diolinux: \url{http://www.diolinux.com.br}
+ \item Guia Foca: \url{http://www.guiafoca.org}
+ \item Linux Centro: \url{http://linuxcentro.com.br}
+ \item Linux Descomplicado: \url{http://www.linuxdescomplicado.com.br}
+ \item Linux Dicas e Suporte: \url{http://linuxdicasesuporte.blogspot.com.br}
+ \item Mundo Ubuntu: \url{http://www.mundoubuntu.com.br}
+ \item OMG Ubuntu: \url{http://www.omgubuntu.co.uk}
+ \item Seja Livre: \url{http://sejalivre.org}
+ \item Sempre Update: \url{http://sempreupdate.org}
+ \item Tecnologia Aberta: \url{http://tecnologiaaberta.com.br}
+ \item Truques do Linux: \url{http://truqueslinux.blogspot.com.br}
+ \item Toca do Tux: \url{http://tocadotux.blogspot.com.br}
+ \item Ubuntero: \url{http://www.ubuntero.com.br}
+ \item Ubuntued: \url{http://ubuntued.info}
+ \item Viva o Linux: \url{http://www.vivaolinux.com.br}
+\end{itemize}
+E realmente como palavras finais queria deixar a imagem da minha área de trabalho com alguns dos aplicativos que citei e agradecer de coração a pessoa que me falou que “com o Linux você sempre terá que usar uma tela preta e nunca mais verá a beleza dos aplicativos gráficos” - Aham! Acredite. \\[3mm]
+Só que este não é um fim, pois como o Ubuntu minha jornada transformou-se neste documento vivo e dinâmico. Por esse motivo resolvi lançá-lo de forma gratuita para aqueles que desejam e que fosse necessário com um único objetivo em compartilhar o conhecimento.
+\section{Sobre a filosofia Ubuntu}
+Ubuntu é uma filosofia africana, não traduzível diretamente, exprime a consciência da relação entre o indivíduo e a comunidade, cujo significado se refere à humanidade com os outros. Trata-se de um conceito amplo sobre a essência do ser humano e a forma como se comporta em sociedade. Para os africanos, ubuntu é a capacidade humana de compreender, aceitar e tratar bem o outro, uma ideia semelhante à de amor ao próximo.
+"Uma pessoa com Ubuntu está aberta e disponível para as outras, apoia as outras, não se sente ameaçada quando outras pessoas são capazes e boas, com base em uma autoconfiança que vem do conhecimento de que ele ou ela pertence a algo maior que é diminuído quando outras pessoas são humilhadas ou diminuídas, quando são torturadas ou oprimidas." — Arcebispo Desmond Tutu no livro "No Future Without Forgiveness" (em português: "Sem Perdão Não Há Futuro"). \\[3mm]
+Ubuntu significa generosidade, solidariedade, compaixão com os necessitados, e o desejo sincero de felicidade e harmonia entre os homens. O conceito exprime a crença na comunhão que conecta toda a humanidade: "sou o que sou graças ao que somos todos nós"
+\section{Sobre o Ubuntu Linux}
+Ubuntu é um sistema operacional construído a partir do núcleo Linux (Linux Kernel). É um sistema de código aberto baseado em Debian e segue as normas de software livre. A escolha do nome tem como base a filosofia africana “ubuntu” e reflete a ideologia do projeto, destacando o espírito de entreajuda entre os colaboradores. O sistema ubuntu tem desenvolvimento comunitário e o produto pode ser partilhado com qualquer pessoa. \\[3mm]
+Quem desejar pode instalar gratuitamente o sistema no computador e não terá que pagar para o utilizar. O sistema Ubuntu foi lançado no ano de 2004 pela empresa Canonical. É anunciado como um sistema simples de usar e indicado para fins pessoais ou profissionais, tanto em computadores pessoais como em servidores. É um sistema seguro e contém todos os aplicativos necessários, como navegador web, programas de edição de texto, planilha eletrônica, apresentação, entre outros.
+\section{Sobre o Autor}
+Especialista com forte experiência em Java, Banco de Dados Oracle, PostgreSQL e MS SQL Server. Escolhido como Java Champion desde Dezembro/2006 e Coordenador do DFJUG. Experiência em JBoss e diversos frameworks de mercado e na interpretação das tecnologias para sistemas e aplicativos. Programação de acordo com as especificações, normas, padrões e prazos estabelecidos. Disposição para oferecer apoio e suporte técnico a outros profissionais, autor de 15 livros e diversos artigos em revistas especializadas, palestrante em diversos seminários sobre tecnologia. Atualmente ocupa o cargo de Analista de Sistemas Sênior na BB Turismo.
+\begin{itemize}
+ \item Perfil no Linkedin: \url{http://www.linkedin.com/pub/fernando-anselmo/23/236/bb4}
+ \item Site Pessoal: \url{http://fernandoanselmo.orgfree.com} 
+\end{itemize}
+
+\clearpage
+%------------------------------------------------------------------------------------
+%	FINAL PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{CpFundo}};
+\draw (current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Instalei o Ubuntu e agora?\\[15pt] % Titulo
+{\Large ESTE LIVRO PODE E DEVE SER DISTRIBUÍDO LIVREMENTE}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	INDEX
+%------------------------------------------------------------------------------------
+% \cleardoublepage
+% \phantomsection
+% \setlength{\columnsep}{0.75cm}
+% \addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+% \printindex
+
+%------------------------------------------------------------------------------------
+\end{document}

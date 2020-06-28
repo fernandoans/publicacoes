@@ -1,0 +1,11 @@
+$ sudo add-apt-repository ppa:oibaf/graphics-drivers
+$ sudo apt-get update
+$ sudo apt-get upgrade
+$ sudo apt-get install mesa-vdpau-drivers
+$ LIBGL_ALWAYS_SOFTWARE=1 glxgears -info
+
+Remover
+$ sudo apt-get install ppa-purge
+$ sudo ppa-purge ppa:oibaf/graphics-drivers
+
+

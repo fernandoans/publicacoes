@@ -1,0 +1,439 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 6
+%------------------------------------------------------------------------------------
+\chapterimage{headerCap.png}
+\chapter{Dicas rápidas e crescentes}
+
+\begin{remark}
+Se valorizamos a nossa liberdade, podemos mantê-la e defendê-la. (Richard M. Stallman)
+\end{remark}
+
+\section{Quem somos?}\index{Dicas rápidas e crescentes}
+Essas são dicas que aprendi durante toda minha trajetória no Ubuntu e resolvi terminar este livro com elas, o problema é que cada dia aprendo um pouco mais, por isso o título um tanto estranho para este capítulo. \\[3mm]
+Quem Somos? Para descobrir essas intricadas questões existenciais e outras, basta alguns comandos no terminal, por exemplo, digite o seguinte comando no terminal para saber o nome de seu usuário: \\
+{\ttfamily\$ whoami}
+
+Descobrir a qual grupo pertence: \\
+{\ttfamily\$ groups \$(whoami) | cut -d' ' -f1}
+
+Conhecer a versão e o codinome do seu sistema: \\
+{\ttfamily\$ lsb\_release -a}
+
+Lembrar das últimas reinicializações que fez: \\
+{\ttfamily\$ last}
+
+Ou lembrar dos últimos ``n'' comandos digitados no terminal: \\
+{\ttfamily\$ history [numero]}
+
+Conhecer as partições criadas no seu HD quando na instalação do Ubuntu: \\
+{\ttfamily\$ lsblk}
+
+Trazer várias informações sobre seu hardware instalado: \\
+{\ttfamily\$ lspci}
+
+Exibir informações completas do seu Kernel: \\
+{\ttfamily\$ uname -a}
+
+Saber a versão do seu Kernel: \\
+{\ttfamily\$ uname -romi}
+
+Em relação a rede, exibir o nome da sua máquina e com a opção -i o seu endereço IP: \\
+{\ttfamily\$ hostname \&\& hostname -i}
+
+E finalmente conhecer toda a hierarquia de pastas do seu sistema, use: \\
+{\ttfamily\$ man hier}
+
+\section{Empacotador tar}\index{Dicas rápidas e crescentes}
+O compressor de arquivos tar é bem interessante e muito útil, por exemplo, digite o seguinte comando no terminal para extrair tar.gz: \\
+{\ttfamily\$ tar -xvzf arquivo.tar.gz}
+
+Ou esse outro para extrair tar.bz2: \\
+{\ttfamily\$ tar -xvjf arquivo.tar.bz2}
+
+Para extrair para uma determinada pasta: \\
+{\ttfamily\$ tar -xvzf abc.tar.gz -C /tmp/}
+
+Extrair apenas um tipo de arquivo: \\
+{\ttfamily\$ tar -xv -f abc.tar.gz –wildcards ``*.txt''}
+
+Descompactar um arquivo, formato tar.gz a melhor opção é: \\
+{\ttfamily\$ sudo tar -zxvf [arquivo].tar.gz -C /[pasta de saída]/}
+
+Exibir o conteúdo do arquivo sem extrair seu conteúdo: \\
+{\ttfamily\$ tar -tz -f abc.tar.gz}
+
+Criar um tar.gz: \\
+{\ttfamily\$ tar -cvzf abc.tar.gz /tmp}
+
+Criar um tar.gz e adicionar a data/hora ao nome (útil para backup): \\
+{\ttfamily\$ tar -cvz -f arquivo-\$(date +\%Y\%m\%d).tar.gz ./tmp}
+
+E finalmente, para adicionar mais um arquivo: \\
+{\ttfamily\$ tar -rv -zf arquivo.tar arquivo.txt}
+
+\section{Entender as diferenças do sistema}\index{Dicas rápidas e crescentes}
+No Linux existem alguns coisas que são tremendamente diferentes do sistema Windows, vamos tratar delas.
+
+\subsection{Cadê o Java}\index{Dicas rápidas e crescentes}
+Localizar o caminho do OpenJDK instalado na maquina: \\
+{\ttfamily\$ update-alternatives ---list java}
+
+Uma vez descoberto o caminho podemos colocá-lo na variável JAVA\_HOME, que é usada por muitos programas do seguinte modo, abra o arquivo \textbf{environment}:  \\
+{\ttfamily\$ sudo nano /etc/environment}
+
+Adicione a seguinte linha (por exemplo JDK 8):  \\
+{\ttfamily\$ JAVA\_HOME=/usr/lib/jvm/java-8-openjdk-amd64}
+
+Reexecutar o \textbf{environment}:  \\
+{\ttfamily\$ source /etc/environment}
+
+\subsection{Instalar várias fontes ao mesmo tempo}\index{Dicas rápidas e crescentes}
+De posse de um pacote com várias fontes (tipos de letras) para instalar no sistema, ter que clicar uma por uma para instalar pode ser muito aborrecido, então vamos fazer isso com alguns passos no terminal: 
+Acessar o diretório: \\
+{\ttfamily\$ cd /usr/share/fonts/truetype}
+
+Criar uma pasta para conter as fontes, por exemplo: \\
+{\ttfamily\$ sudo mkdir nomeFamilia}
+
+Entre nesta pasta: \\
+{\ttfamily\$ cd nomeFamilia}
+
+Copiar as fontes para esta pasta: \\
+{\ttfamily\$ cp [pastaOrigem]/* .}
+
+Na pasta anterior (/truetype) digitar o comando: \\
+{\ttfamily\$ fc-cache}
+
+Pronto, todas as suas fontes foram instaladas e estão disponíveis para qualquer aplicativo.
+
+\subsection{Desativar a conta de convidado}\index{Dicas rápidas e crescentes}
+Abra um terminal e digite o seguinte comando: \\
+{\ttfamily\$ sudo gedit /etc/lightdm/lightdm.conf}
+
+Digite as seguintes linhas no arquivo aberto:
+\begin{lstlisting}
+[SeatDefaults]  
+greeter-session=unity-greeter  
+user-session=ubuntu  
+allow-guest=false
+\end{lstlisting}
+Salvar e fechar o arquivo. Reiniciar o computador.
+
+\subsection{Renomear vários arquivos de uma só vez}\index{Dicas rápidas e crescentes}
+Para renomear vários nomes dos arquivos, tente o comando ``rename'' que possui uma sintaxe muito peculiar que é associado a ``Expressões Regulares'', por exemplo o comando: \\
+{\ttfamily\$ rename 's/valor1/valor2/' *.jpg}
+
+Modifica todos arquivos com a extensão \textbf{jpg} na pasta corrente, procedendo a troca de \textbf{valor1} pelo \textbf{valor2}. Porém para modificar a extensão dos arquivos, devemos criar um seguinte Script (chame-o de trcext.sh):
+\begin{lstlisting}
+#!/bin/sh
+for o in $(ls -1 *.jpg); do
+  mv $o $(echo $o | awk -F. '{print $1".jpeg"}');
+done
+\end{lstlisting}
+
+Dê a permissão de execução e execute-o via terminal: \\
+{\ttfamily\$ chmod +x trcext.sh \\
+\$ ./trcext}
+
+Que troca todos os arquivos na pasta corrente da extensão ``jpg'' para ``jpeg''.
+
+\section{Usar um gerenciador de arquivos}\index{Dicas rápidas e crescentes}
+\textbf{Nautilus} é o gerenciador de arquivos padrão do sistema (ou talvez prefira o Nemo) algumas coisas são bem interessantes que se pode conseguir sabendo utilizar.
+
+\subsection{Ordenando por padrão}\index{Dicas rápidas e crescentes}
+Quer ordenar por tipo de arquivo e deixar permanente? \\
+{\ttfamily\$ gsettings set org.gnome.nautilus.preferences default-sort-order 'type'}
+
+\subsection{Colocar uma pasta nos Favoritos}\index{Dicas rápidas e crescentes}
+No lado esquerdo do gerenciador de arquivo ficam as chamadas “Pastas Favoritas” (ou Bookmarks), para adicionar uma nova pasta naquela área, entre nesta pasta e no menu principal acesse: Marcadores (Bookmarks) | Marcar este Local (Add Bookmark) ou simplesmente digite \textbf{Ctrl + D}.
+
+\subsection{Redimensionar várias imagens simultaneamente}\index{Dicas rápidas e crescentes}
+No terminal instale um programa bem prático para o Nautilus chamado \textbf{nautilus-image-converter}. Porém após instalar, ao selecionar qualquer imagem e clicar com o botão direito do mouse, deveria aparecer as opções: \textbf{Redimensionar Imagens...} e \textbf{Rotacionar Imagens...}, só que essas opções não aparecem. Pensou certo é necessário reiniciar o Nautilus. Calma! Nada de fechar sua seção apenas o Nautilus, feche-o e reabra-o, se já fez isso e não funcionou então abra um terminal e digite o seguinte comando: \\
+{\ttfamily\$ nautilus -q}
+
+Agora está tudo pronto, basta abrir novamente o Nautilus que as opções aparecerão.
+
+\subsection{Trabalho de Superusuário}\index{Dicas rápidas e crescentes}
+É possível trabalhar tranquilamente em modo gráfico como superusuário para realizar algumas ações. A partir do terminal digite o seguinte comando: \\
+{\ttfamily\$ sudo nautilus}
+
+Com este comando podemos criar, mover e eliminar qualquer pasta ou arquivo do Sistema Operacional – Use-o com o máximo de CUIDADO. \\
+{\ttfamily\$ sudo gedit [nome do arquivo]}
+
+Com este comando podemos editar qualquer arquivo de qualquer pasta do Sistema Operacional – Use-o com o máximo de CUIDADO.
+E como forma de aprendizado final, recomendaria que colocasse os aplicativos (que ainda não estão) para a pasta /opt e procedesse todas as modificações necessárias nos devidos lançadores.
+
+\subsection{Ícones na área de trabalho}\index{Dicas rápidas e crescentes}
+Sente falta de ter ícones na área de trabalho, realmente muitos usuários não gostam de ter que ficar lembrando do nome de determinados aplicativos e colocar todos na barra lateral fica muito ``populado''. Através do \textbf{Nautilus} acessar a pasta /usr/share/applications. 
+
+Nesta pasta estão todos os atalhos dos aplicativos do seu sistema, a única coisa que devemos fazer e dar um \textbf{Ctrl + C} no ícone do aplicativo desejado, no lado direito acessar Área de Trabalho e pressionar \textbf{Ctrl + V}. E pronto lá está seu atalho pronto para ser usado.
+
+\subsection{Arquivos Escondidos}\index{Dicas rápidas e crescentes}
+Quem vem do Windows pode estranhar como ficam os arquivos e as pastas escondidos do Linux, são iniciados por um simples ``.'' (ponto). No \textbf{Nautilus} para vê-los  basta pressionar as teclas \textbf{Ctrl + H}. Só que existe uma outra maneira de esconder arquivos e pastas sem tê-los que iniciar com o ponto, basta criar um arquivo com o nome ``.[nome]'' (no seu diretório raiz) e dentro deste escrever o nome dos arquivos ou pastas que se deseja esconder. Feito isso atualize a pasta (pressionando \textbf{Ctrl + R}).
+
+\subsection{Particionar uma unidade}\index{Dicas rápidas e crescentes}
+O aplicativo \textbf{gParted} é excelente para este tipo de trabalho, porém em algumas ocasiões pode ser que estamos sem a janela gráfica e precisamos listar as partições de todos as unidades: \\
+{\ttfamily\$ sudo fdisk -l}
+
+E para trabalhar com determinada unidade (X é a letra da unidade correspondente): \\
+{\ttfamily\$ sudo fdisk /dev/sd[X]}
+
+\section{Usar um Pen Driver}\index{Dicas rápidas e crescentes}
+Essas dicas são relativas ao uso de um pen driver através da tela do terminal. Não se preocupe o Nautilus faz muito bem esse trabalho, mas já viu como são os usuários Linux.
+
+\subsection{Formatar o Pen Driver}\index{Dicas rápidas e crescentes}
+Inserir o pen driver e proceder os seguintes passos em uma janela de terminal. Localizar o nome do Sist. Arq. do pen driver: \\
+{\ttfamily\$ df}
+
+Desmontar essa unidade: \\
+{\ttfamily\$ umount [Sist. Arq.]}
+
+Formatar (com Fat32): \\
+{\ttfamily\$ sudo mkfs.vfat -F 32 [Sist. Arq.]}
+
+Formatar (com NTFS): \\
+{\ttfamily\$ sudo mkfs.ntfs -F [Sist. Arq.]}
+
+\subsection{Renomear um Pen Driver}\index{Dicas rápidas e crescentes}
+Só é válido para pen drives formatados nos sistemas de arquivos \textbf{FAT} ou \textbf{FAT32} o primeiro passo é instalar o \textbf{mtools}: \\
+{\ttfamily\$ sudo apt install mtools}
+
+Após isso, conectar o Pen Driver e checar em qual unidade está conectado: \\
+{\ttfamily\$ df}
+
+A resposta será algo do tipo ``/dev/sd**''. Essa dica usará como exemplo: ``/dev/sdb1''. Desmontar o Pen Driver: \\
+{\ttfamily\$ sudo umount /dev/sdb}
+
+Se quiser verificar se já possui um nome: \\
+{\ttfamily\$ sudo mlabel -i /dev/sdb -s ::}
+
+Se receber a mensagem ``Total number of sectors (7831520) not a multiple of sectors per track (63)!'', executar: \\
+{\ttfamily\$ echo mtools\_skip\_check=1 >> $\sim$/.mtoolsrc}
+
+E mudar o nome: \\
+{\ttfamily\$ sudo mlabel -i /dev/sdb ::MeuNome}
+
+\subsection{Nas portas da USB}\index{Dicas rápidas e crescentes}
+Atualizar a lista de dispositivos USB: \\
+{\ttfamily\$ sudo update-usbids}
+
+Mostrar todos os dispositivos USB: \\
+{\ttfamily\$ lsusb}
+
+\section{Usar a rede}\index{Dicas rápidas e crescentes}
+Não, para com isso \textbf{ipconfig} pois isso não vai funcionar neste sistema nem por obra de milagre, o comando similar para o Ubuntu é: \\
+{\ttfamily\$ nmcli dev show}
+
+\subsection{Configurar o DNS}\index{Dicas rápidas e crescentes}
+Servidores DNS1 são responsáveis por localizar e traduzir para números IP os endereços dos sites que digitamos nos navegadores. Configurar o arquivo com os endereços desses servidores DNS no Ubuntu é muito simples, mas como toda configuração requer cuidado. Adicionar o DNS principal (por exemplo 8.8.8.8): \\
+{\ttfamily\$ sudo nano /etc/resolvconf/resolv.conf.d/base}
+
+E adicione no arquivo a seguinte linha:
+\begin{lstlisting}
+nameserver 8.8.8.8
+\end{lstlisting}
+
+Adicionar o DNS secundário (por exemplo 8.8.4.4): \\
+{\ttfamily\$ sudo nano /etc/resolvconf/resolv.conf.d/head}
+
+E adicione no arquivo a seguinte linha:
+\begin{lstlisting}
+nameserver 8.8.4.4
+\end{lstlisting}
+
+Reiniciar a rede: \\
+{\ttfamily\$ sudo service network-manager restart}
+
+\subsection{Bloquear Sites}\index{Dicas rápidas e crescentes}
+Em computadores compartilhados podemos desejar bloquear determinados sites, por conterem conteúdos indesejados ou por qualquer outro motivo. Abra uma janela de terminal e digite o seguinte comando: \\
+{\ttfamily\$ sudo gedit /etc/hosts}
+
+Digite no fim do arquivo a seguinte linha:
+\begin{lstlisting}
+0.0.0.0 www.sitebloquear.com.br
+\end{lstlisting}
+
+\subsection{Permissões na Rede}\index{Dicas rápidas e crescentes}
+Vamos imaginar que possui duas máquinas ligadas na mesma rede e deseja copiar arquivos. Apenas como forma de esclarecer chamaremos a primeira máquina de servidor e a segunda de cliente e como usuário utilizaremos \textbf{ubuntu} que pertence ao grupo \textbf{grpbuntu}. \vspace{-1em}
+\begin{enumerate}
+ \item No servidor tornar uma pasta visível (compartilhada) na rede, para isso no \textbf{Nautilus} (não funciona no Nemo) clicar com o botão direito do mouse e selecionar a opção ``Compartilhamento de rede local''.
+ \item O cliente pode livremente acessar esta pasta e colocar arquivos nela, porém é necessário que no servidor sejam aplicadas permissões para o arquivo. Precisamos informar que todos os arquivos dessa pasta (*) pertencem ao usuário \textbf{ubuntu} do grupo \textbf{grpbuntu}, para isso em um terminal no servidor, acessar a pasta e digitar o seguinte comando: \\
+ {\ttfamily\$ sudo chown ubuntu:grpbuntu *}
+ \item O servidor também pode colocar arquivos nessa pasta para o cliente. Após colocar o arquivo na pasta, clicar com o botão direito no arquivo, acessar a opção “Propriedades” e na aba Permissões selecionar a opção “Leitura e escrita” para os três grupos.
+\end{enumerate}
+
+\subsection{Baixar um pacote para instalar em outro computador}\index{Dicas rápidas e crescentes}
+Sabemos que o comando APT instala um determinado pacote mas também é possível baixar um pacote sem instalá-lo através do parâmetro -d no final do comando. Abra uma janela de terminal e digite os seguintes comandos: \\
+{\ttfamily\$ sudo apt-get install aplicativo -d}
+
+Outros parâmetros interessantes são: \vspace{-1em}
+\begin{itemize}[noitemsep]
+ \item \textbf{-s} realizar uma instalação simulada, podemos observar tudo o que aconteceria no comando sem que efetivamente ocorra. 
+ \item \textbf{-y} confirmar (sem a necessidade de sermos interrogados) qualquer ação necessária para a execução do comando.
+ \item \textbf{-f} corrigir pacotes com problemas que podem ser resultado de instalações incorretas ou a instalação de um programa instável que possa ter causado problemas.
+\end{itemize}
+
+\section{Muito problemático}\index{Dicas rápidas e crescentes}
+Algumas coisas realmente acontecem com usuários de primeira viagem, algumas lhe deixam bem irritados, nesse momento é respirar fundo e descobrir a solução (que nesse sistema sempre tem).
+
+\subsection{Tornar o boot mais Verboso}\index{Dicas rápidas e crescentes}
+Isso pode ajudar a ver algum problema que esteja acontecendo na inicialização do sistema, mas que por questões de velocidade o Ubuntu desabilita por padrão. Editar o arquivo: \\
+{\ttfamily\$ sudo vi /etc/default/grub}
+
+Alterar a linha:
+\begin{lstlisting}
+GRUB_CMDLINE_LINUX_DEFAULT="splash quiet"
+\end{lstlisting}
+
+Para:
+\begin{lstlisting}
+GRUB_CMDLINE_LINUX_DEFAULT=""
+\end{lstlisting}
+
+Salvar e atualizar o Grub: \\
+{\ttfamily\$ sudo update grub}
+
+\subsection{Verificar os Serviços}\index{Dicas rápidas e crescentes}
+Ver Serviço: \\
+{\ttfamily\$ sudo service --status-all}
+
+Parar o Serviço: \\
+{\ttfamily\$ sudo service [nome] stop}
+
+
+\subsection{Problemas com som}\index{Dicas rápidas e crescentes}
+Pode ser que ocorra um problema muito estranho com os tocadores de música, como um “estalo”, a solução para resolvê-lo é simples, abra um terminal e digite o comando: sudo gedit /etc/modprobe.d/alsa-base.conf, no arquivo que abrir comente a seguinte linha colocando um comentário antes do início:
+\begin{lstlisting}
+# options snd-hda-intel power_save=10 power_save_controller=N
+\end{lstlisting}
+
+\subsection{Problema para acessar o celular}\index{Dicas rápidas e crescentes}
+Pode ser que seu celular não seja acessível pelo computador (ao ligarmos o cabo USB), para resolver esse problema instale o aplicativo AutoFS com o seguinte comando: \\
+{\ttfamily\$ sudo apt install autofs}
+
+Plugue novamente o cabo USB e verifique se no celular aparece a opção para habilitar a USB (Armazenamento em massa USB).
+
+\subsection{Sumiu a Impressora e agora?}\index{Dicas rápidas e crescentes}
+Não sei porque isso acontece, comigo já foi várias vezes, ao reiniciar o computador a impressora desaparece (ninguém a roubou, nem está desconectada), some da lista de impressoras. Caso isso aconteça, abra um terminal e digite o seguinte comando: \\
+{\ttfamily\$ sudo /etc/init.d/cups restart}
+
+\subsection{Recebo mensagens de erro do comando apt}\index{Dicas rápidas e crescentes}
+Pode acontecer de uma instalação ter dado problemas e o apt-get insiste em lhe dar mensagens de erro, verifique-as e corrija com: \\
+{\ttfamily\$ sudo apt-get check}
+
+\subsection{Mouse ou teclado travado quando o computador hiberna}\index{Dicas rápidas e crescentes}
+Determinadas vezes, pode acontecer com você ou não, quando a máquina entra em estado de hibernação ou mesmo após um boot, o mouse simplesmente trava e o teclado não responde a única solução é apertar a tecla Reset e dar um novo boot. Isso pode acontecer por falha na instalação do Kernel ou por vários outros motivos, a solução? Reinstalar os drivers de entrada, abra um terminal e digite o seguinte comando: //
+{\ttfamily\$ sudo apt-get install ---reinstall xserver-xorg-input-all}
+
+\subsection{Problemas com a Lixeira?}\index{Dicas rápidas e crescentes}
+A lixeira se encontra na pasta $\sim$/.local/share/Trash, pode ser que algo que tenha feito está causando problemas e não consiga mais apagar arquivos ou mandá-los para a lixeira. Solução para isso é apagar a recriar esta pasta. Abra o terminal e digite os seguintes comandos: \\
+{\ttfamily\$ cd $\sim$/.local/share \\
+\$ sudo rm -rf Trash \\
+\$ mkdir Trash \&\& chmod 700 Trash}
+
+\subsection{Problemas com Pacotes?}\index{Dicas rápidas e crescentes}
+Pacotes são muito importantes no sistema, e muitas vezes podem ficar para trás ou quebrados. Caso isso aconteça digite o seguinte comando para localizar um determinado pacote por parte do seu nome: \\
+{\ttfamily\$ dpkg -l | grep parteNomePacote}
+
+Uma vez localizado o pacote desejado use o seguinte comando para removê-lo: \\
+{\ttfamily\$ sudo dpkg --purge nomePacoteCorreto}
+
+Está com falta de algum pacote? Para verificar quais são: \\
+{\ttfamily\$ sudo dpkg ---verify} 
+
+Para instalar: \\
+{\ttfamily\$ sudo apt install ---reinstall nomePacote}
+
+Ou então: \\
+{\ttfamily\$ for package in \$(apt-get upgrade 2>\&1 | grep \\ 
+"warning: files list file for package '" $\arrowvert$ grep -Po "[$\textasciicircum$'$\textbackslash$n ]+'" $\arrowvert$ grep -Po "[$\textasciicircum$']+"); do apt-get install ---reinstall "\$package"; done}
+
+\subsection{Comando apt travado a 0\%}\index{Dicas rápidas e crescentes}
+Geralmente esses erros estão ligados o ipv6, e para contornar o erro pode-se forçar o apt a usar o ipv4: \\
+{\ttfamily\$ sudo apt -o Acquire::ForceIPv4=true update}
+
+Se o comando resolveu o problema: \\
+{\ttfamily\$ sudo nano /etc/apt/apt.conf.d/99force-ipv4}
+
+E adicionar a seguinte linha:
+\begin{lstlisting}
+Acquire::ForceIPv4 "true";
+\end{lstlisting}
+
+\subsection{Travou o DPKG}\index{Dicas rápidas e crescentes}
+Se recebeu a seguinte mensagem em seu terminal: \\
+{\ttfamily E: Não foi possível obter trava /var/lib/dpkg/lock – open \\ 
+(11: Recurso temporariamente indisponível) \\
+E: Não foi possível obter acesso exclusivo ao diretório de administração \\ 
+(/var/lib/dpkg/), outro processo está a utilizá-lo?}
+
+Esse erro é causado por interrupção de uma atualização, procuramos pelo processo responsável: \\
+{\ttfamily\$ sudo ps aux | grep apt}
+
+E eliminá-lo com:\\
+{\ttfamily\$ sudo kill -9 [numeroProcesso]}
+
+Digitar o seguinte comando: \\
+{\ttfamily\$ sudo dpkg --configure -a}
+
+Com isso o problema pode ter sido resolvido. Caso ainda receba a mensagem de erro, podemos optar como solução mais drástica, remover alguns arquivos do apt. Executar a seguinte sequencia de comandos: \\
+{\ttfamily\$ sudo rm /var/lib/apt/lists/* \\
+\$ sudo rm /var/lib/dpkg/lock \\
+\$ sudo rm /var/cache/apt/archives/lock \\
+\$ sudo dpkg ---configure -a}
+
+\subsection{Não reconheceu as chaves de segurança}\index{Dicas rápidas e crescentes}
+Tentemos a seguinte sequencia de comandos: \\
+{\ttfamily\$ sudo su \\
+\# apt-key net-update \\
+\# apt update \\
+\# exit}
+
+Caso o problema persista, podemos tentar os seguintes comandos: \\
+{\ttfamily\$ sudo su \\
+\# mv -f /etc/apt/trusted.gpgapt-key /etc/apt/trusted.gpgapt-key.old \\
+\# apt-key net-update
+\# apt update \\
+\# exit}
+
+\subsection{Vídeos H.265}\index{Dicas rápidas e crescentes}
+Encontrou um vídeo no formato H.265 ou HEVC (High Efficiency Video Coding) e ao dar o PLAY simplesmente não funcionou? É necessário adicionar as bibliotecas de suporte: \\
+{\ttfamily\$ sudo apt-add-repository ppa:strukturag/libde265 \\
+\$ sudo apt-get update \\
+\$ sudo apt-get install gstreamer0.10-libde265 gstreamer1.0-libde265 \\ vlc-plugin-libde265}
+
+\section{Limpeza}\index{Dicas rápidas e crescentes}
+Para evitarmos muitos problemas o ideal é manter o sistema o mais limpo e organizado possível.
+
+\subsection{Limpar o sistema}\index{Dicas rápidas e crescentes}
+Para deixar seu sistema limpo e sem problemas, abra um terminal e digite: \\
+{\ttfamily\$ sudo apt -f install}
+
+Isso verifica qualquer dependência perdida de uma instalação. Completado com os seguintes comandos: \\
+{\ttfamily\$ sudo apt autoclean \&\& sudo apt autoremove}
+
+E esse verifica a quantida de arquivos em cache: \\
+{\ttfamily\$ sudo du -h /var/cache/apt/}
+
+Além disso, caso exista algum pacote quebrado (não instalado corretamente) podemos forçar sua desinstalação com o comando: \\
+{\ttfamily\$ sudo apt-get --purge autoremove}
+
+\subsection{Limpar o cache do sistema}\index{Dicas rápidas e crescentes}
+Existe uma área do sistema chamada cache que é responsável por manter algumas informações de seu aplicativo armazenadas em memória, isso ocorre para que na próxima vez que abrir o aplicativo seja mais rápido – alguns leitores devem estar pensando assim: agora entendo porque quando reinicio o computador tudo parece estar mais rápido e quando pela segunda vez um aplicativo parece também mais rápido, porém pode ocorrer que necessitamos executar alguma ação muito pesada então é ideal realizar uma limpeza nessas áreas. \\
+{\ttfamily\$ sudo sync \\
+\$ sudo su}
+
+Este comando faz com que todo o cache do sistema de aquivos que está temporariamente armazenado na memória cache, seja despejado em disco e liberado, prevenindo assim que se tenha perda de dados. Já o segundo entramos na conta do superusuário (muito cuidado a partir de agora). Para limparmos o disco alteraramos o drop\_caches. Para liberar apenas pagecache: \\
+{\ttfamily\# echo 1 > /proc/sys/vm/drop\_caches}
+
+Para liberar pagecache e inodes: \\
+{\ttfamily\# echo 2 > /proc/sys/vm/drop\_caches}
+
+Para liberar pagecache, inodes e dentries: \\
+{\ttfamily\# echo 3 > /proc/sys/vm/drop\_caches}
+
+E finalmente saímos do superusuário: \\
+{\ttfamily\# exit}
+
+% Final do Capítulo
+\clearpage

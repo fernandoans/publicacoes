@@ -1,0 +1,158 @@
+Habilite "Minimizar ao clicar" para a Dock do Ubuntu
+
+A dock do Ubuntu (a barra de tarefas que fica no lado esquerdo da tela) torna fácil abrir, gerenciar e alternar entre seus aplicativos favoritos e aqueles que você está executando. Mas se você gosta de clicar no ícone do aplicativo para alternar entre minimizar e restaurar, terá que habilitar este recurso manualmente executando este comando no seu Terminal:  gsettings set org.gnome.shell.extensions.dash-to-dock click-action 'minimize' .
+
+---------------------------------------------
+
+Normalmente, quando você desliga o computador executa algum dos comandos abaixo:
+
+Shutdown
+
+Este comando é uma agenda um tempo para o sistema ser desligado. Ele pode ser utilizado para travar, desligar ou reiniciar a máquina. Pode-se especificar uma sequência de tempo (que normalmente é “now” ou “hh:mm” por hora/minutos) como primeiro argumento. Além disso, você pode definir uma mensagem de tela a ser enviada para todos os usuários conectados antes que o sistema desligue.
+
+IMPORTANTE! Se o argumento de tempo é usado, 5 minutos antes que o sistema desative, o arquivo /run/nologin é criado para garantir que o sistema não aceite mais logons.
+Exemplos de comandos:
+
+# shutdown
+# shutdown now
+# shutdown 13:20
+# shutdown -p now      # faz um poweroff
+# shutdown -H now      # executa o halt
+# shutdown -r09:35     # reinicia a máquina no horário especificado, no caso, 09:35am
+
+Para cancelar um desligamento agendado, simplesmente digite:
+
+shutdown -c
+
+Halt: instrui o hardware a parar todas as funções de CPU, mais sem desligar. Você pode usá-lo para deixar o sistema em um estado onde você pode executar manutenção de baixo nível.
+
+Note que em alguns casos, ele desliga completamente o sistema. Vamos ver alguns exemplos de comandos:
+
+# halt          # para a máquina
+# halt -p       # executa um poweroff
+# halt --reboot # reinicia a máquina 
+
+Power off: envia um sinal ACPI com instruções para desligar o sistema. Vejamos alguns exemplos:
+
+# poweroff   	       #poweroff
+# poweroff --halt      #executa um halt
+# poweroff --reboot    #reinicia a máquina
+
+Reboot: envia instruções para reiniciar o sistema.
+
+# reboot            #reinicia a máquina
+# reboot --halt     #executa um halt
+# reboot -p   	    #executa um poweroff
+
+---------------------------------------------
+
+Criando arquivo "Inválida Codificação" (invalid encoding)
+
+$ sudo apt-get install unifont
+$ convmv -r --notest -f windows-1252 -t UTF-8 *
+
+---------------------------------------------
+
+Se der problema no smPlayer (só ele não executa o filme)
+
+Vá em Preferências e altere as configurações de vídeo
+
+---------------------------------------------
+
+Se der problema no CUPS (Gerenciador de Impressoras)
+
+sudo apt-get --reinstall install cups
+
+---------------------------------------------
+
+Desinstalar programas no Wine
+
+$ wine uninstaller
+
+---------------------------------------------
+
+Tela Preta no Chrome
+
+No terminal digite:
+
+$ google-chrome -disable-gpu
+
+---------------------------------------------
+
+Atualizar OpenGL: 
+
+1.) Add the PPA Repository
+  $ sudo add-apt-repository ppa:oibaf/graphics-drivers
+2.) Update sources
+  $ sudo apt-get update
+3.) Dist-upgrade (rebuilds many packages)
+  $ sudo apt-get dist-upgrade
+4.) Then I rebooted.
+
+sudo add-apt-repository ppa:oibaf/graphics-drivers
+sudo apt-get update
+sudo apt-get upgrade
+
+glxinfo | grep "OpenGL version"
+
+I wanted to use WebGL in my Acer Aspire One D255E netbook that uses an Intel GMA 3150 onboard graphics card, but it did not work in Chromium nor Firefox. WebGL requires OpenGL 2.0 support, but I found out I only had support for OpenGL 1.4:
+
+glxinfo | grep -i "OpenGL version"
+OpenGL version string: 1.4 Mesa 7.7.1
+
+But I found out it was possible to enable OpenGL 2.0 for GMA 3150 in Linux by installing and running driconf:
+
+sudo apt-get install driconf
+driconf
+
+and clicking on “Enable limited ARB_fragment_shader support on 915/945.” and “Enable stub ARB_occlusion_query support on 915/945.” options. They are not enabled by default because they do cause problems.
+
+After those two options were enabled, OpenGL 2.0 was enabled.
+
+glxinfo | grep -i "OpenGL version"
+OpenGL version string: 2.0 Mesa 7.7.1
+
+---------------------------------------------
+
+CONTROLE MAIS AVANÇADO DE SOM
+
+Para obter um controle mais avançado do som instale o aplicativo: pavucontrol
+
+---------------------------------------------
+
+Mensagem do Cliente not running do VirtualBox
+
+$ sudo rm /etc/X11/Xsession.d/98vboxadd-xclient
+
+---------------------------------------------
+
+Problemas para iniciar
+
+Se você não pode reiniciar o seu computador com Ubuntu / Linux Mint e a tela fica preta, sem resposta após clicar no botão reiniciar, você pode seguir este tutorial que pode resolver seus problemas de reboot. Este problema é comum para os proprietários de laptops ou netbooks devido a problemas no hardware / BIOS. 
+
+Primeiros passos
+
+Abrir o terminal e editar o arquivo GRUB:
+
+$ sudo gedit /etc/default/grub
+
+Localizar esta linha:
+
+GRUB_CMDLINE_LINUX=""
+
+Substituir por:
+
+GRUB_CMDLINE_LINUX="reboot=efi"
+
+Salvar e fechar o arquivo, em seguida, atualizar o Grub com o comando:
+
+$ sudo update-grub
+
+Reiniciar o sistema. Se ainda não funcionar, repetir os mesmos passos e tentar uma dessas combinações:
+
+GRUB_CMDLINE_LINUX="reboot=bios"
+GRUB_CMDLINE_LINUX="reboot=acpi"
+GRUB_CMDLINE_LINUX="reboot=pci"
+
+---------------------------------------------
+

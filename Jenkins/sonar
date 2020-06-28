@@ -1,0 +1,21 @@
+TOKEN: de09b27f59d53f6ac84be2aea9486ec7b8b725a9
+
+
+
+        stage('Sonar') {
+            steps {
+                withSonarQubeEnv('sonar') {
+                    script {
+                        def mvnHome = tool name: 'Maven3', type: 'maven'
+                        sh "'${mvnHome}/bin/mvn' package sonar:sonar -Dsonar.host.url=http://localhost:9000 -Dsonar.login=de09b27f59d53f6ac84be2aea9486ec7b8b725a9 -Dsonar.projectName=tstJenkins -Dsonar.projectKey=tstJenkins -Dsonar.projectVersion=master"
+                    }
+                }
+            }
+        }
+
+
+
+                        sh "'${mvnHome}/bin/mvn' -f pom.xml clean package sonar:sonar"
+
+
+
