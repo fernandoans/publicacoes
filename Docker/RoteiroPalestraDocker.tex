@@ -1,88 +1,19 @@
 \documentclass[a4paper,11pt]{article}
 
-%--------------------------------------------------------------------------
-% Pacotes Necessários
-%--------------------------------------------------------------------------
-\usepackage[brazil]{babel} % padronizar a linguagem
-\usepackage[utf8]{inputenc} % permitir a acentuação
-\usepackage[protrusion=true,expansion=true]{microtype} % obter melhor tipografia
-\usepackage[svgnames]{xcolor} % habitar cores para 'svgnames'
-\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % customizar captions acima/abaixo de tabelas ou figuras
-\usepackage{color}    % definir cores
-\usepackage{graphicx} % adicionar imagens
-\usepackage{fix-cm}   % customizar o tamanho das fontes
-\usepackage{sectsty}  % habilitar a customização dos títulos das seções
-\usepackage{fancyhdr} % definir cabeçalhos e rodapés
-\usepackage{listings} % listagens
-\usepackage[ddmmyyyy]{datetime} % mostrar a data
-\usepackage{titling} % Permite a configuração do título
-\usepackage{url} % codigo para as URLs
-\usepackage{enumitem} % Configurar as Listas
-\usepackage[a4paper, inner=1.5cm, outer=3cm, top=2cm, bottom=3cm, 
-bindingoffset=1cm]{geometry}
-%--------------------------------------------------------------------------
-% Definições Iniciais
-%--------------------------------------------------------------------------
+% Identificação
+\newcommand{\pbtitulo}{Docker}
+\newcommand{\pbversao}{1.0}
 
-% modificar toda a fonte de todas as seções
-\allsectionsfont{\usefont{OT1}{phv}{b}{n}}
-% habilitar a customização de cabeçalhos e rodapés
-\pagestyle{fancy} 
+\usepackage{../sty/tutorial}
 
-\addto\captionsenglish{ % modificar os nomes do ingles
-	\renewcommand{\abstractname}{Resumo}
-	\renewcommand{\bibname}{Consulte também...}
-	\renewcommand{\contentsname}{Sumário}
-	\renewcommand{\listfigurename}{Figuras}
-	\renewcommand{\lstlistingname}{Listagem}
-	\renewcommand{\lstlistlistingname}{Listagens}
-	\renewcommand{\refname}{Referências}
-}
-
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-% Definição para as caixas de listagens
-\lstset {
-	aboveskip=3mm,
-	backgroundcolor=\color{backcolour},
-	basicstyle={\small\ttfamily},
-	belowskip=3mm,
-	breaklines=true,
-	breakatwhitespace=true,
-	columns=flexible,
-	commentstyle=\textit,
-	frame=tb,
-	keepspaces=true,
-	keywordstyle=\color{blue}\bfseries,
-	% language=Java, Python, HTML, CSS
-	numbers=left,
-	numbersep=5pt,
-	numberstyle=\tiny\color{codegray},
-	showstringspaces=false,
-	showtabs=false,
-	tabsize=3
-}
-
-% Cabeçalhos - limpar tudo
-\lhead{}
-\chead{}
-\rhead{}
-
-% Rodapés
-\lfoot{\tiny Docker}
-\cfoot{\tiny Versão 2.0}
-\rfoot{\tiny Folha \thepage\ }
-
-\title{Roteiro Palestra Docker}
-\author{
-  Fernando Anselmo \\
-  \texttt{fernando.anselmo74@gmail.com} \\
-}
-
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
 \begin{document}
-\maketitle
-
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+	
 \section*{Comandos Iniciais}
 {\ttfamily\$ docker version} \\
 {\ttfamily\$ docker images} \\
