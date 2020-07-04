@@ -1,0 +1,65 @@
+Greenfoot
+
+$ sudo apt-get install libcanberra-gtk-module
+
+E Data Science com o R e pacotes básicos (instale apenas se não for colocar o Anaconda): \\
+{\ttfamily\$ sudo apt install r-base \\
+\$ sudo apt install r-cran-curl r-cran-openssl r-cran-xml2 \\
+\$ sudo apt install libproj-dev libgdal-dev build-essential \\
+\$ sudo apt install libcurl4-gnutls-dev libxml2-dev libssl-dev}
+
+\textbf{pip} e \textbf{pip3} para o Python: \\
+{\ttfamily\$ curl -sS https://bootstrap.pypa.io/get-pip.py >>setup.py \\
+\$ python3 setup.py}
+
+No RStudio adicionar o pacote básico:
+{\ttfamily install.packages('devtools', dependencies=TRUE)}
+
+\subsection{Anaconda}
+Anaconda é uma opção para ter todos os softwares integrados para Data Science. São alguns passos essenciais a serem realizados. O primeiro deles é baixar o Script do site oficial e executá-lo. Verificar a localização do Anaconda no \textbf{.bashrc}: \\
+{\ttfamily export PATH='/home/fernando/anaconda3/bin:\$PATH'}
+
+Reexecutar o \textbf{.bashrc}: \\
+{\ttfamily\$ source ~/.bashrc}
+
+Os passos seguintes envolvem a integração com a diversas ferramentas. Integração com o LaTex: \\
+{\ttfamily\$ sudo apt install texlive-xetex}
+
+Integração com o \textbf{Octave}: \\
+{\ttfamily\$ conda config ---add channels conda-forge \\
+\$ conda install octave\_kernel}
+
+Integração com o \textbf{R}: \\
+{\ttfamily\$ conda install -c r r-essentials}
+
+Verificar a instalação: \\
+{\ttfamily\$ conda list}
+
+Executar o \textbf{Navigator}: \\
+{\ttfamily\$ anaconda-navigator}
+
+Criar o arquivo /usr/share/applications/anaconda.desktop:
+\begin{lstlisting}
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Anaconda-Navigator
+GenericName=Anaconda
+Comment=Scientific PYthon Development EnviRonment - Python3
+Exec=bash -c '/home/fernando/anaconda3/bin/anaconda-navigator'
+Categories=Development;Science;IDE;Qt;Education;
+Icon=/home/fernando/anaconda3/anaconda.png
+Terminal=false
+StartupNotify=true
+MimeType=text/x-python;
+\end{lstlisting}
+
+Enviar para a 'Anaconda Cloud': \\
+{\ttfamily\$ anaconda upload [Nome Arquivo]}
+
+Pasta padrão para o Jupyter: \\
+{\ttfamily\$ jupyter notebook --generate-config}
+
+Editar o arquivo gerado, procurar a linha: \textbf{\#c.NotebookApp.notebook\_dir=''} e nesta adicionar a pasta padrão.
+
+

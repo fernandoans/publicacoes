@@ -19,16 +19,15 @@
 %-----------------------------------------------------------------------------
 
 \begin{abstract}
-\initial{S}\textbf{ails.js\cite{sailsoficial} é um framework Web que facilita 
-a criação de aplicativos Node.js customizados a nível empresarial. Projetado implementar a arquitetura MVC com suporte a um estilo mais moderno, orientado a dados e desenvolvimento serviços de API. Além disso, com Sails é necessário dominar somente uma linguagem de programação, porém todo o conhecimento de outras linguagens podem ser aproveitados para criar outras camadas de visões para acessar os serviços fornecidos pelo Sails.}
+\initial{S}\textbf{ails.js \cite{sailsoficial} é um framework Web que facilita 
+a criação de aplicativos Node.js \cite{node} customizados a nível empresarial. Nesta apostila vamos do ZERO criar o início para um \textbf{Dashboard} no qual podemos controlar nossa conta bancária. Com o Sails.js é necessário conhecimento da Linguagem JavaScript a nível de outros frameworks conhecidos no mercado como o \textbf{Angular.js} ou o \textbf{Vue.js}, e todo o conhecimento pode ser aproveitado para criar as camadas de um MVC completo, além da possibilidade de usar diversos geradores automáticos e acesso aos bancos mais conhecidos do mercado.}
 \end{abstract}
-\vspace{20pt}
 
 %-----------------------------------------------------------------------------
 % CONTEÚDO DO ARTIGO
 %-----------------------------------------------------------------------------
 \section{Parte inicial}
-Sails.js (doravante chamaremos apenas de \textbf{Sails}) é um framework abrangente que segue o padrão MVC para Node.js projetado especificamente para permitir um rápido desenvolvimento de aplicativos do lado do servidor e a disponibilização de serviços em JavaScript. Possui uma forte arquitetura Orientada a Serviços que fornece diferentes tipos de componentes no qual é possível utilizar para organizar o código e separar as responsabilidades. 
+Sails.js (doravante chamaremos apenas de \textbf{Sails}) é um framework abrangente que segue o padrão MVC para \textbf{Node.js} projetado especificamente para permitir um rápido desenvolvimento de aplicativos do lado do servidor e a disponibilização de serviços em JavaScript. Possui uma forte arquitetura Orientada a Serviços que fornece diferentes tipos de componentes no qual utilizamos para organizar o código e separar as responsabilidades. 
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.4\textwidth]{imagens/sails.png}
@@ -38,666 +37,522 @@ Sails.js (doravante chamaremos apenas de \textbf{Sails}) é um framework abrange
 Vejamos algumas características do produto: \vspace{-1em}
 \begin{itemize}
   \item É 100\% JavaScript.
-  \item É possível usar qualquer sistema de banco de dados: possui um ORM nativo, Waterline, 
-  que fornece uma camada de acesso a dados simples que funciona, não importa o banco de dados 
-  que se está usando.
-  \item Auto-gerador de APIs REST: vem com blueprint (projetos que apresenta a melhor forma de realizar algo) que ajudam a iniciar o backend da 
-  sua aplicação sem escrever qualquer código.
+  \item É possível usar qualquer sistema de banco de dados: possui um ORM nativo, \textbf{Waterline} \cite{waterline}, que fornece uma camada de acesso a dados simples que funciona, não importa o banco de dados que se está usando.
+  \item Auto-gerador de APIs REST: vem com blueprint (projetos que apresenta a melhor forma de realizar algo) que ajudam a iniciar o \textit{backend} da sua aplicação sem escrever qualquer código.
   \item Suporte fácil ao WebSocket: traduz mensagens de socket recebidas.
   \item Políticas de segurança reutilizáveis: fornece uma segurança básica e controle de acesso baseado em funções por padrão que podem ser incrementadas com o uso de JWT.
-  \item Compatível com qualquer estratégia de frontend; Seja esta Angular.js, Backbone, iOS / Object C, Android / Java, Windows Phone.
-  \item Pipeline de ativos flexíveis: com o Grunt - significa que todo o fluxo de trabalho de recursos do frontend é completamente personalizável.
+  \item Pipeline de ativos flexíveis: com o \textbf{Grunt} e o \textbf{Vue.js} - significa que todo o fluxo de trabalho e recursos do \textit{frontend} tornam-se completamente personalizáveis.
 \end{itemize}
 
-Sails fornece um benefício adicional de ser capaz de compartilhar seu código entre o servidor e o cliente. Isso pode ser muito útil, por exemplo, para implementar uma validação de dados onde é necessária as mesmas regras no cliente e no servidor.
+Sails fornece um benefício adicional de ser capaz de compartilhar entre o servidor e cliente. Isso pode ser muito útil, por exemplo, para implementar regras de validação de dados.
 
 \subsection{O que é o padrão MVC?}
 O Padrão de Projeto (\textit{Design Pattern}) MVC define a separação de um sistema em três camadas, conforme a seguinte figura:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{imagens/mvc.png}
-	\caption{Modelo MVC}
+	\caption{Padrão de Projeto: MVC}
 \end{figure}
 
 \begin{itemize} \vspace{-1em}
-  \item \textbf{Camada de Modelo} (Model) é a responsável pela interação com o banco de dados. 
-  \item \textbf{Camada de Visão} (View) é a responsável por mostrar os dados na tela.
-  \item \textbf{Camada de Controle} (Controller) é quem gerencia toda a comunicação entre uma Modelo e uma Visão. Não é permitido uma Visão acessar diretamente uma Modelo ou vice-versa.
+  \item \textbf{Camada de Modelo} (Model) responsável pela interação com o banco de dados. 
+  \item \textbf{Camada de Visão} (View) responsável por mostrar os dados na tela.
+  \item \textbf{Camada de Controle} (Controller) responsável por gerenciar toda a comunicação entre Modelo e Visão. Não é permitido o relacionamento inter-camadas.
 \end{itemize}
 
-Simplificadamente pense em uma empresa na qual existe um cliente que deseja falar com um determinado funcionário, porém para acessar sua sala deve passar por uma Secretária. Esse funcionário deseja obter uma determinada informação de um arquivo, para isso deve solicitá-la a Secretária. Ou seja, a Secretária é a controladora de tudo o que será permitido visualizar ou obter de informação da empresa.
+Simplificadamente pense em uma empresa na qual existe um cliente que deseja falar com um determinado funcionário, porém para acessar sua sala deve passar por uma Secretária. Esse funcionário deseja obter uma determinada informação de um arquivo, para isso deve solicitá-la a Secretária. Ou seja, ela é a controladora de tudo o que será permitido visualizar ou obter de informação da empresa.
 
-\subsection{O que são Serviços}
-A tecnologia de Serviços Web fornece uma série consideráveis benefícios para o desenvolvimento de aplicativos, uma vez que propicia a agilidade requerida pelas empresas frente às mudanças que podem ocorrer no ambiente de negócios. A grande vantagem no uso dos serviços Web provém da capacidade de permitir uma rápida e independente construção de várias 'Visões' de sistemas nas mais diversas plataformas existentes. 
+\subsection{Serviços Web}
+Fornecem uma série de consideráveis benefícios para o desenvolvimento de aplicativos, permitindo uma agilidade requerida pelas empresas frente às mudanças que podem ocorrer no ambiente de negócios. A maior vantagem é que provém a capacidade de permitir uma rápida construção de várias \textbf{Visões} nas mais diversas plataformas existentes. 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagens/servicos.png}
-	\caption{Serviços que podem estar na nuvem ou não}
+	\includegraphics[width=0.6\textwidth]{imagens/servicos.png}
+	\caption{Serviços podem estar na nuvem ou não}
 \end{figure}
 
-Por exemplo, uma vez construída a camada de serviços, podemos utilizar o PhoneGap/Cordova para construir uma camada que será acessível pela plataforma Mobile, uma outra em Java/Swing para acessar via Desktop, uma terceira em Amber.js com um sistema Web, e todas utilizando a mesma camada de Serviço.
+Por exemplo, uma vez construída a camada de serviços, podemos utilizar o \textbf{Flutter} para construir uma camada que será acessível para plataforma Mobile, uma outra em \textbf{Java/Swing} via \textit{desktop} e uma terceira com \textbf{Angular.js} acessível pelo navegador, porém todas usam a mesma camada de Serviço.
 
-Um Serviço Web é atualmente utilizado para integração entre aplicações. O Web Service REST é uma das formas de se criar um Serviço Web, que é utilizada com o protocolo HTTP. O conjunto de operações, suportadas pelo serviço, podem ser de quatro tipos: \vspace{-1em}
+Assim vemos como Serviços Web são utilizados para integração entre aplicações. REST (acrônimo de \textit{Representational State Transfer}) é uma das formas para criar um Serviço Web, que  utilizada com o protocolo HTTP. O conjunto de operações, suportadas pelo serviço, podem ser de quatro tipos: \vspace{-1em}
 \begin{itemize}
-  \item \textbf{GET}. Listar todos os membros dos recursos de coleção ou recuperar uma 
-  determinada representação de um recurso identificado como 1234.
-  \item \textbf{POST}. Criar um novo recurso na coleção em que o ID dele seja automaticamente designado ou obter todos os recursos de uma coleção com base em um filtro.
-  \item \textbf{PUT}. Atualizar (substituir) determinados campos de um recurso identificado como 1234.
-  \item \textbf{DELETE}. Eliminar uma coleção ou um determinado recurso identificado como 1234.
+  \item \textbf{GET}. Listar todos os registros de uma coleção ou recuperar um único identificado como 1234.
+  \item \textbf{POST}. Adicionar um novo registro na coleção ou obter todos registros com base em um filtro.
+  \item \textbf{PUT}. Atualizar (substituir) determinados campos de um registro identificado como 1234.
+  \item \textbf{DELETE}. Eliminar uma coleção ou um determinado registro identificado como 1234.
 \end{itemize}
 
-Serviços Web se consolidaram como uma base para disponibilização de negócios eletrônicos, dentre as quais se destacam organizações que atuam em diversos mercados, tais como Google, Amazon, GM, Fedex, Governo Federal. Isso permite a construção de uma rede intra/interorganizacional de aplicações colaborativas e distribuídas, onde os Serviços Web, na forma de módulos auto-contidos, são descritos, publicados, localizados e dinamicamente invocados através de camadas de diversas visões.
+REST tem se consolidado como uma base para disponibilização de negócios eletrônicos e a construção de uma rede intra/inter organizacional de aplicações colaborativas e distribuídas, onde os Serviços Web, na forma de módulos auto-contidos, são descritos, publicados, localizados e dinamicamente invocados através de camadas com diversas visões.
 
 \section{Instalação do Sails.js}
-Para proceder a instalação do Sails é necessário primeiro instalar o Node.js
-que pode ser obtido em \url{https://nodejs.org/en/} e o NPM  em \url{https://www.npmjs.com/} 
-
-Para instalar o Sails (lembrando que 'sudo' só necessário se estivermos em
-ambiente Linux), em uma janela de comandos, digitar o seguinte: \\
+Com os conceitos do Padrão MVC e REST podemos partir para o Sails. Uma vez que temos instalado o \textbf{Node.js} e o gerenciador de pacotes \textbf{NPM} \cite{npm}, abrimos uma janela de comandos para instalar o Sails (lembrando que 'sudo' só é usado se estiver em ambiente Linux): \\
 {\ttfamily\$ sudo npm install -g sails}
 
-Pronto, simples assim.
+Como editor para os códigos, recomendo o \textbf{Visual Studio Code} que permite uma boa integração, desde que seja adicionado alguns plugins:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagens/VisualStudioCode.png}
+	\caption{Plugins do Sails no Visual Studio Code}
+\end{figure}
 
-\subsection{Testar a instalação com um Projeto}
-Para criar um projeto: \\
-{\ttfamily\$ sails new testProject --linker}
+Os plugins "\textit{Sails.js Snippets}" e "\textit{Sailboat}" facilitam nosso trabalho. A grande vantagem desse editor é que além de ser leve, permite a abertura de um terminal. Ou seja, executamos todo o trabalho de editoração do código e criação de artefatos sem a necessidade de saltar de janelas.
 
-A opção '--linker' faz com que quaisquer recursos sob a pasta /assets sejam copiados para a pasta .tmp/public pelo Grunt quando Sails for levantado. Uma das grandes vantagens do Sails é que também podemos criar o projeto apenas como um provedor de Serviços, isto é, sem a Camada de Visão, para isso utilizamos a seguinte opção: \\
-{\ttfamily\$ sails new myApi --no-frontend}
+\subsection{Criar o Projeto}
+Para criar um projeto, abrir um terminal e colocar o seguinte comando: \\
+{\ttfamily\$ sails new tstSails --linker --fast}
 
-O próximo passo é acessar a pasta: \\
-{\ttfamily\$ cd testProject}
+Quando perguntado escolher opção \textbf{1. Web App}. A opção 'linker' faz com que quaisquer recursos sob a pasta /assets sejam copiados para a pasta .tmp/public pelo Grunt quando Sails for levantado. A opção 'fast' verifica se as dependências já existem, se sim não as instala novamente. 
 
-Disponibilizar o bower para o projeto, de modo a instalarmos novos componentes (responda todas as perguntas de forma adequada): \\
-{\ttfamily\$ bower init}
+Nosso próximo passo é acessar a pasta: \\
+{\ttfamily\$ cd tstSails}
+
+Instalar as dependências do Node.js: \\
+{\ttfamily\$ npm install}
 
 Iniciar o sails: \\
 {\ttfamily\$ sails lift}
 
-Se tudo estiver funcionando corretamente é possível acessar o site de boas vindas no endereço: \\
-\url{http://localhost:1337/}
+Se tudo estiver correto é possível ver o site de boas vindas no endereço:
+\url{http://localhost:1337}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagens/paginaInicial.png}
+	\caption{Página inicial do projeto}
+\end{figure}
 
-Para interromper o servidor, realizar a seguinte sequencia {\ttfamily Ctrl+C} na janela de comandos.
+Para interromper o servidor, pressionar a sequencia {\ttfamily Ctrl+C} no terminal.
 
-\subsection{Geração dos Artefatos}
-A maior vantagem em se utilizar o Sails é que este permite gerar as camadas MVC automaticamente, sem precisarmos perder tempo com configurações desnecessárias. A pasta /api contém todos os arquivos backend. A pasta /api/policies estão armazenadas regras para o acesso do usuário da aplicação. A pasta /api/responses contém arquivos como os erros do Servidor Web (404, 403, 500, entre outros). Adicionamos nessa pasta as funções que lidam com tarefas específicas, como decidir como gerenciar usuários com diferentes níveis de acesso. Poderia ser feito na Camada de Controle, mas não é uma boa prática controladores com um monte de lógica de negócios.
+Como opção, podemos criar o projeto apenas como um provedor de Serviços Web, isto é, sem a Camada de Visão, para isso utilizamos a opção: \\
+{\ttfamily\$ sails new tstSails --no-frontend}
 
-As camadas MVC do projeto gerado podem ser encontradas nas seguintes pastas: \vspace{-1em}
+Porém como o nosso objetivo aqui é a criação de um \textit{Dashboard} precisamos ter um projeto Web completo.
+
+\section{Geração dos Artefatos}
+Uma vantagem em se utilizar o Sails é a geração das camadas MVC, sem precisarmos perder tempo com configurações desnecessárias. A pasta \textbf{/api} contém a camada de \textit{backend}. A pasta \textbf{/api/policies} encontramos as regras para o acesso do usuário da aplicação. 
+
+A pasta \textbf{/api/responses} contém arquivos como os erros do Servidor Web (404, 498, 500 entre outros). Adicionamos nessa pasta funções que lidam com tarefas específicas, como decidir como gerenciar usuários com diferentes níveis de acesso. Poderia tudo ser feito na Camada de Controle, mas não é uma boa prática termos controladores com um várias lógicas de negócios.
+
+As camadas MVC do projeto são encontradas nas seguintes pastas: \vspace{-1em}
 \begin{itemize}
-  \item \textbf{Camada de Modelo} que está disponível na pasta /api/models do projeto gerado, arquivos no padrão .js
-  \item \textbf{Camada de Controle} que está disponível na pasta /api/controllers do projeto gerado, arquivos no padrão .js
-  \item \textbf{Camada de Visão} que está disponível na pasta /views do projeto gerado, arquivos no padrão .ejs 
-  (esta camada não é gerada automaticamente)
+  \item \textbf{Camada Modelo} que está disponível na pasta \textbf{/api/models}, arquivos padrão \textbf{.js}
+  \item \textbf{Camada Controle} que está disponível na pasta \textbf{/api/controllers}, arquivos padrão \textbf{.js}
+  \item \textbf{Camada Visão} que está disponível na pasta \textbf{/views}, arquivos padrão \textbf{.ejs}
 \end{itemize}
 
 Gerar a Model e a Controller: \\
 {\ttfamily\$ sails generate api |Nome|}
 
-Por exemplo: \\
-{\ttfamily\$ sails generate model Pet}
-
-Gerar a Controller: \\
+Gerar um Controlador: \\
 {\ttfamily\$ sails generate controller |Nome| |Ação|}
 
-Por exemplo: \\
-{\ttfamily\$ sails generate controller Artigo create find update destroy} \\
-{\ttfamily\$ sails generate controller Comentario create destroy tag like}
-
-Gerar a Model: \\
+Gerar um Modelo: \\
 {\ttfamily\$ sails generate model |Nome| |Attribute:Type|}
 
-Por exemplo: \\
-{\ttfamily\$ sails generate model Cliente nome:string endereco:string idade:integer}
+Gerar uma Visão: \\
+{\ttfamily\$ sails generate page |Nome|}
 
-\subsection{Um pequeno teste}
-Vamos criar uma simples estrutura apenas para verificarmos se tudo está bem fixado até aqui. Criar um projeto conforme descrito e neste executar o seguinte comando: \\
-{\ttfamily\$ sails generate api teste}
+Esse último comando gera os seguintes artefatos: \vspace{-1em}
+\begin{itemize}
+	\item Arquivo de visão em: {\ttfamily views/pages/|Nome|.ejs}
+	\item Arquivo de controle em: {\ttfamily api/controllers/view-|Nome|.js}
+	\item Arquivo para estilos CSS da página em: {\ttfamily assets/styles/pages/|Nome|.less}
+	\item Arquivo para scripts JavaScript em: {\ttfamily assets/js/pages/|Nome|.page.js}
+\end{itemize}
 
-Dois arquivos foram criados, um na pasta '/api/models' chamado 'Teste.js' e outro na pasta '/api/controllers' chamado 'TesteController.js'. No primeiro arquivo modificar a codificação 
-do modelo para:
+Devemos sempre respeitar essa forma de trabalhar (\textit{dividir para conquistar}) e lembre-se sempre que no projeto é muito mais fácil criar do que dar manutenção, as coisas estando em seus devidos lugares torna nosso trabalho futuro menos oneroso.
+
+\subsection{Criar a Model e a Controller}
+Vamos por partes, parar o projeto (CTRL+C) e executar o seguinte comando: \\
+{\ttfamily\$ sails generate api cliente}
+
+Dois arquivos foram criados, \textbf{/api/models/Cliente.js} e \textbf{/api/controllers/Cliente.js}. Modificar o conteúdo do primeiro arquivo para:
 \begin{lstlisting}
 module.exports = {
   attributes: {
-    value: {
-      'nome': 'text'
-    }
-  }
+    nome: { 
+      description: 'Nome completo.',
+      type: 'string', 
+      required: true 
+    },
+    endereco: { 
+      description: 'Endereço residencial.',
+      type: 'string' 
+    },
+    idade: { 
+      description: 'Idade (em anos).',
+      type: 'number' 
+    },
+  },
 };
 \end{lstlisting}
 
-E finalmente ativar o sails: \\
+Criamos uma modelo com 3 campos: nome e endereço com o tipo caractere e idade do tipo numérico, ao ativar o Sails esse se encarregará de informar essa mudança ao banco de dados. No caso de criar a tabela e os campos. Para expor o serviço devemos realizar alterações de segurança na pasta \textbf{/config}: \vspace{-1em}
+\begin{itemize}
+	\item No arquivo \textbf{blueprints.js} trocar o valor da opção \textit{rest} para \textit{true}
+	\item No arquivo \textbf{policies.js} adicionar a opção \textit{'cliente/*': true,}
+	\item No arquivo \textbf{security.js}  trocar o valor da opção \textit{csrf} para \textit{false}.
+\end{itemize}
+
+Essas mudanças permitem acessar os serviços REST disponíveis que foram criados (repare no entanto que o controle - segundo arquivo criado - está vazio). Ativar o Sails: \\
 {\ttfamily\$ sails lift}
 
-Agora será preciso utilizar um cliente para acessar os serviços expostos. Existem vários pessoalmente prefiro o 'Postman':
+Utilizamos um cliente REST para acessar os Serviços Web que estão expostos. Existem vários, pessoalmente prefiro o \textbf{Postman} \cite{postman}:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagens/Postman.png}
+	\includegraphics[width=0.6\textwidth]{imagens/Postman.png}
 	\caption{Aplicativo Postman}
 \end{figure}
 
-E podemos acessar os seguintes serviços: \vspace{-1em}
+São os seguintes serviços disponibilizados: \vspace{-1em}
 \begin{itemize}
-  \item \textbf{http://localhost:1337/teste} método GET que traz todos os nomes cadastrados
-  \item \textbf{http://localhost:1337/teste/1} método GET que traz o nome com o ID igual a 1
-  \item \textbf{http://localhost:1337/teste} método POST que ao ser passado a variável nome no BODY de um formulário esta será armazenada no banco.
-  \item \textbf{http://localhost:1337/teste/1} método UPDATE que ao ser passado a variável nome no BODY de um formulário esta será armazenada no banco no lugar do ID igual a 1 
-  \item \textbf{http://localhost:1337/teste/1} método DELETE que irá excluir o ID com o valor igual a 1
+  \item \textbf{http://localhost:1337/cliente}, método GET que traz todos os clientes cadastrados
+  \item \textbf{http://localhost:1337/cliente/1}, método GET que traz o clientes com ID igual a 1
+  \item \textbf{http://localhost:1337/cliente}, método POST que ao ser passado as variáveis nome, endereco e idade no BODY de um formulário será adicionado um novo registro na tabela cliente.
+  \item \textbf{http://localhost:1337/cliente/1}, método PUT que ao ser passado as variáveis nome, endereco e idade no BODY de um formulário será modificado os dados do cliente com ID igual a 1.
+  \item \textbf{http://localhost:1337/cliente/1}, método DELETE que exclui o registro da tabela cliente com ID igual a 1.
 \end{itemize}
 
 \subsection{Arquivos de Configuração}
-Outros arquivos importantes serão bastante utilizados são: \vspace{-1em}
+Já modificamos alguns arquivos de configuração, existem outros importantes que são bastante utilizados: \vspace{-1em}
 \begin{itemize}
-  \item \textbf{/config/sockets.js}: este arquivo contém dois métodos, "onConnect" e "onDisconnect". Utilizamos este para proceder as conexões de socket.
-  \item \textbf{/config/routes.js}: este arquivo nos permite a definição de URLs com as Visões e endpoints para os métodos da Camada de Controle.
-  \item \textbf{/config/models.js}: este arquivo nos permite especificar os conectores para o Banco de Dados além de definir como migar os dados.
+  \item \textbf{/config/sockets.js}: proceder as conexões de socket.
+  \item \textbf{/config/routes.js}: definir as URLs das Visões e \textit{endpoints} para os métodos da Camada de Controle.
+  \item \textbf{/config/datastores.js}: especificar os conectores do Banco de Dados, além disso organiza como migrar os dados.
 \end{itemize}
 
-Por padrão o Sails acessa um ORM (Object Relational Mapper) chamado Waterline que podemos utilizar para realizar testes no sistema, não se preocupe pois é possível (através do uso de adaptadores) se conectar a, basicamente, todos os bancos conhecidos do mercado.
+Por padrão o Sails acessa um ORM (\textit{Object Relational Mapper}) chamado \textbf{Waterline} que normalmente é utilizado para realização de testes e construção básica do sistema. Este é um excelente banco de dados, mas normalmente as empresas preferem Bancos mais conhecidos e manuseáveis por SGBD, porém não se preocupe pois é possível (através do uso de adaptadores) se conectar a, basicamente, todos os bancos conhecidos do mercado.
 
-No arquivo /config/models.js é possível definirmos o modo como a base de dados irá tratar os dados, são eles: \vspace{-1em}
+No arquivo \textbf{/config/models.js} é possível definirmos o modo como a base de dados trata os dados: \vspace{-1em}
 \begin{itemize}
   \item \textbf{safe}. Nunca migrar automaticamente a base de dados (usado por padrão, se nada for definido).
-  \item \textbf{alter}. Migrar os dados, mas manter os dados já existentes (experimental).
-  \item \textbf{drop}. Cada vez que o Servidor for reiniciado, eliminar TODOS os dados e reconstruir TODOS os modelos.
-)
+  \item \textbf{alter}. Migrar os dados, mas manter os dados já existentes (isso é usado quando alteramos um modelo já existente).
+  \item \textbf{drop}. Cada vez que o Servidor for reiniciado, eliminar TODOS os dados e reconstruir os modelos.
 \end{itemize}
 
-Também podemos subir o servidor com um dessas opções. Por exemplo: \\
-{\ttfamily\$ sails lift --models.migrate='alter'}
- 
-\subsection{Acessar o MySQL no Docker}
-Antes de mais nada precisamos do banco MySQL rodando no Docker, para conseguir realizar isso assista o vídeo disponível no meu canal no endereço \url{https://www.youtube.com/watch?v=skx_Oxdw9i0&t=183s} e uma vez que o banco estiver configurado, acessar com o comando: \\
-{\ttfamily\$ docker exec -it mybanco mysql -p}
+Outro ponto interessante nesse arquivo e a especificação dos atributos "padrões" que devem ser criados para todos os modelos, como \textbf{createAt}, \textbf{updateAt} e \textbf{id}. Assim não precisamos colocar estes atributos em cada um dos modelos. 
 
-Usar a senha 'root' para entrar e criar a base para este exemplo com o comando \\
+Também podemos subir o servidor com uma dessas opções. Por exemplo: \\
+{\ttfamily\$ sails lift --models.migrate='drop'}
+
+Essa opção é interessante para eliminar os dados e criar uma base nova, ao invés de colocá-la na configuração o que pode apresentar um grande perigo.
+ 
+\section{Acessar o MySQL}
+A parir desse ponto, utilizaremos o SGBD Relacional MySQL. O que mais me impressiona no Sails é a facilidade com a qual podemos conseguir isso. Obviamente devemos ter o MySQL, o meio mais simples é baixar a imagem oficial através do Docker: \\
+{\ttfamily\$ docker pull mysql}
+
+Criar uma instância do banco em um contêiner: \\
+{\ttfamily\$ docker run --name meu-mysql -e MYSQL\_ROOT\_PASSWORD=root -p 3306:3306 -d mysql}
+
+E nas próximas vezes, para ativar o contêiner: \\
+{\ttfamily\$ docker start meu-mysql}
+
+Ou parar o contêiner: \\
+{\ttfamily\$ docker stop meu-mysql}
+
+Com o contêiner ativo, acessar o SGBD: \\
+{\ttfamily\$ docker exec -it meu-mysql mysql -p}
+
+Usar a senha 'root' para entrar no SGBD e criar a base: \\
 {\ttfamily create database demo;}
 
-Sair do MySQL com o comando: \\
+Sair do MySQL: \\
 {\ttfamily exit}
 
-Criar um projeto para o Sails conforme descrito e neste executar o seguinte comando: \\
-{\ttfamily\$ sails generate api cliente}
+Agora a mágica acontece em dois passos, primeiro passo instalar o conector do MySQL: \\
+{\ttfamily\$ npm install sails-mysql --save --save-exact}
 
-Modificar o arquivo 'connections.js' na pasta '/config' para a seguinte codificação:
+Segundo passo modificar o arquivo \textit{/config/datastores.js}:
 \begin{lstlisting}
-module.exports.connections = {
-  localDiskDb: {
-    adapter: 'sails-disk'
-  },
-  sailsmysql: {
+module.exports.datastores = {
+  default: {
     adapter: 'sails-mysql',
-    host: '127.0.0.1',
-    port: 3306,
-    user: 'root',
-    password: 'root',
-    database: 'demo'
-  }
+    url: 'mysql://root:root@localhost:3306/demo',
+  },
 };
 \end{lstlisting}
 
-Modificar o arquivo 'models.js' na pasta '/config' para a seguinte codificação:
-\begin{lstlisting}
-module.exports.models = {
-  connection: 'sailsmysql',
-  migrate: 'alter'
-};
-\end{lstlisting}
-
-E o arquivo 'Cliente.js' na pasta '/api/models' para a seguinte codificação:
-\begin{lstlisting}
-module.exports = {
-  attributes: {
-    nome: {
-      type: 'string',
-      required: true
-    },
-    email: {
-      type: 'email',
-      required: true,
-      unique: true
-    }
-  }
-};
-\end{lstlisting}
-
-O último passo é adicionar a biblioteca de conexão com o MySQL com o seguinte comando: \\
-{\ttfamily\$ npm install sails-mysql --save}
-
-Executar o Sails: \\
+E pronto! Basta executar o Sails: \\
 {\ttfamily\$ sails lift}
 
-E execute os seguintes comandos em um navegador (como complemento para \url{http://localhost:1337}): \vspace{-1em}
-\begin{itemize}
-  \item \textbf{/cliente/create?nome=Fernando\&email=anselmo@gmail.com} \\
-  cadastrar um novo cliente com o nome: 'Fernando' e email: 'anselmo@gmail.com'.
-  \item \textbf{/cliente/update/1?nome=Fernando Anselmo} \\
-  modificar o cliente com o ID igual a 1 para o nome: 'Fernando Anselmo'.
-  \item \textbf{/cliente/destroy/1} \\
-  eliminar o cliente com o ID igual a 1 do banco.
-\end{itemize}
-Observe que automaticamente o Sails cria no banco alguns campos como chave primária e datas de atualização, podemos não desejar que ele se comporte dessa forma para isso, no modelo, entre a instrução ``exports'' e ``atributes'' colocamos as seguintes instruções: \vspace{-1em}
-\begin{itemize}
-  \item \textbf{autoCreateAt: false,}: para não criar a data de criação do registro
-  \item \textbf{autoUpdateAt: false,}: para não criar a data de atualização do registro
-  \item \textbf{autoPK: false,}: para não criar a chave primária  
-\end{itemize}
+Todo o serviço de criação das tabelas foi realizado. Podemos através do Postman criar, alterar, ver e eliminar registros no banco. Ou seja com pouquíssimas linhas de código criamos a tabela (sem entender nada de SQL) e um CRUD completo em REST (sem colocar uma única linha no controle).
 
-\subsection{Ajuste da saída Dados}
-Com o Sails podemos criar uma controller com dois passos simples (se a Model já tiver pronta então será apenas um passo) para nos devolver basicamente qualquer conjunto de dados que desejemos. Por exemplo uma nova saída com base em uma consulta SQL que agrupe os dados. Vamos aproveitar o projeto visto com o banco MySQL para realizar essa tarefa. Adicione uma nova Model e Controler com o seguinte comando: \\
+\subsection{Acertar a Controller}
+Já vimos que para disponibilizar serviços REST e gerenciar nossas estruturas de dados não precisamos fazer basicamente nada (e todo esse trabalho fica a cargo do Sails). Vamos adicionar novas funcionalidades a camada controle apenas quando necessitamos de algo especial, como por exemplo, retornar um conjunto de dados específico que desejemos.
+
+Para entender como procedemos uma nova saída através de uma consulta SQL que agrupe os dados. Adicionar uma nova API (Model e Controller): \\
 {\ttfamily\$ sails generate api Conta}
 
-Modificar o arquivo 'Conta.js' na pasta '/api/models' para a seguinte codificação:
+Modificar o arquivo \textbf{/api/models/Conta.js}:
 \begin{lstlisting}
 module.exports = {
   attributes: {
     dtEntrada: {
-      type: 'datetime',
+      description: 'Data de entrada do valor na conta.',
+      type: 'string',
+      columnType: 'datetime',
       required: true
     },
     valor: {
-      type: 'float',
+      description: 'Valor entrado.',
+      type: 'number',
       required: true
     }
   }
 };
 \end{lstlisting}
 
-Crie a maior quantidade de dados que desejar variando as informações de ``data de entrada'' e ``valor'' o máximo possível. O segundo passo é adicionar um novo método de chamada no arquivo 'ContaController.js' na pasta '/api/controllers' com a seguinte codificação:
+Nossa tabela de Contas tem os campos \textbf{dtEntrada} do tipo data e hora e \textbf{valor} do tipo numérico, manteremos simples assim pois o objetivo é entendermos como tudo funciona. 
+
+Realizar as alterações de permissão. No arquivo \textbf{/config/policies.js} adicionar a opção \textit{'conta/*': true,} e no arquivo \textbf{/config/models.js} trocar a opção \textit{migrate} para \textit{safe}.
+
+Ativar o Sails e criar a maior quantidade de dados que desejar variando as informações de ``data de entrada'' e ``valor'' o máximo possível. O segundo passo é adicionar um novo método de chamada no arquivo 'ContaController.js' na pasta '/api/controllers' com a seguinte codificação:
 \begin{lstlisting}
+nomeMes = ['', 'Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+
 module.exports = {
-  graph2: function (req, res) {
+  graphBase: function (req, res) {
     var myQuery = "select month(dtEntrada) as mes, sum(valor) as valor from conta " +
- 		  "group by month(dtEntrada)";
+        "group by month(dtEntrada)";
     var meses = [];
     var valor = [];
-    Conta.query(myQuery, function (err, contas){
-    if (err) {
-      return res.json({"status": 0, "error": err});
-    } else {
-      for (var key in contas) {
-	if (contas.hasOwnProperty(key)) {
-	  meses.push(contas[key].mes);
-	  valor.push(contas[key].valor);
-	}
+    Conta.getDatastore().sendNativeQuery(myQuery, function (err, contas) {
+      if (err) {
+        return res.json({"status": 0, "error": err});
+      } else {
+        // sails.log(contas);
+        for (var i of contas.rows) {
+          meses.push(nomeMes[i.mes]);
+          valor.push(i.valor);
+        }
+        return res.json({"mes": meses, "valor": valor});
       }
-    return res.json({"mes": meses, "valor": valor});
-    }
-  });
+    });
+  }
 }
 \end{lstlisting}
 
-Selecionamos da base de dados, mês a mês o somatório dos valores e montamos para a saída um JSON com dois arrays ``mes'' e ``valor'', é ideal para carregar uma visão com o \textbf{Chart.js} com a montagem de um gráfico.
+Selecionamos da base de dados, mês a mês o somatório dos valores e montamos para a saída um JSON com dois arrays ``mes'' e ``valor'', deixei o comando \textbf{sails.log} comentado caso seja necessário verificar qualquer problema na saída dos dados.
 
-\subsection{Adicionar o Bootstrap e a JQuery ao projeto}
-O Bootstrap e a JQuery consolidaram-se como padrões de mercado, para disponibilizá-los em nosso projeto devemos seguir os seguintes passos:
+Criar uma rota para que o link \textbf{graphBase} esteja visível. No arquivo \textbf{/config/routes.js} e adicionar a seguinte linha: \\
+{\ttfamily 'GET /graphBase': 'ContaController.graphBase',}
 
-1. Criar na raiz do projeto um arquivo chamado .bowerrc com o seguinte conteúdo: \\
-\textbraceleft {\ttfamily ``directory'' : ``assets/vendor''} \textbraceright
+Permitir a passagem desse pelas políticas, no arquivo \textbf{/config/policies.js}: \\
+{\ttfamily 'graphBase': true,}
 
-2. Instalar o Bootstrap com o comando (é instalada a JQuery automaticamente): \\
-{\ttfamily\$ bower install bootstrap --save --production}
+Verificar se tudo funciona corretamente com o Postman:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagens/postmanFinal.png}
+	\caption{Resultado da Consulta no Postman}
+\end{figure}
 
-3. Adicionar a linha no arquivo /assets/styles/importer.less: \\
-{\ttfamily @import '../vendor/bootstrap/less/bootstrap.less';}
+\subsection{Visões do Projeto}
+A parte visual é bem simples, requer o mesmo conhecimento JavaScript ou HTML se estivéssemos programando com qualquer outro \textit{framework}. No arquivo \textbf{/views/layouts/layout.ejs}, puxe o bloco \textless!--SCRIPTS--\textgreater para o header, esse bloco contém todos os JavaScripts necessários (os comentários são importantes NÃO APAGUE-OS).
 
-4. Copiar a pasta /assets/vendor/bootstrap/fonts embaixo da pasta /assets.
-
-5. Adicionar os seguintes comandos no arquivo /tasks/pipeline.js, após a instrução 'sails.io.js':
+Agora substituir todo o bloco BODY para:
 \begin{lstlisting}
-'js/dependencies/sails.io.js',
-// Adicionar a JQuery JS
-'vendor/jquery/dist/jquery.min.js',
-// Adicionar o Bootstrap JS
-'vendor/bootstrap/dist/js/bootstrap.min.js',
-\end{lstlisting}
-
-Agora o projeto conta com o poder do Bootstrap e da JQuery.
-
-\subsection{Mais um teste da Instalação}
-Iremos realizar um exemplo mais completo para verificar se tudo está funcionando corretamente. Na pasta /views, no arquivo 'layout.ejs', localizar a linha com a instrução '\textless\%- body \%\textgreater' e alterar para:
-\begin{lstlisting}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="/">Sails Exemplo</a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
-            <div class="form-group">
-              <input type="text" placeholder="Email" class="form-control">
-            </div>
-            <div class="form-group">
-              <input type="password" placeholder="Senha" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success">Entrar</button>
-          </form>
-        </div><!--/.navbar-collapse -->
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">Meu Dashboard</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Link 1</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="#">Link Desabilitado</a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <input class="form-control mr-sm-2" type="search" placeholder="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Pesquisar</button>
+      </form>
+    </div>      
+  </nav>
+  <%- body %>
+  <div class="container">
+    <hr />
+    <footer class="footer">
+      <div class="pull-right">
+        <a href="http://sailsjs.com">sails.js</a>
+        <div>Construído com o Sails</div>
       </div>
-    </nav>
-    <%- body %>
-    <div class="container">
-      <hr />
-      <footer class="footer">
-        <div class="pull-right">
-          <a href="http://sailsjs.com">sails.js</a>
-          <div>Construído com o Sails</div>
-        </div>
-      </footer>
-    </div>  
+    </footer>
+  </div>  
+</body>
 \end{lstlisting}
 
-Definimos aqui um cabeçalho e rodapé padrão para todas as páginas do projeto. Criar uma nova pasta abaixo dessa pasta chamada '/static' e nesta criar um arquivo chamado 'index.ejs' com o seguinte conteúdo:
+Definimos aqui um cabeçalho e rodapé padrão para todas as páginas do projeto. Modificar completamente o conteúdo do arquivo \textbf{/views/pages/homepage.ejs} para:
 \begin{lstlisting}
 <div class="jumbotron">
   <div class="container">
-    <h2>Exemplo do Sails com Bootstrap e JQuery</h2>
+    <h2>Início do Dashboard em Sails</h2>
     <p>Verificar se tudo está funcionando corretamente...</p>
   </div>
 </div>
 \end{lstlisting}
 
-Modificar a rota padrão, no arquivo de rotas (/config/routes.js), para:
-\begin{lstlisting}
-  '/': {
-    view: 'static/index'
-  }
-\end{lstlisting}
-
-E ao levantar o Sails teremos o seguinte resultado na página inicial:
+A página principal agora possui a seguinte aparência:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagens/sailsEx01.png}
-	\caption{Página Inicial}
+	\includegraphics[width=0.8\textwidth]{imagens/corpoDashboard.png}
+	\caption{Página inicial do Dashboard}
 \end{figure}
 
-\section{Modelagem de Dados}
-Agora que sabemos como instalar, criar e configurar corretamente um projeto no
-Sails. Vamos criar um exemplo para testar um modelo de dados como forma de conhecer melhor suas potencialidades.
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.6\textwidth]{imagens/hero_squid.png}
-	\caption{Projeto Completo}
-\end{figure}
+Basicamente um arquivo EJS é um arquivo HTML puro. Ou seja, do mesmo modo que programamos em qualquer sistema podemos aproveitar aqui com a vantagem de termos um MVC completo por trás.
 
-A empresa MeuPet deseja melhorar os serviços de implantação de sua intranet 
-com buscas no aprimoramento de disponibilização de serviços. A estrutura da 
-base de dados foi definida através do rascunho das seguintes tabelas:
-
-{\ttfamily Cliente} \vspace{-1em}
-\begin{itemize}[nolistsep]
-  \item \textbf{priNome}. String (obrigatório), primeiro nome
-  \item \textbf{ultNome}. String (obrigatório), último nome
-  \item \textbf{endereco}.  Text, endereço de residência
-  \item \textbf{email}. String (válido), endereço eletrônico de contato
-  \item \textbf{telefone}. String (obrigatório), número do telefone de contato
-\end{itemize}
-
-{\ttfamily Pet} \vspace{-1em}
-\begin{itemize}[nolistsep]
-  \item \textbf{idDono}. String (obrigatório), campo de associação com o cliente
-  \item \textbf{genero}. String, gênero do animal que só deve permitir: 'Macho' ou 'Fêmea'
-  \item \textbf{datNascimento}. Date, contendo a data nascimento
-  \item \textbf{especie}. String, espécie do animal que só deve permitir: 'Cachorro' ou 'Gato'
-  \item \textbf{raca}. String, descricao da raça do animal
-  \item \textbf{caracteristica}. Text, campo livre para observações sobre o animal
-\end{itemize}
-
-{\ttfamily Servico} \vspace{-1em}
-\begin{itemize}[nolistsep]
-  \item \textbf{inicial}. Date, data e hora inicial do serviço
-  \item \textbf{idpet}. String (obrigatório), campo de associação com o animal
-  \item \textbf{tipo}. String, tipo do serviço que só deve permitir: 'Consulta', 'Banho' ou 'Tosa'
-  \item \textbf{descricao}. Text, descrição completa do serviço a ser realizado
-  \item \textbf{status}. String, situação do serviço que só deve permitir: 'Agendado' ou 'Finalizado'
-  \item \textbf{buscar}. Boolean, se é ou não para buscar o animal
-  \item \textbf{levar}. Boolean, se é ou não para levar o animal ao término do serviço
-\end{itemize}
-
-Todas as tabelas possuem dois campos obrigatórios que não são informados no cadastro: \vspace{-1em}
-\begin{itemize}[nolistsep]
-  \item \textbf{id}. String, chave única
-  \item \textbf{adicionadoEm}. Date, contendo a data de cadastro
-\end{itemize}
-
-\subsection{Implementando para o Banco de Dados}
-Como banco de dados usaremos o RethinkDB, um banco de dados ORM, open-source, escalável com foco na criação de aplicativos em tempo real mais fácil. Qual a diferença para o MongoDB? Um gerenciador que nos permite controla visualmente o banco, ou seja, temos uma maior capacidade administrativa, mas não se preocupe esse projeto pode ser adaptado para qualquer banco. 
-
-Para instalar o banco usaremo uma imagem do Docker, então com o Docker já instalado podemos digitar simplesmente o seguinte comando para baixarmos a imagem oficial: \\
-{\ttfamily\$ docker pull rethinkdb}
-
-E o seguinte comando para rodá-la e ativar o banco: \\
-{\ttfamily\$ docker run -d -p 8080:8080 -p 28015:28015 -p 29015:29015 --name } \\
-{\ttfamily rethink1 rethinkdb}
-
-O banco está ativo na porta 28015, a porta 29015 é de controle do RethinkDB e a porta
-8080 é sua parte administrativa, abra um navegador e acesse o endereço 
-\url{http://localhost:8080} e veremos a seguinte imagem:
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.8\textwidth]{imagens/Rethinkdb.png}
-	\caption{Banco RethinkDB}
-\end{figure}
-
-Se deseja parar o banco de dados basta digitar o seguinte comando: \\
-{\ttfamily\$ docker stop rethink1}
-
-E para ativá-lo novamente: \\
-{\ttfamily\$ docker start rethink1}
-
-\subsection{Configurar o Banco de Dados}
-Na pasta do projeto, adicionar os seguintes módulos necessários para realizar a conexão com o banco: \\
-{\ttfamily\$ npm install thinky thinky-loader --save}
-
-No arquivo 'package.json' adicione a seguinte linha na seção 'dependencies': \\
-{\ttfamily "sails-rethinkdb": "github:gutenye/sails-rethinkdb\#master",}
-
-E instale esta dependência: \\
-{\ttfamily\$ npm install}
-
-Após a instalação corrigir um erro que cria tabelas duplicadas, editar a classe 'connection.js' na pasta /node\_modules/sails-rethinkdb/lib e comentar as seguintes instruções na função \_setupTables(tables):
+\section{Nosso Gráfico}
+O Sails é simplesmente incrível, ainda não me acredita! Já existe uma série de JS habilitados para o projeto, entre eles: Bootstrap 4, JQuery, Vue.js, Cloud.js e Lodash.js. Mas não temos nenhum gráfico, para incluir, por exemplo o \textbf{highcharts.js} \cite{highcharts} basta colocar o arquivo JS na pasta \textbf{assets/dependencies/} e pronto. Como por passe de mágica se abrir no arquivo \textbf{/views/layout.ejs} já está a linha com a chamada a esse arquivo:
 \begin{lstlisting}
-  this.db.tableCreate(name).run(this.conn, err => {
-    if (err && !err.message.match(/Table `.*` already exists/))
-      throw err
-  })
+<script src="/dependencies/highcharts.js"></script>
 \end{lstlisting}
 
-Com essa primeira parte pronta vamos realizar as seguintes modificações nos arquivos do projeto. No arquivo 'config/connections.js' adicionar a seguinte instrução (abaixo da expressão de 'localDiskDb'):
+Esse processo se repetirá para qualquer JS que incorporemos ao projeto, mesmo os particulares. Embaixo da pasta \textbf{assets/js/pages} criar uma nova pasta chamada \textbf{graficos}. E nesta adicionar um arquivo chamado \textbf{primeiro.js} com o seguinte conteúdo:
 \begin{lstlisting}
-  rethinkdb: {
-    adapter: 'sails-rethinkdb',
-    host: 'localhost',
-    db: 'petshop'
-  }
-\end{lstlisting}
-
-Criar uma pasta chamada '/hooks' abaixo da pasta '/api'. Nesta pasta criar um arquivo chamado 'thinkhook.js', com as seguintes instruções:
-\begin{lstlisting}
-module.exports = function(sails){
-  return {
-    connecting: function () {
-      let orm = require('thinky-loader');
-      let path = require('path');
-      var dir = path.resolve(__dirname, '../models');
-      let ormConfig = {
-        debug     : true, 
-        modelsPath: dir,
-        thinky    : {
-          rethinkdb: {
-            host        : 'localhost',
-            port        : 28015,
-            authKey     : '',
-            db          : 'petshop',
-            timeoutError: 5000,
-            buffer      : 5,
-            max         : 1000,
-            timeoutGb   : 60 * 60 * 1000
-          }
-        }
-      };
-      orm.initialize(ormConfig)
-      .then(() => console.log('RethinkDB está pronto para uso!'))
-      .catch((e) => console.log(e));
+function criarGrafico1(meses, valores) {
+  var chart = $('#grafico1').highcharts({
+    chart: { type: 'bar' },
+    title: { text: 'Movimento Mensal das Contas' },
+    subtitle: { text: 'Ano 2020' },
+    xAxis: {
+      categories: meses,
+      title: { text: null }
     },
-    initialize: function (cb) {
-      this.connecting();
-      sails.emit('hook:thinkhook:done');
-      return cb();
+    yAxis: {
+      min: 0,
+      title: { text: 'Valor (R$)', align: 'high' },
+      labels: { overflow: 'justify' }
     },
-  }
-}  
-\end{lstlisting}
-
-Na inicialização também é possível passar o comando 'orm.initialize(ormConfig, thinky)' que repassa uma instância do thinky para uma configuração adicional. Nosso próximo passo é modificar o arquivo '/config/models.js':
-\begin{lstlisting}
-module.exports.models = {
-  connection: 'rethinkdb',
-  migrate: 'safe'
-};  
-\end{lstlisting}
-
-Se tudo está funcionando corretamente, ao reiniciar o servidor é recebida a seguinte mensagem: 
-{\ttfamily Creating a pool connected to localhost:28015 \\
-RethinkDB está pronto para uso!}
-
-Além disso no Administrador do RethinkDB, na seção Tables, é mostrada a base de 
-dados 'petshop'.
-
-\subsection{Criação dos Modelos e Controles}
-Começaremos criando os três modelos/controles necessários:
-{\ttfamily\$ sails generate api Cliente} \\
-{\ttfamily\$ sails generate api Pet} \\
-{\ttfamily\$ sails generate api Servico}
-
-Agora vamos alterar cada uma dos modelos (na pasta /api/models) para criar
-corretamente a estrutura das nossas tabelas conforme definido.
-
-{\ttfamily Arquivo: Cliente.js}
-\begin{lstlisting}
-module.exports = function() {
-  let thinky = this.thinky;
-  let validator = require('validator');
-  let type = this.thinky.type;
-  let models = this.models;
-  return {
-    tableName: 'cliente',
-    schema: {
-      id: type.string(),
-      priNome: type.string().required(),
-      ultNome: type.string().required(),
-      endereco: type.string(),
-      email: type.string().validator(validator.isEmail),
-      telefone: type.string().required(),
-      adicionadoEm: type.date().default(new Date())
+    tooltip: { valuePrefix: 'R$', valueSuffix: ',00'
     },
-    options: {},
-    init: function(model) { }
-  };
+    plotOptions: {
+      bar: { dataLabels: { enabled: false } }
+    },
+    legend: {
+      layout: 'vertical',
+      align: 'right',
+      verticalAlign: 'top',
+      x: -40, y: 80,
+      floating: true,
+      borderWidth: 1,
+      backgroundColor: Highcharts.defaultOptions.legend.backgroundColor || '#FFFFFF',
+      shadow: true
+    },
+    credits: {
+      enabled: false
+    },
+    series: [{
+      name: 'Cliente X',
+      data: valores
+    }]
+  });
 };
+
+$.ajax({
+  type: "GET",
+  url: "./graphBase",
+  data: JSON.stringify({
+    mes: 'mes',
+    valor: 'valor'
+  }),
+  contentType: "application/json; charset=utf-8",
+  dataType: "json",
+  async: true,
+  success: function (data) {
+    criarGrafico1(data.mes, data.valor);
+  },
+  failure: function (response) {
+    var r = jQuery.parseJSON(response.responseText);
+    alert("Mensagem: " + r.Message);
+    alert("StackTrace: " + r.StackTrace);
+    alert("Tipo: " + r.ExceptionType);
+  }
+});
 \end{lstlisting}
 
-{\ttfamily Arquivo: Pet.js}
+Se observarmos no arquivo \textbf{/views/layout.ejs} foi incorporado esse script. A primeira parte cria um gráfico conforme as instruções do próprio Highcharts (no caso um gráfico de barras horizontais) a única observação é quanto aos valores que são carregados na opção \textbf{series}.
+
+A segunda parte é o coração de tudo, nela via AJAX vamos a URL disponibilizada através do método GET, obtemos os dados e todo esse será um processo assíncrono. Uma vez que temos os dados entraremos no evento \textbf{success} e criamos o gráfico. Caso contrário o evento \textbf{failure} será chamado e devemos verificar qual foi o problema.
+
+Agora é questão de modificar a página principal para mostrarmos o resultado (o arquivo \textbf{/views/pages/homepage.ejs}):
 \begin{lstlisting}
-module.exports = function() {
-  let thinky = this.thinky;
-  let validator = require('validator');
-  let type = this.thinky.type;
-  let models = this.models;
-  return {
-    tableName: 'pet',
-    schema: {
-      id: type.string(),
-      idDono: type.string().required(),
-      genero: type.string().enum("Macho", "Fêmea"),
-      datNascimento: type.date(),
-      especie: type.string().enum("Cachorro", "Gato"),
-      raca: type.string(),
-      caracteristica: type.string().required(),
-      adicionadoEm: type.date().default(new Date())
-    },
-    options: {},
-    init: function(model) {
-      model.belongsTo(models.cliente, "dono", "idDono", "id");
-    }
-  };
-};
+<div class="jumbotron">
+  <figure class="highcharts-figure">
+    <div id="grafico1"></div>
+  </figure>
+</div>
 \end{lstlisting}
 
-{\ttfamily Arquivo: Servico.js}
-\begin{lstlisting}
-module.exports = function() {
-  let thinky = this.thinky;
-  let validator = require('validator');
-  let type = this.thinky.type;
-  let models = this.models;
-  return {
-    tableName: 'servico',
-    schema: {
-      id: type.string(),
-      inicial: type.date().required(),
-      idPet: type.string().required(),
-      tipo: type.string().enum("Consulta", "Banho", "Tosa"),
-      descricao: type.string(),
-      status: type.string().enum("Agendado", "Finalizado"),
-      buscar: type.boolean().default(false),
-      levar: type.boolean().default(false),
-      adicionadoEm: type.date().default(new Date())
-    },
-    options: {},
-    init: function(model) {
-      model.belongsTo(models.pet, "animal", "idPet", "id");
-    }
-  };
-};
-\end{lstlisting}
-
-Se tudo está funcionando corretamente ao reiniciar o servidor é mostrada as mensagens de criação e inicialização das tabelas. Além disso no Administrador do RethinkDB, na seção Tables veremos na base de dados 'petshop' com as tabelas criadas conforme a seguinte imagem:
+E o nosso resultado final é o seguinte:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagens/tabelas.png}
-	\caption{Tabelas Criadas}
+	\includegraphics[width=0.72\textwidth]{imagens/resultadoFinal.png}
+	\caption{Resultado Final do Dashboard}
 \end{figure}
 
-Se desejar um teste mais completo pode usar um aplicativo como o 'Postman' (ou outro aplicativo similar) para acessar os serviços que já estão criados, para cada tabela existe um CRUD completo pronto e funcionando, com métodos: GET, POST, PUT e DELETE.
+\subsection{A partir de agora}
+Não considere essa apostila como um passo final no aprendizado do Sails, ao contrário é o inicial, existem várias mudanças que podemos fazer nesse projeto, entre elas: \vspace{-1em}
+\begin{itemize}
+	\item Mudança do banco de dados, quando os dados crescerem para o Postgres ou MongoDB com o uso de drivers nativos, repectivamente \textit{sails-postgresql} e \textit{sails-mongo}.
+	\item Vinculo entre a tabelas cliente a contas.
+	\item Modificação da tabela contas para conter as movimentações de entradas e saídas.
+	\item Limpeza dos arquivos não utilizados, o Sails já vem totalmente preparado para conter um site seguro com usuários, proteções, páginas exemplo e muitas outras funcionalidades que podemos ir incorporando ou retirando de modo a tornar nosso sistema mais veloz.
+\end{itemize}
+
+Ou seja, pensemos que agora conseguimos gerar um \textit{Dashboard}, no caso um gerenciador de contas que podemos personalizar, criar a nossa maneira e ainda expandir isso de uma forma exponencial.
+
+Algumas dicas finais: \vspace{-1em}
+\begin{itemize}
+	\item Se for publicar em um repositório de arquivos ou levar para algum outro lugar elimine a pasta \textbf{node\_modules} ela é gerada com o comando {\ttfamily npm i}
+	\item Os arquivos e pastas iniciados com "." possuem esse padrão pois em sistemas Unix são escondidos por padrão.
+	\item Não se preocupe se errou algo todos os fontes deste projeto estão disponibilizados em \url{https://github.com/fernandoans/tstSails}
+	\item Pessoalmente darei continuidade neste projeto e essa pode ser vista em \url{https://github.com/fernandoans/tstSails}
+\end{itemize}
 
 \section{Conclusão}
 Sails é um framework JavaScript que facilita a criação de aplicativos com o servidor Node.js a nível empresarial fornece um monte de recursos poderosos por padrão, para que possamos começar a desenvolver um aplicativo sem ter que pensar sobre a configuração. Foi projetado com base no conhecido padrão MVC e com um suporte aos requisitos de aplicativos modernos: APIs orientadas a dados com uma arquitetura escalonável orientada a serviços. É possível usá-lo para qualquer projeto de aplicativo da Web.
 
-Um desenvolvedor que possua experiência com aplicações frontend e está procurando um servidor ágil de JavaScript, pode encontrar no Sails uma boa solução. Este atende também aos que possuem experiência com aplicações backend em um idioma diferente de JavaScript e está procurando expandir seus conhecimentos em Node.js. Em ambos os casos, a familiaridade com Serviços Web pode ser o quisito mais importante sobre como construir uma aplicação web.
+Um desenvolvedor que possua experiência com aplicações \textit{frontend} e está a procura de um servidor ágil de JavaScript, pode encontrar no Sails uma boa solução. Atende também aos que possuem experiência com aplicações \textit{backend} em um idioma diferente de JavaScript e deseja expandir seus conhecimentos em Node.js. Em ambos os casos, a familiaridade com Serviços Web pode ser o quesito mais importante sobre como construir uma aplicação Web.
 
-Um conjunto de pequenos módulos trabalham em conjunto com o Sails para fornecer simplicidade, facilidade de manutenção e convenções estruturais aos aplicativos Node.js. Além disso o Sails é altamente configurável, assim não seremos forçados a manter toda uma funcionalidade que não é necessária para o projeto. 
+Um conjunto de pequenos módulos trabalham unidos no Sails para fornecer simplicidade, facilidade de manutenção e convenções estruturais aos aplicativos Node.js. Além disso é altamente configurável, assim não seremos forçados a manter toda uma funcionalidade que não é necessária para o projeto. 
 
 Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
 %-----------------------------------------------------------------------------
-\begin{thebibliography}{7}
+\begin{thebibliography}{9}
   \bibitem{sailsoficial} 
   Página do Sails.js \\
-  \url{http://sailsjs.com/}
+  \url{http://sailsjs.com}
+  
+  \bibitem{node} 
+  Página do Node.js \\
+  \url{https://nodejs.org}
+  
+  \bibitem{npm} 
+  Página do NPM \\
+  \url{https://www.npmjs.com} 
+  
+  \bibitem{postman} 
+  Página do Postman \\
+  \url{https://www.postman.com}
 
-  \bibitem{bootstrapoficial} 
-  Página do Bootstrap \\
-  \url{http://getbootstrap.com/}
+  \bibitem{waterline} 
+  Página do Waterline \\
+  \url{https://waterlinejs.org/}
 
-  \bibitem{jqueryoficial} 
-  Página da JQuery \\
-  \url{https://jquery.com/}
-
-  \bibitem{rethinkdboficial} 
-  Página do RethinkDB \\
-  \url{https://www.rethinkdb.com/}
+  \bibitem{highcharts} 
+  Página do Highcharts \\
+  \url{https://www.highcharts.com}
 
   \bibitem{fernandoanselmo} 
   Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br/}
+  \url{http://www.fernandoanselmo.blogspot.com.br}
 
   \bibitem{publicacao} 
   Encontre essa e outras publicações em \\
