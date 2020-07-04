@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{OpenKarel}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.1}
 
 \usepackage{../sty/tutorial}
 
@@ -50,7 +50,9 @@ Vários outros componentes do mundo de Karel podem ser vistos neste exemplo. Cad
 Em muitos aspectos, Karel representa um ambiente ideal para ilustrar a abordagem orientada a objetos. Embora ninguém tenha realmente construído uma  implementação mecânica de Karel, é fácil imaginar Karel como um objeto do mundo real. Karel é, afinal, um robô, e os robôs são entidades do mundo real. As propriedades que definem o estado de Karel são sua localização no mundo, a direção que está enfrentando, e o número de sinalizadores em sua bolsa. 
 
 \section{Programa de Karel}
-Quando Karel foi introduzido na década de 1970, a abordagem predominante para escrever programas de computador foi o paradigma processual. Em grande parte, a programação processual é o processo de decomposição de um grande problema de programação em unidades menores, mais gerenciáveis, chamadas procedimentos que definem as operações necessárias. Embora a estratégia de quebrar programas em unidades menores permaneça uma parte vital de qualquer estilo de programação, as modernas linguagens como Java enfatizam uma abordagem diferente chamada paradigma Orientado a Objetos. Na programação Orientada a Objetos, a atenção do programador afasta-se da especificação procedural das operações e centra-se em modelar o comportamento de unidades conceitualmente integradas chamadas objetos. Objetos em uma linguagem de programação, por vezes, correspondem a objetos físicos no mundo real, mas como muitas vezes representam conceitos mais abstratos. A característica central de qualquer objeto - real ou abstrato - é o que faz sentido como um todo unificado.
+Quando Karel foi introduzido na década de 1970, a abordagem predominante para escrever programas de computador foi o paradigma processual. Em grande parte, a programação processual é o processo de decomposição de um grande problema de programação em unidades menores, mais gerenciáveis, chamadas procedimentos que definem as operações necessárias. Embora a estratégia de quebrar programas em unidades menores permaneça uma parte vital de qualquer estilo de programação, as modernas linguagens como Java enfatizam uma abordagem diferente chamada paradigma Orientado a Objetos. 
+
+Em programação Orientada a Objetos, a atenção do programador afasta-se da especificação procedural das operações e centra-se em modelar o comportamento de unidades conceitualmente integradas chamadas objetos. Objetos em uma linguagem de programação, por vezes, correspondem a objetos físicos no mundo real, mas como muitas vezes representam conceitos mais abstratos. A característica central de qualquer objeto - real ou abstrato - é o que faz sentido como um todo unificado.
 
 A programação é muito uma atividade para se aprender na prática. O estudo da Ciência da Computação não é somente ler sobre algum conceito de programação. Coisas que parecem muito claras na página podem ser muito difíceis de se colocar em prática. Nessa sua nova implementação Orientada a Objetos, o estilo mais simples do programa Karel consiste na definição de uma nova classe Karel que especifica uma sequência de comandos internos que devem ser executados quando o programa é executado. Abaixo encontramos o esqueleto para o início de um programa OpenKarel:
 \begin{lstlisting}
@@ -95,7 +97,8 @@ Originalmente, Karel pode responder aos seguintes comandos: \vspace{-1em}
  \item putBeeper() - deixar um sinalizador de sua bolsa em sua posição atual. Ocorrerá erro caso não exista sinalizadores em sua bolsa.
 \end{itemize} 
 
-O comportamento de Karel é definido pelos comandos aos quais responde: move(), turnLeft(), pickBeeper() ou putBeeper(). O comando move() muda a localização e turnLeft() a direção de Karel, os dois restantes afetam tanto o número de sinalizadores em sua bolsa quanto ao número destes em seu mundo. \\[3mm]
+O comportamento de Karel é definido pelos comandos aos quais responde: move(), turnLeft(), pickBeeper() ou putBeeper(). O comando move() muda a localização e turnLeft() a direção de Karel, os dois restantes afetam tanto o número de sinalizadores em sua bolsa quanto ao número destes em seu mundo.
+
 O par vazio de parênteses que aparece em cada um desses métodos, parte da sintaxe comum compartilhada por Karel e Java, é usado para especificar uma chamada na qual não é necessário enviar nenhuma informação. Eventualmente, seus códigos podem incluir novas informações, mas essas informações não fazem parte do mundo inicial de Karel. \\[3mm]
 Karel também pode responder aos seguintes questionamentos: \vspace{-1em}
 \begin{itemize}
@@ -121,8 +124,10 @@ Karel também pode responder aos seguintes questionamentos: \vspace{-1em}
 
 A resposta de todos estes comandos é uma variável lógica indicando \textbf{true} (verdadeiro) ou \textbf{false} (falso) e através deles é possível avaliar as ações que devem ser tomadas para que Karel possa cumprir sua missão.
 
-\subsection{Dicas finais antes dos desafios}
-Ao programar Karel para executar uma determinada tarefa é necessário escrever os comandos de maneira precisa para que seja interpretado corretamente o que é necessário realizar. Os programas devem obedecer a um conjunto de regras e formato da Linguagem Original que Karel foi escrito, neste caso Java. Tomados em conjunto, os comandos predefinidos e as regras sintáticas definem a linguagem de programação Karel. Os programas de Karel possuem a mesma estrutura e envolvem os mesmos elementos fundamentais que os programas de Java. A diferença crítica é que a linguagem de programação de Karel é extremamente pequena, no sentido de ter muito poucos comandos e regras. É fácil, por exemplo, ensinar toda a linguagem Karel em apenas algumas horas, o que é realizado na CS106A. No final desse período, o aluno conhece tudo o que Karel pode fazer e como especificar essas ações em um programa. Os detalhes são fáceis de dominar e mesmo assim, é possivel resolver um problema que pode ser extremamente desafiador. A resolução de problemas é a essência da programação e as regras são apenas uma preocupação menor ao longo do caminho.
+\subsection{Como Programar Karel}
+Ao programar Karel para executar uma determinada tarefa é necessário escrever os comandos de maneira precisa para que seja interpretado corretamente o que é necessário realizar. Os programas devem obedecer a um conjunto de regras e formato da Linguagem Original que Karel foi escrito, neste caso Java. Tomados em conjunto, os comandos predefinidos e as regras sintáticas definem a linguagem de programação Karel. Os programas de Karel possuem a mesma estrutura e envolvem os mesmos elementos fundamentais que os programas de Java. 
+
+A diferença crítica é que a linguagem de programação de Karel é extremamente pequena, no sentido de ter muito poucos comandos e regras. É fácil, por exemplo, ensinar toda a linguagem Karel em apenas algumas horas, o que é realizado na CS106A. No final desse período, o aluno conhece tudo o que Karel pode fazer e como especificar essas ações em um programa. Os detalhes são fáceis de dominar e mesmo assim, é possivel resolver um problema que pode ser extremamente desafiador. A resolução de problemas é a essência da programação e as regras são apenas uma preocupação menor ao longo do caminho.
 
 Como regra geral para as Instruções que devemos utilizar: \vspace{-1em}
 \begin{enumerate}
@@ -133,9 +138,9 @@ Como regra geral para as Instruções que devemos utilizar: \vspace{-1em}
   \item Regra Básica: Criar programas fáceis de ler, divida-os em curtos métodos ou em classes adicionais de modo a facilitar o máximo possível sua leitura.
 \end{enumerate}
 
-\section{Desafio 1 - Volta ao Mundo}
-Karel é um robô que vive em seu mundo retangular com ``Avenidas'' (nas horizontais) e ``Ruas'' (nas verticais). OpenKarel é sua mais nova versão que 
-permite rodar o programa em qualquer ambiente Java (antigamente estava limitado a versão Java SE 6.0) e assim é possível dar nova vida a Karel. \\[3mm]
+\section{Programar no Mundo de Karel}
+Karel é um robô que vive em seu mundo retangular com ``Avenidas'' (nas horizontais) e ``Ruas'' (nas verticais). OpenKarel é sua mais nova versão que permite rodar o programa em qualquer ambiente Java (antigamente estava limitado a versão Java SE 6.0) e assim é possível dar nova vida a Karel.
+
 Para iniciarmos na programação de Karel é necessário conhecermos alguns comandos de Java:
 
 Comando de Decisão SE, em Java é reconhecido pela palavra chave \textbf{if} e sua estrutura é a seguinte:
@@ -201,11 +206,64 @@ public void run() {
 }
 \end{lstlisting}
 
-Pronto, agora Karel consegue percorrer ao redor de seu mundo sem qualquer problema, execute o código aumentando ou diminuindo o número de Avenidas e Ruas e 
-perceba que tudo está OK.
+Pronto, agora Karel consegue percorrer ao redor de seu mundo sem qualquer problema, execute o código aumentando ou diminuindo o número de Avenidas e Ruas e perceba que tudo está OK.
 
-Agora é sua vez, imagine que no caminho de Karel existam sinalizadores, não sabemos em qual esquina eles se encontram nem quantos são, mas sabemos que estão 
-no caminho que Karel percorre, modifique o programa de modo que Karel possa recolher todos os que encontrar.
+Agora é sua vez, imagine que no caminho de Karel existam sinalizadores, não sabemos em qual esquina eles se encontram nem quantos são, mas sabemos que estão no caminho que Karel percorre, modifique o programa de modo que Karel possa recolher todos os que encontrar.
+
+\section{Exercícios para praticar}
+
+Está disponível no Git de OpenKarel \cite{github} todos os arquivos necessários para que possamos praticar com esse simpático robozinho. Todos os exercícios possuem um vídeo com sua resolução completa no YouTube, mas não corra atrás dela, tente realizar antes de vê-la.
+
+\textbf{Exercício 1.} Conhecer o Mundo de Karel \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Baixar a biblioteca e instalar no BlueJ conforme as instruções desta apostila.
+	\item Realizar download do mapa01.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer Karel pegar o sinalizador e soltá-lo na última Rua.
+\end{itemize}
+
+Dica: Criar um programa livre, imagine que o sinalizador pode estar um pouco mais a
+frente ou mais atrás, o alambrado pode ter dois ou três andares em vez de um só.
+
+\textbf{Exercício 2.} Colocar as coisas no Lugar \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Realizar download do mapa02.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer com que Karel possa pegar qualquer Sinalizador que esteja fora do Armazém de Sinalizadores e colocá-lo no lugar.
+\end{itemize}
+	
+\textbf{Exercício 3.} Escalar \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Realizar download do mapa03.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer Karel subir e descer todos os obstáculos até
+	chegar à última rua.
+\end{itemize}
+
+\textbf{Exercício 4.} Escada \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Realizar download do mapa04.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer Karel colocar o sinalizador do outro lado da escada.
+\end{itemize}
+
+\textbf{Exercício 5.} Recolher Sinalizadores \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Realizar download do mapa05.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer Karel pegar todos os sinalizadores que se
+	encontram espalhados.
+\end{itemize}
+
+\textbf{Exercício 6.} Sinalizadores na Escada \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Realizar download do mapa05.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer Karel pegar todos os sinalizadores e colocar
+	um em cada degrau da escada.
+\end{itemize}
+
+\textbf{Exercício 7.} Labirinto \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item Realizar download do mapa05.w na seção de \textbf{mapas}.
+	\item Seu objetivo neste mapa é fazer Karel achar o sinalizador escondido em um labirinto.
+\end{itemize}
+
+A resolução completa dos exercícios está na lista de vídeos de OpenKarel disponível em \url{https://www.youtube.com/watch?v=vYgx5EPMW4U&list=PLxTkH01AauxSMzhwyDliEtGsgJmLX2FFF}
 
 \section{Conclusão}
 Karel é uma ferramenta que promove um convívio harmônico entre a criatividade e a lógica de uma maneira coerente. Pode ser extremamente útil para construir uma forte base de aprendizado a programação de computadores. Partindo que suas instruções iniciais são muitos simples de serem absorvidas por qualquer um e com pouquíssimos passos é possível realizar várias ações, só que para isso requer do aluno um profundo estudo e dedicação.
