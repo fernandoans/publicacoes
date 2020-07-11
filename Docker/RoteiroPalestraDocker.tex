@@ -15,48 +15,48 @@
 \thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
 	
 \section*{Comandos Iniciais}
-{\ttfamily\$ docker version} \\
-{\ttfamily\$ docker images} \\
-{\ttfamily\$ docker ps -a}
+\codigo{\$ docker version} \\
+\codigo{\$ docker images} \\
+\codigo{\$ docker ps -a}
 
 \section{Caso MySQL}
 MySQL é um sistema de gerenciamento de banco de dados, que utiliza a linguagem SQL. Atualmente é um dos SGBD mais populares. \\
-{\ttfamily\$ docker pull mysql} \\
-{\ttfamily\$ docker run --name mybanco -e MYSQL\_ROOT\_PASSWORD=root -p 3306:3306 -d mysql} \\[2mm]
+\codigo{\$ docker pull mysql} \\
+\codigo{\$ docker run --name mybanco -e MYSQL\_ROOT\_PASSWORD=root -p 3306:3306 -d mysql} \\[2mm]
 Nas próximas vezes: \\
-{\ttfamily\$ docker start mybanco} \\
-{\ttfamily\$ docker exec -it mybanco sh -c 'exec mysql -u root -p'} \\
-{\ttfamily\$ docker exec -it mybanco bash} \\
-{\ttfamily root@b38dfbb9c50d:/\# mysql -u root -p} \\
-{\ttfamily mysql> select @@version;} \\
-{\ttfamily\$ docker stop mybanco}
+\codigo{\$ docker start mybanco} \\
+\codigo{\$ docker exec -it mybanco sh -c 'exec mysql -u root -p'} \\
+\codigo{\$ docker exec -it mybanco bash} \\
+\codigo{ root@b38dfbb9c50d:/\# mysql -u root -p} \\
+\codigo{ mysql> select @@version;} \\
+\codigo{\$ docker stop mybanco}
 
 \section{Caso Pentaho}
 Pentaho é um software de código aberto para inteligência empresarial, desenvolvido em Java. A solução cobre as àreas de ETL, reporting, OLAP e mineração de dados. \\
-{\ttfamily\$ docker pull wmarinho/pentaho} \\
-{\ttfamily\$ docker run --name pentaho-server -p 8080:8080 -d wmarinho/pentaho} \\[2mm]
+\codigo{\$ docker pull wmarinho/pentaho} \\
+\codigo{\$ docker run --name pentaho-server -p 8080:8080 -d wmarinho/pentaho} \\[2mm]
 Acessar a imagem: \\
-{\ttfamily\$ docker exec -it pentaho-server bash} \\[2mm]
+\codigo{\$ docker exec -it pentaho-server bash} \\[2mm]
 Podemos ver aonde está o Pentaho: \\
-{\ttfamily\# echo \$PENTAHO\_HOME} \\[2mm]
+\codigo{\# echo \$PENTAHO\_HOME} \\[2mm]
 Ou podemos acessá-lo pelo navegador no endereço: \url{http://localhost:8080/pentaho/Login}. Usuário: admin. Senha: password.
 
 \section{Caso PostgreSQL}
 PostgreSQL é um sistema de gerenciamento de banco de dados relacional de objetos (ORDBMS) com ênfase em extensibilidade e conformidade com padrões. Lida com cargas de trabalho que variam de pequenos aplicativos a grandes aplicativos voltados para a Internet (ou para armazenamento de dados) com muitos usuários simultâneos. \\
-{\ttfamily\$ docker pull postgres} \\
-{\ttfamily\$ docker run --name postbanco -e POSTGRES\_PASSWORD=postgres -d -p 5432:5432 \\ postgres} \\
-{\ttfamily\$ docker start postbanco} \\
-{\ttfamily\$ docker stop postbanco}
+\codigo{\$ docker pull postgres} \\
+\codigo{\$ docker run --name postbanco -e POSTGRES\_PASSWORD=postgres -d -p 5432:5432 \\ postgres} \\
+\codigo{\$ docker start postbanco} \\
+\codigo{\$ docker stop postbanco}
 
 \section*{Docker Compose}
 Compose é uma ferramenta para definir e executar aplicativos Docker com vários contêineres. \\
-{\ttfamily\$ docker-compose build} \\
-{\ttfamily\$ docker-compose rm} \\
-{\ttfamily\$ docker-compose (up | down)} \\
-{\ttfamily\$ docker-compose (start | stop)} \\
-{\ttfamily\$ docker-compose run -d} \\
-{\ttfamily\$ docker-compose exec} \\
-{\ttfamily\$ docker-compose logs (-f)}
+\codigo{\$ docker-compose build} \\
+\codigo{\$ docker-compose rm} \\
+\codigo{\$ docker-compose (up | down)} \\
+\codigo{\$ docker-compose (start | stop)} \\
+\codigo{\$ docker-compose run -d} \\
+\codigo{\$ docker-compose exec} \\
+\codigo{\$ docker-compose logs (-f)}
 
 \section{Caso PostgreSQL Compose}
 Arquivo: docker-compose.yml
@@ -91,20 +91,20 @@ db:
     - 5532:5432
 \end{lstlisting}
 Levantar os contêineres: \\
-{\ttfamily\$ docker-compose up} \\[2mm]
+\codigo{\$ docker-compose up} \\[2mm]
 Nova aba do terminal na mesma pasta: Ctrl + Shift + T
-{\ttfamily\$ docker-compose ps} \\
-{\ttfamily\$ docker-compose run client} \\
-{\ttfamily\# create database teste;} \\
-{\ttfamily\# \textbackslash connect teste;} \\
-{\ttfamily\# create table base(id serial not null, nome varchar(50), primary key (id));} \\
-{\ttfamily\# \textbackslash d} \\
-{\ttfamily\# \textbackslash dS+} \\
-{\ttfamily\# \textbackslash d base} \\
-{\ttfamily\# \textbackslash q} \\
-{\ttfamily\$ docker exec -it palestra\_db-legacy\_1 psql -U postgres --password} \\[2mm]
+\codigo{\$ docker-compose ps} \\
+\codigo{\$ docker-compose run client} \\
+\codigo{\# create database teste;} \\
+\codigo{\# \textbackslash connect teste;} \\
+\codigo{\# create table base(id serial not null, nome varchar(50), primary key (id));} \\
+\codigo{\# \textbackslash d} \\
+\codigo{\# \textbackslash dS+} \\
+\codigo{\# \textbackslash d base} \\
+\codigo{\# \textbackslash q} \\
+\codigo{\$ docker exec -it palestra\_db-legacy\_1 psql -U postgres --password} \\[2mm]
 Encerrar: \\
-{\ttfamily\$ docker-compose down}
+\codigo{\$ docker-compose down}
 
 \section{Caso NGINX}
 Nginx é um servidor web rápido, leve, e com inúmeras possibilidades de configuração para melhor performance. Criar a seguinte estrutura de arquivos:
@@ -149,22 +149,22 @@ services:
    - 80:80 
 \end{lstlisting}
 As ações serão as seguintes: \\
-{\ttfamily\$ docker-compose up --build} \\
+\codigo{\$ docker-compose up --build} \\
 Acessar \url{http://localhost:8080} \\
 Acessar outro terminal [CTRL+SHIFT+T] \\
-{\ttfamily\$ docker-compose down} \\
-{\ttfamily\$ docker-compose -f docker-compose-prod.yml up --build} \\
+\codigo{\$ docker-compose down} \\
+\codigo{\$ docker-compose -f docker-compose-prod.yml up --build} \\
 Acessar \url{http://localhost} \\
-{\ttfamily\$ docker-compose down}
+\codigo{\$ docker-compose down}
 
 \section{Caso DJango}
 Django é um framework para desenvolvimento rápido para web, escrito em Python, que utiliza o padrão model-template-view. Exemplo em: \url{https://gist.github.com/shudarshon/cf56741e6bcc26bedd4db236447e1654}: \\
-{\ttfamily\$ docker-compose build} \\
-{\ttfamily\$ docker-compose up -d} \\
-{\ttfamily\$ docker-compose logs} \\
-{\ttfamily\$ docker inspect exdjango\_postgres\_1 | grep IP}
-{\ttfamily\$ psql -h 172.17.0.3 -p 5432 -U postgres --password}
-{\ttfamily\$ docker-compose down}
+\codigo{\$ docker-compose build} \\
+\codigo{\$ docker-compose up -d} \\
+\codigo{\$ docker-compose logs} \\
+\codigo{\$ docker inspect exdjango\_postgres\_1 | grep IP}
+\codigo{\$ psql -h 172.17.0.3 -p 5432 -U postgres --password}
+\codigo{\$ docker-compose down}
 
 \section{Caso Raspberry Pi}
 Necessidades:
@@ -174,50 +174,50 @@ Necessidades:
 \end{itemize}
 Descobrir o Raspberry na rede:
 \begin{enumerate}
-	\item Qual o prefixo do seu IP da Rede (na qual deve estar o Raspberry)? \\ {\ttfamily\$ ifconfig}
-	\item Localizar o Raspberry no mesmo prefixo de IP (p.e. 192.168.10.x) \\ {\ttfamily\$ nmap -n -sP 192.168.10.255/24} (daqui para frente assumirei o IP do Raspberry como 192.168.10.2)
+	\item Qual o prefixo do seu IP da Rede (na qual deve estar o Raspberry)? \\ \codigo{\$ ifconfig}
+	\item Localizar o Raspberry no mesmo prefixo de IP (p.e. 192.168.10.x) \\ \codigo{\$ nmap -n -sP 192.168.10.255/24} (daqui para frente assumirei o IP do Raspberry como 192.168.10.2)
 \end{enumerate}
 
 \subsection{Instalar a Docker Machine}
-{\ttfamily\$ base=https://github.com/docker/machine/releases/download/v0.14.0 \&\&
+\codigo{\$ base=https://github.com/docker/machine/releases/download/v0.14.0 \&\&
 curl -L \$ base/docker-machine-\$(uname -s)-\$(uname -m) > /tmp/docker-machine \&\& sudo install /tmp/docker-machine /usr/local/bin/docker-machine} \\[2mm]
 Para copiar arquivo para o Raspberry: \\
-{\ttfamily\$ scp machine.png pi@192.168.25.2:/home/pi/html} \\[2mm]
+\codigo{\$ scp machine.png pi@192.168.25.2:/home/pi/html} \\[2mm]
 Tabela de Roteamento IP do Kernel \\
-{\ttfamily\$ netstat -rn} \\[2mm]
+\codigo{\$ netstat -rn} \\[2mm]
 Acessar o Raspberry: \\
-{\ttfamily\$ ssh pi@192.168.10.2} (Senha: \textbf{raspberry}) \\
-{\ttfamily\$ sudo nano /etc/os-release} \\
+\codigo{\$ ssh pi@192.168.10.2} (Senha: \textbf{raspberry}) \\
+\codigo{\$ sudo nano /etc/os-release} \\
 Mudar o id: \textbf{ID=raspbian} para \textbf{ID=debian} \\
-{\ttfamily\$ curl -sSL https://get.docker.com | sh} \\
-{\ttfamily\$ sudo usermod -aG docker pi} \\
-{\ttfamily\$ exit}
+\codigo{\$ curl -sSL https://get.docker.com | sh} \\
+\codigo{\$ sudo usermod -aG docker pi} \\
+\codigo{\$ exit}
 
 \subsection{Gerar as chaves: particular e pública}
-{\ttfamily\$ ssh-keygen -b 2048 -t rsa (key:id\_rsa passphrase:raspberry)} \\
-{\ttfamily\$ cat ~/.ssh/id\_rsa.pub | ssh -p 22 pi@192.168.10.2 'cat >>.ssh/authorized\_keys'}
+\codigo{\$ ssh-keygen -b 2048 -t rsa (key:id\_rsa passphrase:raspberry)} \\
+\codigo{\$ cat ~/.ssh/id\_rsa.pub | ssh -p 22 pi@192.168.10.2 'cat >>.ssh/authorized\_keys'}
 
 \subsection{Instalar o Docker no Raspberry}
 Comandos no Raspberry: \\
-{\ttfamily\$ nano /etc/ssh/sshd\_config} \\
+\codigo{\$ nano /etc/ssh/sshd\_config} \\
 Parâmetro: '\textbf{\#PasswordAuthentication yes}' para '\textbf{PasswordAuthentication no}' \\
-{\ttfamily\$ sudo /etc/init.d/ssh restart}
+\codigo{\$ sudo /etc/init.d/ssh restart}
 
 \subsection{Criar a Docker Machine}
-{\ttfamily\$ docker-machine create --driver generic --generic-ip-address 192.168.10.2 \\ --generic-ssh-key ~/.ssh/id\_rsa --generic-ssh-user pi --engine-storage-driver \\ overlay2 pi-zero-1} \\
-{\ttfamily\$ docker-machine ip pi-zero-1}
+\codigo{\$ docker-machine create --driver generic --generic-ip-address 192.168.10.2 \\ --generic-ssh-key ~/.ssh/id\_rsa --generic-ssh-user pi --engine-storage-driver \\ overlay2 pi-zero-1} \\
+\codigo{\$ docker-machine ip pi-zero-1}
 
 \subsection{Após Criada a Docker Machine}
-{\ttfamily\$ docker-machine env pi-zero-1} \\
-{\ttfamily\$ eval \&(docker-machine env pi-zero-1)} \\[2mm]
+\codigo{\$ docker-machine env pi-zero-1} \\
+\codigo{\$ eval \&(docker-machine env pi-zero-1)} \\[2mm]
 Testar: \\
-{\ttfamily\$ docker-machine ssh pi-zero-1} \\[2mm]
+\codigo{\$ docker-machine ssh pi-zero-1} \\[2mm]
 Criar uma pasta html/ e nela um arquivo index.html simples. \\
-{\ttfamily\$ exit} \\
-{\ttfamily\$ docker run -d -p 80:80 --name nginx2 -v /home/pi/html:/var/www/html tobi312/rpi-nginx} \\
+\codigo{\$ exit} \\
+\codigo{\$ docker run -d -p 80:80 --name nginx2 -v /home/pi/html:/var/www/html tobi312/rpi-nginx} \\
 Acessar: \url{http://192.168.10.2/}
 
 \subsection{Finalizar}
-{\ttfamily\$ ssh pi@192.168.10.2} (Senha: raspberry) \\
-{\ttfamily\$ sudo halt}
+\codigo{\$ ssh pi@192.168.10.2} (Senha: raspberry) \\
+\codigo{\$ sudo halt}
 \end{document}

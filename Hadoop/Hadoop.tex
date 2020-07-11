@@ -125,21 +125,21 @@ O Hadoop conta ainda com os seguintes produtos no seu ecosistema para acrescenta
 
 \section{Hadoop no Docker}
 O modo mais simples de se conseguir trabalhar com o Hadoop é utilizando o Docker, para baixar a imagem do Hadoop: \\
-{\ttfamily\$ docker pull sequenceiq/hadoop-docker:2.7.1}
+\codigo{\$ docker pull sequenceiq/hadoop-docker:2.7.1}
 
 E para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-{\ttfamily\$ docker run -it --name hadoop -v \$(pwd):/home/tsthadoop \\ sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash}
+\codigo{\$ docker run -it --name hadoop -v \$(pwd):/home/tsthadoop \\ sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash}
 
 Uma vez interrompido o contêiner: \\
-{\ttfamily\$ docker stop hadoop}
+\codigo{\$ docker stop hadoop}
 
 Podemos executá-lo novamente com os seguintes comandos: \\
-{\ttfamily\$ docker start hadoop \\
+\codigo{\$ docker start hadoop \\
 \ttfamily\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
 
 \subsection{No bash do Hadoop}
 A primeira vez é necessário configurar a variável de ambiente e um caminho para a pasta de saída, para tanto, usamos os seguintes comandos: \\
-{\ttfamily bash-4.1\# cd ~ \\
+\codigo{ bash-4.1\# cd ~ \\
  \ttfamily bash-4.1\# vi .bashrc}
 
 E inserimos [i] as seguintes linhas:
@@ -150,14 +150,14 @@ cd /home/tsthadoop/
 \end{lstlisting}
 
 Gravar [esc] [:w] e sair [:q] do Editor VI. E podemos sair do bash com o comando: \\
-{\ttfamily bash-4.1\# exit}
+\codigo{ bash-4.1\# exit}
 
 \subsection{Testando o ambiente}
 Primeiramente, devemos ter ciência do que o Hadoop consome verificando a memória: \\
-{\ttfamily\$ free -m}
+\codigo{\$ free -m}
 
 Em seguida verificar seu endereço padrão: \\
-{\ttfamily\$ docker inspect hadoop | grep IP}
+\codigo{\$ docker inspect hadoop | grep IP}
 
 E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos testar os seguintes endereços: \vspace{-1em}
 \begin{itemize}
@@ -182,45 +182,45 @@ Estes são os arquivos de configuração do Hadoop: \vspace{-1em}
 \end{itemize}
 
 Nesta imagem os arquivos se encontram na pasta: \\
-{\ttfamily /usr/local/hadoop-2.7.0/etc/hadoop}
+\codigo{ /usr/local/hadoop-2.7.0/etc/hadoop}
 
 \subsection{Comandos básicos no bash}
 Se o Hadoop está rodando corretamente: \\
-{\ttfamily bash-4.1\# jps}
+\codigo{ bash-4.1\# jps}
 
 Informações do config: \\
-{\ttfamily bash-4.1\# ifconfig}
+\codigo{ bash-4.1\# ifconfig}
 
 Relatório informativo do HDFS: \\
-{\ttfamily bash-4.1\# hdfs dfsadmin -report}
+\codigo{ bash-4.1\# hdfs dfsadmin -report}
 
 Se quiser ir para a pasta HOME do Hadoop: \\
-{\ttfamily bash-4.1\# cd \$HADOOP\_PREFIX}
+\codigo{ bash-4.1\# cd \$HADOOP\_PREFIX}
 
 Rodar o mapreduce \\
-{\ttfamily bash-4.1\# hadoop jar \\ share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar grep input \\ output 'dfs[a-z.]+'}
+\codigo{ bash-4.1\# hadoop jar \\ share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar grep input \\ output 'dfs[a-z.]+'}
 
 Verificar o diretório de saída: \\
-{\ttfamily bash-4.1\# hdfs dfs -cat output/*}
+\codigo{ bash-4.1\# hdfs dfs -cat output/*}
 
 Listar todos os arquivos do diretório de entrada: \\
-{\ttfamily bash-4.1\# hdfs dfs -ls input/*}
+\codigo{ bash-4.1\# hdfs dfs -ls input/*}
 
 Remover todos arquivos do diretório de saída: \\
-{\ttfamily bash-4.1\# hdfs dfs -rm rf  output/*}
+\codigo{ bash-4.1\# hdfs dfs -rm rf  output/*}
 
 Listagem dos arquivos \\
-{\ttfamily bash-4.1\# hdfs dfs -ls /}
+\codigo{ bash-4.1\# hdfs dfs -ls /}
 
 E podemos sair do bash com o comando: \\
-{\ttfamily bash-4.1\# exit}
+\codigo{ bash-4.1\# exit}
 
 \section{Exemplo Completo}
 Acessamos os dados disponibilizados pelo Portal da Transparência\cite{portaltransp} sobre o Bolsa Família (acessar a opção "Benefícios ao Cidadão" - "Bolsa Família - Pagamentos") baixar qualquer mês/ano desejado e temos um arquivo CSV para trabalhar (colocamos o arquivo em uma pasta a partir do \$PWD - usado na associação do Docker - /Aplicativo/hadoop-model/bolsa).
 
 \subsection{Fora do Hadoop}
 O primeiro tratamento que fazemos é convertê-lo para um formato UTF-8 com o comando: \\
-{\ttfamily\$ iconv -f ISO-8859-1 -t UTF-8 [arqOriginal].csv > 2018\_Pagamento.utf8.csv}
+\codigo{\$ iconv -f ISO-8859-1 -t UTF-8 [arqOriginal].csv > 2018\_Pagamento.utf8.csv}
 
 Observamos que este arquivo é gigante para realizarmos um teste (demandará muito tempo de processamento), então usaremos o seguinte programa para gerar um arquivo AMOSTRA de 20.000 elementos (com base na técnica de Amostragem Sistemática). Listagem para o \textbf{amostra.py} (em linguagem Python):
 \begin{lstlisting}
@@ -254,7 +254,7 @@ file.close()
 \end{lstlisting}
 
 Executamos da seguinte forma: \\
-{\ttfamily\$ cat 2018\_Pagamento.utf8.csv | ./mapper.py}
+\codigo{\$ cat 2018\_Pagamento.utf8.csv | ./mapper.py}
 
 Utilizaremos este arquivo para o exemplo, mas se desejar pode utilizar o arquivo completo com a realização das devidas alterações no nome deste. Para processar o MapReduce precisamos criar dois arquivos. Listagem para o \textbf{mapper.py}:
 \begin{lstlisting}
@@ -273,7 +273,7 @@ for line in sys.stdin:
 \end{lstlisting}
 
 Podemos testar este com a seguinte linha de código: \\
-{\ttfamily\$ cat 201808\_BF\_Amostra.csv | ./mapper.py}
+\codigo{\$ cat 201808\_BF\_Amostra.csv | ./mapper.py}
 
 Observe que o resultado desta primeira fase fornece como saída o par "chave + valor" (estado e o valor pago) para cada linha encontrada no arquivo. E a listagem para o \textbf{reducer.py}:
 \begin{lstlisting}
@@ -296,48 +296,48 @@ print("%s\t%s" % (previous_value, sum))
 \end{lstlisting}
 
 Testamos este programa com a seguinte linha de código: \\
-{\ttfamily\$ cat 201808\_BF\_Amostra.csv | ./mapper.py | sort | ./reducer.py}
+\codigo{\$ cat 201808\_BF\_Amostra.csv | ./mapper.py | sort | ./reducer.py}
 
 Como não estamos executando no Hadoop precisamos usar o comando "sort" para ordenar os valores, e a saída desta segunda fase será os valores pagos totais agrupados do estado.
 
 \subsection{No Hadoop}
 Iniciar o contêiner: \\
-{\ttfamily\$ docker start hadoop}
+\codigo{\$ docker start hadoop}
 
 Executar o bash do Hadoop: \\
-{\ttfamily\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
+\codigo{\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
 
 Verificar a pasta na qual estamos: \\
-{\ttfamily bash-4.1\# pwd}
+\codigo{ bash-4.1\# pwd}
 
 E como resposta devemos obter: \textbf{/home/tsthadoop} que é a pasta que nos liga ao sistema externo. Selecionar a pasta aonde se localizam os arquivos: \\
-{\ttfamily bash-4.1\# cd Aplicativos/hadoop-model/bolsa}
+\codigo{ bash-4.1\# cd Aplicativos/hadoop-model/bolsa}
 
 Verificar a existência dos arquivos com o comando: \\
-{\ttfamily bash-4.1\# ls}
+\codigo{ bash-4.1\# ls}
 
 Adicionar os arquivos no HDFS: \\
-{\ttfamily bash-4.1\# hadoop fs -put mapper.py \\
+\codigo{ bash-4.1\# hadoop fs -put mapper.py \\
 bash-4.1\# hadoop fs -put reducer.py \\
 bash-4.1\# hadoop fs -put 201808\_BF\_Amostra.csv}
 
 Verificar os arquivos no HDFS: \\
-{\ttfamily bash-4.1\# hdfs dfs -ls}
+\codigo{ bash-4.1\# hdfs dfs -ls}
 
 Executar o MapReduce: \\
-{\ttfamily bash-4.1\# hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.0.jar -mapper "python mapper.py" \- -reducer "python reducer.py" \- -input 201808\_BF\_Amostra.csv -output OutputDir -file mapper.py -file reducer.py -file 201808\_BF\_Amostra.csv}
+\codigo{ bash-4.1\# hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.0.jar -mapper "python mapper.py" \- -reducer "python reducer.py" \- -input 201808\_BF\_Amostra.csv -output OutputDir -file mapper.py -file reducer.py -file 201808\_BF\_Amostra.csv}
 
 Verificar o diretório de saída: \\
-{\ttfamily bash-4.1\# hadoop fs -ls OutputDir}
+\codigo{ bash-4.1\# hadoop fs -ls OutputDir}
 
 Verificar a informação de saída: \\
-{\ttfamily bash-4.1\# hadoop fs -cat OutputDir/part-00000 | head}
+\codigo{ bash-4.1\# hadoop fs -cat OutputDir/part-00000 | head}
 
 Baixar o arquivo para a pasta local: \\
-{\ttfamily bash-4.1\# hadoop fs -getmerge OutputDir/ my-local-file.txt}
+\codigo{ bash-4.1\# hadoop fs -getmerge OutputDir/ my-local-file.txt}
 
 Para remover os arquivos do HDFS: \\
-{\ttfamily bash-4.1\# hdfs dfs -rm mapper1.py \\
+\codigo{ bash-4.1\# hdfs dfs -rm mapper1.py \\
 bash-4.1\# hdfs dfs -rm reducer1.py \\
 bash-4.1\# hdfs dfs -rm 2018\_Pagamento.utf8.csv \\
 bash-4.1\# hdfs dfs -rm -r OutputDir}
@@ -347,7 +347,7 @@ bash-4.1\# hdfs dfs -rm -r OutputDir}
 
 O que o Hadoop faz é organizar melhor esse volume exaustivo de dados para encontrar informações específicas sobre eles de maneira mais rápida e eficiente. Trata-se de conjuntos de clusters que trabalham com um hardware barato para executar um grande número de tarefas simultâneas sem comprometer a infraestrutura de processamento da rede. 
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+\input{../sty/final.tex}
 
 \begin{thebibliography}{5}
 	\bibitem{hadoopoficial} 
@@ -358,16 +358,7 @@ Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a dife
 	Dados do Portal da Transparência \\
 	\url{http://www.portaldatransparencia.gov.br/download-de-dados}
 	
-	\bibitem{fernandoanselmo} 
-	Fernando Anselmo - Blog Oficial de Tecnologia \\
-	\url{http://www.fernandoanselmo.blogspot.com.br/}
+    \input{../sty/referencias.tex}
+\end{thebibliography}
 
-	\bibitem{publicacao} 
-	Encontre essa e outras publicações em \\
-	\url{https://cetrex.academia.edu/FernandoAnselmo}
-
-	\bibitem{github} 
-	Repositório para os fontes da apostila \\
-	\url{https://github.com/fernandoans/publicacoes}	
-	\end{thebibliography}
 \end{document}

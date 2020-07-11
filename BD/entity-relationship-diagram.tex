@@ -1,0 +1,94 @@
+% Author: Pável Calado
+% the tikz-er2.sty package is available at:
+% http://tagus.inesc-id.pt/~pcalado/tikzer2/tikz-er2.html
+
+\documentclass[a4paper,12pt,landscape]{article}
+
+\usepackage[landscape]{geometry}
+\usepackage{graphicx}
+
+\usepackage{tikz-er2}
+%%%<
+\usepackage{verbatim}
+\usepackage[active,tightpage]{preview}
+\PreviewEnvironment{tikzpicture}
+\setlength\PreviewBorder{5pt}%
+%%%>
+
+\begin{comment}
+:Title: Entity-Relationship diagram
+
+Example of an Entity-Relationship diagram, built using Tikz and the tikz-er2 package (available at `<http://tagus.inesc-id.pt/~pcalado/tikzer2/tikz-er2.html>`_)
+
+\end{comment}
+
+\begin{document}
+
+\thispagestyle{empty}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+
+\tikzstyle{every entity} = [top color=white, bottom color=blue!30, 
+                            draw=blue!50!black!100, drop shadow]
+\tikzstyle{every weak entity} = [drop shadow={shadow xshift=.7ex, 
+                                 shadow yshift=-.7ex}]
+\tikzstyle{every attribute} = [top color=white, bottom color=yellow!20, 
+                               draw=yellow, node distance=1cm, drop shadow]
+\tikzstyle{every relationship} = [top color=white, bottom color=red!20, 
+                                  draw=red!50!black!100, drop shadow]
+\tikzstyle{every isa} = [top color=white, bottom color=green!20, 
+                         draw=green!50!black!100, drop shadow]
+
+\centering
+\begin{tikzpicture}[node distance=1.5cm, every edge/.style={link}]
+  \node[entity] (emp) {Employee};
+  \node[attribute] (ename) [above=of emp] {Name} edge (emp);
+  \node[attribute] (enum) [above right=of emp] {\key{Number}} edge (emp);
+
+  \node[isa] (isa) [below=1cm of emp] {ISA} edge (emp);
+
+  \node[entity] (mec) [below left=1cm of isa] {Mechanic} edge (isa);
+  \node[entity] (sal) [below right=1cm of isa] {Salesman} edge (isa);
+
+  \node[relationship] (does) [left=of mec] {Does} edge (mec);
+
+  \node[weak entity] (rep) [below=of does] {RepairJob} edge (does);
+  \node[attribute] (rnum) [left=of rep] {\discriminator{Number}} edge (rep);
+  \node[attribute] (desc) [above left=of rep] {Description} edge (rep);
+  \node[attribute] (cost) [below left=of rep] {Cost} edge (rep);
+  \node[attribute] (mat) [left=0.5cm of cost] {Parts} edge (cost);
+  \node[attribute] (work) [below left=0.5cm of cost] {Work} edge (cost);
+
+  \node[ident relationship] (reps) [below=of rep] {Repairs} edge [total] (rep);
+
+  \node[entity] (car) [right=of reps] {Car} edge [<-] (reps);
+  \node[attribute] (lic) [above=of car] {\key{License}} edge (car);
+  \node[attribute] (mod) [below=of car] {Model} edge (car);
+  \node[attribute] (year) [below right=of car] {Year} edge (car);
+  \node[attribute] (manu) [below left=1.5cm of car] {Manufacturer} edge (car);
+  
+  \node[relationship] (buy) [below=of sal] {Buys};
+  \node[attribute] (pri) [above left=of buy] {Price} edge (buy);
+  \node[attribute] (sdate) [left=of buy] {Date} edge (buy);
+  \node[attribute] (bval) [below left=of buy] {Value} edge (buy);
+
+  \node[relationship] (sel) [right=of buy] {Sells};
+  \node[attribute] (sdate) [above right=of sel] {Date} edge (sel);
+  \node[derived attribute] (sval) [right=of sel] {Value} edge (sel);
+  \node[attribute] (com) [below right=of sel] {Comission} edge (sel);
+  
+  \draw[link] (car.10) -| (buy) (buy) edge (sal);
+  \draw[link] (car.-10) -| (sel) (sel) |- (sal);
+
+  \node[entity] (cli) [below right=0.5cm and 3.7cm of car] {Client};
+  \node[attribute] (cid) [right=of cli] {\key{ID}} edge (cli);
+  \node[attribute] (cname) [below left=of cli] {Name} edge (cli);
+  \node[multi attribute] (cphone) [below right=of cli] {Phone} edge (cli);
+  \node[attribute] (cadd) [below=of cli] {Address} edge (cli);
+
+  \draw[link] (cli.70) |- node [pos=0.05, auto, swap] {buyer} (sel);
+  \draw[link] (cli.110) |- node [pos=0.05, auto] {seller} (buy);
+\end{tikzpicture}
+
+\end{document}

@@ -90,24 +90,24 @@ Por meu sistema operacional ser o Ubuntu os comandos descritos nesta seção ser
 \end{theo}
 
 Criar uma pasta que serve como associação ao contêiner: \\
-{\ttfamily\$ mkdir \$HOME/rstudio}
+\codigo{\$ mkdir \$HOME/rstudio}
 
 Fornecer permissões a esta pasta de modo que o contêiner possa acessá-la: \\
-{\ttfamily\$ chown 1000 \$HOME/rstudio}
+\codigo{\$ chown 1000 \$HOME/rstudio}
 
 Baixar a imagem disponível: \\
-{\ttfamily\$ docker pull rocker/rstudio}
+\codigo{\$ docker pull rocker/rstudio}
 
 Instalar e rodar a imagem: \\
-{\ttfamily\$ docker run --name meu-rstudio -d -p 8787:8787 -v \$HOME/rstudio:/home/rstudio -e \\ PASSWORD=rstudio rocker/rstudio}
+\codigo{\$ docker run --name meu-rstudio -d -p 8787:8787 -v \$HOME/rstudio:/home/rstudio -e \\ PASSWORD=rstudio rocker/rstudio}
 
 Para executar abrir um navegador e acessar a URL \url{http://localhost:8787}. O usuário e a senha são: \textbf{rstudio}.
 
 Para encerrar o RStudio: \\
-{\ttfamily\$ docker stop meu-rstudio} 
+\codigo{\$ docker stop meu-rstudio} 
 
 Para iniciar novamente o RStudio: \\
-{\ttfamily\$ docker start meu-rstudio} 
+\codigo{\$ docker start meu-rstudio} 
 
 \section{Ambiente RStudio}
 O ambiente do RStudio é composto de 3 áreas:
@@ -128,12 +128,12 @@ A partir deste ponto, todos os comandos aqui mostrados, foram digitados na \text
 \end{theo}
 
 O principal comando de todo iniciante: \\
-{\ttfamily help.start()} 
+\codigo{ help.start()} 
 
 Na aba \textit{Help} será mostrado diversos manuais, referencias e materiais sobre a linguagem.
 
 Limpar a console de saída usar o comando: \\
-{\ttfamily cat("$\setminus$014")}
+\codigo{ cat("$\setminus$014")}
 
 Podemos também usar no menu: Edit $\triangleright$ Clear Console. É recomendável explorar as opções disponíveis neste menu e se familiarizar com suas opções.
 
@@ -141,19 +141,19 @@ Podemos também usar no menu: Edit $\triangleright$ Clear Console. É recomendá
 Os pacotes complementam as funções da linguagem e agregam mais poder ao R. 
 
 Instalar um pacote: \\
-{\ttfamily install.packages("nome")}
+\codigo{ install.packages("nome")}
 
 Podemos também utilizar a opção \textit{dependencies} para adicionar automaticamente todas as suas dependências: \\
-{\ttfamily install.packages("nome", dependencies=TRUE)}
+\codigo{ install.packages("nome", dependencies=TRUE)}
 
 Por exemplo, um pacote muito comum a ser instalado é o \textbf{dbplyr} (usaremos este como referência para os próximos comandos), para instalar: \\
-{\ttfamily install.packages("dbplyr", dependencies=TRUE)}
+\codigo{ install.packages("dbplyr", dependencies=TRUE)}
 
 Obter uma ajuda sobre o pacote: \\
-{\ttfamily library(help = "dbplyr")}
+\codigo{ library(help = "dbplyr")}
 
 Usar o pacote instalado: \\
-{\ttfamily library("dbplyr")}
+\codigo{ library("dbplyr")}
 
 \subsection{Chaining do pacote DPLYR}
 R tem suas particularidades como linguagem, uma delas é \textit{chaining} (algo como encadeamento) contido no pacote DPLYR, funciona como uma agregação sequencial de métodos em outras linguagens. Observemos o seguinte exemplo:
@@ -164,7 +164,7 @@ sqrt(sum((x1-x2)^2))
 
 \begin{theo}[]{}
 	Para funcionar esta funcionalidade, devemos habilitar o pacote ``dplyr'': \\
-	{\ttfamily library("dplyr")}
+	\codigo{ library("dplyr")}
 \end{theo}
 
 Com \textit{chaining}, reescrevemos a última linha da seguinte forma:
@@ -179,25 +179,25 @@ O resultado da primeira expressão é passado para a segunda, e por sua vez para
 Nessa seção entenderemos como o R funciona, aprender algumas funções e diversos exemplos práticos.
 
 \subsection{Tipos de Dados}
-R trabalha com 5 tipos de dados (em R o comando de atribuição é {\ttfamily <-}):
+R trabalha com 5 tipos de dados (em R o comando de atribuição é \codigo{ <-}):
 \begin{itemize}
-  \item \textbf{Numérico - numeric}: São números com a forma decimal: {\ttfamily a <- 1.6} Obs. Não confunda, mesmo que a variável recebesse o valor 1, continuaria sendo numérica, para verificar o tipo de dado, executar o comando: {\ttfamily class(a)}, ou perguntar se determinada variável é de determinado tipo: {\ttfamily is.numeric(a)} 
-  \item \textbf{Inteiro - integer}: São números sem a parte fracionária: {\ttfamily b <- 1L} Obs. Verifique na janela \textit{Environment} que b está com o valor 1L, outra forma de definir uma inteira é por conversão, i.e {\ttfamily b <- as.integer(a)} e teremos o mesmo resultado 
-  \item \textbf{Caractere - character}: São letras ou números: {\ttfamily c <- '12ABC'} Obs. Não é possível realizar operações aritméticas com este tipo de variável e não existe a distinção entre aspas duplas ou simples, qualquer uma pode ser utilizada
-  \item \textbf{Fator - factor}: é um tipo especial de vetor que nos permite plotar os dados: {\ttfamily d <- factor(c("Masculino", "Feminino", "Masculino"))} Obs. Neste fator temos 2 ocorrências (ou níveis), isso pode ser verificado com os seguintes comandos: {\ttfamily levels(d)} ou {\ttfamily nlevels(d)} sendo que o primeiro mostra as ocorrências e o segundo a quantidade 
-  \item \textbf{Lógica - logical}: Podem ser de 2 tipos TRUE ou FALSE: {\ttfamily e <- TRUE} Obs. Lembre-se que a linguagem é \textit{case-sensitive}, ou seja, existe uma diferença entre as letras maiúsculas de minúsculas
+  \item \textbf{Numérico - numeric}: São números com a forma decimal: \codigo{ a <- 1.6} Obs. Não confunda, mesmo que a variável recebesse o valor 1, continuaria sendo numérica, para verificar o tipo de dado, executar o comando: \codigo{ class(a)}, ou perguntar se determinada variável é de determinado tipo: \codigo{ is.numeric(a)} 
+  \item \textbf{Inteiro - integer}: São números sem a parte fracionária: \codigo{ b <- 1L} Obs. Verifique na janela \textit{Environment} que b está com o valor 1L, outra forma de definir uma inteira é por conversão, i.e \codigo{ b <- as.integer(a)} e teremos o mesmo resultado 
+  \item \textbf{Caractere - character}: São letras ou números: \codigo{ c <- '12ABC'} Obs. Não é possível realizar operações aritméticas com este tipo de variável e não existe a distinção entre aspas duplas ou simples, qualquer uma pode ser utilizada
+  \item \textbf{Fator - factor}: é um tipo especial de vetor que nos permite plotar os dados: \codigo{ d <- factor(c("Masculino", "Feminino", "Masculino"))} Obs. Neste fator temos 2 ocorrências (ou níveis), isso pode ser verificado com os seguintes comandos: \codigo{ levels(d)} ou \codigo{ nlevels(d)} sendo que o primeiro mostra as ocorrências e o segundo a quantidade 
+  \item \textbf{Lógica - logical}: Podem ser de 2 tipos TRUE ou FALSE: \codigo{ e <- TRUE} Obs. Lembre-se que a linguagem é \textit{case-sensitive}, ou seja, existe uma diferença entre as letras maiúsculas de minúsculas
 \end{itemize}
 
 Na aba \textbf{Environment} é o lugar que as variáveis são armazenadas.
 
 Ver uma lista das variáveis disponíveis: \\
-{\ttfamily ls()}
+\codigo{ ls()}
 
 Eliminar uma variável: \\
-{\ttfamily rm(nomeVariavel)}
+\codigo{ rm(nomeVariavel)}
 
 Apagar completamente a \textit{Workspace}: \\
-{\ttfamily rm(list = ls())}
+\codigo{ rm(list = ls())}
 
 Existem também outros tipos usados em R que são chamados de \textit{Atomic Types} (tipos atômicos), são eles:
 \begin{itemize}[noitemsep]
@@ -241,46 +241,46 @@ exp(x)
 
 \subsection{Lidar com Strings}
 Não existe qualquer problema entre usar aspas duplas ou simples, porém para o iniciante a linguagem pode parecer esquisita ao não permitir uma simples concatenação envolvendo duas Strings: \\
-{\ttfamily nomeCompleto = 'Fernando' + 'Anselmo'}
+\codigo{ nomeCompleto = 'Fernando' + 'Anselmo'}
 
 Resolvido ao utilizar o comando \textbf{paste}: \\
-{\ttfamily nomeCompleto = paste('Fernando', 'Anselmo')}
+\codigo{ nomeCompleto = paste('Fernando', 'Anselmo')}
 
 Observamos que um espaço entre as strings é inserido automaticamente: \\
-{\ttfamily print(nomeCompleto)}
+\codigo{ print(nomeCompleto)}
 
 Porém em alguns casos não desejamos que isso aconteça, resolvemos com a opção \textbf{sep}: \\
-{\ttfamily nomeCompleto = paste("Fernando", "Anselmo", sep = '')}
+\codigo{ nomeCompleto = paste("Fernando", "Anselmo", sep = '')}
 
 Contar quantos caracteres uma determinada String possui: \\
-{\ttfamily nchar(nomeCompleto)}
+\codigo{ nchar(nomeCompleto)}
 
 Obter parte de uma String (o primeiro carácter está na posição 0): \\
-{\ttfamily substring(nomeCompleto, 4, 8)}
+\codigo{ substring(nomeCompleto, 4, 8)}
 
 \subsection{Vetores}
 Um vetor (vector) em R é uma combinação de elementos de mesmo tipo.
 
 Criar um vetor: \\
-{\ttfamily c("coração", "espada", "copas", "paus")}
+\codigo{ c("coração", "espada", "copas", "paus")}
 
 Guardar o vetor em uma variável: \\
-{\ttfamily tc <- c("coração", "espada", "copas", "paus")}
+\codigo{ tc <- c("coração", "espada", "copas", "paus")}
 
 Trazer o valor do segundo elemento, ou seja ``espada''. Utilizamos seu índice entre colchetes. O primeiro elemento possui o índice 1 e assim sucessivamente: \\
-{\ttfamily tc[2]}
+\codigo{ tc[2]}
 
 Obter vários elementos (no caso três) usamos o operador de intervalo: \\
-{\ttfamily tc[2:4]}
+\codigo{ tc[2:4]}
 
 Juntar valores caracteres: \\
-{\ttfamily paste("Tipo de carta:", tc[1:4])}
+\codigo{ paste("Tipo de carta:", tc[1:4])}
 
 Obter o tamanho de um vetor: \\
-{\ttfamily length(tc)}
+\codigo{ length(tc)}
 
 Outra forma de se criar um vetor seria através de um intervalo, por exemplo, para definir um vetor cartas com 13 elementos de 1 a 13: \\
-{\ttfamily vc <- c(1:13)}
+\codigo{ vc <- c(1:13)}
 
 Outro detalhe interessante com vetores é que podemos proceder operações em 
 conjunto, veja esses exemplos:
@@ -322,7 +322,7 @@ tail(NomeVetor)   # Mostra os dados finais do vetor
 
 \subsection{Análise de dados com Vetores}
 Obtermos informações sobre o vetor: \\
-{\ttfamily str(kms)}
+\codigo{ str(kms)}
 
 Realizar uma análise de seus dados é essencial conhecer algumas funções básicas de estatística e aritmética:
 \begin{lstlisting}
@@ -369,13 +369,13 @@ A caixa no meio do gráfico, formada pelos 1º e 3º quartis, em estatística é
 
 A função ``Quantil'' (quantile()) nos permite analisar outros dados interessantes. O primeiro seria dividir os valores em 10 partes (com intervalos de 10\%), isso é chamado de ``decil'' (que é qualquer valor da divisão de uma 
 variável em 10 partes iguais): \\
-{\ttfamily quantile(kms, prob = seq(0, 1, length = 11), type = 5)}
+\codigo{ quantile(kms, prob = seq(0, 1, length = 11), type = 5)}
 
 E com esse conhecimento, podemos localizar qualquer ``percentil'' que desejarmos, um percentil é uma medida estatística que divide uma amostra em 100 partes, cada uma com uma percentagem de dados é aproximadamente igual. Por exemplo, para acharmos o 32º, 57º e 98º percentil na nossa corrida semanal, podemos usar: \\
-{\ttfamily quantile(kms, prob = c(.32, .57, .98))}
+\codigo{ quantile(kms, prob = c(.32, .57, .98))}
 
 Outro gráfico muito simples de ser realizado é a plotagem: \\
-{\ttfamily plot(kms)}
+\codigo{ plot(kms)}
 
 E o resultado será este:
 \begin{figure}[H]
@@ -385,7 +385,7 @@ E o resultado será este:
 \end{figure}
 
 Porém um histograma é bem mais interessante para a Análise de Dados: \\
-{\ttfamily hist(kms)}
+\codigo{ hist(kms)}
 
 E o resultado será este:
 \begin{figure}[H]
@@ -397,7 +397,7 @@ E o resultado será este:
 Um histograma mostra os dados de forma agrupada por intervalos regulares, neste caso observamos que entre 1 km e 1,5 km a frequência foi de 2 vezes (ocorreu no Domingo e na Segunda), entre 1,5 km e 2 km a frequência foi 1 vez (ocorreu no Sábado) e assim se procede sua leitura.
 
 Por fim podemos utilizar o ``Normal-Quantile Plots'' para traçar um gráfico com a distribuição padrão normal dos nossos dados e verificar qual nossa média real de quilômetros percorridos na corrida:
-{\ttfamily qqnorm(kms)}
+\codigo{ qqnorm(kms)}
 
 E o resultado será este:
 \begin{figure}[H]
@@ -417,24 +417,24 @@ a[6] <- NA   # atribuir para o elemento 6 o valor NA
 \end{lstlisting}
 
 Obviamente isto é apenas um exemplo, sendo que o vetor ``a'' contém os seguintes valores: \\
-{\ttfamily 1 NA  3  4  5 NA  7  8  9 10}
+\codigo{ 1 NA  3  4  5 NA  7  8  9 10}
 
 É impossível aplicar as funções vistas neste vetor. Para limpá-lo podemos utilizar o seguinte comando: \\
-{\ttfamily a <- na.omit(a)}
+\codigo{ a <- na.omit(a)}
 
 E todos os valores NA serão retirados. Outra forma que fará o mesmo efeito é: \\
-{\ttfamily a <- a[!is.na(a)]}
+\codigo{ a <- a[!is.na(a)]}
 
 Verificar os dados: \\
-{\ttfamily any(is.na(a))}
+\codigo{ any(is.na(a))}
 
 E será retornado FALSE, indicando que a nossa amostra está coerente. 
 
 A segunda forma é bem interessante, imaginemos agora o seguinte vetor: \\
-{\ttfamily numFilhos <- c(5, 2, -3, 1, 0, -4)}
+\codigo{ numFilhos <- c(5, 2, -3, 1, 0, -4)}
 
 Remover todos os valores negativos deste vetor, que apresentam erros na amostragem: \\
-{\ttfamily numFilhos <- numFilhos[numFilhos > 0]}
+\codigo{ numFilhos <- numFilhos[numFilhos > 0]}
 
 Operações básicas de lógica em R:
 \begin{lstlisting}
@@ -450,19 +450,19 @@ is.[tipo](var) # Se a variavel eh de determinado tipo
 
 \subsection{Números Aleatórios}
 Gerar uma sequencia de 10 números aleatórios: \\
-{\ttfamily runif(10)}
+\codigo{ runif(10)}
 
 Limitar os valores mínimo e máximo: \\
-{\ttfamily runif(10, min = 5, max = 50)}
+\codigo{ runif(10, min = 5, max = 50)}
 
 Definir a quantidade de casas decimais: \\
-{\ttfamily options(digits = 2)}
+\codigo{ options(digits = 2)}
 
 Gerar um vetor de 10 letras aleatórias: \\
-{\ttfamily letters[round(runif(10, min = 1, max = 27))]}
+\codigo{ letters[round(runif(10, min = 1, max = 27))]}
 
 E em maiúsculas: \\
-{\ttfamily LETTERS[round(runif(10, min = 1, max = 27))]}
+\codigo{ LETTERS[round(runif(10, min = 1, max = 27))]}
 
 Resumo das Funções:
 \begin{lstlisting}
@@ -476,21 +476,21 @@ letters ou LETTERS # Vetor com as letras do alfabeto minusculas e maiusculas
 Na subseção de Chaining foi mostrado um dos comandos do pacote DPLYR, vamos nos aprofundar mais nele para entender melhor seu funcionamento. Basicamente serve como substituição de muitas funções de acesso a \textit{DataSet}. 
 
 Instalar o \textit{DataSet} \textbf{hflights}: \\
-{\ttfamily install.packages(c("hflights", "Lahman"))}
+\codigo{ install.packages(c("hflights", "Lahman"))}
 
 Usar ambos pacotes: \\
-{\ttfamily library(dplyr)} \\
-{\ttfamily library(hflights)}
+\codigo{ library(dplyr)} \\
+\codigo{ library(hflights)}
 
 Utilizar o \textit{DataSet} de Voos: \\
-{\ttfamily voos <- tibble::as\_tibble(hflights)}
+\codigo{ voos <- tibble::as\_tibble(hflights)}
 
 Visualizar a estrutura de um objeto, normalmente usaríamos o comando \textit{str(voos)}, com o pacote \textbf{dplyr} ativo usaremos: \\
-{\ttfamily glimpse(voos)}
+\codigo{ glimpse(voos)}
 
 \subsection{Seleções}
 Selecionar determinadas colunas: \\
-{\ttfamily select(voos, DepTime, ArrTime, FlightNum)}
+\codigo{ select(voos, DepTime, ArrTime, FlightNum)}
 
 Selecionar determinadas colunas, por um vetor:
 \begin{lstlisting}
@@ -500,7 +500,7 @@ voos %>%
 \end{lstlisting}
 
 Selecionar determinadas colunas que contenham tal expressão: \\
-{\ttfamily select(voos, Year:DayofMonth, contains("Taxi"), contains("Delay"))} 
+\codigo{ select(voos, Year:DayofMonth, contains("Taxi"), contains("Delay"))} 
 
 Seleção distinta, sem repetições:
 \begin{lstlisting}
@@ -546,13 +546,13 @@ voos %>%
 
 \subsection{Filtragens}
 Obter todos os Voos de um determinado Mês E Ano: \\
-{\ttfamily filter(voos, Month == 1 \& DayofMonth==1)}
+\codigo{ filter(voos, Month == 1 \& DayofMonth==1)}
 
 Obter todos os Voos de determinados Transportadores: \\
-{\ttfamily filter(voos, UniqueCarrier == 'AA' | UniqueCarrier == 'UA')}
+\codigo{ filter(voos, UniqueCarrier == 'AA' | UniqueCarrier == 'UA')}
 
 Também podemos utilizar: \\
-{\ttfamily filter(voos, UniqueCarrier \%in\% c('AA','UA'))}
+\codigo{ filter(voos, UniqueCarrier \%in\% c('AA','UA'))}
 
 Mesclar SELEÇÃO e FILTRO:
 \begin{lstlisting}
@@ -698,13 +698,13 @@ voos %>%
 \end{lstlisting}
 
 \section{Lidar com Arquivos Externos}
-Obviamente boa parte do trabalho de um Cientista de Dados é ler arquivos externos (principalmente do tipo CSV) para realizar suas analises, como proceder essa leitura já que estamos em um contêiner Docker? Lembramos que quando foi criado o contêiner este foi associado a uma pasta (através da diretiva volume: {\ttfamily -v \$HOME/rstudio:/home/rstudio}), assim basta apenas colocar o arquivo nessa pasta é proceder sua leitura normalmente.
+Obviamente boa parte do trabalho de um Cientista de Dados é ler arquivos externos (principalmente do tipo CSV) para realizar suas analises, como proceder essa leitura já que estamos em um contêiner Docker? Lembramos que quando foi criado o contêiner este foi associado a uma pasta (através da diretiva volume: \codigo{ -v \$HOME/rstudio:/home/rstudio}), assim basta apenas colocar o arquivo nessa pasta é proceder sua leitura normalmente.
 
 Ler o arquivo titanic.csv: \\
-{\ttfamily titanic <- read.csv(file = 'titanic.csv')}
+\codigo{ titanic <- read.csv(file = 'titanic.csv')}
 
 Verificar os dados: \\
-{\ttfamily head(titanic)}
+\codigo{ head(titanic)}
 
 Outras vezes podemos necessitar em gerar um arquivo PDF de um gráfico, por exemplo:
 \begin{lstlisting}
@@ -725,24 +725,24 @@ Nos exemplos abaixo trocar o termo [URL] para \\ \url{https://raw.githubusercont
 \end{theo}
 
 Observamos que o arquivo gerado foi criado no seu sistema (fora do contêiner). Também podemos trazer dados da Web sem o menor problema, por exemplo: \\
-{\ttfamily x <- scan("[URL]/gameML.txt", what = list(nome = "", familia = "", idade = 0, salario = 0.0))}
+\codigo{ x <- scan("[URL]/gameML.txt", what = list(nome = "", familia = "", idade = 0, salario = 0.0))}
 
 O maior problema nessa maneira é que os dados devem estar corretamente organizados (sem a falta de informações), note que a opção \textbf{what} mostra como estão estruturados. Se existe um cabeçalho podemos utilizar a opção \textbf{header = TRUE}.
 
 Podemos utilizar o seguinte modo para trazer um arquivo texto, onde cada linha será um registro:
-{\ttfamily y <- scan("[URL]//cbcNewsOct2.srt", what = character(), sep = '$\setminus$n')}
+\codigo{ y <- scan("[URL]//cbcNewsOct2.srt", what = character(), sep = '$\setminus$n')}
 
 Trazer um arquivo CSV da Web:
-{\ttfamily game.csv <- read.csv("[URL]/gameML.csv", header = TRUE, sep = ";")}
+\codigo{ game.csv <- read.csv("[URL]/gameML.csv", header = TRUE, sep = ";")}
 
 Listar o arquivo:
-{\ttfamily print(game.csv)}
+\codigo{ print(game.csv)}
 
 Gravar um arquivo:
-{\ttfamily write.table(game.csv, file.path(getwd(), "saida.txt"), col.names = FALSE, row.names = FALSE, quote = TRUE)}
+\codigo{ write.table(game.csv, file.path(getwd(), "saida.txt"), col.names = FALSE, row.names = FALSE, quote = TRUE)}
 
 Tiramos o cabeçalho e os nomes (índices) das colunas e adicionamos aspas para os caracteres assim podemos facilmente ler:
-{\ttfamily x <- scan("saida.txt", what = list(nome = "", idade = 0, salario = 0.0))}
+\codigo{ x <- scan("saida.txt", what = list(nome = "", idade = 0, salario = 0.0))}
 
 \section{Conclusão}
 O objetivo desta apostila foi o de mostrar como iniciar seus estudos na Linguagem R é não de ensinar estatística. Foi planejada para ser usada durante disciplinas com o uso da linguagem R (principalmente para pessoas que nunca usaram o R), mas isso não impede que seja utilizada em diversas fases de seus estudos.
@@ -751,7 +751,7 @@ A maioria dos pacotes tem por objetivo análises estatísticas, porém praticame
 
 R é uma das linguagens de computador que mais cresce no mundo. Parte devido ao crescente comunidade de usuários que contribui com pacotes, que são conjuntos de pequenos programas que expandem suas funcionalidades. No Brasil, contamos com espelhos na USP, UFPR e fundação Oswaldo Cruz. ``R é uma demonstração real do poder da colaboração, e não creio que fosse possível criar algo parecido de qualquer outra maneira'', disse Ihaka. ``Se tivéssemos escolhido lançar o software como produto comercial, teríamos vendido cinco cópias''. 
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+\input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
@@ -765,17 +765,7 @@ Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a dife
   Página do RStudio \\
   \url{https://www.rstudio.com/}
   
-  \bibitem{fernandoanselmo} 
-  Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br/}
-
-  \bibitem{publicacao} 
-  Encontre essa e outras publicações em \\
-  \url{https://cetrex.academia.edu/FernandoAnselmo}
-
-  \bibitem{github} 
-  Repositório para os fontes da apostila \\
-  \url{https://github.com/fernandoans/publicacoes}
+  \input{../sty/referencias.tex}
 \end{thebibliography}
   
 \end{document}

@@ -38,65 +38,65 @@ Assim não espere encontrar aqui nenhuma explicação elaborada de como usar o U
 
 \subsection{Considerações principais}
 Partirei da premissa que o computador contém a versão mais atual (20.04 - Focal Fossa) terminada de instalar corretamente. Não sabe a versão do sistema? \\
-{\ttfamily\$ lsb\_release -a}
+\codigo{\$ lsb\_release -a}
 
 Antes de mais nada precisamos manter a saúde do sistema em ordem. Atualizar o sistema: \\
-{\ttfamily\$ sudo apt update \&\& sudo apt upgrade}
+\codigo{\$ sudo apt update \&\& sudo apt upgrade}
 
 Existe algum pacote quebrado? Então organize-os com o seguinte comando: \\
-{\ttfamily\$ sudo nano /etc/apt/sources.list}
+\codigo{\$ sudo nano /etc/apt/sources.list}
 
 Saber quanto o sistema está "sujo": \\
-{\ttfamily\$ sudo du -h /var/cache/apt/}
+\codigo{\$ sudo du -h /var/cache/apt/}
 
 Deixar o sistema limpo: \\
-{\ttfamily\$ sudo apt autoclean \&\& sudo apt autoremove \\
+\codigo{\$ sudo apt autoclean \&\& sudo apt autoremove \\
 sudo /sbin/fstrim --all || true}
 
 Adicionar novos pacotes: \\
-{\ttfamily\$ sudo add-apt-repository ppa:pipelight/stable}
+\codigo{\$ sudo add-apt-repository ppa:pipelight/stable}
 
 Remover pacotes: \\
-{\ttfamily\$ sudo add-apt-repository --remove ppa:pipelight/stable}
+\codigo{\$ sudo add-apt-repository --remove ppa:pipelight/stable}
 
 \subsection{Problemas após as atualizações}
 \textbf{Perdeu a Rede?} acessar o terminal e digitar: \\
-{\ttfamily\$ sudo nano /etc/default/avahi-daemon}
+\codigo{\$ sudo nano /etc/default/avahi-daemon}
 
 No arquivo trocar o valor da variável para 0: \\
-{\ttfamily AVAHI\_DAEMON\_DETECT\_LOCAL=0}
+\codigo{ AVAHI\_DAEMON\_DETECT\_LOCAL=0}
 
 \textbf{Perdeu o Som?} acessar o terminal e digitar: \\
-{\ttfamily\$ sudo alsa force-reload}
+\codigo{\$ sudo alsa force-reload}
 
 E remover o "timidy" que pode estar dando conflito: \\
-{\ttfamily\$ sudo apt purge timidity}
+\codigo{\$ sudo apt purge timidity}
 
 \subsection{Softwares Básicos}
 Este é um conjunto de softwares básicos que, na minha opinião, deveriam fazer parte da distribuição básica do Ubuntu. \textbf{Gimp} para edição de imagem: \\
-{\ttfamily\$ sudo add-apt-repository ppa:otto-kesselgulasch/gimp} \\
-{\ttfamily\$ sudo apt install gimp gimp-gmic gimp-data gimp-data-extras}
+\codigo{\$ sudo add-apt-repository ppa:otto-kesselgulasch/gimp} \\
+\codigo{\$ sudo apt install gimp gimp-gmic gimp-data gimp-data-extras}
 
 OpenJava, Compactação RAR e Bibliotecas Básicas para vídeo: \\
-{\ttfamily\$ sudo apt install openjdk-8-jdk unrar rar libdvd.pkg}
+\codigo{\$ sudo apt install openjdk-8-jdk unrar rar libdvd.pkg}
 
 Configurar o Gnome: \\
-{\ttfamily\$ sudo apt install gnome-tweak-tool}
+\codigo{\$ sudo apt install gnome-tweak-tool}
 
 Conky para informações gerenciais: \\
-{\ttfamily\$ sudo apt install conky-all}
+\codigo{\$ sudo apt install conky-all}
 
 Compilador Assembly (NASM): \\
-{\ttfamily\$ sudo apt install nasm}
+\codigo{\$ sudo apt install nasm}
 
 Dicionário de Inglês: \\
-{\ttfamily\$ sudo apt-get install artha}
+\codigo{\$ sudo apt-get install artha}
 
 Gerenciar melhor as Fontes (tipos de letra) do Sistema: \\
-{\ttfamily\$ sudo apt-get install font-manager}
+\codigo{\$ sudo apt-get install font-manager}
 
 Criar partituras: \\
-{\ttfamily\$ sudo apt-get install musescore}
+\codigo{\$ sudo apt-get install musescore}
 
 \subsection{Na Loja do Ubuntu}
 Na loja também um interessante conjunto de softwares, são eles: \vspace{-1em}
@@ -113,17 +113,17 @@ Na loja também um interessante conjunto de softwares, são eles: \vspace{-1em}
   \item \textbf{Editor dConf}. Para permitir configurar o Gnome.
 \end{itemize}
 
-Após instalar, acessar o dConf para o Nautilus para permitir a entrada do endereço. Caminho: org | gnome | nautilus | preferences. Ativar a opção: {\ttfamily always-use-location-entry}
+Após instalar, acessar o dConf para o Nautilus para permitir a entrada do endereço. Caminho: org | gnome | nautilus | preferences. Ativar a opção: \codigo{ always-use-location-entry}
 
 \section{Softwares mais especializados}
 Não consigo passar sem a seguinte coleção de softwares a seguir, dão mais trabalho para serem instalados, porém são extramente necessários.
 
 \subsection{Desenvolvimento em C++}
 Code::Blocks é um dos melhores editores para programação em C++, sua instalação pode ser realizada pela loja mas é preferível deste modo: \\
-{\ttfamily\$ sudo apt install gcc g++ codeblocks}
+\codigo{\$ sudo apt install gcc g++ codeblocks}
 
 Para criação de jogos utilizo a biblioteca SFML para C++ \\
-{\ttfamily\$ sudo apt install libsfml-dev}
+\codigo{\$ sudo apt install libsfml-dev}
 
 Para configurar seu uso no Code::Blocks acessar: settings | compiler | aba "Linker settings" | add, os seguintes itens:
 \begin{itemize}[noitemsep]
@@ -142,40 +142,40 @@ Qualquer coisa consultar o site de tutoriais oficiais do SFML em \cite{sfml}
 
 \subsection{Mapas Mentais}
 XMind ainda é o Rei nessa área apesar de sua configuração ser um tanto chata (por assim dizer), no site oficial \cite{xmind} baixe o arquivo compactado disponibilizado para o XMind 8. Extrair da seguinte forma: \\
-{\ttfamily\$ unzip xmind-8-update7-linux.zip -d xmind}
+\codigo{\$ unzip xmind-8-update7-linux.zip -d xmind}
 
 Mover para opt: \\
-{\ttfamily\$ sudo mv xmind /opt/}
+\codigo{\$ sudo mv xmind /opt/}
 
 Preparar os diretório, permitindo sua leitura: \\
-{\ttfamily\$ sudo chmod a+w /opt/xmind/XMind\_amd64/configuration}
+\codigo{\$ sudo chmod a+w /opt/xmind/XMind\_amd64/configuration}
 
 Editar o arquivo de configuração: \\
-{\ttfamily\$ sudo nano /opt/xmind/XMind\_amd64/XMind.ini}
+\codigo{\$ sudo nano /opt/xmind/XMind\_amd64/XMind.ini}
 
 E realizar os seguinte itens: \\
-{\ttfamily TROCAR na Lin 2: ./configuration} \\
-{\ttfamily Para: /opt/xmind/XMind\_amd64/configuration}
+\codigo{ TROCAR na Lin 2: ./configuration} \\
+\codigo{ Para: /opt/xmind/XMind\_amd64/configuration}
 
-{\ttfamily TROCAR na Lin 4: ../workspace} \\
-{\ttfamily Para: /home/USERNAME/workspace} \\
-{\ttfamily ADICIONAR na Lin 15: abaixo do -vmargs} \\
-{\ttfamily --add-modules=java.se.ee}
+\codigo{ TROCAR na Lin 4: ../workspace} \\
+\codigo{ Para: /home/USERNAME/workspace} \\
+\codigo{ ADICIONAR na Lin 15: abaixo do -vmargs} \\
+\codigo{ --add-modules=java.se.ee}
 
 Criar um diretório para as Fontes: \\
-{\ttfamily\$ sudo mkdir -p /usr/share/fonts/truetype/xmind}
+\codigo{\$ sudo mkdir -p /usr/share/fonts/truetype/xmind}
 
 Copiar as Fontes: \\
-{\ttfamily\$ sudo cp -R /opt/xmind/fonts/* /usr/share/fonts/truetype/xmind/}
+\codigo{\$ sudo cp -R /opt/xmind/fonts/* /usr/share/fonts/truetype/xmind/}
 
 Recarregar as Fontes: \\
-{\ttfamily\$ sudo fc-cache -f}
+\codigo{\$ sudo fc-cache -f}
 
 Criar um arquivo para o Desktop: \\
-{\ttfamily\$ sudo nano /usr/share/applications/xmind.desktop}
+\codigo{\$ sudo nano /usr/share/applications/xmind.desktop}
 
 Adicionar o seguinte conteúdo: \\
-{\ttfamily [Desktop Entry] \\ 
+\codigo{ [Desktop Entry] \\ 
 	Comment=Create and share mind maps. \\ 
 	Exec=/opt/xmind/XMind\_amd64/XMind \%F \\ 
 	Name=XMind \\ 
@@ -192,52 +192,52 @@ Possuo duas máquinas desktop e notebook, a melhor forma de trocar informações
 \end{itemize}
 
 Note | Instalar o SSHFS: \\
-{\ttfamily\$ sudo apt install sshfs}
+\codigo{\$ sudo apt install sshfs}
 
 Note | Criar uma pasta de montagem: \\
-{\ttfamily\$ sudo mkdir /mnt/r3d3}
+\codigo{\$ sudo mkdir /mnt/r3d3}
 
 Note | Dar permissão a pasta para o usuário local: \\
-{\ttfamily\$ sudo chmod -R 777 /mnt/r3d3}
+\codigo{\$ sudo chmod -R 777 /mnt/r3d3}
 
 Serv | Criar uma pasta de ligação: \\
-{\ttfamily\$ mkdir ~/partilhar}
+\codigo{\$ mkdir ~/partilhar}
 
 Serv | Instalar o SSH-Server: \\
-{\ttfamily\$ sudo apt install openssh-server}
+\codigo{\$ sudo apt install openssh-server}
 
 Note | Realizar a ligação: \\
-{\ttfamily\$ sshfs fernando@XXX.XXX.SS.S:/home/fernando/partilhar /mnt/r3d3}
+\codigo{\$ sshfs fernando@XXX.XXX.SS.S:/home/fernando/partilhar /mnt/r3d3}
 
 \section{Flutter}
 Flutter é um SDK para o desenvolvimento de aplicativos móveis e geração de app nativo para Android e iPhone, porém para tê-la é necessário instalar a linguagem DART. Primeiro passo é adicionar o repositório: \\
-{\ttfamily\$ sudo apt-add-repository ppa:dartsim/ppa}
+\codigo{\$ sudo apt-add-repository ppa:dartsim/ppa}
 
 Próximo passo é instalar as bibliotecas completas: \\
-{\ttfamily\$ sudo apt install libdart6-all-dev}
+\codigo{\$ sudo apt install libdart6-all-dev}
 
 Agora vamos ao Fluuter. Realizar download do SDK no site \url{https://flutter.io/sdk-archive/#linux}.
 
 Criar uma pasta para receber os arquivos: \\
-{\ttfamily\$ mkdir development}
+\codigo{\$ mkdir development}
 
 Acessar a pasta: \\
-{\ttfamily\$ cd development}
+\codigo{\$ cd development}
 
 Descompactar na pasta: \\
-{\ttfamily\$ tar xf $\sim$/Downloads/flutter\_linux\_vXXXXXX.tar.xz}
+\codigo{\$ tar xf $\sim$/Downloads/flutter\_linux\_vXXXXXX.tar.xz}
 
 Adicionar o flutter na variável PATH: \\
-{\ttfamily\$ export PATH=`pwd`/flutter/bin:\$PATH}
+\codigo{\$ export PATH=`pwd`/flutter/bin:\$PATH}
 
 Verificar o estado do Flutter: \\
-{\ttfamily\$ flutter doctor}
+\codigo{\$ flutter doctor}
 
 Verificar a versão atual do Flutter: \\
-{\ttfamily\$ flutter channel}
+\codigo{\$ flutter channel}
 
 Atualizar o Flutter: \\
-{\ttfamily\$ flutter upgrade}
+\codigo{\$ flutter upgrade}
 
 Último passo é instalar os plugins para \textbf{Android Studio} ou \textbf{Intellij IDEA}.
 
@@ -245,30 +245,30 @@ Atualizar o Flutter: \\
 As dicas abaixo são instalações para aprimorar todo o conjunto.
 
 \textbf{Adicionar pacotes ao LaTex} | Pacotes essenciais: \\
-{\ttfamily\$ sudo apt-get install texlive-latex-extra \\
+\codigo{\$ sudo apt-get install texlive-latex-extra \\
 	\$ sudo apt install texlive-lang-portuguese \\
 	\$ sudo apt-get install texlive-bibtex-extra \\
 	\$ sudo apt-get install texlive-games}
 
 \textbf{Configuração da barra lateral} | Para deixá-la mais dinâmica: \\
-{\ttfamily\$ gsettings set org.gnome.shell.extensions.dash-to-dock click-action \\ 'minimize-or-previews'}
+\codigo{\$ gsettings set org.gnome.shell.extensions.dash-to-dock click-action \\ 'minimize-or-previews'}
 
 \textbf{Editor Atom} | Instalar os seguintes plugins: \\
-{\ttfamily PlatformIO IDE Terminal \\
+\codigo{ PlatformIO IDE Terminal \\
 Assembler}
 
 \textbf{Editor Eclipse} | Existe um erro estranho acontecendo com a versão Oxygen, para corrigí-lo no arquivo "eclipse.ini", adicionar a seguinte linha depois da instrução "-vmargs" : \\
-{\ttfamily --add-modules=java.se.ee}
+\codigo{ --add-modules=java.se.ee}
 
 \textbf{Gravador} | Já existe um gravador por padrão no Ubuntu, esse melhor quando se deseja gravar um som da Web e não gravar os ruídos externos: \\
-{\ttfamily\$ sudo apt-add-repository ppa:audio-recorder/ppa \\
+\codigo{\$ sudo apt-add-repository ppa:audio-recorder/ppa \\
 	sudo apt-get update \\
 	sudo apt-get install audio-recorder}
 
 \section{Conclusão}
 Este é um curto documento que não tem nenhuma pretensão de ensinar a usar o Ubuntu, como disse no começo é mais para iniciar o sistema com um conjunto de softwares que considero ideais para trabalhar. Novas adições podem ser realizadas neste documento pois considero meu sistema extremamente dinâmico (a começar do Ubuntu que muda de versão em média a cada 6 meses). 
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+\input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
@@ -286,17 +286,7 @@ Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a dife
   XMind - Para Linux gratuito \\
   \url{https://www.xmind.net/download/linux/}
   
-  \bibitem{fernandoanselmo} 
-  Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br/}
-
-  \bibitem{publicacao} 
-  Encontre essa e outras publicações em \\
-  \url{https://cetrex.academia.edu/FernandoAnselmo}
-
-  \bibitem{github} 
-  Repositório para os fontes da apostila \\
-  \url{https://github.com/fernandoans/publicacoes}
+  \input{../sty/referencias.tex}
 \end{thebibliography}
   
 \end{document}

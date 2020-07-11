@@ -1,0 +1,166 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Modelo Doc}
+\newcommand{\pbversao}{1.0}
+\usepackage{../sty/tutorial}
+\usepackage{lipsum}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%-----------------------------------------------------------------------
+\begin{document}
+
+\begin{lstlisting}
+\end{lstlisting}
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+
+\begin{abstract}
+	% O primeiro caractere deve vir com \initial{}
+	\initial{M}\textbf{odelo de documento. \lipsum[4-1]}
+\end{abstract}
+
+\section{Exemplos}
+
+Fórmulas: \\
+Interseção ou União: $A \cap B \cup C$ \\
+Fração mais atraente: $\nicefrac{X}{Y}$ 
+
+Isso aqui é uma nota\footnote{Na verdade essa é a nota} então NÃO USE PARENTESES.
+
+Texto qualquer:
+\begin{lstlisting}
+Codigo de espacamento (nao use acentos aqui):
+
+\vspace{-3em}
+\\[3mm]
+\end{lstlisting}
+
+Sendo: \vspace{-1em}
+\begin{itemize}[nolistsep]
+	\item $l_{inf}$ limite inferior.
+	\item $n$ somatório das frequências simples.
+	\item $f_{ac.Ant}$ frequência acumulada até a da classe anterior a da mediana.
+	\item $f_{md}$ frequência simples.
+	\item $h$ amplitude do intervalo.
+\end{itemize}
+
+Separação ideal para título de um MENU: \\
+A partir do menu: Opção 1 $\triangleright$ Opção 2 $\triangleright$ Opção 3.
+
+Comando qualquer:
+{\ttfamily\$ sudo apt install docker docker.io} \\
+{\ttfamily set PATH=\%PATH\%;C:$\setminus$Users$\setminus$xpto$\setminus$Anaconda3}
+
+{\ttfamily MongoCursor<Document> cursor = getCol().find().iterator(); \\
+	while (cursor.hasNext()) \{ \\
+	\phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
+	\} \\
+	cursor.close(); }
+
+\begin{quotation}
+	Exemplo de Frase (Autor)
+\end{quotation}
+
+\begin{theo}[]{}
+	\lipsum[4-1]
+\end{theo}
+
+\begin{theo}[Pode ser também com título]{}
+	\lipsum[4-1]
+\end{theo}
+
+Minhas variáveis:
+
+\opcmenu{Opção1 } $\triangleright$ \opcmenu{Opção2 } $\triangleright$ \opcmenu{Final}.
+
+\aspas{ } útil para expaço em branco nos códigos, tipo isso
+
+\codigo{funcao(\aspas{ })}
+
+Clicar no botão \opcbotao{OK}.
+
+Para figuras contínuas ao texto usar [H]. Exemplo de figura:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.15\textwidth]{imagens/exemplo.jpg}
+	\caption{Legenda}
+\end{figure}
+
+Exemplo de figura na mesma linha:
+
+\begin{minipage}{\textwidth}
+	\vspace{5pt}
+	\begin{wrapfigure}{l}{0.15\textwidth}
+		\vspace{-\baselineskip}
+		\includegraphics[width=0.7\linewidth]{imagens/exemplo.jpg} 
+	\end{wrapfigure}
+	Aqui pode ir qualquer texto porém esse texto deve ser suficientemente grande para ocupar toda a área que a figura ocupar. Ou então use espaçadores, as vezes pode até dar certo, outras vezes precisamos reduzir o tamanho da figura.
+\end{minipage}
+
+\begin{minipage}{\textwidth}
+	\vspace{5pt}
+	\begin{wrapfigure}{t}{0.15\textwidth}
+		\vspace{-\baselineskip}
+		\includegraphics[width=0.7\linewidth]{imagens/exemplo.jpg} 
+	\end{wrapfigure}
+	Aqui pode ir qualquer texto porém esse texto deve ser suficientemente grande para ocupar toda a área que a figura ocupar. Ou então use espaçadores, as vezes pode até dar certo, outras vezes precisamos reduzir o tamanho da figura. \\[3mm]
+\end{minipage}
+
+Exemplo de Tabela:
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | L{3cm} | C{3cm} | R{3cm} }
+		\textbf{Prefixo} & \textbf{Valor} & \textbf{Forma Padrão} & \textbf{Símbolo} \\
+		\hline
+		milli & 0,001 & $10^{-3}$ & m \\
+		micro & 0,000001 & $10^{-6}$ & $\mu$ \\
+		Ângström & 0,0000000001 & $10^{-10}$ & Â \\
+		pico & 0,000000000001 & $10^{-12}$ & p \\
+	\end{tabular}
+\end{table}
+
+\begin{center}
+	\begin{tabular}{ c|c|c } 
+		\hline
+		cell1 & cell2 & cell3 \\ 
+		cell4 & cell5 & cell6 \\ 
+		cell7 & cell8 & cell9 \\ 
+		\hline
+	\end{tabular}
+\end{center}
+
+Espaçamento antes de lista: \vspace{-1em}
+\begin{itemize}
+	\item \textbf{Teste0}: Teste0
+    \item \textbf{Teste1}: Teste1
+    \item \textbf{Teste2}: Teste2
+\end{itemize}
+
+Sem espaçamento na lista:
+
+\begin{enumerate}[nolistsep]
+	\item \textbf{Teste0}: Teste0
+	\item \textbf{Teste1}: Teste1
+	\item \textbf{Teste2}: Teste2
+\end{enumerate}
+
+% se quiser colocar o espaçameto geral use o comando
+% \setlist[itemize]{noitemsep}
+% no config.sty
+
+\section{Conclusão}
+
+\input{../sty/final.tex}
+
+%--------------------------------------------------------------------------
+% REFERÊNCIAS
+%--------------------------------------------------------------------------
+\begin{thebibliography}{3}
+	\input{../sty/referencias.tex}
+\end{thebibliography}
+
+
+\end{document}

@@ -1,7 +1,6 @@
 %-----------------------------------------------------------------------------
 % Pacotes Necessários
 %-----------------------------------------------------------------------------
-
 \usepackage[brazil]{babel} % padronizar a linguagem
 \usepackage[utf8]{inputenc} % permitir a acentuação
 \usepackage[protrusion=true,expansion=true]{microtype} % obter melhor tipografia
@@ -24,6 +23,7 @@ bindingoffset=1cm]{geometry} %
 \usepackage{float} % Imagens flutuantes
 \usepackage[framemethod=TikZ]{mdframed} % janela de ATENÇÃO
 \usepackage{array} % Para usar tabelas
+\usepackage{wrapfig} % Imagens que se cruzam com texto
 
 %-----------------------------------------------------------------------------
 % Definições Iniciais
@@ -121,10 +121,19 @@ bindingoffset=1cm]{geometry} %
 	}{}
 }
 
+
+%-----------------------------------------------------------------------------
+% ESTILOS DO TEXTO
+%-----------------------------------------------------------------------------
+\newcommand{\opcmenu}[1]{\color{DarkBlue}\textbf{#1}\color{Black}}
+\newcommand{\opcbotao}[1]{\color{DarkRed}\textbf{#1}\color{Black}}
+\newcommand{\codigo}[1]{{\ttfamily #1}}
+% \newcommand{\aspas}[1]{$\textquotedblright$#1$\textquotedblright$}
+\newcommand{\aspas}[1]{"#1"}
+
 %-----------------------------------------------------------------------------
 % TÍTULO DO DOCUMENTO
 %-----------------------------------------------------------------------------
-
 % comando para as barras
 \newcommand{\HorRule}{\color{DarkGoldenrod} \rule{\linewidth}{1pt}} 
 

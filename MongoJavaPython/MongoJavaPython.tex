@@ -46,13 +46,13 @@ Possui como objetivo principal promover uma integração mais fácil e rápida c
 A forma mais simples de termos o MongoDB é através de um contêiner no Docker, assim facilmente podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
 
 Baixar a imagem oficial: \\
-{\ttfamily\$ docker pull mongo}
+\codigo{\$ docker pull mongo}
 
 Criar uma instância do banco em um contêiner: \\
-{\ttfamily\$ docker run --name meu-mongo -p 27017:27017 -d mongo}
+\codigo{\$ docker run --name meu-mongo -p 27017:27017 -d mongo}
 
 Acessar o Shell de comandos do MongoDB no contêiner: \\
-{\ttfamily\$ docker exec -it meu-mongo mongo admin}
+\codigo{\$ docker exec -it meu-mongo mongo admin}
 \begin{lstlisting}
 > show dbs
 > use local
@@ -61,37 +61,37 @@ Acessar o Shell de comandos do MongoDB no contêiner: \\
 \end{lstlisting}
 
 Para encerrar o contêiner: \\
-{\ttfamily\$ docker stop meu-mongo} 
+\codigo{\$ docker stop meu-mongo} 
 
 Para iniciar novamente o contêiner: \\
-{\ttfamily\$ docker start meu-mongo} 
+\codigo{\$ docker start meu-mongo} 
 
 \subsection{Shell - a console de comandos}
 O Mongo Shell, também conhecida como Console de Comandos, utiliza uma interatividade entre comandos JavaScript e o MongoDB. Aqui é possível realizar operações administrativas como consultas ou manutenções de dados.
 
 Mostrar as bases de dados existentes: \\
-{\ttfamily> show dbs}
+\codigo{> show dbs}
 
 Criar (ou mudar) a base de dados para a atual: \\
-{\ttfamily> use nome\_base}
+\codigo{> use nome\_base}
 
 Mostrar as coleções existentes na base de dados atual: \\
-{\ttfamily> show collections}
+\codigo{> show collections}
 
 Inserir (ou alterar caso o objeto tenha sido chamado anteriormente) um documento em uma coleção (se a coleção não existe será criada) na base de dados corrente (db é uma variável interna apontada para a base de dados atual) \\
-{\ttfamily> db.nome\_colecao.save({campo1:valor1, ..., campoN:valorN})} 
+\codigo{> db.nome\_colecao.save({campo1:valor1, ..., campoN:valorN})} 
 
 Listar os documentos de uma coleção existente na base de dados atual: \\
-{\ttfamily> db.nome\_colecao.find()}
+\codigo{> db.nome\_colecao.find()}
 
 Eliminar documento(s) de uma coleção existente na base de dados atual: \\
-{\ttfamily> db.nome\_colecao.remove({campo:valor})}
+\codigo{> db.nome\_colecao.remove({campo:valor})}
 
 Apagar uma coleção existente na base de dados atual: \\
-{\ttfamily> db.nome\_colecao.drop()}
+\codigo{> db.nome\_colecao.drop()}
 
 Apagar a base de dados atual: \\
-{\ttfamily> db.dropDatabase()}
+\codigo{> db.dropDatabase()}
 
 Se percebemos bem a única diferença do MongoDB para bancos relacionais é entendermos como é o relacionamento entre os objetos:
 \begin{figure}[H]
@@ -283,24 +283,24 @@ Esta classe agora será a nossa principal, sendo assim removemos os métodos \te
 Para obter informações dos os objetos do MongoDB através do Java, é possível utilizar diversas ações. 
 
 Listar as bases de dados existentes: \\
-{\ttfamily for (String s: getMongo().listDatabaseNames()) \{ \\
+\codigo{ for (String s: getMongo().listDatabaseNames()) \{ \\
 \phantom{x}\hspace{4pt} System.out.println(s); \\
 \} }
 
 Criar um novo objeto na base de dados pelo seu nome: \\
-{\ttfamily MongoDatabase db2 = getMongo().getDatabase("escola");}
+\codigo{ MongoDatabase db2 = getMongo().getDatabase("escola");}
 
 Verificar quais são as coleções existentes em uma determinada base de dados: \\
-{\ttfamily for (String s: getDb().listCollectionNames()) \{ \\
+\codigo{ for (String s: getDb().listCollectionNames()) \{ \\
 \phantom{x}\hspace{4pt} System.out.println(s); \\
 \}}
 
 Criar um novo objeto de coleção pelo seu nome e através deste obter a quantidade de registros existentes: \\
-{\ttfamily MongoCollection<Document> col2 = getDb().getCollection("aluno"); \\
+\codigo{ MongoCollection<Document> col2 = getDb().getCollection("aluno"); \\
 System.out.println("Total de Documentos:" + col2.countDocuments());}
 
 Obter, em formato JSON (\textit{JavaScript Object Notation}), as coleções de uma determinada base de dados: \\
-{\ttfamily ListCollectionsIterable<Document> it = getDb().listCollections(); \\
+\codigo{ ListCollectionsIterable<Document> it = getDb().listCollections(); \\
 MongoCursor<Document> cursor = it.iterator(); \\
 while (cursor.hasNext()) \{ \\
 \phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
@@ -308,10 +308,10 @@ while (cursor.hasNext()) \{ \\
 cursor.close();}
 
 Criar um índice para uma coleção, o parâmetro com valor igual a 1 informa que deve ser ordenado de forma ascendente, para descendente utilizar o valor -1: \\
-{\ttfamily getCol().createIndex(new Document("nota", 1));}
+\codigo{ getCol().createIndex(new Document("nota", 1));}
 
 Obter, em formato JSON, os índices de uma determinada coleção: \\
-{\ttfamily ListIndexesIterable<Document> it = getCol().listIndexes(); \\
+\codigo{ ListIndexesIterable<Document> it = getCol().listIndexes(); \\
 MongoCursor<Document> cursor = it.iterator(); \\
 while (cursor.hasNext()) \{ \\
 \phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
@@ -319,10 +319,10 @@ while (cursor.hasNext()) \{ \\
 cursor.close();}
 
 Eliminar um indice de uma coleção: \\
-{\ttfamily getCol().dropIndex(new Document("nota", 1));}
+\codigo{ getCol().dropIndex(new Document("nota", 1));}
 
 Obter, em formato JSON, os registros de uma determinada coleção: \\
-{\ttfamily MongoCursor<Document> cursor = getCol().find().iterator(); \\
+\codigo{ MongoCursor<Document> cursor = getCol().find().iterator(); \\
 while (cursor.hasNext()) \{ \\
 \phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
 \} \\
@@ -346,13 +346,13 @@ private void executar() {
 
 \subsection{Filtrar Coleções}
 Limitar a quantidade de registros retornados (por exemplo 2 registros): \\
-{\ttfamily MongoCursor<Document> cursor = getCol().find().limit(2).iterator();}
+\codigo{ MongoCursor<Document> cursor = getCol().find().limit(2).iterator();}
 
 Trazer os alunos que obtiveram nota 10: \\
-{\ttfamily MongoCursor<Document> cursor = getCol().find(new Document("nota", 10)).iterator();}
+\codigo{ MongoCursor<Document> cursor = getCol().find(new Document("nota", 10)).iterator();}
 
 Através da classe \texttt{com.mongodb.client.model.Filters} é possível realizar a mesma ação: \\
-{\ttfamily MongoCursor<Document> cursor = getCol().find(Filters.eq("nota", 10)).iterator();}
+\codigo{ MongoCursor<Document> cursor = getCol().find(Filters.eq("nota", 10)).iterator();}
 
 E com a utilização dessa classe, é possível realizar as seguintes ações:
 \begin{itemize}[nolistsep]
@@ -364,21 +364,21 @@ E com a utilização dessa classe, é possível realizar as seguintes ações:
 \end{itemize}
 
 Podemos utilizar as variáveis: \$eq (igual), \$ne (não igual), \$gt (maior), \$gte (maior ou igual), \$lt (menor) ou \$lte (menor ou igual). Obter todos os documentos da coleção com a nota é maior que 6: \\
-{\ttfamily MongoCursor<Document> cursor = getCol().find( \\
+\codigo{ MongoCursor<Document> cursor = getCol().find( \\
 	new Document("nota", new  Document("\$gt",6))).iterator(); } 
 
 Parece mais complicado, porém é possível criar separadamente um objeto Documento e a partir dele compor combinações. Obter todos os documentos cujas notas são maiores que 3 e menores que 9: \\
-{\ttfamily Document doc = new Document(); \\
+\codigo{ Document doc = new Document(); \\
 doc.append("nota", new Document("$gt", 3).append("$lt", 9)); \\
 MongoCursor<Document> cursor = getCol().find(doc).iterator();}
 
 Para realizar a mesma consulta com a utilização dos filtros: \\
-{\ttfamily MongoCursor<Document> cursor = getCol().find( \\
+\codigo{ MongoCursor<Document> cursor = getCol().find( \\
 	Filters.and(Filters.gt("nota", 3), Filters.lt("nota", 9))).iterator();}
 
 \subsection{Ordenações}
 Através da classe \texttt{com.mongodb.client.model.Sorters}, e podemos utilizar as variáveis ``ascending'' e ``descending'' para obter ordenações: \\
-{\ttfamily MongoCursor<Document> cursor = \\
+\codigo{ MongoCursor<Document> cursor = \\
 	col.find().sort(Sorts.ascending("nota")).iterator();}
 
 \section{Modificar dados da Coleção via Java}
@@ -389,18 +389,18 @@ Uma vez identificado o(s) documento(s) desejado(s) é possível proceder:
 \end{itemize}
 
 Modificar a nota do aluno ``Mario da Silva'' para 5: \\
-{\ttfamily getCol().updateOne(new Document("nome","Mario da Silva"), \\
+\codigo{ getCol().updateOne(new Document("nome","Mario da Silva"), \\
 	new Document("\$set", new Document("nota", 5))); }
 
 Para eliminar o aluno ``Mario da Silva'': \\
-{\ttfamily getCol().deleteMany(new Document("nome","Mario da Silva"));}
+\codigo{ getCol().deleteMany(new Document("nome","Mario da Silva"));}
 
 \subsection{Eliminar os Objetos}
 Para eliminar a coleção ``aluno'': \\
-{\ttfamily getCol().drop(); }
+\codigo{ getCol().drop(); }
 
 Para eliminar a base de dados ``escola'': \\
-{\ttfamily getDb.drop();}
+\codigo{ getDb.drop();}
 
 \section{Python}
 Python é uma linguagem de programação de alto nível, interpretada a partir de um script, Orientada a Objetos e de tipagem dinâmica. Foi lançada por Guido van Rossum em 1991. Não pretendo nesta apostila COMPARAR essa linguagem com Java (espero que nunca o faça), fica claro que os comandos são bem mais fáceis porém essas linguagens possuem diferentes propósitos.
@@ -409,39 +409,39 @@ Todos os comandos descritos abaixo foi utilizado no JupyterLab \cite{jupyterofic
 
 \subsection{Proceder a Conexão}
 Baixar o pacote necessário: \\
-{\ttfamily !pip install pymongo}
+\codigo{ !pip install pymongo}
 
 Importar os pacotes necessários: \\
-{\ttfamily from pymongo import MongoClient \\
+\codigo{ from pymongo import MongoClient \\
 	import random}
 
 Neste caso estamos utilizando o pacote \textbf{random} somente para criarmos o mesmo exemplo já visto e escolher uma nota aleatória para casa aluno.
 
 Podemos nos conectar ao servidor de dois modos diferentes, desta forma: \\
-{\ttfamily cliente = MongoClient('localhost', 27017)}
+\codigo{ cliente = MongoClient('localhost', 27017)}
 
 Ou desta forma: \\
-{\ttfamily cliente = MongoClient('mongodb://localhost:27017/')}
+\codigo{ cliente = MongoClient('mongodb://localhost:27017/')}
 
 Do mesmo modo também podemos nos conectar a base de dados de dois modos diferentes, desta forma: \\
-{\ttfamily db = cliente.escola}
+\codigo{ db = cliente.escola}
 
 Ou desta forma: \\
-{\ttfamily db = cliente['escola']}
+\codigo{ db = cliente['escola']}
 
 Bem como a coleção de dois modos diferentes, desta forma: \\
-{\ttfamily col = db.aluno}
+\codigo{ col = db.aluno}
 
 Ou desta forma: \\
-{\ttfamily col = db['aluno']}
+\codigo{ col = db['aluno']}
 
 \subsection{Inserir registros}
 Inserir um único registro é uma questão de criar um dicionário e enviá-lo para a coleção: \\
-{\ttfamily mario = \{ "nome": "Mario da Silva", "nota": random.randint(1,11) \} \\
+\codigo{ mario = \{ "nome": "Mario da Silva", "nota": random.randint(1,11) \} \\
 col.insert\_one(mario) }
 
 Inserir vários registros é necessário criar uma lista de dicionários e enviar a lista para a coleção: \\
-{\ttfamily alunos = [ \\
+\codigo{ alunos = [ \\
 \phantom{x}\hspace{4pt} \{ "nome": "Aline Moraes", "nota": random.randint(1,11) \}, \\
 \phantom{x}\hspace{4pt} \{ "nome": "Soraya Gomes", "nota": random.randint(1,11) \} \\
 ] \\
@@ -450,41 +450,41 @@ col.insert\_many(alunos)
 
 \subsection{Buscar registros}
 Listar toda a coleção: \\
-{\ttfamily for doc in col.find({}): \\
+\codigo{ for doc in col.find({}): \\
 \phantom{x}\hspace{4pt} print(doc)}
 
 Contar quantos registros tem na coleção: \\
-{\ttfamily col.count\_documents({})}
+\codigo{ col.count\_documents({})}
 
 Trazer o primeiro registro: \\
-{\ttfamily col.find\_one()}
+\codigo{ col.find\_one()}
 
 Trazer um determinado registro: \\
-{\ttfamily col.find\_one(\{"nome": "Aline Moraes"\})}
+\codigo{ col.find\_one(\{"nome": "Aline Moraes"\})}
 
 Trazer determinados registros: \\
-{\ttfamily for doc in col.find(\{"nota": \{"\$gt": 5, "\$lt": 7\}\}): \\
+\codigo{ for doc in col.find(\{"nota": \{"\$gt": 5, "\$lt": 7\}\}): \\
 \phantom{x}\hspace{4pt} print(doc)}
 
 \subsection{Atualizar registros}
 Alterar determinado registro: \\
-{\ttfamily col.update\_one(\{"nome": "Mario da Silva"\}, \{"\$set": \{"nota": 8\}\})}
+\codigo{ col.update\_one(\{"nome": "Mario da Silva"\}, \{"\$set": \{"nota": 8\}\})}
 
 Alterar um conjunto determinado de registros: \\
-{\ttfamily col.update\_many(\{'nota': \{'\$lt': 5\}\}, \{'\$set': \{'nota': 4\}\})}
+\codigo{ col.update\_many(\{'nota': \{'\$lt': 5\}\}, \{'\$set': \{'nota': 4\}\})}
 
 Eliminar determinado registro: \\
-{\ttfamily col.delete\_one(\{"nome": "Mario da Silva"\}, \{"\$set": \{"nota": 8\}\})}
+\codigo{ col.delete\_one(\{"nome": "Mario da Silva"\}, \{"\$set": \{"nota": 8\}\})}
 
 Eliminar um conjunto determinado de registros: \\
-{\ttfamily col.delete\_many(\{'nota': \{'\$lt': 5\}\}, \{'\$set': \{'nota': 4\}\})}
+\codigo{ col.delete\_many(\{'nota': \{'\$lt': 5\}\}, \{'\$set': \{'nota': 4\}\})}
 
 \section{Conclusão}
 Penso que depois dessa apostila, será possível usar todo o poder do banco MongoDB para seus trabalhos, pois como vimos é bem fácil realizar os passos nesse banco pouco importa a linguagem de programação. Não busquei nesta mostrar um exemplo mais completo para não limitar suas pesquisas e devemos considerar esta apenas como um pontapé inicial (\textit{KickStart}) para seus projetos.
 
 Como visto o banco de dados MongoDB pode ser facilmente utilizado com aplicações em linguagem Java ou gerar os modelos para \textit{Machine Learning} com Python e ainda colher o benefício de substituir os bancos de dados relacionais para grandes quantidades de dados, sendo que esta é a grande motivação para NoSQL como forma de resolver o problema de escalabilidade dos bancos tradicionais.
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+\input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
@@ -510,17 +510,7 @@ Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a dife
   Página do Jupyter \\
   \url{https://jupyter.org/}
 
-  \bibitem{fernandoanselmo} 
-  Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br/}
-
-  \bibitem{publicacao} 
-  Encontre essa e outras publicações em \\
-  \url{https://cetrex.academia.edu/FernandoAnselmo}
-
-  \bibitem{github} 
-  Repositório para os fontes da apostila \\
-  \url{https://github.com/fernandoans/publicacoes}
+  \input{../sty/referencias.tex}
 \end{thebibliography}
   
 \end{document}

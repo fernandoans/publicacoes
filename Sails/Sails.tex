@@ -84,7 +84,7 @@ REST tem se consolidado como uma base para disponibilização de negócios eletr
 
 \section{Instalação do Sails.js}
 Com os conceitos do Padrão MVC e REST podemos partir para o Sails. Uma vez que temos instalado o \textbf{Node.js} e o gerenciador de pacotes \textbf{NPM} \cite{npm}, abrimos uma janela de comandos para instalar o Sails (lembrando que 'sudo' só é usado se estiver em ambiente Linux): \\
-{\ttfamily\$ sudo npm install -g sails}
+\codigo{\$ sudo npm install -g sails}
 
 Como editor para os códigos, recomendo o \textbf{Visual Studio Code} que permite uma boa integração, desde que seja adicionado alguns plugins:
 \begin{figure}[H]
@@ -97,18 +97,18 @@ Os plugins "\textit{Sails.js Snippets}" e "\textit{Sailboat}" facilitam nosso tr
 
 \subsection{Criar o Projeto}
 Para criar um projeto, abrir um terminal e colocar o seguinte comando: \\
-{\ttfamily\$ sails new tstSails --linker --fast}
+\codigo{\$ sails new tstSails --linker --fast}
 
 Quando perguntado escolher opção \textbf{1. Web App}. A opção 'linker' faz com que quaisquer recursos sob a pasta /assets sejam copiados para a pasta .tmp/public pelo Grunt quando Sails for levantado. A opção 'fast' verifica se as dependências já existem, se sim não as instala novamente. 
 
 Nosso próximo passo é acessar a pasta: \\
-{\ttfamily\$ cd tstSails}
+\codigo{\$ cd tstSails}
 
 Instalar as dependências do Node.js: \\
-{\ttfamily\$ npm install}
+\codigo{\$ npm install}
 
 Iniciar o sails: \\
-{\ttfamily\$ sails lift}
+\codigo{\$ sails lift}
 
 Se tudo estiver correto é possível ver o site de boas vindas no endereço:
 \url{http://localhost:1337}
@@ -118,10 +118,10 @@ Se tudo estiver correto é possível ver o site de boas vindas no endereço:
 	\caption{Página inicial do projeto}
 \end{figure}
 
-Para interromper o servidor, pressionar a sequencia {\ttfamily Ctrl+C} no terminal.
+Para interromper o servidor, pressionar a sequencia \codigo{ Ctrl+C} no terminal.
 
 Como opção, podemos criar o projeto apenas como um provedor de Serviços Web, isto é, sem a Camada de Visão, para isso utilizamos a opção: \\
-{\ttfamily\$ sails new tstSails --no-frontend}
+\codigo{\$ sails new tstSails --no-frontend}
 
 Porém como o nosso objetivo aqui é a criação de um \textit{Dashboard} precisamos ter um projeto Web completo.
 
@@ -138,30 +138,30 @@ As camadas MVC do projeto são encontradas nas seguintes pastas: \vspace{-1em}
 \end{itemize}
 
 Gerar a Model e a Controller: \\
-{\ttfamily\$ sails generate api |Nome|}
+\codigo{\$ sails generate api |Nome|}
 
 Gerar um Controlador: \\
-{\ttfamily\$ sails generate controller |Nome| |Ação|}
+\codigo{\$ sails generate controller |Nome| |Ação|}
 
 Gerar um Modelo: \\
-{\ttfamily\$ sails generate model |Nome| |Attribute:Type|}
+\codigo{\$ sails generate model |Nome| |Attribute:Type|}
 
 Gerar uma Visão: \\
-{\ttfamily\$ sails generate page |Nome|}
+\codigo{\$ sails generate page |Nome|}
 
 Esse último comando gera os seguintes artefatos: \vspace{-1em}
 \begin{itemize}
-	\item Arquivo de visão em: {\ttfamily views/pages/|Nome|.ejs}
-	\item Arquivo de controle em: {\ttfamily api/controllers/view-|Nome|.js}
-	\item Arquivo para estilos CSS da página em: {\ttfamily assets/styles/pages/|Nome|.less}
-	\item Arquivo para scripts JavaScript em: {\ttfamily assets/js/pages/|Nome|.page.js}
+	\item Arquivo de visão em: \codigo{ views/pages/|Nome|.ejs}
+	\item Arquivo de controle em: \codigo{ api/controllers/view-|Nome|.js}
+	\item Arquivo para estilos CSS da página em: \codigo{ assets/styles/pages/|Nome|.less}
+	\item Arquivo para scripts JavaScript em: \codigo{ assets/js/pages/|Nome|.page.js}
 \end{itemize}
 
 Devemos sempre respeitar essa forma de trabalhar (\textit{dividir para conquistar}) e lembre-se sempre que no projeto é muito mais fácil criar do que dar manutenção, as coisas estando em seus devidos lugares torna nosso trabalho futuro menos oneroso.
 
 \subsection{Criar a Model e a Controller}
 Vamos por partes, parar o projeto (CTRL+C) e executar o seguinte comando: \\
-{\ttfamily\$ sails generate api cliente}
+\codigo{\$ sails generate api cliente}
 
 Dois arquivos foram criados, \textbf{/api/models/Cliente.js} e \textbf{/api/controllers/Cliente.js}. Modificar o conteúdo do primeiro arquivo para:
 \begin{lstlisting}
@@ -192,7 +192,7 @@ Criamos uma modelo com 3 campos: nome e endereço com o tipo caractere e idade d
 \end{itemize}
 
 Essas mudanças permitem acessar os serviços REST disponíveis que foram criados (repare no entanto que o controle - segundo arquivo criado - está vazio). Ativar o Sails: \\
-{\ttfamily\$ sails lift}
+\codigo{\$ sails lift}
 
 Utilizamos um cliente REST para acessar os Serviços Web que estão expostos. Existem vários, pessoalmente prefiro o \textbf{Postman} \cite{postman}:
 \begin{figure}[H]
@@ -230,34 +230,34 @@ No arquivo \textbf{/config/models.js} é possível definirmos o modo como a base
 Outro ponto interessante nesse arquivo e a especificação dos atributos "padrões" que devem ser criados para todos os modelos, como \textbf{createAt}, \textbf{updateAt} e \textbf{id}. Assim não precisamos colocar estes atributos em cada um dos modelos. 
 
 Também podemos subir o servidor com uma dessas opções. Por exemplo: \\
-{\ttfamily\$ sails lift --models.migrate='drop'}
+\codigo{\$ sails lift --models.migrate='drop'}
 
 Essa opção é interessante para eliminar os dados e criar uma base nova, ao invés de colocá-la na configuração o que pode apresentar um grande perigo.
  
 \section{Acessar o MySQL}
 A parir desse ponto, utilizaremos o SGBD Relacional MySQL. O que mais me impressiona no Sails é a facilidade com a qual podemos conseguir isso. Obviamente devemos ter o MySQL, o meio mais simples é baixar a imagem oficial através do Docker: \\
-{\ttfamily\$ docker pull mysql}
+\codigo{\$ docker pull mysql}
 
 Criar uma instância do banco em um contêiner: \\
-{\ttfamily\$ docker run --name meu-mysql -e MYSQL\_ROOT\_PASSWORD=root -p 3306:3306 -d mysql}
+\codigo{\$ docker run --name meu-mysql -e MYSQL\_ROOT\_PASSWORD=root -p 3306:3306 -d mysql}
 
 E nas próximas vezes, para ativar o contêiner: \\
-{\ttfamily\$ docker start meu-mysql}
+\codigo{\$ docker start meu-mysql}
 
 Ou parar o contêiner: \\
-{\ttfamily\$ docker stop meu-mysql}
+\codigo{\$ docker stop meu-mysql}
 
 Com o contêiner ativo, acessar o SGBD: \\
-{\ttfamily\$ docker exec -it meu-mysql mysql -p}
+\codigo{\$ docker exec -it meu-mysql mysql -p}
 
 Usar a senha 'root' para entrar no SGBD e criar a base: \\
-{\ttfamily create database demo;}
+\codigo{ create database demo;}
 
 Sair do MySQL: \\
-{\ttfamily exit}
+\codigo{ exit}
 
 Agora a mágica acontece em dois passos, primeiro passo instalar o conector do MySQL: \\
-{\ttfamily\$ npm install sails-mysql --save --save-exact}
+\codigo{\$ npm install sails-mysql --save --save-exact}
 
 Segundo passo modificar o arquivo \textit{/config/datastores.js}:
 \begin{lstlisting}
@@ -270,7 +270,7 @@ module.exports.datastores = {
 \end{lstlisting}
 
 E pronto! Basta executar o Sails: \\
-{\ttfamily\$ sails lift}
+\codigo{\$ sails lift}
 
 Todo o serviço de criação das tabelas foi realizado. Podemos através do Postman criar, alterar, ver e eliminar registros no banco. Ou seja com pouquíssimas linhas de código criamos a tabela (sem entender nada de SQL) e um CRUD completo em REST (sem colocar uma única linha no controle).
 
@@ -278,7 +278,7 @@ Todo o serviço de criação das tabelas foi realizado. Podemos através do Post
 Já vimos que para disponibilizar serviços REST e gerenciar nossas estruturas de dados não precisamos fazer basicamente nada (e todo esse trabalho fica a cargo do Sails). Vamos adicionar novas funcionalidades a camada controle apenas quando necessitamos de algo especial, como por exemplo, retornar um conjunto de dados específico que desejemos.
 
 Para entender como procedemos uma nova saída através de uma consulta SQL que agrupe os dados. Adicionar uma nova API (Model e Controller): \\
-{\ttfamily\$ sails generate api Conta}
+\codigo{\$ sails generate api Conta}
 
 Modificar o arquivo \textbf{/api/models/Conta.js}:
 \begin{lstlisting}
@@ -332,10 +332,10 @@ module.exports = {
 Selecionamos da base de dados, mês a mês o somatório dos valores e montamos para a saída um JSON com dois arrays ``mes'' e ``valor'', deixei o comando \textbf{sails.log} comentado caso seja necessário verificar qualquer problema na saída dos dados.
 
 Criar uma rota para que o link \textbf{graphBase} esteja visível. No arquivo \textbf{/config/routes.js} e adicionar a seguinte linha: \\
-{\ttfamily 'GET /graphBase': 'ContaController.graphBase',}
+\codigo{ 'GET /graphBase': 'ContaController.graphBase',}
 
 Permitir a passagem desse pelas políticas, no arquivo \textbf{/config/policies.js}: \\
-{\ttfamily 'graphBase': true,}
+\codigo{ 'graphBase': true,}
 
 Verificar se tudo funciona corretamente com o Postman:
 \begin{figure}[H]
@@ -507,7 +507,7 @@ Ou seja, pensemos que agora conseguimos gerar um \textit{Dashboard}, no caso um 
 
 Algumas dicas finais: \vspace{-1em}
 \begin{itemize}
-	\item Se for publicar em um repositório de arquivos ou levar para algum outro lugar elimine a pasta \textbf{node\_modules} ela é gerada com o comando {\ttfamily npm i}
+	\item Se for publicar em um repositório de arquivos ou levar para algum outro lugar elimine a pasta \textbf{node\_modules} ela é gerada com o comando \codigo{ npm i}
 	\item Os arquivos e pastas iniciados com "." possuem esse padrão pois em sistemas Unix são escondidos por padrão.
 	\item Não se preocupe se errou algo todos os fontes deste projeto estão disponibilizados em \url{https://github.com/fernandoans/tstSails}
 	\item Pessoalmente darei continuidade neste projeto e essa pode ser vista em \url{https://github.com/fernandoans/tstSails}
@@ -520,7 +520,7 @@ Um desenvolvedor que possua experiência com aplicações \textit{frontend} e es
 
 Um conjunto de pequenos módulos trabalham unidos no Sails para fornecer simplicidade, facilidade de manutenção e convenções estruturais aos aplicativos Node.js. Além disso é altamente configurável, assim não seremos forçados a manter toda uma funcionalidade que não é necessária para o projeto. 
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+\input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
@@ -550,17 +550,7 @@ Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a dife
   Página do Highcharts \\
   \url{https://www.highcharts.com}
 
-  \bibitem{fernandoanselmo} 
-  Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br}
-
-  \bibitem{publicacao} 
-  Encontre essa e outras publicações em \\
-  \url{https://cetrex.academia.edu/FernandoAnselmo}
-
-  \bibitem{github} 
-  Repositório para os fontes da apostila \\
-  \url{https://github.com/fernandoans/publicacoes}
+  \input{../sty/referencias.tex}
 \end{thebibliography}
   
 \end{document}

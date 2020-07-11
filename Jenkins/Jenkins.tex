@@ -51,19 +51,19 @@ Esta apostila \underline{não} possui a pretensão de ensinar a usar o \textbf{J
 
 \section{Jenkins no Docker}
 Criar uma pasta que associará o contêiner: \\
-{\ttfamily\$ mkdir \$HOME/jenkins\_home}
+\codigo{\$ mkdir \$HOME/jenkins\_home}
 
 Fornecer permissões a pasta de modo que o contêiner possa acessá-la: \\
-{\ttfamily\$ chown 1000 \$HOME/jenkins\_home}
+\codigo{\$ chown 1000 \$HOME/jenkins\_home}
 
 Permitir o uso do arquivo Sock do Docker: \\
-{\ttfamily\$ sudo chmod 777 /var/run/docker.sock}
+\codigo{\$ sudo chmod 777 /var/run/docker.sock}
 
 Baixar a imagem disponível: \\
-{\ttfamily\$ docker pull jenkins/jenkins}
+\codigo{\$ docker pull jenkins/jenkins}
 
 Criar o container: \\
-{\ttfamily\$ docker run --name meu-jenkins -d -v /var/run/docker.sock:/var/run/docker.sock \\
+\codigo{\$ docker run --name meu-jenkins -d -v /var/run/docker.sock:/var/run/docker.sock \\
 -v \$(which docker):/usr/bin/docker -v \$HOME/jenkins\_home:/var/jenkins\_home \\
 -p 8081:8080 -p 50000:50000 jenkins/jenkins}
 
@@ -71,10 +71,10 @@ Para executar abrir um navegador e acessar a URL \url{http://localhost:8081}.
 
 \subsection{Proceder a Instalação}
 Na primeira vez que acessamos o Jenkins devemos instalar o ambiente, verificar qual o Token do Jenkins para instalação: \\
-{\ttfamily\$ docker logs meu-jenkins}
+\codigo{\$ docker logs meu-jenkins}
 
 Localizar a linha: \\
-{\ttfamily Jenkins initial setup is required. An admin user has been created \\
+\codigo{ Jenkins initial setup is required. An admin user has been created \\
  and a password generated. \\
 Please use the following password to proceed to installation: \\
 \\
@@ -117,40 +117,40 @@ Parabéns o Jenkins foi instalado com sucesso.
 
 \section{Entrar no Jenkins}
 Algumas vezes precisamos de algumas informações relacionadas a máquina do Jenkins, então precisamos acessá-lo, no contêiner podemos fazer isso através do comando: //
-{\ttfamily\$ docker exec -it meu-jenkins /bin/bash}
+\codigo{\$ docker exec -it meu-jenkins /bin/bash}
 
 E estaremos dentro deste, podemos ver a versão do sistema:
-{\ttfamily\$ cat /etc/os-release}
+\codigo{\$ cat /etc/os-release}
 
 para sair digitamos o comando:
-{\ttfamily\$ exit}
+\codigo{\$ exit}
 
 Este comando lista todos os contêineres que estão ativos:
-{\ttfamily\$ docker container ls}
+\codigo{\$ docker container ls}
 
 Observamos que cada contêiner possui um \textbf{CONTAINER ID}, este é usado, por exemplo para realizar uma inspeção de alguns detalhes deste:
-{\ttfamily\$ docker container inspect [CONTAINER ID]}
+\codigo{\$ docker container inspect [CONTAINER ID]}
 
 \subsection{Para atualizar o Jenkins no Docker}
 Atualizações de plugins no Jenkins podem ser realizadas direto no "Gerenciador do Jenkins", porém quando este informar que existe uma nova versão disponível, não é necessário baixá-la, apenas copiar o link do arquivo jenkins.war e proceder da seguinte forma:
 
 Entrar no container do Jenkins: \\
-{\ttfamily\$ docker exec -u 0 -it meu-jenkins bash}
+\codigo{\$ docker exec -u 0 -it meu-jenkins bash}
 
 Baixar a última versão: \\
-{\ttfamily\$ wget [link do jenkins.war]}
+\codigo{\$ wget [link do jenkins.war]}
 
 Mover para o local correto: \\
-{\ttfamily\$ mv ./jenkins.war /usr/share/jenkins}
+\codigo{\$ mv ./jenkins.war /usr/share/jenkins}
 
 Mudar a permissão: \\
-{\ttfamily\$ chown jenkins:jenkins /usr/share/jenkins/jenkins.war}
+\codigo{\$ chown jenkins:jenkins /usr/share/jenkins/jenkins.war}
 
 Sair do bash: \\
-{\ttfamily\$ exit}
+\codigo{\$ exit}
 
 Reiniciar o container: \\
-{\ttfamily\$ docker restart jenkins}
+\codigo{\$ docker restart meu-jenkins}
 
 \section{Pipelines}
 Como já dissemos, um \textit{pipeline} nada mais é do que uma sequencia de comandos que o Jenkins executará. A partir da versão 2.0 eles tomaram como base os arquivos script do Groovy.
@@ -226,31 +226,31 @@ pipeline {
 E assim o Jenkins envia um comando ao Docker da máquina hospedeira (não dentro do contêiner) para trazer a imagem \textbf{hello-world} do repositório Docker e em seguida criar um contêiner. Observamos que esses estágios são totalmente dependentes pois se não conseguir trazer a imagem não teria sentido de criar um contêiner.
 
 Após sua execução vamos dar o seguinte comando na máquina local: \\
-{\ttfamily\$ docker images}
+\codigo{\$ docker images}
 
 Perceberemos agora a existência da imagem \textbf{hello-world} e o comando: \\
-{\ttfamily\$ docker ps -a}
+\codigo{\$ docker ps -a}
 
 Observamos que agora possuímos um novo contêiner já parado. Vamos agora executar o mesmo processo, porém ao término de mostrar a mensagem eliminar tanto o contêiner quanto a imagem. 
 
 Sabemos que para apagar um contêiner devemos dar o comando: \\
-{\ttfamily\$ docker rm [Contêiner ID]}
+\codigo{\$ docker rm [Contêiner ID]}
 
 E para apagarmos a imagem:
-{\ttfamily\$ docker rmi [Imagem ID]}
+\codigo{\$ docker rmi [Imagem ID]}
 
 Apague ambos manualmente para não deixar nenhuma trilha no seu Docker. Lembre-se que o Jenkins só vai fazer o que pediu, então partimos da premissa que devemos conhecer todos os comandos que o Jenkins executará. Primeiro passo será conhecer o comando para localizar o ID do contêiner: \\
-{\ttfamily\$ docker ps -a --quiet --filter ancestor=[nome imagem]}
+\codigo{\$ docker ps -a --quiet --filter ancestor=[nome imagem]}
 
-Que lista todos os IDs dos contêineres parados ou não (opção {\ttfamily -a --quiet}) que pertencem a uma determinada imagem (opção ancestor do filter).
+Que lista todos os IDs dos contêineres parados ou não (opção \codigo{ -a --quiet}) que pertencem a uma determinada imagem (opção ancestor do filter).
 
 A segunda parte do problema e próximo passo está em localizar o ID da imagem criada, que é resolvido com o comando:
-{\ttfamily\$ docker images [nome imagem] --quiet}
+\codigo{\$ docker images [nome imagem] --quiet}
 
-Que lista apenas o ID (opção {\ttfamily --quiet}) de uma determinada imagem definida em [nome imagem].
+Que lista apenas o ID (opção \codigo{ --quiet}) de uma determinada imagem definida em [nome imagem].
 
 Pronto, agora basta sabermos que no script podemos criar uma variável que armazena os IDs tanto do contêiner quanto da imagem para logo em seguida eliminá-los: \\
-{\ttfamily variável = sh(script: "[comando]", returnStdout: true).trim()}
+\codigo{ variável = sh(script: "[comando]", returnStdout: true).trim()}
 
 Sendo assim, modificamos nosso script para:
 \begin{lstlisting}
@@ -432,10 +432,10 @@ Com esta parte concluída podemos partir para a última fase, com o passar do te
 O SonarQube é uma plataforma de código aberto para inspeção contínua da qualidade deste, para executar revisões automáticas com análise estática como forma de encontrar problemas, erros e vulnerabilidades de segurança que pode ser usado em mais de 20 linguagens de programação. Lembre-se que para usar essa funcionalidade no Jenkins o plug=in \textbf{SonarQube Scanner} deve estar instalado corretamente.
 
 Baixar a imagem oficial: \\
-{\ttfamily\$ docker pull sonarqube}
+\codigo{\$ docker pull sonarqube}
 
 Criar o contêiner: \\
-{\ttfamily\$ docker run -d --name meu-sonar -p 9000:9000 -p 9092:9092 sonarqube}
+\codigo{\$ docker run -d --name meu-sonar -p 9000:9000 -p 9092:9092 sonarqube}
 
 Acessar o SonarQube na URL \url{http:\\localhost:9000} com usuário e senha admin|admin. E deve ser aberta a seguinte janela:
 \begin{figure}[H]
@@ -447,7 +447,7 @@ Acessar o SonarQube na URL \url{http:\\localhost:9000} com usuário e senha admi
 O botão \textit{Create new project}. Ao clicar neste a solicitação para a chave do projeto, no qual podemos colocar o mesmo nome do projeto: tstJenkins. Assim fica mais fácil a sua localização. Em seguida a geração do Token, informar \textbf{meuToken}\footnote{Esse será salvo na seção do Administrador e pode ser usado por outros projetos - Guarde-o pois esse número NÃO SERÁ MAIS VISUALIZADO.} e clicar no botão \textit{Generate} e será gerado um código. Guardamos esse pois será necessário para o Jenkins.
 
 Porém não usaremos tal funcionalidade para o Jenkins pois este exige outras configurações na qual recomendo consultar a documentação para verificar como proceder. Aqui manteremos as coisas simples, o STS possui o executor de comandos do Maven. Sendo que a meta completa que usaremos é a seguinte: \\
-{\ttfamily\$ sonar:sonar -Dsonar.host.url=http://localhost:9000 \\ 
+\codigo{\$ sonar:sonar -Dsonar.host.url=http://localhost:9000 \\ 
 	-Dsonar.login=[numero do seu TOKEN] -Dsonar-projectName=tstJenkins \\
 	-Dsonar.projectVersion=master}
 
@@ -535,7 +535,7 @@ A automação de compilações e testes, melhora drasticamente os ciclos de lan�
 
 Jenkins permite que o software seja testado e entregue continuamente com a ajuda de várias tecnologias de integração e implantação. Seus plugins nos ajudam a fornecer CD/CI em vários estágios diferentes e podem integrar qualquer ferramenta específica, como Git, Amazon EC2 ou Maven. 
 
-Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a diferença entre Livre e Open Source? \underline{Livre} significa que esta apostila é gratuita e pode ser compartilhada a vontade. \underline{Open Source} além de livre todos os arquivos que permitem a geração desta (chamados de arquivos fontes) devem ser disponibilizados para que qualquer pessoa possa modificar ao seu prazer, gerar novas, complementar ou fazer o que quiser. Os fontes da apostila (que foi produzida com o LaTex) está disponibilizado no GitHub \cite{github}, assim baixar, alterar e usar. Veja ainda outros artigos que publico sobre tecnologia através do meu Blog Oficial \cite{fernandoanselmo}.
+\input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
@@ -557,17 +557,7 @@ Sou um entusiasta do mundo \textbf{Open Source} e novas tecnologias. Qual a dife
   SonarQube \\
   \url{https://www.sonarqube.org/}
 
-  \bibitem{fernandoanselmo} 
-  Fernando Anselmo - Blog Oficial de Tecnologia \\
-  \url{http://www.fernandoanselmo.blogspot.com.br/}
-
-  \bibitem{publicacao} 
-  Encontre essa e outras publicações em \\
-  \url{https://cetrex.academia.edu/FernandoAnselmo}	
-  
-  \bibitem{github} 
-  Repositório para os fontes da apostila \\
-  \url{https://github.com/fernandoans/publicacoes}
+  \input{../sty/referencias.tex}
 \end{thebibliography}
 
 \end{document}
