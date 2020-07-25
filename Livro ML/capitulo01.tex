@@ -23,7 +23,7 @@ De forma bastante genérica, algorítimos de \textit{Machine Learning} (Aprendiz
 	\caption{Programação Tradicional X Machine Learning}
 \end{figure}
 
-Ou seja, treinamos com dados e resultados anteriores até que possam receber \textbf{novos dados} e transforme isso em resultados sem que sejam explicitamente programáveis, isso é chamado de ``Modelo de ML''. Interpretar esses modelos é entender como podemos transformar algo. Em geral são classificados em:
+Ou seja, treinamos e melhoramos as respostas até que possam receber \textbf{novas observações}, transformamos isso em resultados sem que sejam explicitamente programáveis, isso é chamado "Modelo de ML". Interpretar esses modelos é entender como podemos transformar dados em informação útil. Em geral são classificados em:
 \begin{itemize}[noitemsep]
 	\item \textbf{Clusterização}: Encontrar uma estrutura de dados, sumarização.
 	\item \textbf{Regressão e Estimação}: Predição de valores contínuos.
@@ -31,9 +31,9 @@ Ou seja, treinamos com dados e resultados anteriores até que possam receber \te
 	\item \textbf{Associação}: frequentemente ocorre entre itens e eventos.
 \end{itemize}
 
-É muito importante conhecer vários deles para decidir qual se ajusta e trabalha melhor aos dados que temos para treiná-los. Devemos ter em mente que ML pode ser bem diferente de \textbf{Estatística}. Aqui não estamos preocupados com inferência, causalidade e exogeneidade. ML está preocupada, quase que exclusivamente em melhorar as predições ou rapidamente localizar em um mar de informações aquela que buscamos. 
+É muito importante conhecer vários deles e assim podemos decidir qual se ajusta melhor as observações que temos para treiná-los. Devemos ter em mente que ML pode ser bem diferente de \textbf{Estatística}. Aqui não estamos preocupados com inferência, causalidade e exogeneidade. ML está mais preocupada, quase que exclusivamente, em melhorar predições ou rapidamente localizar em um mar de informações a resposta de um problema. 
 
-Assim podemos pegar a mesma função, por exemplo \textbf{Regressão Logística} e analisar do ponto de vista da estatística, que interpretaria se os "betas" são significativos, se os "resíduos" têm uma distribuição normal ou analisar isso do ponto de vista de ML e descobrir como está a relação entre \textbf{Precisão} e \textbf{Recall}, ou qual a ROC ou AUC do modelo\footnote{As curvas ROC e AUC estão entre as métricas mais utilizadas para a avaliação de um modelo de Machine Learning.}.
+Assim podemos pegar a mesma função, por exemplo \textbf{Regressão Logística} e analisar do ponto de vista da estatística, que interpretaria se os "betas" são significativos, se os "resíduos" têm uma distribuição normal ou analisar isso do ponto de vista de ML e descobrir como está a relação entre \textbf{Precisão} e \textbf{Recall}, ou qual a ROC ou AUC do modelo\footnote{As curvas ROC e AUC estão entre as métricas mais utilizadas para avaliação em um modelo de ML.}.
 
 \section{Formas de Aprendizado}\index{Entendimento Geral}
 Quanto as formas de aprendizado se dividem em:
@@ -43,43 +43,43 @@ Quanto as formas de aprendizado se dividem em:
 	\item \textbf{Aprendizagem por Reforço}, uma ação ocorre e as consequências são observadas, assim a próxima ação considera os resultados da primeira ação. É um algoritmo dinâmico que parte do princípio "tentativa e erro".
 \end{itemize}
 
-Entender a diferença entre os dois tipos é bem simples, enviamos ao computador uma série de imagens sobre pratos de comida e não informamos absolutamente nada sobre elas, o máximo que acontecerá é a separação dessas em grupos similares. Em seguida mostremos essa imagem para o computador:
+Entender a diferença entre os dois tipos é bem simples, enviamos ao computador uma série de imagens sobre pratos de comida e não informamos absolutamente nada sobre elas, o máximo que acontecerá é a separação dessas em grupos similares. Imaginemos que em seguida mostramos a seguinte imagem:
 \begin{figure}[H]
 	\centering\includegraphics[scale=0.6]{cap01/visao.png}
 	\caption{Nova informação}
 \end{figure}
 
-Qual será o prato de comida que provavelmente ele associará? Exatamente "Ovo frito e batatas fritas"\footnote{Apesar que se olhar mais de perto verá que isso é iogurte, meio pêssego e tiras de maçã}. No segundo tipo de aprendizado além das imagens dizemos o que cada uma vem a ser, porém ao mostrar a mesma imagem não pense que o computador saberá classificá-la corretamente pois provavelmente se confundirá mais uma vez (assim como você deve ter se confundido).
+Qual será o prato de comida que o computador associará? Exatamente "Ovo frito e batatas fritas"\footnote{Apesar que se olhar mais de perto vemos que isso é iogurte, meio pêssego e tiras de maçã}. No segundo tipo de aprendizado além das imagens dizemos o que cada uma vem a ser, porém ao mostrar o mesmo tipo de imagem não pense que o computador consegue classificá-la corretamente, provavelmente pode se confundir mais uma vez (assim como nos confundimos com a imagem mostrada).
 
-A resolução com problemas de imagem é bem complicada\footnote{Assim como análise da linguagem, chamada de NLP - \textit{Natural Language Processing}}, pois conseguimos identificar a diferença devido a nossa experiência não apenas visual mas com informações sobre textura, forma e outras que o computador ainda está engatinhando. Por isso o estudo desses algorítimos é algo tão rico e como vimos anteriormente. É muito importante conhecer boa parte dos modelos para decidir qual se ajusta e trabalha melhor aos dados que temos para treiná-los.
+A resolução com problemas de imagem é bem complicada\footnote{Assim como análise da linguagem, chamada de NLP - \textit{Natural Language Processing}}, pois conseguimos identificar a diferença devido a nossa experiência não apenas visual mas com informações sobre textura, forma e outras que o computador ainda está engatinhando. Por isso o estudo desses algorítimos é algo tão rico e como vimos anteriormente. É muito importante conhecer boa parte dos modelos e decidir qual trabalha melhor com as observações que temos para treiná-lo.
 
 \subsection{Algoritmo Não Supervisionado}
-Não envolvem um controle direto, aqui o ponto principal do requisito são desconhecidos e ainda precisam ser definidos. Normalmente são usados para: explorar uma estrutura de informação; extrair informações desconhecidas sobre os dados e observar a detecção de padrões.
+Não envolve um controle direto, aqui o ponto principal do requisito são desconhecidos e ainda precisam ser definidos. Normalmente são usados para: explorar uma estrutura de informação; extrair informações desconhecidas sobre as observações e detectar padrões.
 \begin{description}
 	\item[k-means:] é o mais popular, usado para segmentar em categorias exclusivas com base em uma variedade de recursos, por exemplo clientes como seus hábitos de consumo ou casas com seu preço, localidade e área.
 	\item[t-Distributed Stochastic Neighbor Embedding:] t-SNE é utilizado para redução de dimensionalidade que é particularmente adequada para a visualização de conjuntos que possuem dados com alta dimensão.
-	\item[Principal Component Analysis:] PCA é usado para enfatizar a variação e destacar padrões fortes em um conjunto de dados, de modo a facilitar a exploração e visualização de dados.
-	\item[Associate Rule Mining:] ARM para encontrar padrões frequentes, associações, relações e correlação, normalmente usado para fazer análises de cesta de compras. Em termos gerais, é aplicado em várias situações para encontrar associação, padrão frequente nos conjuntos de objetos nos bancos de dados.
+	\item[Principal Component Analysis:] PCA é usado para enfatizar a variação e destacar padrões fortes em um conjunto de dados, utilizado para facilitar a exploração e visualização dos dados.
+	\item[Associate Rule Mining:] ARM para encontrar padrões frequentes, associações, relações e correlação, normalmente utilizado em proporcionar análises para cesta de compras. Em termos gerais, é aplicado em várias situações como encontrar associação ou determinar um padrão frequente nos conjuntos de observações.
 \end{description}
 
 \subsection{Algoritmos Supervisionados}
-Neste tipo temos dados de valores conhecidos e do ponto de vista da máquina, esse processo é uma rotina de "conectar os pontos" ou achar similaridades entre os dados. Para "alimentar" o algoritmo determinamos que tipo de resultado é desejado ("sim/não", "verdadeiro/falso", a projeção do valor das vendas, a perda líquida de crédito ou o preço da habitação).
+Neste tipo temos os atributos alvo rotulados e do ponto de vista da máquina, esse processo é uma rotina de "conectar os pontos" ou achar similaridades entre as observações e o que ela representa. Para "alimentar" o algoritmo determinamos que tipo de resultado é desejado ("sim/não", "verdadeiro/falso", a projeção do valor das vendas, a perda líquida de crédito ou o preço da habitação).
 \begin{description}
 	\item[Regressão linear:] muito utilizado para prever resultados numéricos contínuos, como preços de casas ou ações, umidade ou temperatura de um local, crescimento populacional.
-	\item[Regressão logística:] É um classificador popular usado especialmente no setor de crédito para prever inadimplências de empréstimos.
-	\item[k-Nearest Neighbors:] k-NN é um algoritmo usado para classificar dados em duas ou mais categorias e é amplamente usado para classificar casas em grupos como caras e acessíveis, com base em preço, área, quartos e toda uma gama de outros recursos.
-	\item[Support Vector Machines:] SVM é um classificador popular usado na detecção de imagens e faces, além de aplicativos como reconhecimento de manuscrito.
-	\item[Tree-Based Algorithms:] Algoritmos baseados em árvores, como florestas aleatórias ou árvores de decisão ou reforçadas, são usados para resolver problemas de classificação e regressão.
-	\item[Naive Bayes:] Este classificador usa o modelo matemático de probabilidade para resolver problemas de classificação.
+	\item[Regressão logística:] É um classificador popular utilizado especialmente no setor de crédito para prever inadimplências de empréstimos.
+	\item[k-Nearest Neighbors:] KNN é um algoritmo usado para classificar as observações em duas ou mais categorias (\textit{cluster}) amplamente usado na separação como preços de casas em grupos, por exemplo com base em preço, área, quartos e toda uma gama de outros preditores.
+	\item[Support Vector Machines:] SVM é um classificador popular utilizado na detecção de imagens e faces, além de aplicativos como reconhecimento de manuscrito.
+	\item[Tree-Based Algorithms:] Algoritmos baseados em árvores, como \textit{Random Florest} (florestas aleatórias) ou \textit{Decision Tree} (árvores de decisão), são usados para resolver problemas de classificação e regressão.
+	\item[Naive Bayes:] Utiliza um modelo matemático de probabilidade para resolver problemas de classificação.
 \end{description}
 
 \subsection{Algoritmos de Aprendizagem por Reforço}
 Tratam de situações onde a máquina começa a aprender por tentativa e erro ao atuar sobre um ambiente dinâmico. Desta maneira, não é necessário novos exemplos ou um modelo a respeito da tarefa a ser executada: a única fonte de aprendizado é a própria experiência do agente, cujo objetivo formal é adquirir uma política de ações que maximize seu desempenho geral.
 \begin{description}
-	\item[Q-Learning:] é um algoritmo de aprendizado baseado em valores. Os algoritmos baseados em valor atualizam uma função com base em uma equação (particularmente neste caso a equação de \textit{Bellman}). Enquanto o outro tipo, baseado em políticas, estima a função de valor com uma política gananciosa obtida a partir do último aprimoramento da política. Q-learning é um aluno fora da política. Significa que aprende o valor da política ideal, independentemente das ações do agente. Por outro lado, um aprendiz de política aprende o valor da política que está sendo executada pelo agente, incluindo as etapas de exploração e encontrará uma política ideal, levando em consideração a exploração inerente à política.
-	\item[Temporal Difference:] TD é um agente que aprende em um ambiente por meio de episódios sem conhecimento prévio desse ambiente. Isso significa que a diferença temporal adota uma abordagem de aprendizado sem modelo ou sem supervisão. Podemos considerar isso como uma tentativa e erro.
+	\item[Q-Learning:] é um algoritmo de aprendizado baseado em valores. Esses tipos atualizam uma função com base em uma equação (particularmente neste caso de \textit{Bellman}) matemática, ou então, com base em políticas, estima a função de valor para uma política gananciosa obtida a partir do último aprimoramento. Q-learning é um algoritmo de políticas. Significa que aprende o valor ideal, independentemente das ações do agente. Por outro lado, um aprendiz de política aprende o valor que está sendo executada pelo agente, incluindo as etapas de exploração e encontrará uma política ideal, leva em consideração a exploração inerente dessa.
+	\item[Temporal Difference:] TD é um agente que aprende por meio de episódios sem conhecimento prévio desse ambiente. Isso significa que a diferença temporal adota uma abordagem de aprendizado sem modelo ou supervisão. Podemos considerar isso como uma tentativa e erro.
 	\item[Monte-Carlo Tree Search:] MCTS é um método geralmente usado nos jogos para prever o caminho (movimentos) que a política deve seguir para alcançar a solução final vencedora. Jogos como Cubo de Rubik, Sudoku, Xadrez, Go, ou um simples Jogo da Velha têm muitas propriedades em comuns que levam ao aumento exponencial do número de possíveis ações que podem ser executadas. Esses passos aumentam exponencialmente à medida que o jogo avança. Idealmente, podemos prever todos os movimentos possíveis e seus resultados que podem ocorrer no futuro e assim aumentarmos a chance de ganhar.
-	\item[Asynchronous Advantage Actor-Critic:] A3C é um dos algoritmos mais recentes a serem desenvolvidos no campo de aprendizado de reforço profundo. Esse algoritmo foi desenvolvido pelo \textit{DeepMind} do Google. Implementa treinamento no qual vários \textit{workers}, em ambiente paralelo, atualizam independentemente uma função de valor global - portanto "assíncrona". Um dos principais benefícios de ter atores assíncronos é a exploração eficaz e eficiente do espaço de estados.
+	\item[Asynchronous Advantage Actor-Critic:] A3C é um dos algoritmos mais recentes a serem desenvolvidos no campo de Reforço Profundo. Foi desenvolvido pelo \textit{DeepMind} do Google e implementa um treinamento no qual vários \textit{workers}, em ambiente paralelo, atualizam independentemente uma função de valor global - portanto "assíncrona". Um dos principais benefícios de ter atores assíncronos é a exploração eficaz e eficiente do espaço de estados.
 \end{description}
 
 \section{Montagem do Ambiente}\index{Entendimento Geral}
@@ -97,8 +97,8 @@ Essa segunda alternativa é bem mais próxima a realidade de qualquer um que des
 	Não se desespere, baixe um paper sobre o Docker gratuitamente na minha página no Academia.edu (\url{https://iesbpreve.academia.edu/FernandoAnselmo}).
 \end{note}
 
-Minha primeira personalização de Imagem\footnote{O objetivo não é termos uma imagem pequena, mas uma PERSONALIZÁVEL, se deseja que seja pequena recomendo que acesse o tutorial disponível em \url{https://jcrist.github.io/conda-docker-tips.html}.} surgiu quando descobri que as versões \textbf{Jupyter} não me atendiam por completo e \textbf{Anaconda} era grande demais. Iremos então trabalhar em uma imagem que possa conter um Jupyter mais adequado e uma Anaconda mas controlada. O resultado foi o seguinte \textbf{Dockerfile} (que obrigatoriamente deve ter esse nome de arquivo):
-\begin{lstlisting}
+Minha primeira personalização de Imagem\footnote{O objetivo não é termos uma imagem pequena, mas uma PERSONALIZÁVEL, se não deseja isso recomendo que acesse o tutorial disponível em \url{https://jcrist.github.io/conda-docker-tips.html}.} surgiu quando descobri que as versões \textbf{Jupyter} não me atendiam por completo e \textbf{Anaconda} era grande demais. Iremos então trabalhar em uma imagem que possa conter um Jupyter mais adequado e uma Anaconda mas controlada. Com o seguinte resultado do arquivo \textbf{Dockerfile} (que obrigatoriamente deve ter esse nome):
+\begin{lstlisting}[]
 # Base da Imagem
 FROM ubuntu:19.10
 
@@ -183,13 +183,15 @@ Tento manter sempre o script o mais documentado possível deste modo posso remov
 
 Obviamente que "fernandoanselmo/docker-data-science" pode ser alterado para o nome que desejar, porém na essência isso cria uma imagem que contém além do sistema operacional uma versão completa do Jupyter (com a inclusão de várias funcionalidades) para a realização do nosso trabalho como Cientista de Dados. 
 
-Mas isso é muito complicado e não entendo nada disso! Sem problemas, basta saltar toda essa parte de criação e construção da imagem para o próximo tópico seguindo comando a comando, pois este foi publicado do \textbf{DockerHub} e será baixado sem problemas.
+\begin{note}[Socorro]{}
+	Mas isso é muito complicado e não entendo nada disso! Sem problemas, basta saltar toda essa parte de criação e construção para os próximos tópicos. Esta imagem foi publicada no \textbf{DockerHub} e pode ser baixado sem problemas.
+\end{note}
 
 Agora o comando: \\
 {\ttfamily\$ docker run -d -t -i -v ---privileged /dev/ttyACM0:/dev/ttyACM0 -v \\ $\sim$/Aplicativos/ipynb:/root/GitProjects ---network=host \\
 	 ---name meu-jupyter fernandoanselmo/docker-data-science}
  
-Realiza a criação de um contêiner. Vamos aos detalhes, após a opção -v aparece a expressão "$\sim$/Aplicativos/ipynb", essa se refere a uma determinada pasta no sistema operacional onde serão armazenados os Notebooks produzidos. Abrir o navegador no endereço \url{http://localhost:8888} e obtemos o seguinte resultado:
+Realiza a criação de um contêiner. Vejamos os detalhes: após a opção -v aparece a expressão "$\sim$/Aplicativos/ipynb", essa se refere a uma determinada pasta no sistema operacional onde serão armazenados os Notebooks produzidos. Abrir o navegador no endereço \url{http://localhost:8888} e obtemos o seguinte resultado:
 \begin{figure}[H]
 	\centering\includegraphics[scale=0.5]{cap01/paginaSenha.png}
 	\caption{Jupyter solicitando o Token}
@@ -214,7 +216,7 @@ E instalamos normalmente, como se estivesse em uma máquina com o Ubuntu (com os
 Pronto uma vez testado podemos optar por manter só nesse contêiner, ou então modificar o Script para ao criarmos novos contêineres e estes serão criados com essa funcionalidade embutida.
 
 Verificar qual a versão do Python que está a nossa disposição, em uma célula do Notebook digite:
-\begin{lstlisting}
+\begin{lstlisting}[]
 !python --version
 \end{lstlisting}
 
