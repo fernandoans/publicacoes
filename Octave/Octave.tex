@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Octave}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.1}
 
 \usepackage{../sty/tutorial}
 \usepackage{wrapfig} % Imagens que se cruzam com texto
@@ -395,7 +395,8 @@ function [vetor] = ordenaVetor(vetor)
       troca = false
     endif
   endwhile
-endfunction
+endfunction
+
 \end{lstlisting}
 
 Como parâmetro recebemos um vetor para ordena-lo numericamente, criamos uma variável de controle para as trocas. Nosso laço indeterminado \textbf{while} (tem esse nome pois não sabemos quantas vezes seus comandos serão repetidos) será sempre repetido (em tese temos aqui um laço eterno). Entramos no laço determinado \textbf{for} (tem esse nome pois sabemos quantas vezes será executado do valor inicial da variável de entrada até o valor final) lemos da primeira posição do vetor (cuidado com outras linguagens pois aqui a primeira posição é 1) até sua última (dada pelo método \textit{lenght()}) menos 1 (pois usaremos para comparar a posição posterior). No comando de decisão \textbf{if} verificamos se a posição posterior é menor que a anterior em caso verdadeiro realizamos uma troca de valores e indicamos para a variável \textit{troca} que ocorreu. Ao término do laço \textbf{for} verificamos o conteúdo de \textbf{troca}, se for falso (ou seja nenhuma troca foi realizada) interrompemos o laço \textbf{while}, caso contrário voltamos o valor de \textbf{troca} para false e repetimos todo o processo.
@@ -488,11 +489,117 @@ E obtemos como resultado:
 	\caption{Histograma da Imagem}
 \end{figure}
 
-Outros pacotes bem interessantes para quem trabalha com tratamento de dados são: \vspace{-1em}
+\subsection{Dataframe}
+\textit{Dataframes} provêm acesso a manipulações para arquivos de dados (normalmente em formato CSV - colunas separadas por vírgulas), são suportados por linguagens como Python (Pandas) e R. Veremos que o tratamento desse via Octave não é tão complicado assim e obtemos os mesmos recursos.
+
+Agora que já aprendemos o processo completo para a instalação de um pacote, vamos instalar este de uma forma bem mais simples e usual: \\
+\codigo{>> pkg install -forge dataframe}
+
+Este modo busca o pacote diretamente do SourceForge. Vamos tratar de uma base bem conhecida chamada \textit{mtcars.csv} (está disponível no GitHub \cite{github} na pasta \textbf{Octave}). Iniciamos com a leitura do pacote: \\
+\codigo{>> pkg load dataframe}
+
+E ler a base:
+\codigo{>> df = dataframe('mtcars.csv')}
+
+Essa base contém 32 modelos de carros com os seguintes atributos: Nome, quilometragem, número de cilindros, deslocamento (medida de poder do carro em polegada cúbica), cavalos de força, relação do eixo traseiro, peso (em libras), eficiência do gasto de combustível (por 1/4 milha), motor (0 = V-shaped, 1 = straight), câmbio (0 = automática, 1 = manual), total de marchas e carburadores.
+
+O Octave conseguiu reconhecer corretamente todos os atributos pois estão separados no padrão por vírgulas, mas as vezes obtemos arquivos com outros separadores como ponto e vírgula por exemplo, neste caso devemos avisar qual o separador: \\
+\codigo{>> objeto = dataframe('arquivo.csv', 'sep', {';'})}
+
+Outro detalhe é relativo ao tipo da variável criada, esta corresponde a \textit{dataframe}: \\
+\codigo{>> class(df)}
+
+Este tipo só é possível pois temos o pacote que indica sua funcionalidade. Porém observe que existe um tipo de cada coluna dos dados mostrados: \textit{char} e \textit{double}. De mesmo modo podemos analisá-las, por exemplo verificar os tipos das colunas \textit{name} e \textit{mpg}:
+\codigo{>> class(df.name) \\
+	>> class(df.mpg)}
+
+Porém quando utilizamos o nome da coluna vemos que na verdade o tipo da variável é um vetor de double (e não somente uma simples variável do tipo double): \\
+\codigo{>> df.mpg}
+
+Também podemos obter a coluna do seguinte modo: \\
+\codigo{>> df.array(:,2)}
+
+Obter um vetor com o nome de todas as colunas: \\
+\codigo{>> df.colnames}
+
+Localizar o índice de uma coluna pelo seu nome: \\
+\codigo{>> find(strcmp(cellstr(df.colnames),'hp'))}
+
+Obter um vetor com a quantidade de observações e colunas: \\
+\codigo{>> size(df)}
+
+Obter a quantidade de observações: \\
+\codigo{>> rows(df)}
+
+Obter a quantidade de colunas: \\
+\codigo{>> columns(df)}
+
+Descrever as colunas: \\
+\codigo{>> summary(df)}
+
+E das colunas numéricas temos o valor mínimo, 1º Quartil, 2º Quartil ou mediana, média, 3º Quartil e o valor máximo. Fica melhor visualizado se selecionarmos apenas algumas colunas numéricas: \\
+\codigo{>> summary(df(:,2:4))}
+
+Obter as dez primeiras observações: \\
+\codigo{>> df(1:10,:)}
+
+O primeiro parâmetro é o range de registros e o segundo colunas. Obter as dez últimas observações: \\
+\codigo{>> df(end-10:end,:)}
+
+A variável \textit{end} contém a quantidade de observações. Obter as 3 primeiras colunas: nome (\textit{name}), autonomia em milhas por galão (\textit{mpg}) e o número de cilindros (\textit{cyl}): \\
+\codigo{>> df(:,1:3)}
+
+Outra forma de obter o mesmo resultado é usar pelo nome das colunas: \\
+\codigo{>> df(:,['name'; 'mpg'; 'cyl'])}
+
+Ou ainda pelos seus índices: \\
+\codigo{>> df(:,[1, 2, 3])}
+
+Obter as observações onde autonomia é maior que 20: \\
+\codigo{>> df(df.mpg > 20,:)}
+
+Obter as observações onde autonomia é maior que 20 \textbf{E} o número de cilindros é igual a 6: \\
+\codigo{>> df(df.mpg > 20 \& df.cyl == 6, :)}
+
+Obter as observações onde autonomia é maior que 20 \textbf{OU} o número de cilindros é igual a 6: \\
+\codigo{>> df(df.mpg > 20 | df.cyl == 6, :)}
+
+Obter a quantidade de registros retornados: \\
+\codigo{>> length(df.name(df.mpg > 20 | df.cyl == 6))}
+
+Podemos usar o nome de qualquer coluna mas deve-se tirar os dois-pontos. Obter a média da autonomia: \\
+\codigo{>> mean(df.mpg)}
+
+Obter a média da autonomia que seja tenha um valor maior que 20: \\
+\codigo{>> mean(df.mpg(df.mpg > 20))}
+
+Adicionar uma nova observação: \\
+\codigo{>> novo = \{'Hundai Sereno', 18.5, 4, 160, 185, 2.8, 1.6, 19\} \\
+	>> df(end+1, 1:8) = x}
+
+Ganhamos algumas colunas com informação faltante (NA), localizar as observações que tenham coluna com informação faltante: \\
+\codigo{>> df(isnan(df.vs), :)}
+
+Devemos analisar cada uma das colunas separadamente, criar uma coluna (por exemplo com um valor aleatório): \\
+\codigo{>> df(:,13) = rand(size(df,1),1)}
+
+Renomear uma coluna: \\
+\codigo{>> df.colnames(13) = 'nova'}
+
+Remover uma coluna: \\
+\codigo{>> df(:,13) = []}
+
+Remover uma linha: \\
+\codigo{>> df(33,:) = []}
+
+E por fim, a partir de uma matriz é possível criar um \textit{DataFrame}: \\
+\codigo{>> pop = dataframe(\{"pais", "capital"; "Belgica", "Bruxelas"; "India", "Nova Delhi"; "Brasil", "Brasilia"\})}
+
+Lembre-se que podemos realizar tudo isso e ainda se aproveitar dos gráficos que estão a nossa disposição. Então será que o Octave serve ou não para Análise de Dados? Outros pacotes bem interessantes para quem trabalha com tratamento de dados são: \vspace{-1em}
 \begin{itemize}
-	\item \textbf{Arduino}: que permite a comunicação com esta placa.
-	\item \textbf{Database}: que provê acesso ao SGBD Postgres.
-	\item \textbf{Dataframe}: que permite a criação de uma toolbox similar a do RStudio.
+	\item \textbf{Arduino}: permite a comunicação com esta placa.
+	\item \textbf{Database}: provê acesso ao SGBD Postgres.
+	\item \textbf{Statistics}: inclui estatísticas descritivas, distribuições de probabilidade, testes estatísticos, geração de números aleatórios entre muitas outras funcionalidades.
 \end{itemize}
 
 Sendo assim, não percamos a chance de explorá-los.

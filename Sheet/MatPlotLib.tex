@@ -8,7 +8,6 @@
 \newcommand{\pbversao}{1.0}
 
 \usepackage{../sty/cheatsheet}
-\definecolor{contorno}{rgb}{0.5,0.5,0.5}
 
 \begin{document}
 
@@ -25,13 +24,13 @@
 %------------ Biblioteca MatPlotLib ---------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-    \begin{minipage}{0.3\textwidth}
-	  Para importar a biblioteca MatPlotLib: \\
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Importar a biblioteca: \\
 	  \codigo{import matplotlib.pyplot as plt} \\[2mm]
-	  No Jupyter usar o comando:
+	  No Jupyter usar o comando: \\
 	  \codigo{\%matplotlib inline} \\[2mm]
-	  \textbf{Pyplot} é uma coleção de funções que fazem a biblioteca MatPlotLib funcionar como o MatLab. Cada função pyplot faz alguma alteração na plotagem do gráfico. \\[2mm]
-      OBSERVAÇÃO: Para os exemplos desta importar também a NumPy: \\
+	  \textbf{Pyplot} é uma coleção de funções que fazem a biblioteca funcionar como o MATLAB. Cada função pyplot faz alguma alteração na plotagem do gráfico. \\[2mm]
+      OBSERVAÇÃO: Para os exemplos importar a NumPy: \\
       \codigo{import numpy as np}
     \end{minipage}
   };
@@ -41,14 +40,14 @@
 %------------ Funções Padrões ---------------
 \begin{tikzpicture}
 \node [mybox] (box){%
-  \begin{minipage}{0.3\textwidth}
+  \begin{minipage}{0.3\textwidth} \vspace{0.5em}
 	Criar um gráfico: \\
 	\codigo{plt.plot(X, y)} \\[2mm]
-	Mostrar o gráfico:
+	Mostrar o gráfico: \\
 	\codigo{plt.show()} \\[2mm]
 	Modificar o tamanho da figura: \\
 	\codigo{plt.figure(figsize = [larg, alt])} \\[2mm]
-	Existem muitos tipos de gráficos permitidos, os principais são: \vspace{-1em}
+	Principais tipos de gráficos: \vspace{-1em}
     \begin{center}\small{
   	  \begin{tabular}{lp{6cm} r}
 	    plot() & Gráfico de Linhas X e y. \\
@@ -67,8 +66,8 @@
 %------------ Comandos de Texto ---------------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-    \begin{minipage}{0.3\textwidth}
-      Comandos mais utilizados com Pyplot: \vspace{-1em}
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+      Comandos mais utilizados do Pyplot: \vspace{-1em}
       \begin{center}\small{
         \begin{tabular}{lp{6cm} r}
           text() & Texto em um local específico dos eixos. \\
@@ -86,10 +85,12 @@
   \node[fancytitle, right=10pt] at (box.north west) {Comandos de Texto};
 \end{tikzpicture}
 
+Página da MatPlotLib: \url{https://matplotlib.org/}
+
 %------------ Gráfico com 1 elemento ---------------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-    \begin{minipage}{0.3\textwidth}
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
       \codigo{x = np.linspace(0, 2 * np.pi, num = 100) \\
       	y = np.sin(x) \\
       	plt.plot(x, y) \\
@@ -107,7 +108,7 @@
 %------------ Gráfico com vários elementos ---------------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-	\begin{minipage}{0.3\textwidth}
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
 	\codigo{x = np.arange(10) \\
 		plt.plot(x, x) \\
 		plt.plot(x, 2 * x) \\
@@ -128,7 +129,7 @@
 %------------ Gráfico com vários elementos ---------------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-	\begin{minipage}{0.3\textwidth}
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
 	  \codigo{plt.figure(figsize = [8,7]) \\
         t = np.arange(0,2 * np.pi, 0.1) \\
         x = 16 * np.sin(t) ** 3 \\
@@ -142,13 +143,15 @@
 %------------ Mais de um Gráfico ---------------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-	\begin{minipage}{0.3\textwidth}
-	  O comando \codigo{plt.subplot(nLin, nCol, indice)} permite a inserção de um subgráfico. Por exemplo: \\
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Inserir subgráfico: \\
+	  \codigo{plt.subplot(nLin, nCol, indice)} \\[2mm]
+	  Por exemplo: \\
 	  \codigo{ax1 = plt.subplot(2, 2, 1)} \\[2mm]
 	  Retirar a borda: \\
 	  \codigo{ax1 = plt.subplot(221, frameon=False)} \\[2mm]
 	  Adicionar o subgráfico a figura: \\
-	  \codigo{plt.subplot(ax1)}
+	  \codigo{plt.subplot(ax1)} \\[2mm]
 	  Excluir o subgráfico da figura: \\
 	  \codigo{plt.delaxes(ax1)}
 	\end{minipage}
@@ -159,7 +162,7 @@
 %------------ Exemplo Gráfico com vários elementos ---------------------
 \begin{tikzpicture}
   \node [mybox] (box){%
-    \begin{minipage}{0.3\textwidth}
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
       \codigo{xvals = np.arange(0, 100, 1) \\
         r2 = np.sqrt(xvals) \\
         r3 = np.cbrt(xvals) \\
@@ -168,14 +171,14 @@
         plt.subplot(ax1) \\
         ax2 = plt.subplot(122) \\
         ax2.plot(xvals, r3) \\
-        plt.suptitle('Comparação entre Quadrada e Cúbica') \\
+        plt.suptitle('Comparação entre Raizes') \\
         plt.subplot(ax2) \\
         plt.show()}
       \begin{figure}[H]
         \centering
 	    \includegraphics[width=0.6\textwidth]{imgMatPlotLib/grafico3.png}
 	  \end{figure}
-	  Ou utilizando \underline{axes}: \\
+	  Ou com \underline{axes}: \\
       \codigo{fig, axes = plt.subplots(1, 2, figsize=(10,4)) \\
       	axes[0].plot(xvals, r2) \\
       	axes[0].set\_title("Quadrada") \\
@@ -185,8 +188,6 @@
   };
   \node[fancytitle, right=10pt] at (box.north west) {Exemplo de 2 SubGráficos};
 \end{tikzpicture}
-
-Página da MatPlotLib: \url{https://matplotlib.org/}
 
 \end{multicols*}
 \end{document}
