@@ -573,7 +573,7 @@ Podemos usar o nome de qualquer coluna mas deve-se tirar os dois-pontos. Obter a
 Obter a média da autonomia que seja tenha um valor maior que 20: \\
 \codigo{>> mean(df.mpg(df.mpg > 20))}
 
-Adicionar uma nova observação: \\
+Podemos ainda obter o valor máximo(\textit{max}), mínimo (\textit{min}) ou o desvio padrão (\textit{std}). Adicionar uma nova observação: \\
 \codigo{>> novo = \{'Hundai Sereno', 18.5, 4, 160, 185, 2.8, 1.6, 19\} \\
 	>> df(end+1, 1:8) = x}
 
@@ -582,6 +582,9 @@ Ganhamos algumas colunas com informação faltante (NA), localizar as observaç�
 
 Devemos analisar cada uma das colunas separadamente, criar uma coluna (por exemplo com um valor aleatório): \\
 \codigo{>> df(:,13) = rand(size(df,1),1)}
+
+Obter os valores únicos de uma determinada coluna: \\
+\codigo{>> unique(df.cyl)}
 
 Renomear uma coluna: \\
 \codigo{>> df.colnames(13) = 'nova'}
