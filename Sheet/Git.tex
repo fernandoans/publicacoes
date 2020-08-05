@@ -5,7 +5,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{\huge{\textbf{GitHub}}}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.1}
 
 \usepackage{sty/cheatsheet}
 
@@ -25,9 +25,11 @@
 \begin{tikzpicture}
   \node [mybox] (box){%
     \begin{minipage}{0.3\textwidth} \vspace{0.5em}
-	  Clonar um repositório existente: \\
+	  Configurar usuário do GitHub ao Sistema: \\
+      \codigo{git config –global user.name \aspas{[nome]}} \\[2mm]
+	  Clonar repositório existente: \\
 	  \codigo{git clone [endereco]} \\[2mm]
-	  Criar um novo repositório local: \\
+	  Criar novo repositório local: \\
 	  \codigo{git init}
     \end{minipage}
   };
@@ -38,21 +40,19 @@
 \begin{tikzpicture}
   \node [mybox] (box){%
     \begin{minipage}{0.3\textwidth} \vspace{0.5em}
-      Verificar as mudanças do diretório de trabalho: \\
+      Verificar mudanças do diretório de trabalho: \\
       \codigo{git status} \\[2mm]
-      Comparar alterações do diretório de trabalho: \\
-      \codigo{git diff} \\[2mm]
-      Adicionar todas mudanças ao próximo \textit{commit}: \\
-      \codigo{git add .} \\[2mm]
-      Adicionar um arquivo ao próximo \textit{commit}: \\
+      Comparar alterações entre 2 \textit{branchs}: \\
+      \codigo{git diff [branch1] [branch2]} \\[2mm]
+      Adicionar arquivo ao próximo \textit{commit}: \\
       \codigo{git add [arquivo]} \\[2mm]
-      Mensagem do \textit{commit} aos arquivos adicionadas: \\
+      Realizar \textit{commit} com mensagem: \\
       \codigo{git commit -m \aspas{mensagem}} \\[2mm]
       Marcar o \textit{commit} atual: \\
       \codigo{git tag [nome]} \\[2mm]
-      Modificar a brach atual: \\
+      Modificar \textit{branch} atual: \\
       \codigo{git switch -C [próximo] [anterior]} \\[2mm]
-      Enviar os arquivos adicionados ao repositório remoto: \\
+      Enviar arquivos adicionados ao repositório remoto: \\
       \codigo{git remote add origin [url]}
     \end{minipage}
   };
@@ -63,11 +63,11 @@
 \begin{tikzpicture}
   \node [mybox] (box){%
     \begin{minipage}{0.3\textwidth} \vspace{0.5em}
-	  Listar todos as configurações do repositório: \\
-      \codigo{git remote -v}
-      Mostrar as informações sobre o repositório: \\
-      \codigo{git remote show [nome]}
-	  Verificar todos os \textit{commits} realizados (\textbf{q} para sair): \\
+	  Listar configurações do repositório: \\
+      \codigo{git remote -v} \\[2mm]
+      Mostrar informações do repositório: \\
+      \codigo{git remote show [nome]} \\[2mm]
+	  Verificar \textit{commits} realizados (\textbf{q} para sair): \\
       \codigo{git log} \\[2mm]
 	  Verificar \textit{commits} de um arquivo (\textbf{q} para sair): \\
       \codigo{git log [arquivo]} \\[2mm]
@@ -82,17 +82,19 @@
 \begin{tikzpicture}
   \node [mybox] (box){%
     \begin{minipage}{0.3\textwidth} \vspace{0.5em}
-	  Descartar as mudanças locais: \\
+	  Eliminar arquivo: \\
+      \codigo{git rm [arquivo]} \\[2mm]
+	  Descartar mudanças locais: \\
 	  \codigo{git reset --hard HEAD} \\[2mm]
-	  Retornar a um ponto de \textit{commit} (SEM descartar): \\
+	  Retornar ponto de \textit{commit} (SEM descartar): \\
 	  \codigo{git reset [commit]} \\[2mm]
-	  Retornar a um ponto de \textit{commit} (manter mudanças atuais): \\
+	  Retornar ponto de \textit{commit} (manter mudanças atuais): \\
 	  \codigo{git reset --keep [commit]} \\[2mm]
-	  Retornar a um ponto de \textit{commit} (descartar): \\
+	  Retornar ponto de \textit{commit} (descartar): \\
 	  \codigo{git reset --hard [commit]} \\[2mm]
-	  Descartar as mudanças de um arquivo: \\
+	  Descartar mudanças de um arquivo: \\
 	  \codigo{git checkout HEAD [arquivo]} \\[2mm]
-	  Reverter um \textit{commit}: \\
+	  Reverter \textit{commit} efetuado: \\
 	  \codigo{git revert [commit]}
 	\end{minipage}
   };
@@ -103,17 +105,17 @@
 \begin{tikzpicture}
   \node [mybox] (box){%
 	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
-  	  Listar todas as \textit{branches} existentes: \\
+  	  Listar \textit{branches} existentes: \\
 	  \codigo{git branch -av} \\[2mm]
-	  Modificar o cabeçalho da \textit{branch}: \\
+	  Modificar cabeçalho da \textit{branch}: \\
 	  \codigo{git checkout [branch]} \\[2mm]
-	  Criar uma nova \textit{branch} com base na corrente: \\
+	  Criar nova \textit{branch} com base na corrente: \\
 	  \codigo{git branch [novaBranch]} \\[2mm]
-	  Criar um nova trilha: \\
+	  Criar nova trilha: \\
       \codigo{git checkout --track [remote/Branch]} \\[2mm]
-	  Remover a \textit{brach} local: \\
+	  Remover \textit{brach} local: \\
       \codigo{git branch -d [branch]} \\[2mm]
-	  Eliminar a \textit{brach} remota: \\
+	  Eliminar \textit{brach} remota: \\
       \codigo{git branch -dr [remote/Branch]}
 	\end{minipage}
   };
@@ -124,11 +126,15 @@
 \begin{tikzpicture}
   \node [mybox] (box){%
 	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
-	  Basicamente essas são as ações diárias para deixar tudo em dia: \\
+ 	  \begin{wrapfigure}{l}{0.3\textwidth}
+        \vspace{-\baselineskip}
+        \includegraphics[width=0.8\linewidth]{imgGit/emDia} 
+      \end{wrapfigure}  
+	  Para deixar tudo em dia: \\
 	  \codigo{git pull \\
 	  	git add . \\
 	  	git commit -m \aspas{mensagem} \\
-	  	git push -u origin master \\
+	  	git push -u origin master
 	  }
 	\end{minipage}
   }; 
@@ -143,9 +149,9 @@
       \codigo{git fetch [repositório]} \\[2mm]
       Baixar mudanças (integra o cabeçalho): \\
       \codigo{git pull [repositório] [branch]} \\[2mm]
-      Publicar as mudanças: \\
+      Publicar mudanças: \\
       \codigo{git push -u origin [branch]} \\[2mm]
-      Publicar as \textit{tags}: \\
+      Publicar \textit{tags}: \\
       \codigo{git push --tags}
       \end{minipage}
   }; 
@@ -159,18 +165,18 @@
       \textbf{Mesclagem}
       \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\textwidth]{imgGit/merge.png}
+        \includegraphics[width=0.7\textwidth]{imgGit/merge}
       \end{figure}
-   	  Realizar uma mesclagem: \\
+   	  Realizar mesclagem: \\
 	  \codigo{git merge [branch]} \\[2mm]
   	  \textbf{Rebase}
   	  \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7\textwidth]{imgGit/rebase.png}
+        \includegraphics[width=0.7\textwidth]{imgGit/rebase}
       \end{figure}
-	  Realizar um rebase: \\
+	  Realizar \textit{rebase}: \\
       \codigo{git rebase [branch]} \\[2mm]
-	  Parar uma rebase: \\
+	  Interromper \textit{rebase}: \\
       \codigo{git abort [branch]} \\[2mm]
 	  Resolver conflitos pela ferramenta: \\
       \codigo{git mergetool}
