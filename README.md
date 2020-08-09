@@ -29,4 +29,4 @@ Todas foram criadas com o LaTex e estão em constante modificação. Porquê o L
 
 ## Cartões Disponíveis
 
-Pasta Sheet, temos os seguintes: MatPlotLib, GitHub, DataScience.
+Pasta Sheet, temos os seguintes: MatPlotLib, GitHub, DataScience, Markdown.

@@ -1,0 +1,164 @@
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Markdown Cheat Sheet
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Identificação
+\newcommand{\pbtitulo}{\huge{\textbf{Markdown ou Markup Language}}}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{sty/cheatsheet}
+
+\begin{document}
+
+\begin{center}{\pbtitulo}\\
+{\large Fernando Anselmo - Versão \pbversao}
+\end{center}
+
+\begin{multicols*}{3}
+
+\tikzstyle{mybox} = [draw=contorno, fill=white, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=10pt]
+\tikzstyle{fancytitle} =[fill=DarkBlue, text=white, font=\bfseries]
+
+%------------ Básicos ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+      \textit{Markdown} é uma linguagem simples de marcação criada por \textbf{John Gruber} e \textbf{Aaron Swartz}.  \\[2mm]
+      Parágrafos: Para criar um novo parágrafo, basta adicionar uma linha vazia. \\[2mm]
+	  Cabeçalhos (sequencia de dashs): \\
+      \codigo{\# cab1 \#\# cab2 ... \#\#\#\#\# cab5} \\[2mm]
+	  Negrito: \\
+	  \codigo{**Texto em Negrito** \\
+ 	    \_\_Outro em Negrito\_\_} \\[2mm]
+	  Itálico: \\
+	  \codigo{*Texto em Itálico* \\
+	  \_Outro em Itálico\_} \\[2mm]
+  	  Negrito e Itálico ( ou combinação de * e \_ ): \\
+      \codigo{***Texto em Negrito e Itálico*** \\
+      \_\_\_Outro em Negrito e Itálico\_\_\_} \\[2mm]
+  	  Cortado: \\
+	  \codigo{$\string~\string~$Texto em Cortado$\string~\string~$} \\[2mm]
+	  Citação: \\
+      \codigo{> citação} \\[2mm]
+	  Aninhar Citação: \\
+      \codigo{> citação \\
+       > \\
+       >> citação interna} \\[2mm]
+	  Linha Horizontal ( - ou * ou \_ ): \\
+      \codigo{---}
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Básicos};
+\end{tikzpicture}
+
+%------------ Âncoras ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Âncora para site: \\
+	  \codigo{$\string[$Texto$\string]$(url "Dica")} \\[2mm]
+	  Âncora de rodapé: \\
+      \codigo{$\string[$Texto$\string]\string[$1$\string]$ \\
+        ... \\
+        $\string[$1$\string]$: url} \\[2mm]
+      Âncoras de Imagem na mesma linha: \\
+	  \codigo{Texto !$\string[$Texto$\string]$(/nome.png "Dica")}
+	\end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Âncoras};
+\end{tikzpicture}
+
+%------------ Listas ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+      Lista Não Ordenada (* ou -): \\
+      \codigo{* Item 1 \\
+      	* Item 2 \\
+        * Item 3} \\[2mm]
+      Lista Ordenada: \\
+      \codigo{1 Item 1 \\
+   	    2 Item 2 \\
+        3 Item 3} \\[2mm]
+      Para sublistas basta adicionar espaços \\[2mm]
+      Lista Tarefas: \\
+      \codigo{-[x] Item Resolvido \\
+	    -[ ] Item a Resolver \\
+	    -[ ] Item a Resolver} \\[2mm]
+      Lista Definida: \\
+      \codigo{Primeiro Termo \\
+      : Esta é a definição do primeiro termo. \\
+      Segundo Termo \\
+      : Esta é a definição do segundo termo. \\
+      : Como é muito grande continua aqui.}
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Listas};
+\end{tikzpicture}
+
+%---------- Estruturação do Texto ------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Nota de Rodapé: \\
+      \codigo{Parágrafo com uma marcação. $\string[\string^$1$\string]$ \\
+      	... \\
+      	$\string[\string^$1$\string]$: Este é o rodapé.} \\[2mm]
+      Tabela: \\
+      \codigo{| Coluna 1 |  Coluna 2 | \\
+   	    |----------|-----------| \\
+        |  Item A  | Descrição | \\
+ 	    |  Item B  | Descrição |} \\[2mm]
+	  Bloco de Código ( $\grave{ }$ ou $\string~$ ): \\
+      \codigo{ $\grave{ }$ $\grave{ }$ $\grave{ }$ \\
+   	    ; saida \\
+	    mov eax, 1 \\
+	    mov ebx, 0 \\
+	    int 0x80 \\
+	    $\grave{ }$ $\grave{ }$ $\grave{ }$ }
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Estruturação do Texto};
+\end{tikzpicture}
+
+%------------ Perfumaria ---------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+  	  Emojis1: Copiar um emoji de uma fonte como a Emojipedia (\url{https://emojipedia.org/}) e colá-lo. \\[2mm]
+  	  Emojis2: \textbf{Rafael Xavier} disponibiliza uma coleção em \url{https://gist.github.com/rxaviers/7360908}. Por exemplo: \\
+	    \codigo{Esse código :heart\_eyes:} parabéns. \\[2mm]
+	  Modo Livre das URL: Ao colocar qualquer URL no código automaticamente é criado um hiperlink, caso não deseje isso: \\
+      \codigo{$\grave{ }$ url $\grave{ }$} \\[2mm]
+      Abreviação: \\
+        \codigo{Markdown é mais simples que HTML. \\
+        ... \\
+        *[HTML]: HyperText Markup Language} \\[2mm]
+      Colocar trecho de código na mesma linha: \\
+      \codigo{Texto $\grave{ }$ codigo $\grave{ }$ mais texto} \\[2mm]
+      Endereço de eMail: \\
+      \codigo{<fake@example.com>} \\[2mm]
+      Alinhamento da coluna de tabela é realizado na linha que separa o cabeçalho basta colocar 2 pontos na posição desejada, por exemplo: \\
+      \codigo{| :---  | :----: | ---: |} \\[2mm]
+      Colocar 3 tipos de código (em abas): \\
+      \codigo{ $\string~$$\string~$$\string~$css \\
+      Código em CSS. \\
+      $\string~$$\string~$$\string~$ \\
+      $\string~$$\string~$$\string~$javascript \\
+      Código em JavaScript. \\
+      $\string~$$\string~$$\string~$ \\
+      $\string~$$\string~$$\string~$html \\
+      Código em HTML. \\
+      $\string~$$\string~$$\string~$} \\[2mm]
+      Para exibir um caractere protegido pela linguagem que, de outra forma, seria usado para formatar texto no documento Markdown, adicione uma barra invertida ( $\setminus$ ) na frente do caractere.
+	\end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Perfumaria};
+\end{tikzpicture}
+
+Guia do Markdown: \url{https://www.markdownguide.org/}
+
+\end{multicols*}
+\end{document}
