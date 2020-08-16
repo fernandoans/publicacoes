@@ -1,7 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 
 % Identificação
-\newcommand{\pbtitulo}{Docker}
+\newcommand{\pbtitulo}{Palestra Docker}
 \newcommand{\pbversao}{1.0}
 
 \usepackage{../sty/tutorial}
@@ -60,7 +60,7 @@ Compose é uma ferramenta para definir e executar aplicativos Docker com vários
 
 \section{Caso PostgreSQL Compose}
 Arquivo: docker-compose.yml
-\begin{lstlisting}
+\begin{lstlisting}[]
 version: '2'
 services:
 db:
@@ -114,7 +114,7 @@ Nginx é um servidor web rápido, leve, e com inúmeras possibilidades de config
 	\caption{Estrutura dos Arquivos}
 \end{figure} \\
 1. Arquivo "src/index.html"
-\begin{lstlisting}
+\begin{lstlisting}[]
 <html>
  <body>
   <h1>Hello World</h1>
@@ -122,12 +122,12 @@ Nginx é um servidor web rápido, leve, e com inúmeras possibilidades de config
 </html>
 \end{lstlisting}
 2. Arquivo "Dockerfile"
-\begin{lstlisting}
+\begin{lstlisting}[]
 FROM nginx
 COPY src /usr/share/nginx/html
 \end{lstlisting}
 3. Arquivo "docker-compose.yml"
-\begin{lstlisting}
+\begin{lstlisting}[]
 version: '2'
 services:
  app:
@@ -139,7 +139,7 @@ services:
    - 8080:80 
 \end{lstlisting}
 4. Arquivo "docker-compose-prod.yml"
-\begin{lstlisting}
+\begin{lstlisting}[]
 version: '2'
 services:
  app:

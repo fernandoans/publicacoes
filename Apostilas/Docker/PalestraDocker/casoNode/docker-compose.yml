@@ -1,0 +1,14 @@
+db:
+  image: mongo
+  ports:
+    - "27017:27017"
+  restart: always
+web:
+  build: .
+  volumes:
+   - ./:/app
+  ports:
+   - "3000:3000"
+  links:
+   - db
+  command: nodemon /app/server.js

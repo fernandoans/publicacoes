@@ -1,0 +1,400 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Aplicativos Docker}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{../sty/tutorial}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+	\maketitle % mostrar o título
+	\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+	
+\section{Aplicativos por Ordem Alfabética}
+
+\begin{lstlisting}[]
+
+                  ##            -
+            ## ## ##          == 
+      ## ## ## ## ## ##      ===
+    /"""""""""""""""""""\___/  ===
+   /                          /  ==- 
+~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~~  / ~~ ~~ ~~~
+	\______ o           ____/
+     \    \          __/
+      \____\________/  
+	
+\end{lstlisting}
+
+\subsection{Apache}
+\codigo{\$ docker run -d -p 8080:80 -v /home/usuario/[pastaAssociativa]:/var/www/html \\ --name meu-apache nimmis/apache-php7}
+
+\subsection{Camunda}
+\codigo{\$ docker run --name meu-camunda -p 8070:8070 -p 8090:8090 -p 9090:9090 \\ camunda/camunda-bpm-workbench}
+
+\subsection{Caravel}
+\codigo{\$ docker pull amancevice/caravel  \\
+\$ docker run --name caravel -d -p 8088:8088 amancevice/caravel \\
+\$ docker exec -it caravel demo}
+
+\textbf{Usuário}: admin | admin
+
+Inicialização da Base de Dados: \\
+\codigo{\$ docker run --detach --name caravel ... amancevice/caravel \\
+\$ docker exec -it caravel caravel-init}
+
+Determinar aonde será armazenado o banco de dados do Caravel; podemos escolher entre SQLite, MySQL, PostgreSQL ou Redshift. Utilizar a variável de ambiente \textit{SQLALCHEMY\_DATABASE\_URI} para apontar o Caravel para SGBD corretamente. Certificar de definir \textit{SECRET\_KEY} ao criar o contêiner.
+
+SQLite
+\begin{lstlisting}[]
+$ docker run --detach --name caravel \
+--env SECRET_KEY="mySUPERsecretKEY" \
+--env SQLALCHEMY_DATABASE_URI="sqlite:////home/caravel/db/caravel.db" \
+--publish 8088:8088 \
+--volume [homeUsuario]/caravel:/home/caravel/db \
+amancevice/caravel
+\end{lstlisting}
+
+MySQL:
+\begin{lstlisting}[]
+$ docker run --detach --name caravel \
+--env SECRET_KEY="mySUPERsecretKEY" \
+--env SQLALCHEMY_DATABASE_URI="mysql://user:pass@host:port/db" \
+--publish 8088:8088 \
+amancevice/caravel
+\end{lstlisting}
+
+PostgreSQL:
+\begin{lstlisting}[]
+$ docker run --detach --name caravel \
+--env SECRET_KEY="mySUPERsecretKEY" \
+--env SQLALCHEMY_DATABASE_URI="postgresql://user:pass@host:port/db" \
+--publish 8088:8088 \
+amancevice/caravel
+\end{lstlisting}
+
+Redshift:
+\begin{lstlisting}[]
+$ docker run --detach --name caravel \
+--env SECRET_KEY="mySUPERsecretKEY" \
+--env SQLALCHEMY_DATABASE_URI="redshift+psycopg2://username@host.amazonaws.com:5439/db" \
+--publish 8088:8088 \
+amancevice/caravel
+\end{lstlisting}
+
+\subsection{DokuWiki}
+\codigo{\$ docker network create dokuwiki-tier \\
+\$ docker run -d -p 80:80 -p 443:443 --name dokuwiki --net kuwiki-tier \\
+--volume /home/fernando/dokuwiki-persistence:/bitnami bitnami/dokuwiki:latest}
+
+\subsection{ElasticSearch}
+\codigo{\$ docker run -d -p 9200:9200 -p 9300:9300 -it -h elasticsearch \\
+	--name elasticsearch elasticsearch}
+
+Testar ElasticSearch: 
+\codigo{\$ curl http://localhost:9200}
+
+\codigo{\$ docker run -d -p -p5601:5601 -h kibana --link elasticsearch:elasticsearch \\
+	 kibana}
+
+Testar Kibana: \url{http://localhost:5601}
+
+\codigo{\$ docker run -d -p -p5601:5601 -h kibana --link elasticsearch:elasticsearch \\
+	kibana \\
+\$ docker run -h logstash --name logstash --link elasticsearch:elasticsearch \\
+-it -rm -v "\$PWD":/config-dir logstash -f /config-dir/logstash.conf}
+
+Arquivo logstash.conf:
+\begin{lstlisting}[]
+input {
+	stdin {}
+}
+output {
+	elasticsearch { hosts => ["elasticsearch:9200"] }
+}
+\end{lstlisting}
+
+Outro exemplo:
+\begin{lstlisting}[]
+input {
+	tcp {
+		port => 9500
+	}
+}
+output {
+	elasticsearch { hosts => ["elasticsearch:9200"] }
+}
+\end{lstlisting}
+
+\subsection{Ember}
+Instalar a imagem: \\
+\codigo{\$ docker pull danlynn/ember-cli:2.12.1}
+
+Colocar o comando no Bash: \\
+\codigo{\$ nano ~/.bashrc}
+
+E adicionar a linha ao final do arquivo: \\
+\codigo{alias emb='docker run -it --rm -v \$(pwd):/myapp danlynn/ember-cli:2.12.1'}
+
+Sair e entrar novamente na tela de comandos.
+
+Criar o contêiner: \\
+\codigo{\$ docker run --name meu-ember -it -v \$(pwd):/myapp -p 4200:4200 -p 49153:49153 \\ danlynn/ember-cli:2.12.1 bash}
+
+Sair com exit: \\
+\codigo{\# exit}
+
+\textbf{CRIAR O PROJETO}
+
+Criar uma pasta: \\
+\codigo{\$ mkdir novo\_proj \\
+	\$ cd novo\_proj}
+
+Iniciar o projeto: \\
+\codigo{\$ emb ember init \\
+	\$ emb npm install \\
+	\$ emb bower --allow-root install}
+	
+Executar o container: \\
+\codigo{\$ docker start meu-ember \\
+	\$ docker exec -it meu-ember bash}
+
+E iniciar o servidor: \\
+\codigo{\# ember server}
+
+Ao sair: \\
+\codigo{\$ docker stop meu-ember}
+
+\subsection{Grafana}
+\codigo{\$ docker run -d -p 3000:3000 --name meu-grafana grafana/grafana}
+
+Padrão: admin | admin \\
+Mudar para: admin | grafana
+
+\subsection{Ignite}
+\codigo{\$ docker run -d -v \${PWD}/ignite\_work\_dir:/persistence \\ 
+	-e IGNITE\_WORK\_DIR=/persistence --name meu-ignite apacheignite/ignite}
+
+\codigo{\$ docker run -it --net=host -e "CONFIG\_URI=https://raw.githubusercontent.com/ \\ apache/ignite/master/examples/config/example-cache.xml" apacheignite/ignite}
+
+\subsection{JLNP - Java Loading Network Protocol}
+Dockerfile:
+\begin{lstlisting}[]
+# from your favorite base image which includes the latest Java, this example uses Debian
+FROM <your-java-base-image>
+
+# xorg and sudo is needed to run X as non-root
+RUN apt-get update && \
+apt-get install -y xorg sudo
+
+# run X as non-root
+RUN export uid=1000 gid=1000 && \
+mkdir -p /home/dockeruser && \
+echo "dockeruser:x:${uid}:${gid}:Developer,,,:/home/dockeruser:/bin/bash" >> /etc/passwd && \
+echo "dockeruser:x:${uid}:" >> /etc/group && \
+echo "dockeruser ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/dockeruser && \
+chmod 0440 /etc/sudoers.d/dockeruser && \
+chown ${uid}:${gid} -R /home/dockeruser
+
+USER dockeruser
+ENV HOME /home/dockeruser
+\end{lstlisting}
+
+Para execução é necessário permitir os Clientes X: \\
+\codigo{\$ docker run -ti --rm -e DISPLAY=\$DISPLAY \ \\
+	-v /tmp/.X11-unix/:/tmp/.X11-unix/ \ \\
+	-v /<directory-containing-jnlp-file>:/jnlp \ \\
+	<your-container> /bin/bash \\
+	dockeruser@62ed23a5ecf8:/\$ javaws jnlp/dynamictree\_webstart.jnlp}
+
+\subsection{Meteor}
+Baixar a imagem de desenvolvimento: \\
+\codigo{\$ docker pull danieldent/meteor}
+
+Criar o contêiner: \\
+\codigo{\$ docker run -it --rm -p 3000:3000 --link some-mongo:mongo -e \\
+	MONGO\_URL=mongodb://mongo:27017/appdb \\
+	-v "\$(pwd)":/app danieldent/meteor meteor create [app]}
+
+Entrar no diretório: \\
+\codigo{\$ cd [app]}
+
+Entrar no diretório: \\
+\codigo{\$ docker run -it --rm -p 3000:3000 --link some-mongo:mongo -e \\
+	MONGO\_URL=mongodb://mongo:27017/appdb -v "\$(pwd)":/app danieldent/meteor meteor}
+
+Criar base no MongoDB:
+\begin{lstlisting}[]
+Todos = new Mongo.Collection('Todos'); 
+Todos.find().fetch(); // Traz os registros
+Todos.insert({campo: 'valor', criadoEm: new Date()});
+
+meteor add accounts-ui accounts-password
+Adicionar no template: {{> loginButtons}}
+
+{{#if currentUser}}
+Estou logado
+{{else}}
+Favor se logar
+{{/if}}
+\end{lstlisting}
+
+Ctrl+C duas vezes para parar.
+
+\subsection{Node.js}
+Baixar a imagem: \\
+\codigo{\$ docker pull node}
+
+Contêiner associado ao MongoDB: \\
+\codigo{\$ docker run -it --name meu-node -v "\$(pwd)":/data -w /data -p 3000:3000 \\
+	--link  some-mongo:mongo node bash}
+
+Atachars: \\
+\codigo{\$ docker attach --sig-proxy=false meu-node}
+
+Desatachar: \\
+\codigo{Ctrl + P + Q}
+
+\subsection{Phonegap}
+Baixar a imagem: \\
+\codigo{\$ docker pull nmaas87/webratio-phonegap}
+
+Criar o contêiner: \\
+\codigo{\$ docker run -v <application-parent-dir>:/data nmaas87/webratio-phonegap \\
+	phonegap create <application-name>}
+
+Rodar o servidor do Phonegap: \\
+\codigo{\$ docker run -d -p <port>:3000 -v \\
+	<application-dir>:/data nmaas87/webratio-phonegap phonegap serve -p 3000}
+
+Construir para o Android: \\
+\codigo{\$ docker run -v <application-dir>:/data nmaas87/webratio-phonegap \\
+	phonegap build android}
+
+\subsection{Portainer}
+Baixar a imagem: \\
+\codigo{\$ docker pull portainer/portainer}
+
+Criar o contêiner: \\
+\codigo{\$ docker volume create portainer\_data \\
+	\$ docker run -d -p 9000:9000 --name meu-portainer \\
+	-v /var/run/docker.sock:/var/run/docker.sock \\
+	-v portainer\_data:/data portainer/portainer}
+
+\subsection{Selenium}
+Instalar: \\
+\codigo{\$ docker run -d -p 4444:4444 -p 5900:5900 --name \\
+	meu-selenium selenium/standalone-firefox}
+
+Página Principal: \\
+\url{https://github.com/SeleniumHQ/docker-selenium} \\
+\url{http://0.0.0.0:4444/grid/console}
+
+\subsection{Swagger}
+Baixar a imagem: \\
+\codigo{\$ docker pull swaggerapi/swagger-ui}
+
+Criar o contêiner: \\
+\codigo{\$ docker run -d -p 80:8080 -v [homeUsuario]/Aplicativos/swagger:/usr/share/nginx/html \\
+	--name meu-swagger swaggerapi/swagger-ui}
+
+\textbf{Visualização}
+
+1. Instalar globalmente o pacote http-server: \\
+\codigo{\$ sudo npm install -g http-server}
+
+2. Na pasta do arquivo ativar o server com o parâmetro CORS (evita erro Cross-Reference): \\
+\codigo{\$ http-server --cors}
+
+3. Abrir o Swagger UI \\
+\url{http://localhost:8080/[nome].json}
+
+\subsection{Vue.js}
+Primeiro é necessário instalar uma extensão do chrome chamada: $Vue.js devtools$
+
+Instalar: \textit{npm} e \textit{nodejs}
+
+1. Baixar a imagem: \\
+\codigo{\$ docker pull amurf/docker-vue-cli}
+
+2. Editar o bash init:
+\codigo{\$ nano ~/.bashrc}
+
+3. Adicionar as seguintes linhas
+\codigo{\$ alias vue='docker run -it --rm -v "\$PWD:\$PWD" -w "\$PWD" amurf/docker-vue-cli vue'}
+
+4. O node responde ao seguinte comando: \\
+\codigo{\$ node (para sair .exit)}
+
+5. E o Vue.js responde ao seguinte comando: \\
+\codigo{\$ vue}
+
+6. Ver as templates oficias para a criação de projetos: \\
+\codigo{\$ vue list}
+
+7. Criar um projeto: \\
+\codigo{\$ vue init [template|webpack] [nomeProjeto]}
+
+8. Opções:
+\begin{lstlisting}[]
+Nome do Projeto?
+Descrição do Projeto?
+Autor?
+Vue Build? [Runtime-only - extenções .vue]
+vue-router? No
+ESLint? Yes [auxilia a manter o codigo correto]
+Padrão de Projeto? Standard
+Teste Unitarios? No
+Teste? No
+\end{lstlisting}
+
+9. Depois do projeto gerado: \\
+\codigo{\$ cd [nome projeto] \\
+	\$ sudo npm install
+	\$ npm run dev}
+
+\subsection{Yo.js}
+Baixar a imagem: \\
+\codigo{\$ docker pull alexagency/angular-yeoman}
+
+Executar o contêiner: \\
+\codigo{\$ docker run -it --rm --link some-mongo:mongo -p 9000:9000 -p 3000:3000 -p 3001:3001 \\ 
+	-v \$(pwd)/angular:/app alexagency/angular-yeoman}
+	
+Pulo do Gato: Criou uma pasta /angular - usar chmod 777
+
+\codigo{\$ yo angular \\
+	\$ yo angular-fullstack \\
+	\$ yo gulp-angular}
+
+Angular e FullStack: \\
+\codigo{\$ grunt build --force \\
+	\$ grunt test \\
+	\$ sed -i s/localhost/0.0.0.0/g Gruntfile.js \\
+	\$ grunt serve --force}
+
+\url{http://localhost:9000}
+
+Gulp: 
+\codigo{\$ gulp build \\
+	\$ gulp test \\
+	\$ gulp serve}
+
+\url{http://localhost:3000} ou \url{http://localhost:3001}
+
+NodeJS, arquivo angular/server/config/environment/development.js e production.js
+
+MongoClient.connect('mongodb://'...)
+
+\subsection{Zope/Plone}
+Baixar a imagem: \\
+\codigo{\$ docker pull plone}
+
+Executar o contêiner: \\
+\codigo{\$ docker run -p 8080:8080 plone}
+	
+\end{document}
