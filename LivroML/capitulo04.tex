@@ -104,7 +104,7 @@ Obtemos como resultado:
 	\caption{Separados por Grupo}
 \end{figure}
 
-E parece que temos algo bem errado com alguns \textit{outliers} aparecendo, observamos o ponto azul no meio dos vermelhos e um outro azul isolado perto dos verdes. Então antes de treinarmos esse algoritmo devemos colocar os dados na mesma em escala, isso é feito assim:
+E parece que obtemos algo bem errado com alguns \textit{outliers} aparecendo, observamos o ponto azul no meio dos vermelhos e um outro azul isolado perto dos verdes. Então antes de treinarmos esse algoritmo devemos colocar os dados na mesma em escala, isso é feito assim:
 \begin{lstlisting}[]
 df['Salário'] = scale(df.Salário)
 df['Idade'] = scale(df.Idade)
@@ -121,7 +121,7 @@ df['ypred'] = y_predict
 df.head()
 \end{lstlisting}
 
-Plotamos novamente o gráfico e agora como resultado teremos:
+Plotamos novamente o gráfico e agora como resultado obtemos:
 \begin{lstlisting}[]
 cores = np.array(['green', 'red', 'blue'])
 plt.scatter(x=df['Idade'],
@@ -165,7 +165,7 @@ X, y = iris.data, iris.target
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1234)
 \end{lstlisting}
 
-O método \textit{load\_iris()} traz a nossa base em uma matriz de dados. Nossa base está dividida em \textit{data} que contém os \textit{features} preditores (tamanho e largura da sépala e tamanho e largura da pétala, que colocaremos em X) e \textit{target}, \textit{feature} que contém a definição da espécie (0 representa \textbf{Setosa}, 1 para \textbf{Versicolor} e 2 para \textbf{Virgínica} que colocaremos em y). Usamos o método \textit{train\_test\_split} para retirar 20\% dos dados como amostra de teste e assim teremos quatro agrupamentos:
+O método \textit{load\_iris()} traz a nossa base em uma matriz de dados. Nossa base está dividida em \textit{data} que contém os \textit{features} preditores (tamanho e largura da sépala e tamanho e largura da pétala, que colocaremos em X) e \textit{target}, \textit{feature} que contém a definição da espécie (0 representa \textbf{Setosa}, 1 para \textbf{Versicolor} e 2 para \textbf{Virgínica} que colocaremos em y). Usamos o método \textit{train\_test\_split} para retirar 20\% dos dados como amostra de teste e obtemos quatro agrupamentos:
 \begin{itemize}[nolistsep]
 	\item \textbf{X\_train}, com os dados para treino do algorítimo.
 	\item \textbf{X\_test}, com os dados para teste.
@@ -216,7 +216,7 @@ E obtemos como resultado:
 	\caption{Comparar tamanho e largura da Pétala}
 \end{figure}
 
-E verificamos que na interseção do 4º valor de X e y temos os valores 4,0 e 2,0. Agora que obtemos os quatro valores podemos realizar uma predição:
+E verificamos que na interseção do 4º valor de X e y obtemos os valores 4,0 e 2,0. Agora que obtemos os quatro valores podemos realizar uma predição:
 \begin{lstlisting}[]
 predicao = clf.predict([[6.0, 4.0, 4.0, 2.0]])
 print(predicao)
@@ -296,7 +296,7 @@ plt.title('KMeans (Sépala)')
 plt.show()
 \end{lstlisting}
 
-Usamos os mesmos conjuntos de cores para cada espécie, teremos quatro gráficos comparativos: 1º largura e altura da Pétala e a cor será mostrada com base em nosso atributo alvo (ou seja o valor real), 2º o que o modelo achou que seria o correto, 3º largura e altura da Sépala e o 4º novamente como o modelo separou. E obtemos como resultado:
+Usamos os mesmos conjuntos de cores para cada espécie, obtemos quatro gráficos comparativos: 1º largura e altura da Pétala e a cor será mostrada com base em nosso atributo alvo (ou seja o valor real), 2º o que o modelo achou que seria o correto, 3º largura e altura da Sépala e o 4º novamente como o modelo separou. E obtemos como resultado:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{cap04/comparativo.png}
@@ -451,7 +451,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 \end{lstlisting}
 
-Como já temos nossos dados, vamos apenas separá-los em bases de treino e teste:
+Como já obtemos nossos dados, vamos apenas separá-los em bases de treino e teste:
 \begin{lstlisting}[]
 X = preprocessing.scale(X)
 X_treino, X_teste, y_treino, y_teste = train_test_split(X, y, test_size=.20, random_state=17)
@@ -504,7 +504,7 @@ Obtemos como resultado:
 	\caption{Dados da População Brasileira}
 \end{figure}
 
-Devemos saber que o modelo trabalha com a relação entre atributos numéricos: explanatórios X e dependentes y. Utiliza somente esse tipo devido aos ajustes matemáticos que são realizados e os pesos criados conforme a função minimiza os erros. Nossas observações são bem simples: temos atributos numéricos, "Ano" e "População". Para entendermos o relacionamento entre os atributos, plotamos esses em um gráfico:
+Devemos saber que o modelo trabalha com a relação entre atributos numéricos: explanatórios X e dependentes y. Utiliza somente esse tipo devido aos ajustes matemáticos que são realizados e os pesos criados conforme a função minimiza os erros. Nossas observações são bem simples: obtemos atributos numéricos, "Ano" e "População". Para entendermos o relacionamento entre os atributos, plotamos esses em um gráfico:
 \begin{lstlisting}[]
 plt.xlabel('Ano')
 plt.ylabel('Quantidade da População')
@@ -521,8 +521,7 @@ Obtemos como resultado:
 E esta é a parte mais importante na execução desse modelo, a medida que alteramos o valor de "Ano" o valor de "População" também é afetado, ou seja, existe um relacionamento linear. Essa é a premissa básica para se usar este algoritmo, o relacionamento forte entre os atributos deve existir.
 
 \subsection{Aplicar a Regressão Linear}\index{Modelos Iniciais}
-
-Agora que temos nossos atributos conferidos, basta treinarmos nosso modelo e obtermos nossa previsão:
+Agora que obtemos nossos atributos conferidos, basta treinarmos nosso modelo e obtermos nossa previsão:
 \begin{lstlisting}[]
 reg = LinearRegression()
 reg.fit(df[['Ano']], df.Populacao)
@@ -530,7 +529,7 @@ prev = reg.predict([[2020]])
 print("Previsão 2020 é: %d" % prev)
 \end{lstlisting}
 
-E teremos a predição da população brasileira para o ano de 2020, que é 221.322.254 de habitantes. Como a magia acontece? Pura matemática que é fornecida pela seguinte fórmula:
+E obtemos a predição da população brasileira para o ano de 2020, que é 221.322.254 de habitantes. Como a magia acontece? Pura matemática que é fornecida pela seguinte fórmula:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{cap04/formulaRL.png}
@@ -549,7 +548,7 @@ prev2020 = m * 2020 + b
 print("Previsão 2020 é: %d" % prev2020)
 \end{lstlisting}
 
-E temos exatamente o mesmo resultado. Podemos traçar a "Reta da Regressão Linear", pois o modelo consegue predizer os resultados de cada ano:
+E obtemos exatamente o mesmo resultado. Podemos traçar a "Reta da Regressão Linear", pois o modelo consegue predizer os resultados de cada ano:
 \begin{lstlisting}[]
 plt.xlabel('Ano')
 plt.ylabel('Quantidade da População')
@@ -598,8 +597,7 @@ Até o momento nada de novo, nosso problema começa ao repararmos nas observaç�
 Sabemos que os modelos de regressão só trabalham com tipos numéricos, muito pior existe o caso de nulos entre algumas outras inconsistências  nessas 14.204 observações.
 
 \subsection{Regressão Linear e Limpeza dos Dados}\index{Modelos Iniciais}
-
-Sejamos francos, maior parte de trabalho do Cientista de Dados é arrumar os dados que sofridamente conseguiu para realizar o trabalho, então começaremos a compreender como uma parte disso funciona. Primeiro detalhe vamos tratar os atributos indesejáveis, nulos e que não contribuem em absolutamente em nada para o aumento/diminuição das vendas. Atributos como o código identificador do produto (\textit{Item\_Identifier}) e  código identificador do mercado (\textit{Outlet\_Identifier}) - por esse motivo que o Cientista de Dados deve entender do negócio.
+Sejamos francos, maior parte de trabalho do Cientista de Dados é arrumar os dados que sofridamente conseguiu para realizar o trabalho, então começaremos a compreender como uma parte disso funciona. Primeiro detalhe vamos tratar os atributos indesejáveis, nulos e que não contribuem em absolutamente em nada para o aumento/diminuição das vendas. Atributos como o código identificador do produto (\textit{Item\_Identifier}) e do mercado (\textit{Outlet\_Identifier}) - por esse motivo que o Cientista de Dados deve entender do negócio.
 
 Ao verificarmos a função \textit{info()} descobrimos ainda que o atributo alvo (\textit{Item\_Outlet\_Sales}) que indica a quantidade de produtos vendidos possui dados nulos (ou seja, também não servem para previsão).
 \begin{lstlisting}[]
@@ -607,14 +605,14 @@ df = df.drop(df[df['Item_Outlet_Sales'].isnull()].index)
 df = df.drop(columns=['Item_Identifier', 'Outlet_Identifier'], axis=1)
 \end{lstlisting}
 
-Cuidado pois se aplicamos um corte seco como: {\ttfamily df.dropna(how='any',inplace=True)} teremos somente 4.650 observações (devido a eliminação dos valores nulos contidos em outros atributos) - ou seja perdemos quase 10.000 observações. Lembrar que o tratamento dos nulos deve ser cirúrgico e criterioso. Ao aplicar o corte corretamente somente do atributo alvo ficamos com 8.523 observações. Além disso removemos os preditores que não serviam.
+Cuidado pois se aplicamos um corte seco como: {\ttfamily df.dropna(how='any',inplace=True)} obtemos somente 4.650 observações (devido a eliminação dos valores nulos contidos em outros atributos) - ou seja perdemos quase 10.000 observações. Lembrar que o tratamento dos nulos deve ser cirúrgico e criterioso. Ao aplicar o corte corretamente somente do atributo alvo ficamos com 8.523 observações. Além disso removemos os preditores que não serviam.
 
 Nosso próximo problema com nulos é nos atributos: peso do item (\textit{Item\_Weight}) e tamanho da loja (\textit{Outlet\_Size}). Em um caso de dados real devemos procurar preencher esses valores solicitando a informação necessária aos responsáveis, porém para fins desse trabalho iremos remover essa colunas também.
 \begin{lstlisting}[]
 df = df.drop(columns=['Item_Weight', 'Outlet_Size'], axis=1)
 \end{lstlisting}
 
-Não temos mais a presença de nulos, mas ainda temos problemas, precisamos verificar os atributos não numéricos das observações, isto é: conteúdo de gordura (\textit{Item\_Fat\_Content}), tipo do item (\textit{Item\_Type}), localização da loja (\textit{Outlet\_Location\_Type}) e tipo da loja (\textit{Outlet\_Type}). Para isso:
+Não obtemos mais a presença de nulos, mas ainda existem problemas, precisamos verificar os atributos não numéricos das observações, isto é: conteúdo de gordura (\textit{Item\_Fat\_Content}), tipo do item (\textit{Item\_Type}), localização da loja (\textit{Outlet\_Location\_Type}) e tipo da loja (\textit{Outlet\_Type}). Para isso:
 \begin{lstlisting}[]
 print("Gordura:", df['Item_Fat_Content'].unique())
 print("Tipo:", df['Item_Type'].unique())
@@ -632,7 +630,7 @@ df['Outlet_Type'] = df['Outlet_Type'].map({'Supermarket Type1': 1, 'Supermarket 
 df['Outlet_Type'] = df['Outlet_Type'].astype(pd.Int64Dtype())
 \end{lstlisting}
 
-Criamos um dicionário com as faixas, repetimos os mesmos valores para os tipos que são semelhantes e realizamos a troca dos elementos no \textit{DataFrame}. Aplicamos também a mesma prática para a localização e tipo da loja que possui poucos valores. Porém ainda temos o caso de tipo do item que vamos trocá-lo de uma forma diferente (é ideal quando existem muitos valores diferentes).
+Criamos um dicionário com as faixas, repetimos os mesmos valores para os tipos que são semelhantes e realizamos a troca dos elementos no \textit{DataFrame}. Aplicamos também a mesma prática para a localização e tipo da loja que possui poucos valores. Vamos agora com o caso de tipo do item que devemos trocá-lo para uma forma diferente (é ideal quando existem muitos valores diferentes).
 
 Cada atributo tem um tipo determinado, por exemplo, \textit{float} aceita números com pontos decimais, \textit{int} numéricos inteiros, \textit{string} caracteres, além disso \textit{Python} trabalha com um tipo especial denominado \textit{category}. Corresponde a uma determinada faixa de valores. Converter tipo do item em atributo categórico:
 \begin{lstlisting}[]
@@ -649,7 +647,6 @@ df.head()
 Para cada valor categorizado é atribuído um valor numérico (ou seja o mesmo trabalho que tivemos para o mapa). Usamos as funções \textit{info()} e \textit{describe()} e podemos partir para a próxima etapa sem quaisquer problemas com os dados, pois agora são todos numéricos e não possuem qualquer valor nulo.
 
 \subsection{Separação e treino}\index{Modelos Iniciais}
-
 Separar em treino e teste (para avaliarmos nosso modelo) e remover o atributo alvo:
 \begin{lstlisting}[]
 target = df['Item_Outlet_Sales']
@@ -659,7 +656,7 @@ print('Amostra de Treino:', X_train.shape)
 print('Amostra de Teste:', X_test.shape)
 \end{lstlisting}
 
-Usamos um valor de 20\% para nosso teste e temos: 6.818 observações para treino e 1.705 de teste. Treinamos nosso modelo e verificamos seu resultado:
+Usamos um valor de 20\% para nosso teste e obtemos: 6.818 observações para treino e 1.705 de teste. Treinamos nosso modelo e verificamos seu resultado:
 \begin{lstlisting}[]
 clf = LinearRegression()
 clf.fit(X_train, y_train)
@@ -683,6 +680,266 @@ Obtemos como resultado:
 	\caption{Regressão Linear aplicada a vários atributos}
 \end{figure}
 
-Em vermelho são a relação entre o valor real e o que foi predito, a linha azul mostra a Reta da Regressão. Verificamos que temos um ponto bem isolado? Pode ser um \textit{outlier}? Exatamente por esse motivo que passamos um bom tempo em EDA.
+Em vermelho são a relação entre o valor real e o que foi predito, a linha azul mostra a Reta da Regressão. Verificamos a presença de um ponto bem isolado? Pode ser um \textit{outlier}? Exatamente por esse motivo que passamos um bom tempo em EDA.
+
+\section{Árvore de Decisão}\index{Modelos Iniciais}
+Se existe uma unanimidade entre os modelos que todo o Cientista de Dados conhece \textit{Decision Tree} seria provavelmente o grande campeão (ou estaria entre os primeiros colocados), é um modelo com base em perguntas e respostas. Vamos começar com a importação das nossas bibliotecas básicas:
+\begin{lstlisting}[]
+import pandas as pd
+import numpy as np
+from sklearn.preprocessing import LabelEncoder
+from sklearn import tree
+\end{lstlisting}
+
+Além da Pandas e NumPy, que serão básicas para todos os modelos que vemos, necessitamos também da \textit{LabelEncoder} que responde as manipulações no DataFrame e do objeto tree por conter a classe para executar o algorítimo. Próximo passo é buscarmos os nossos dados:
+\begin{lstlisting}[]
+df = pd.read_csv('bases/salaries.csv')
+df.head()
+\end{lstlisting}
+
+Essa base de salários é composta por 3 empresas: Google, Facebook e ABC Pharma. Temos ainda Cargo, Grau de Ensino e Salário (Anual). E chegamos na parte essencial por adotar esse modelo: \textbf{O que desejamos responder?}, exatamente isso o modelo responde a uma pergunta que deve ser formulada de forma binária, ou seja que tal na empresa X, com um cargo Y e curso Z conseguimos ganhar um salário maior que 100 mil anuais?
+
+Precisamos preparar nossa base de dados e adicionar uma resposta a nossa pergunta, assim criamos a variável \textbf{desejo}:
+\begin{lstlisting}[]
+desejo = pd.Series(np.where(df['salary']>=100000, 1, 0))
+print(desejo)
+\end{lstlisting}
+
+Observamos que desejo possui somente os valores 0 e 1 que indica falso ou verdadeiro para cada um dos itens da nossa tabela original. Por exemplo: trabalhar na Google, com um curso de Bacharel no cargo Executivo de Vendas não fará ganhar um salário de 100 mil anuais, mas no cargo Gerente de Negócios sim.
+
+Para criarmos nossa Árvore de Decisão, precisamos que todos os campos (que participarão de sua composição) sejam variáveis numéricas categóricas, sua formação se dará da seguinte forma:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{cap04/arvore}
+	\caption{Estrutura da Árvore Montada}
+\end{figure}
+
+A função da biblioteca LabelEncoder é fazer exatamente isso, ou seja, transformar uma variável caractere, criar uma categoria e atribuir uma valor para ela, então:
+\begin{lstlisting}[]
+le_company = LabelEncoder()
+le_job = LabelEncoder()
+le_degree = LabelEncoder()
+
+df['company_n'] = le_company.fit_transform(df['company'])
+df['job_n'] = le_company.fit_transform(df['job'])
+df['degree_n'] = le_company.fit_transform(df['degree'])
+df.head()
+\end{lstlisting}
+
+Criamos 3 novas séries e adicionamos ao nosso DataFrame original, vemos que foi atribuído um valor numérico para cada categoria, por exemplo Google é 2, Business Manager (Gerente de Negócios) é 0. Dessa forma que o algorítimo monta nossa árvore, a partir dessas três variáveis. Porém precisamos de um \textit{DataFrame} composto somente por elas:
+\begin{lstlisting}[]
+entradas = df.drop(['company','job','degree','salary'], axis='columns')
+entradas.head()
+\end{lstlisting}
+
+De um modo mais simples, criamos um novo \textit{DataFrame} (entradas) sem as variáveis descritivas (Empresa, Cargo e Grau de Ensino) e a numérica (Salário). Tudo está pronto, com esses dois novos objetos (\textbf{desejo} e \textbf{entradas}) podemos treinar nosso algorítimo:
+\begin{lstlisting}[]
+model = tree.DecisionTreeClassifier()
+model.fit(entradas, desejo)
+\end{lstlisting}
+
+E podemos realizar nossas perguntas, por exemplo, alguém da \textbf{Google} (2) que trabalha no cargo \textbf{Executivo de Vendas} (2) e fez \textbf{Mestrado} (1) recebe um salário maior que 100 mil anuais?
+\begin{lstlisting}[]
+model.predict([[2, 2, 1]])
+\end{lstlisting}
+
+E obtemos como resposta o valor \textbf{0} indicando que não. Este é um dos principais modelos utilizados em Ciência de Dados tornou-se a porta de entrada para muitos outros. Podemos nos enganar com o pensamento que bastaria dar uma olhada nos dados para respondermos a pergunta, em uma base pequena realmente isso pode até ser viável, porém em uma base com muitos dados seria impraticável.
+
+\subsection{Critérios Gini e Entropia}\index{Modelos Iniciais}
+Uma árvore de decisão se enquadra nos Algoritmos para Aprendizado de Máquina supervisionados e pode ser usada tanto para classificação quanto regressão - embora principalmente para o primeiro tipo. Como vimos este modelo obtém uma instância, atravessa uma árvore e compara recursos importantes com uma determinada declaração condicional. Se ele desce para o ramo filho esquerdo ou direito depende do resultado. Normalmente, os recursos mais importantes estão próximos a raiz.
+
+Existem dois critérios que são comumente passados, são consideradas métricas padrão para calcular "impureza" ou "nível de informação". Orientam a divisão de um nó na árvore de decisão apenas com base nas informações existentes nesse nó. São calculados conforme as seguintes fórmulas:
+\begin{itemize}
+	\item Gini: $1 - \sum_{j=1}^{c} (p_{j})^{2}$
+	\item Entropy: $-\sum_{j=1}^{c} p_{j} \times log(p_{j})$
+\end{itemize}
+
+\textbf{Gini} é a probabilidade de uma amostra aleatória ser classificada incorretamente se escolhermos aleatoriamente um \textit{label} de acordo com a distribuição em um ramo. \textbf{Entropia} é uma medida de informação (ou melhor, a falta dela). Ao calcular o ganho de informação sobre uma divisão. Qual é a diferença em entropias. Isso mede como se reduz a incerteza sobre um \textit{label}.
+
+Vamos começar um outro projeto, porém veremos algo bem diferente, não iremos nos preocupar em explanar os dados que exploraremos. Vamos iniciar pelas bibliotecas:
+\begin{lstlisting}[]
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import classification_report
+from sklearn.metrics import confusion_matrix
+\end{lstlisting}
+
+A grande diferença esta aqui: criamos um conjunto de funções para realizar todo o trabalho de leitura, separação e execução do modelo. Recomendo esse método quando for criar seus projetos, pois simplifica muito a manutenção dos mesmos:
+\begin{lstlisting}[]
+def obterDados(base):
+  balance_data = pd.read_csv(base, sep = ',', header = None)
+  print('Tamanho:', balance_data.shape)
+  print(balance_data.head())
+  return balance_data
+
+def separarDados(dados):
+  x = dados.values[:,1:5]
+  y = dados.values[:,0]
+  x_train, x_test, y_train, y_test = train_test_split(x, y, test_size = 0.3, random_state = 100)
+  return x, y, x_train, x_test, y_train, y_test
+
+def treinar(x_train, y_train, criterio):
+  clf = DecisionTreeClassifier(criterion = criterio, random_state = 100, max_depth = 3, min_samples_leaf = 5)
+  clf.fit(x_train,y_train)
+  return clf
+
+def predizer(x_test, clf):
+  y_pred = clf.predict(x_test)
+  print(f"Valores Preditos: {y_pred}")
+  return y_pred
+
+def acuracia(y_test, y_pred):
+  print("Acurácia:", accuracy_score(y_test, y_pred, average='weighted', zero_division=1) * 100)
+  print(confusion_matrix(y_test, y_pred))
+  print(classification_report(y_test, y_pred))
+\end{lstlisting}
+
+O \textit{obterDados()} é responsável por ler e devolver as informações da nossa base de dados, \textit{separarDados()} por dividir corretamente nossa base em treino e teste, \textit{treinar()} realiza o treinamento da base conforme determinado critério, \textit{predizer()} obtém as predições com base na massa de teste em conjunto com o classificador e \textit{acuracia()} verifica os resultados obtidos.
+
+Com algumas mudanças podemos adaptar esses métodos e começar a pensar em criar uma biblioteca de modo a facilitar nossos projetos futuros. Veja como é mais simples com seu uso.
+
+Para ler os dados:
+\begin{lstlisting}[]
+data = obterDados('bases/balance-scale.data')
+\end{lstlisting}
+
+Para separar os dados:
+\begin{lstlisting}[]
+x, y, x_train, x_test, y_train, y_test = separarDados(data)
+\end{lstlisting}
+
+Treinar com o critério \textbf{Gini}:
+\begin{lstlisting}[]
+clf = treinar(x_train, y_train, 'gini')
+y_pred_gini=prediction(x_test, clf)
+\end{lstlisting}
+
+Obter o resultado:
+\begin{lstlisting}[]
+cal_accuracy(y_test, y_pred_gini)
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{cap04/relatorioGini}
+	\caption{Resultado para o Critério Gini}
+\end{figure}
+
+Treinar com o critério \textbf{Entropia}:
+\begin{lstlisting}[]
+clf = treinar(x_train, y_train, 'entropy')
+y_pred_entr = prediction(x_test, clf)
+\end{lstlisting}
+
+Obter o resultado:
+\begin{lstlisting}[]
+acuracia(y_test, y_pred_entr)
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{cap04/relatorioEntropia}
+	\caption{Resultado para o Critério Entropia}
+\end{figure}
+
+E observamos que neste caso, Gini possui uma melhor resposta aos dados.
+
+\section{Floresta Aleatória}\index{Modelos Iniciais}
+\textit{Random Forest} (por caridade \textit{Florest} não existe na língua inglesa) é um modelo supervisionado que pode ser considerado como um aprimoramento da Árvore de Decisão, vamos recapitular seu funcionamento.
+
+Através de um conjunto definido de regras, um novo valor passará por uma série de perguntas, os chamados ramos da árvore, para prevermos em qual melhor resposta se encaixa. Agora vamos pensar que podemos separar os dados em várias partes definidas aleatoriamente e usarmos uma árvore para cada uma dessas partes e para tomarmos uma decisão apenas computamos qual foi a resposta mais votada?
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.65\textwidth]{cap04/florestaFunciona}
+	\caption{Funcionamento da Floresta Aleatória}
+\end{figure}
+
+E esse é o conceito da \textbf{Floresta Aleatória}, para aprendermos como é esse modelo na prática. Começamos com a importação das bibliotecas:
+\begin{lstlisting}[]
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.datasets import load_digits
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.metrics import confusion_matrix
+import matplotlib.pyplot as plt
+import seaborn as sn
+
+plt.figure(figsize=(10,7))
+%matplotlib inline
+\end{lstlisting}
+
+A única aquisição nova é o método \textit{RandomForestClassifier} que vem da ensemble contida na biblioteca \textit{Scikit-learn}. Como fonte de dados usamos os dados de \textit{load\_digits} (isso mesmo, finalmente vamos trabalhar com imagens). Lemos nossos dados:
+\begin{lstlisting}[]
+digits = load_digits()
+\end{lstlisting}
+
+E verificamos um determinado dígito, por exemplo o 8:
+\begin{lstlisting}[]
+plt.matshow(digits.images[8])
+plt.show()
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.3\textwidth]{cap04/imagemFormada}
+	\caption{Número 8 da load\_digits}
+\end{figure}
+
+Uma imagem é formada por vários pontos que denominamos de pixels, cada um desses possuem valor em uma escala de cores, no caso dessa base obtemos 64 colunas identificando cada um desses pontos. Vamos criar um DataFrame com esses dados:
+\begin{lstlisting}[]
+df = pd.DataFrame(digits.data)
+df.head()
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{cap04/dadosDaImagem}
+	\caption{Dados das Imagens}
+\end{figure}
+
+O problema é que não existe como coluna o resultado e precisamos colocá-lo, esse valor está no elemento target (não pense que existem apenas 9 imagens, são 1.997):
+\begin{lstlisting}[]
+df['valor'] = digits.target
+\end{lstlisting}
+
+Separamos nossos dados na massa de treino e teste (20\% do total):
+\begin{lstlisting}[]
+X_train, X_test, y_train, y_test = train_test_split(df.drop(['valor'], axis='columns'), df['valor'], test_size = .2)
+print(len(X_train), len(X_test))
+\end{lstlisting}
+
+E treinamos nosso modelo:
+\begin{lstlisting}[]
+clf = RandomForestClassifier()
+clf.fit(X_train, y_train)
+\end{lstlisting}
+
+Observamos no resultado o parâmetro "n\_estimators=100", isso significa que são 100 árvores na nossa floresta, podemos aumentar ou diminuir (sem pensar em desmatamento) o número dessas árvores e observar se conseguimos aumentar nosso resultado. Verificamos a acurácia:
+\begin{lstlisting}[]
+clf.score(X_test, y_test)
+\end{lstlisting}
+
+E obtemos significativos 98\%, ou seja, nosso modelo erra apenas 2\% das vezes, o que pode ser visto na Matriz de Confusão :
+\begin{lstlisting}[]
+y_predicted = clf.predict(X_test)
+cm = confusion_matrix(y_test, y_predicted)
+sn.heatmap(cm, annot=True, cmap=plt.cm.Blues)
+plt.xlabel('Predito')
+plt.ylabel('Verdadeiro')
+plt.show()
+\end{lstlisting}
+
+Obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{cap04/matriz2}
+	\caption{Matriz de Confusão no Seaborn}
+\end{figure}
 
 \clearpage

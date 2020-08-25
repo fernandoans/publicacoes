@@ -1,0 +1,165 @@
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Django Cheat Sheet
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Identificação
+\newcommand{\pbtitulo}{\huge{\textbf{Django}}}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{sty/cheatsheet}
+
+\begin{document}
+
+\begin{center}{\pbtitulo}\\
+{\large Fernando Anselmo - Versão \pbversao}
+\end{center}
+
+\begin{multicols*}{3}
+
+\tikzstyle{mybox} = [draw=contorno, fill=white, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=10pt]
+\tikzstyle{fancytitle} =[fill=DarkBlue, text=white, font=\bfseries]
+
+%------------ Inicializações ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Framework para aplicações web gratuito e de código aberto, escrito em Python, que auxilia a desenvolver sites de forma mais rápida e fácil. \\[2mm]
+	  Instalar o Django (requer Python 3.x instalado): \\
+      \codigo{pip install django} \\[2mm]
+	  Criar um projeto: \\
+	  \codigo{django-admin startproject [nome]} \\[2mm]
+	  Iniciar o servidor (na pasta do projeto): \\
+	  \codigo{python manage.py runserver [IP:Porta]} \\[2mm]
+	  Criar um administrador do Site: \\
+	  \codigo{python manage.py createsuperuser} \\[2mm]
+	  Endereço de Administração: \\
+	  \url{http://127.0.0.1:8000/admin}
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Passos Iniciais};
+\end{tikzpicture}
+
+%------------ Models ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+      Tipos de campo mais comuns: \\
+      \codigo{IntegerField, DecimalField, CharField, TextField, EmailField, URLField, BooleanField, DateField, TimeField, DateTimeField, FileField, ImageField} \\[2mm]
+      Exemplo para um campo tipo Char: \\
+	  \codigo{models.CharField(max\_length=10, null=True, blank=True, default=True)} \\[2mm]
+	  Outros parâmetros: \\
+	  \codigo{required=boolean, label=string, help\_text=string, initial=valorOuFuncao, validators=listaDeValores, swidget=Widget, error\_messages=dict, localize=boolean} \\[2mm]
+      Relacionamentos: \\
+	  \codigo{oreignKey, OneToOne e ManyToMany} \\[2mm]
+      Alterações no modelo: \\
+      \codigo{python manage.py makemigrations \\
+      python manage.py migrate} \\[2mm]
+      Verificar necessidade de migração: \\
+      \codigo{python manage.py showmigrations}
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Modelos};
+\end{tikzpicture}
+
+%------------ Site ---------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Criar uma Aplicação: \\
+      \codigo{python manage.py startapp [nome]} \\[2mm]
+      Adicionar a aplicação para o Administrador: \\
+      1. No arquivo settings.py \\
+      \codigo{INSTALLED\_APPS = [ ..., \aspas{[nome].apps.[nome]Config}, ]} \\
+      2. No arquivo urls.py \\
+  	  \codigo{urlpatterns = [ ..., path(\aspas{}, include(\aspas{[nome].urls})), ]}
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Aplicação};
+\end{tikzpicture}
+
+%------------ Templates ---------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Comandos para controlar os códigos nas Templates: \\
+  	  Bloco: \codigo{\{\% block nome \%\}\{\% endblock \%\}} \\
+  	  CSRF: \codigo{\{\% csrf\_token \%\}} \\
+  	  Depurar: \codigo{\{\% debug \%\}} \\
+  	  Extends: \codigo{\{\% extends \aspas{base.html} \%\}} \\
+  	  Filtro: \codigo{\{\% filter \%\}\{\% endfilter \%\}} \\
+  	  Primeiro: \codigo{\{\% firstof \%\}} \\
+  	  Repetição: \codigo{\{\% for in \%\}\{\% empty \%\}\{\% endfor \%\}} \\
+  	  Decisão: \\
+  	  \codigo{\{\% if \%\}\{\% elif \%\}\{\% else \%\}\{\% endif \%\}} \\
+  	  \codigo{\{\% ifchanged \%\}\{\% endifc­hanged\%\}} \\
+  	  \codigo{\{\% ifequal \%\}\{\% endifequal \%\}} \\
+  	  \codigo{\{\% ifnotequal \%\}\{\% endifn­otequal\%\}} \\
+  	  Inclusão: \codigo{\{\% include \%\}} \\
+  	  Ler: \codigo{\{\% load \%\}} \\
+  	  Data Atual: \codigo{\{\% now \aspas{jS F Y H:i} \%\}} \\
+  	  Regrupar: \codigo{\{\% regroup by as \%\}} \\
+  	  spaceless: \codigo{\{\% spaceless \%\}\{\% endspa­celess\%\}} \\
+  	  SSI: \codigo{\{\% ssi \%\}} \\
+  	  Contexto Estático: \codigo{\{\% static \%\}} \\
+  	  Tag: \codigo{\{\% templa­tetag\%\}} \\
+  	  Rrans: \codigo{\{\% trans \%\}}
+	  URL: \codigo{\{\% url \%\}} \\
+  	  Verbatim: \codigo{\{\% verbatim \%\}\{\% endver­batim\%\}} \\
+  	  Ratio: \codigo{\{\% widthratio \%\}} \\
+  	  Objeto: \codigo{\{\% with as \%\}\{\% endwith \%\}}
+	\end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Templates};
+\end{tikzpicture}
+
+%------------ Request/Response ---------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Conteúdo do \textbf{HttpRequest}: \\
+	  \codigo{\_\_iter\_\_(), body, build\_absolute\_uri(path), COOKIES. encoding. GET, POST, REQUEST, FILES, get\_full\_path(), get\_host(), get\_signed\_cookie(key), is\_ajax(), is\_secure(), META, method, path, path\_info, read(size=None), readline(), readlines(), session, urlconf, user} \\[2mm]
+	  Conteúdo do \textbf{HttpResponse}: \\
+      \codigo{\_\_init\_\_(content=\aspas{},mimetype=None,status=200, content\_type=None), \_\_delitem\_\_(header), \_\_getitem\_\_(header)\_\_setitem\_\_(header, val), delete\_cookie(key,path=\aspas{/},domain=None), flush(), has\_header(header), set\_cookie, set\_signed\_cookie(key,value,max\_age=None, expires=None,path=\aspas{/},domain=None, secure=None,httponly=True), tell(), write(content)}
+	\end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Request/Response};
+\end{tikzpicture}
+
+%------------ Configurações Personalizadas ---------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  No Arquivo \textbf{settings.py} colocar em Português: \\
+	  \codigo{TIME\_ZONE = 'America/Sao\_Paulo' \\
+	  LANGUAGE\_CODE = 'pt-BR'} \\[2mm]
+	  No Arquivo \textbf{settings.py} adicionar a pasta static para arquivos CSS, IMAGE e JS: \\
+      \codigo{STATIC\_URL = '/static/' \\
+      STATIC\_ROOT = os.path.join(BASE\_DIR, 'static')}
+	\end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Configurações Personalizadas};
+\end{tikzpicture}
+
+%------------ Configurações Personalizadas ---------------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  \textbf{Oficial BR}: \\
+	  \url{https://docs.djangoproject.com/pt-br/3.1/intro/}
+	  \textbf{Django Girls}: \\ 
+	  \url{https://tutorial.djangogirls.org/pt/} \\
+	  \textbf{Real Python}: \\ 
+	  \url{https://realpython.com/get-started-with-django-1/} \\
+	  \textbf{Tutorials Point}: \\
+	  \url{https://www.tutorialspoint.com/django}
+	\end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Bons Tutoriais};
+\end{tikzpicture}
+
+Página do Django: \url{https://www.djangoproject.com/}
+
+\end{multicols*}
+\end{document}
