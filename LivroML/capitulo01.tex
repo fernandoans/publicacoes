@@ -15,11 +15,16 @@ E graças a isso publiquei uma série de artigos sobre os mais variados modelos 
 
 Já ouvimos isso de prático tantas vezes, existe duas séries de livros especialistas denominadas: "\textit{Hands On}" e "\textit{Cookbook}". Aprecio e tenho muitos desses livros, porém sempre que desejo algo no primeiro caso é muito difícil encontrar bem separado e exposto da forma como queria e no segundo está fragmentado demais. O prático aqui será: Um modelo em linguagem Python, ler bases de dados, com o uso de suas possibilidades, seu treino e melhor forma de obter resultados. Sendo assim não espere encontrar nesse aulas básicas de Python.
 
+\section{O que é Mineração de Dados?}\index{Entendimento Geral}
+Antes de surgir o termo "Ciência de Dados", um artigo de 1996 chamado “\textit{Data Mining to knowledge discovery in database}” se referia a um processo geral de descoberta com a utilização das informações contidas nos dados. Em 2001, \textit{William S.Cleveland} levou a Mineração de Dados combinou esta com Ciência da Computação. Realizou estatísticas para expandir as possibilidades da Mineração de Dados.
+
+Durante este período, surgiu a \textbf{Web 2.0} no qual sites não eram apenas um "Panfleto Digital", mas um meio para compartilhar, postar e comentar experiências entre milhões de usuários. Sites como \textit{Facebook} e \textit{Linkedin} (2003), \textit{Flickr} (2004), \textit{YouTube} e \textit{reddit} (2005), \textit{Twitter} e \textit{Spotify} (2006) ou \textit{Pinterest} (2010) que trouxeram muitos dados e se tornou difícil lidar com essa quantidade produzida. Assim criamos um novo termo denominado \textbf{Big Data}. Abriu um mundo de possibilidades para encontrarmos valores associados aos dados. Porém precisamos de infraestrutura para lidar com tantos dados, tecnologia de computação paralela como \textit{MapReduce}, \textit{Hadoop} e \textit{Spark}. Em 2010 ocorreu o surgimento da \textbf{Ciência de Dados} para dar suporte as necessidades de negócio.
+
 \section{O que é Machine Learning?}\index{Entendimento Geral}
 De forma bastante genérica, algorítimos de \textit{Machine Learning} (Aprendizado de Máquina e doravante apenas \textbf{ML}) são uma mudança de paradigma da “programação tradicional” onde precisamos passar toda a heurística explicitamente para um novo conceito, onde ao invés de escrever cada ação que o algorítimos deve realizar, apenas passamos diversos exemplos e deixamos que o computador resolva (ou aprenda) quais são as “melhores” (menor custo) decisões. É também chamada de \textit{Statistical Learning} (Autores Hastie, Tibshirani \& Friedman 2009) utilizada para extrair um modelo a partir de um sistema de observações ou medidas. Sendo um campo relativamente novo da ciência composto de uma variedade de métodos (algoritmos) computacionais e estatísticos que competem entre si.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{cap01/EstruturaML.png}
+	\includegraphics[width=0.65\textwidth]{cap01/EstruturaML.png}
 	\caption{Programação Tradicional X Machine Learning}
 \end{figure}
 
@@ -45,7 +50,7 @@ Quanto as formas de aprendizado se dividem em:
 
 Entender a diferença entre os dois tipos é bem simples, enviamos ao computador uma série de imagens sobre pratos de comida e não informamos absolutamente nada sobre elas, o máximo que acontecerá é a separação dessas em grupos similares. Imaginemos que em seguida mostramos a seguinte imagem:
 \begin{figure}[H]
-	\centering\includegraphics[scale=0.6]{cap01/visao.png}
+	\centering\includegraphics[scale=0.4]{cap01/visao.png}
 	\caption{Nova informação}
 \end{figure}
 
@@ -87,7 +92,7 @@ Vemos atualmente uma grande revolução em torno de \textit{Data Science} (falam
 
 Então o ideal é partir atrás de imagens prontas, visitar sites como HubDocker (\url{https://hub.docker.com}) e rezar para encontrar a imagem que nos atenda ou fazer algo melhor e personalizar a imagem.
 \begin{figure}[H]
-	\centering\includegraphics[scale=0.2]{cap01/docker.png}
+	\centering\includegraphics[scale=0.15]{cap01/docker.png}
 	\caption{Docker e Jupyter para Data Science}
 \end{figure}
 
