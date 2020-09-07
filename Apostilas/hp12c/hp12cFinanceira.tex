@@ -1,0 +1,199 @@
+\clearpage
+\section*{Matemática Financeira}
+A matemática financeira estuda o valor do dinheiro no decorrer do tempo, nas aplicações e nos pagamentos de empréstimos e teve seu início quando o homem criou os conceitos de Capital, Juros, Taxas e Montante. A mesma fornece instrumentos que possibilita o estudo e a avaliação das formas dessas aplicações bem como desses pagamentos. As principais variáveis envolvidas no processo de quantificação financeira são: \vspace{-1em}
+\begin{itemize}
+	\item Juros - Remuneração de um valor aplicado a uma certa taxa.
+	\item Capital - Qualquer valor expresso em moedas e disponível em determinada época.
+	\item Tempo - Período envolvido na operação financeira.
+\end{itemize}
+
+O capital inicial é o primeiro valor aplicado ou tomado como empréstimo, referente a Data Zero do Fluxo de Caixa, sendo também conhecido como Valor Presente ou Principal (PV – Present Value).
+
+Existem duas formas para se apresentar taxa de juros: \vspace{-1em}
+\begin{itemize}
+	\item Forma Percentual - Quando a taxa se refere a cem unidades do capital por dado período. Ex: juros de 20\% a.a.
+	\item Forma Unitária - Quando a taxa se refere à unidade de capital por dado período. Ex: juros de 0,20 a.a.
+\end{itemize}
+
+\subsection*{Letra C no visor}
+Para se utilizar as funções financeiras da HP-12C em cálculos que envolvem juros compostos (uso das teclas \keystroke{$n$}, \keystroke{$i$}, \keystroke{$PV$} e \keystroke{$FV$}), a calculadora deve conter na parte inferior no lado direito do visor a letra \textbf{C}. Com esse indicador, caso existam períodos fracionários, também serão calculados pelo sistema de juros compostos, como normalmente se deseja. Caso a letra C não conste no visor, teclar \keystroke{$STO$} \keystroke{$EEX$} para fazê-la surgir e deixar a calculadora no modo normal
+
+\subsection*{Notação}
+Em Matemática Financeira, são comuns as seguintes notações: \vspace{-1em}
+\begin{itemize}
+	\item $n$ - Número de Períodos  
+	\item $j$ - Juros Simples
+	\item $P$ - Capital Inicial ou Principal
+	\item $i$ - Taxa Unitária de Juros
+	\item $J$ - Juros Compostos
+	\item $M$ - Montante
+\end{itemize}
+
+E as seguintes são adotadas referentes aos prazos: \vspace{-1em}
+\begin{itemize}
+	\item $d.$ - Dia
+	\item $m.$ - Mês
+	\item $a.$ - Ano
+	\item $sa.$ - Semana
+	\item $b.$ - Bimestre
+	\item $qi.$ - Quinzena
+	\item $t.$ - Trimestre
+	\item $q.$ - Quadrimestre
+	\item $s.$ - Semestre
+\end{itemize}
+
+Tendo $a.$ antes da notação é usado para indicar “ao”. Exemplo: $a.m.$ significa: ao mês. \textbf{Importante} - Antes da realização de qualquer fórmula, lembre-se de apagar os dados com:
+\keystroke{$f$} \keystroke{$FIN$} \keystroke{$CLX$}
+
+\subsection*{Convenções na HP-12C}
+A calculadora utiliza as seguintes convenções como elementos para o diagrama padrão do Fluxo de Caixa: \vspace{-1em}
+\begin{itemize}
+	\item \keystroke{$n$} - \textit{Number of Periods}. Número de períodos para capitalização de juros, expressos em anos, semestres, trimestres, meses ou dias. Ex: n igual a zero (n = 0), indica a data de hoje, ou início do primeiro mês. n igual a um (n = 1), indica a data ao final do primeiro mês, e assim sucessivamente.
+	\item \keystroke{$i$} - \textit{Interest}. Taxa de juros por período de capitalização, expressa em porcentagem, e sempre mencionando a unidade de tempo considerada (ano, semestre, trimestre, mês ou dia). Ex: i = 10\% ao ano, é utilizada a seguinte sequencia: \keystroke{$1$} \keystroke{$0$} \keystroke{$i$}.
+	\item \keystroke{$PV$} - \textit{Present Value}. Valor do capital inicial (principal) aplicado. Representa na escala horizontal do tempo, o valor monetário colocado na inicial, isto é, o ponto que corresponde a n = 0.
+	\item \keystroke{$PMT$} \textit{Periodic payMenT}. Valor de cada prestação da série uniforme que ocorre ao final de cada período.
+	\item \keystroke{$FV$} - \textit{Future Value}. Valor do montante acumulado ao final de n períodos de capitalização, com taxa de juros.
+\end{itemize}	
+
+\subsection*{Significado de BEG e END}
+Antes de resolver um problema envolvendo pagamentos periódicos, é necessário especificar se tais pagamentos são feitos ao início ou no final dos períodos. Os cálculos que envolvem pagamentos antecipados fornecem resultados diferentes daqueles ao final dos períodos. Ambas funções são formatadas conforme o Sistema Francês de Amortização ou \textit{Price}.
+
+Para especificar a modalidade de pagamento/recebimento:\vspace{-1em}
+\begin{itemize}
+	\item \keystroke{$g$} \keystroke{$BEG$} - quando os pagamentos ou recebimentos forem realizados no início dos períodos, ou seja, antecipados ou com entrada. Esta função estabelece o caráter de antecipação das parcelas de um financiamento.
+	\item \keystroke{$g$} \keystroke{$END$} - se os pagamentos forem feitos ao final dos períodos, ou seja, postecipados ou sem entrada. Esta função estabelece o caráter de postecipado das parcelas de um financiamento.
+\end{itemize}	
+
+A princípio, se nada for especificado, a modalidade padrão adotada é final de período. Caso esta for alterada para \keystroke{$BEG$} no visor o estado \textbf{BEGIN} fica aceso, caso não esteja aceso (nada apareça a este respeito) a modalidade em vigor é \textbf{END}. 
+
+A modalidade somente mudará sozinha, caso esteja em \textbf{BEGIN} e a memória contínua seja completamente apagada. Aí passa para \textbf{END} que é a sua modalidade padrão.
+
+\subsection*{Análise de Investimentos}
+Permite comparar o melhor investimento em diversos projetos. Analisemos os seguintes:
+
+\begin{minipage}[t]{.5\textwidth}
+	\centering 
+	\textbf{Projeto A}
+	\begin{table}[H]
+		\begin{tabular}{R{3cm} | R{2cm} }
+			Investimento & R\$ 30.000,00 \\
+			1 ano (VR) & R\$ 9.000,00 \\
+			Próximos 3 anos & R\$ 9.000,00 \\
+		\end{tabular}
+	\end{table}
+\end{minipage}%
+\begin{minipage}[t]{.5\textwidth}
+	\centering 
+	\textbf{Projeto B}
+	\begin{table}[H]
+		\begin{tabular}{R{3cm} | R{2cm} }
+			Investimento & R\$ 34.000,00 \\
+			1 ano (VR) & R\$ 12.000,00 \\
+			Próximos 3 anos & R\$ 12.000,00 \\
+		\end{tabular}
+	\end{table}
+\end{minipage}
+
+\textbf{Payback} \\
+Período de recuperação do investimento, ou seja o investimento dividido pelo valor recuperado:
+
+Projeto A: \\
+\keystroke{$3$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$Enter$} \keystroke{$9$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$\div$} \\
+3,33 anos ou 3 anos e 4 meses.
+
+Projeto B: \
+\keystroke{$3$} \keystroke{$4$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$Enter$} \keystroke{$1$} \keystroke{$2$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$\div$} \\
+2,83 anos ou 2 anos e 10 meses.
+
+\textbf{TIR – Taxa Interna de Retorno (Internal Rate Return – IRR)} \\
+Comparação entre uma taxa esperada e a efetiva que conseguiremos, sempre traduzindo os valores para o momento atual. Este método permite saber qual a Real Taxa de Retorno do investimento a partir da taxa de oportunidades preestabelecidas que traz o valor presente as entradas e saídas. Se a taxa de retorno for superior a aquela preestabelecida, o investimento é viável.
+
+Projeto A: \\
+\keystroke{$3$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$CHS$} \keystroke{$g$} \keystroke{$CFo$} \keystroke{$9$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$g$} \keystroke{$CFj$} \keystroke{$4$} \keystroke{$g$} \keystroke{$Nj$} \keystroke{$f$} \keystroke{$IRR$} \\
+7,71\%
+
+Projeto B: \\
+\keystroke{$3$} \keystroke{$4$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$CHS$} \keystroke{$g$} \keystroke{$CFo$} \keystroke{$1$} \keystroke{$2$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$g$} \keystroke{$CFj$} \keystroke{$4$} \keystroke{$g$} \keystroke{$Nj$} \keystroke{$f$} \keystroke{$IRR$} \\
+15,38\%
+
+\textbf{VPL – Valor Presente Líquido (\textit{Net Present Value - NPV})} \\
+Traz os valores que entrarão no caixa para o seu respectivo valor de hoje. Utilizaremos uma taxa aplicada de 10\%:
+
+Projeto A: \\
+Fórmula TIR + \keystroke{$1$} \keystroke{$0$} \keystroke{$i$} \keystroke{$f$} \keystroke{$NPV$} 
+
+Projeto A - Pela Diferença: \\
+\keystroke{$9$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$CHS$} \keystroke{$PMT$} \keystroke{$4$} \keystroke{$n$} \keystroke{$1$} \keystroke{$0$} \keystroke{$i$} \keystroke{$PV$} \keystroke{$3$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$-$}
+
+Projeto B: \\
+Fórmula TIR + \keystroke{$1$} \keystroke{$0$} \keystroke{$i$} \keystroke{$f$} \keystroke{$NPV$} 
+
+Projeto B - Pela Diferença: \\
+\keystroke{$1$} \keystroke{$2$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$CHS$} \keystroke{$PMT$} \keystroke{$4$} \keystroke{$n$} \keystroke{$1$} \keystroke{$0$} \keystroke{$i$} \keystroke{$PV$} \keystroke{$3$} \keystroke{$4$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$-$}
+
+Projeto A - R\$ -1.471,21 (valor atual: R\$ 28.528,79) \\
+Projeto B - R\$ 4.038,39 (valor atual: R\$ 38.038,39)
+
+Cont. Sequencia temos o VPL = taxa \keystroke{$i$} \keystroke{$f$} \keystroke{$NPV$}
+
+Após termos calculado as três diferentes formas, podemos concluir que o Projeto B seria melhor, já que apresenta um payback mais curto e o maior TIR e VPL.
+
+\subsection*{Juros Simples}
+É o processo pelo qual os rendimentos obtidos no período são calculados apenas sobre o valor do Capital Inicial, desconsiderando os rendimentos acumulados em períodos anteriores. O regime de juros simples ou de
+capitalização simples é aquele em que a taxa de juros incide somente sobre o capital inicial.
+
+Fórmulas: \\
+$j = P i n$ \\
+$M = P + j$ \\
+$M = P (1 + i n)$
+
+Conversões: \\
+Taxa Anual -> Período Mensal = $\div 12$ \\
+Taxa Anual -> Período Diário = $\div 360$ \\
+Taxa Mensal -> Período Diário = $\div 30$
+
+Calcular os juros cobrados sobre uma operação de empréstimo no valor de R\$ 10.000,00, realizado por 60 dias, com uma taxa igual a 0,18\% a.a. Empregar o ano comercial (360 dias) e o ano civil (365 dias).
+
+\keystroke{$6$} \keystroke{$0$} \keystroke{$n$} \keystroke{$0$} \keystroke{$.$} \keystroke{$1$} \keystroke{$8$} \keystroke{$i$} \keystroke{$1$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$0$} \keystroke{$CHS$} \keystroke{$PV$} \keystroke{$f$} \keystroke{$0$}
+[Resultado com base no Ano Comercial]
+[Resultado com base no Ano Civil]
+
+Exemplo Montante: Qual os juros e o montante de um capital de R\$ [C] a uma taxa de [i]\% a.a., durante [M] me -
+ses?
+[C]
+[i]
+[M]
+Conversão
+Juros Montante
+Exemplo Taxa: Qual a taxa mensal de um empréstimo de R\$ [C], liquidado [D] dias após, por R\$ [M] a juros sim -
+ples?
+[M]
+[C]
+[C]
+[D]
+Conversão
+Exemplo Dias: Quantos dias levará uma aplicação de R\$ [C] para um montante de R\$ [M], em regime de Capitali-
+zação Simples, a taxa de [i]\% a.a.?
+[C]
+[i]
+[M]
+Conversão
+[C]
+Diferença
+Exemplo Taxa: Uma compra no valor de R\$ [C] numa loja gera um boleto de cobrança com a mensagem “Após
+vencimento cobrar R\$ [M] ao dia”. Qual a taxa mensal de juros?
+[M]
+[C]
+ao dia
+para %
+Conversão
+Exemplo Quitar Dívida: A dívida de R\$ [C] deverá ser liquidada [d] dias após o vencimento, à taxa de juros de [i]\%
+ao mês. Qual a quantia que liquidará a dívida?
+[1]
+[i]
+[d]
+[C]
+Conversão
+
+\subsection*{Juros Compostos}
+É o processo pelo qual os rendimentos obtidos no período são calculados sobre a soma do valor do Capital Inicial e os rendimentos obtidos em períodos anteriores. Capitalização composta é aquela que a taxa de juros incide sempre sobre o capital inicial acrescido dos juros acumulados até o período imediatamente anterior.

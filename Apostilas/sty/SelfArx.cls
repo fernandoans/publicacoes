@@ -219,13 +219,16 @@ bindingoffset=1cm]{geometry} %
 \usepackage{sectsty}  % habilitar a customização dos títulos das seções
 \usepackage{listings} % listagens
 \usepackage{url} % codigo para as URLs
-\usepackage{enumerate} % simplicidade para as listas
 \usepackage{enumitem} % para usar o noitemsep
 \usepackage{nicefrac} % Fração de Linha
 \usepackage{float} % Imagens flutuantes
 \usepackage[framemethod=TikZ]{mdframed} % janela de ATENÇÃO
 \usepackage{array} % Para usar tabelas
 \usepackage{wrapfig} % Imagens que se cruzam com texto
+\usepackage[T1]{fontenc}
+\usepackage{tikz}
+\usetikzlibrary{shadows}
+\usepackage{amssymb}
 
 %-----------------------------------------------------------------------------
 % Definições Iniciais
@@ -320,7 +323,6 @@ bindingoffset=1cm]{geometry} %
 %-----------------------------------------------------------------------------
 % BLOCO DE ATENÇÃO
 %-----------------------------------------------------------------------------
-
 \newenvironment{theo}[2][]{%
 	\ifstrempty{#1}%
 	% if condition (without title)
@@ -345,4 +347,25 @@ bindingoffset=1cm]{geometry} %
 	}%
 	\begin{mdframed}[]\relax}{%
 	\end{mdframed} \vspace{-3mm}
+}
+
+%-----------------------------------------------------------------------------
+% Teclas
+%-----------------------------------------------------------------------------
+\newcommand*\keystroke[1]{\hspace{0.2ex}%
+  \tikz[baseline=(key.base)]
+	\node[%
+	  draw,
+	  fill=white,
+	  text height=1ex,
+	  text depth=0ex,
+	  fill=black!5,
+	  drop shadow={shadow xshift=0.2ex,shadow yshift=0.2ex,fill=black,opacity=0.70},
+	  rectangle,
+	  rounded corners=2pt,
+	  inner sep=2.2pt,
+	  line width=0.5pt,
+	  font=\footnotesize\sffamily
+	](key) {#1}
+  ;\hspace{0.4ex}
 }

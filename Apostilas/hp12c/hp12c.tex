@@ -1,0 +1,88 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\documentclass[fleqn,10pt]{../sty/SelfArx} % Document font size and equations flushed left
+
+%----------------------------------------------------------------------------------------
+%	COLUMNS
+%----------------------------------------------------------------------------------------
+
+% \setlength{\columnsep}{0.55cm} % Distance between the two columns of text
+% \setlength{\fboxrule}{0.75pt} % Width of the border around the abstract
+
+%----------------------------------------------------------------------------------------
+%	COLORS
+%----------------------------------------------------------------------------------------
+
+\definecolor{color1}{RGB}{0,0,90} % Color of the article title and sections
+\definecolor{color2}{RGB}{0,20,20} % Color of the boxes behind the abstract and headings
+
+%----------------------------------------------------------------------------------------
+%	HYPERLINKS
+%----------------------------------------------------------------------------------------
+
+\usepackage{hyperref} % Required for hyperlinks
+\hypersetup{hidelinks,colorlinks,breaklinks=true,urlcolor=color2,citecolor=color1,linkcolor=color1,bookmarksopen=false,pdftitle={Title},pdfauthor={Author}}
+
+%----------------------------------------------------------------------------------------
+%	ARTICLE INFORMATION
+%----------------------------------------------------------------------------------------
+
+\PaperTitle{HP-12C} % Article title
+\JournalInfo{Versão 1.0} % Journal information
+\Archive{} % Additional notes (e.g. copyright, DOI, review/research article)
+
+\Authors{Fernando Anselmo} % Authors
+\affiliation{} % Author affiliation
+
+\Keywords{HP12C --- Matemática --- Estatística} % Keywords - if you don't want any simply remove all the text between the curly brackets
+\newcommand{\keywordname}{Keywords} % Defines the keywords heading name
+
+%----------------------------------------------------------------------------------------
+%	ABSTRACT
+%----------------------------------------------------------------------------------------
+
+\Abstract{A calculadora da \textit{Hewlett Packard} modelo HP-12C foi lançada em 1981 e se trata de um dos maiores sucessos da empresa, a mais vendida e mais utilizada calculadora do mundo inteiro principalmente na execução de cálculos financeiros e estatísticos. Conheceremos o básico sobre o uso da calculadora que possui mais de 120 funções específicas para uso em negócios e permite trabalhar com 20 diferentes tipos de fluxos de caixa, operações com taxas internas de retorno e valores presentes líquidos.}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+
+\input{hp12cBasico.tex}
+\input{hp12cMatematica.tex}
+\input{hp12cEstatistica.tex}
+
+\section*{Conclusão}
+O mais interessante que para praticar todos os conceitos que vimos nesta apostila não é necessário possuir uma HP12C e além do software indicado ainda é possível encontrá-la em vários sites \cite{online} que apresentam versões online da mesma tornando possível testar todas as suas funcionalidades antes de adquiri-la.
+
+\input{../sty/final.tex}
+
+%--------------------------------------------------------------------------
+% REFERÊNCIAS
+%--------------------------------------------------------------------------
+\begin{thebibliography}{4}
+	\bibitem{hp12c} 
+	Versão HP12C Platinum \\
+	\url{https://sourceforge.net/projects/finanx/}
+	
+	\bibitem{online} 
+	Versão OnLine \\
+	\url{https://www.fazerfacil.com.br/calculadoras/hp12c.html}
+	
+	\input{../sty/referencias.tex}
+\end{thebibliography}
+
+\newpage
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=1.0\textwidth]{images/tabela-chi-square}
+	\caption{Tabela Qui-quadrado}
+\end{figure}
+
+\end{document}
+
