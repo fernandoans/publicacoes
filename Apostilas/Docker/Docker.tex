@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Docker}
-\newcommand{\pbversao}{1.4}
+\newcommand{\pbversao}{1.5}
 
 \usepackage{../sty/tutorial}
 
@@ -19,21 +19,21 @@
 %--------------------------------------------------------------------------
 \begin{abstract}
   % O primeiro caractere deve vir com \initial{}
-	\initial{D}\textbf{ocker \cite{dockeroficial} veio para revolucionar a forma como é abordado o desenvolvimento e a implantação de aplicativos, de modo bem simples, é uma plataforma para construir e manter ambientes para a execução de sistemas distribuídos. Um projeto de código aberto que permite a criação de contêineres, a partir de imagens, leves e portáteis para diversas aplicações. Sua funcionalidade simplifica o uso dos LXC (LinuX Containers), que, basicamente, são uma forma de isolamento de processo e sistemas (quase como uma virtualização), porém mais integrada ao Sistema Operacional. Os contêineres isolam o SO Base (host) e toda pilha de dependências da aplicação (bibliotecas, servidores, entre outros) com ganhos de performance.}
+	\initial{D}\textbf{ocker \cite{dockeroficial} veio para revolucionar a forma como é abordado o desenvolvimento e a implantação de aplicativos, em modo bem simples, é uma plataforma para construir e manter ambientes para a execução de sistemas distribuídos. Um projeto de código aberto que permite a criação de contêineres, a partir de imagens, leves e portáteis para diversas aplicações. Sua funcionalidade simplifica o uso dos LXC (LinuX Containers), que, basicamente, uma forma para isolamento de processo e sistemas (quase como uma virtualização), porém mais integrada ao Sistema Operacional. Os contêineres isolam o SO Base (host) e toda pilha de dependências da aplicação (bibliotecas, servidores, entre outros) com ganhos de performance.}
 \end{abstract}
 
 %--------------------------------------------------------------------------
 % CONTEÚDO DO ARTIGO
 %--------------------------------------------------------------------------
 \section{Parte inicial}
-Provavelmente já ouviu falar sobre o Docker, quase todos os dias surgem notícias, por meio de inclusões nas redes sociais, notícias em blogs ou eventos promovidos por diversas empresas do segmento de tecnologia. Possibilita o empacotamento de uma aplicação ou ambiente inteiro dentro de um contêiner, e a partir desse momento, torna-se portável para qualquer outro sistema que contenha o Docker instalado.
+Provavelmente já ouviu falar sobre o Docker, quase todos os dias surgem notícias, por meio de inclusões nas redes sociais, em blogs ou eventos promovidos por diversas empresas do segmento de tecnologia. Possibilita o empacotamento de uma aplicação ou ambiente inteiro dentro de um contêiner, e a partir desse momento, torna-se portável para qualquer outro sistema que contenha o Docker instalado.
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.6\textwidth]{imagem/DockerLogo.jpg}
 	\caption{Logo do Docker}
 \end{figure}
 
-O Docker nasceu na empresa dotCloud. A empresa dotCloud, na época, era um empresa de hospedagem que utilizava LXC em quase todo seu ambiente. O Docker trabalha com um sistema de arquivos ``empilháveis'', denominado aufs, isso permite que a configuração do contêiner funcione de forma incremental, mais ou menos como os ``commits'' do GIT. Docker é uma ferramenta que cria rapidamente ambientes isolados para desenvolver e implantar aplicativos. Trata-se de uma solução para profissionais de sistema desenvolverem, embarcarem, integrarem e executarem suas aplicações rapidamente.
+O Docker nasceu na empresa dotCloud, na época, fornecia hospedagem que utilizava LXC em quase todo seu ambiente. O Docker trabalha com um sistema de arquivos ``empilháveis'', denominado aufs, isso permite que a configuração do contêiner funcione de forma incremental, mais ou menos como os ``commits'' do GIT. Docker é uma ferramenta que cria rapidamente ambientes isolados para desenvolver e implantar aplicativos. Trata-se de uma solução para profissionais de sistema desenvolverem, embarcarem, integrarem e executarem suas aplicações rapidamente.
 
 Seu principal objetivo e proporcionar múltiplos ambientes isolados dentro do mesmo servidor, mas acessíveis externamente via tradução de portas. O conceito nada mais é do que isolar os recursos e as aplicações através de uma imagem (template), construir contêineres para otimizar deploy, performance, agilidade, entrega e principalmente o modo de compartilhar todos os recursos sejam físicos ou lógicos.
 
@@ -55,7 +55,17 @@ Resumidamente: \vspace{-1em}
 \subsection{O que é um Contêiner?}
 Docker usa o termo ``Contêiner'' para representar um ambiente em execução e que pode executar quase qualquer software; Seja este uma aplicação Web ou um serviço. O contêiner é tratado como o artefato, ou seja, o ambiente pode ser versionado e distribuído da mesma forma como é realizado com o código fonte de uma aplicação. 
 
-Os contêineres são compostos de namespaces e grupos de controle do Linux que fornecem isolamento de outros contêineres e do host. LXC é um tipo de virtualização, em nível de sistema operacional, que proporciona a execução de múltiplas instâncias isoladas de um determinado SO dentro de um único host. O conceito é simples e antigo, e o comando ``chroot'' seu precursor mais famoso. Com o chroot é possível segregar os acessos de diretórios e evitar que o usuário tenha acesso à estrutura raiz (“/” ou root).
+Os contêineres são compostos de namespaces e grupos de controle do Linux que fornecem isolamento de outros contêineres e do host. LXC é um tipo de virtualização, em nível de sistema operacional, que proporciona a execução de múltiplas instâncias isoladas de um determinado SO dentro de um único host. O conceito é simples e antigo, o comando ``chroot'' seu precursor mais famoso. Com o chroot é possível segregar os acessos de diretórios e evitar que o usuário tenha acesso à estrutura raiz (“/” ou root).
+
+Linha do tempo das tecnologias envolvidas: \vspace{-1em}
+\begin{itemize}
+	\item \textbf{chroot} 1979
+	\item \textbf{apparmor} 1998
+	\item \textbf{libvirt} 2005
+	\item \textbf{cgroups} 2007
+	\item \textbf{LXC} 2008
+	\item \textbf{Docker} 2013
+\end{itemize}
 
 Características dos contêineres: \vspace{-1em}
 \begin{itemize}
@@ -67,6 +77,7 @@ aplicação ou serviço.
 de configuração, que são passados ao iniciar um contêiner, ou durante sua 
 execução.
 \end{itemize}
+
 O contêiner é construído através de namepspaces, cgroups, chroot entre outras 
 funcionalidades do Kernel para construir uma área isolada para a aplicação.
 
@@ -152,7 +163,7 @@ Criar um contêiner de uma imagem, em background e desviar para uma porta espec�
 Iniciar um contêiner já criado: \\
 \codigo{\$ docker start [contêiner]}
 
-Executar um comando em um contêiner já iniciado: \\
+Executar comando em um contêiner já iniciado: \\
 \codigo{\$ docker exec [contêiner] [comando]}
 
 Iniciar uma sessão bash em um contêiner já iniciado: \\
@@ -183,16 +194,16 @@ Remover TODOS os contêineres \\
 Por muitas vezes os contêineres são criados como ambientes (bash) no qual se pode executar comandos, mas pode ser necessário retornar ao host. No contêiner realizar a seguinte sequencia: \codigo{Ctrl+P+Q}. Para retornar ao ambiente do contêiner, utilizar o comando: \\
 \codigo{\$ docker attach [imagem]}
 
-Para sair de vez do ambiente do contêiner, realizar a seguinte sequencia: 
+Para sair de vez do contêiner, realizar a seguinte sequencia: 
 \codigo{Ctrl+D} ou com o comando \codigo{exit}.
 
 \subsection{Propriedade Volume}
 Volume é uma pasta dentro de um contêiner que está associada a outro que existe fora, ou seja, é um mapeamento para uma pasta existente na máquina host ou no dispositivo NFS remoto. O diretório que um volume mapeia existe independente de qualquer contêiner que o monte. Isso significa que se pode criar contêineres, gravar em volumes e, em seguida, destruí-los sem perder dados de aplicativos.
 
-Os volumes são excelentes para compartilhar dados (ou estado) entre contêineres. É a maneira mais adequada para editar os fontes de uma aplicação dentro de um contêiner. Primeiro detalhe a realizar é verificar qual local que o contêiner usa para ler os códigos que desejamos manipular. Por exemplo, a pasta do Apache \url{/var/www/}. Caso o código local esteja na pasta \url{/home/usuario/codigo}, o comando do Docker para realizar o mapeamento é o seguinte: \\
+Os volumes são excelentes para compartilhar dados (ou estado) entre contêineres. É a maneira mais adequada para editar os fontes de uma aplicação dentro de um contêiner. Primeiro detalhe a realizar é verificar qual local que o contêiner usa para ler os códigos que desejamos manipular. Por exemplo, a pasta do Apache \url{/var/www/}. Caso o código local esteja na pasta \url{/home/usuario/codigo}, o comando do Docker para realizar mapeamento é o seguinte: \\
 \codigo{\$ docker -d -v \url{/home/usuario/codigo}:\url{/var/www} imagem}
 
-Deste modo, tudo que for adicionado ou modificado na pasta \url{/home/usuario/codigo} do host docker, será modificado na pasta \url{/var/www} dentro do contêiner. \textbf{Importante}: alguns serviços específicos precisam que o serviço seja reiniciado em caso de mudança no código, nesse caso, basta parar o contêiner e reiniciar novamente.
+Deste modo, tudo que for adicionado ou modificado na pasta \url{/home/usuario/codigo} do host docker, será refeito na pasta \url{/var/www} dentro do contêiner. \textbf{Importante}: alguns serviços específicos precisam que o serviço seja reiniciado em caso de mudança no código, nesse caso, basta parar o contêiner e reiniciar novamente.
 
 \section{Baixar e usar Imagens}
 Uma das grandes vantagens do Docker é o poder de instalar um software sem a preocupação de suas dependências, ou, no momento de sua desinstalação não deixar quaisquer resquícios de bibliotecas perdidas.
@@ -237,7 +248,7 @@ Como estamos com o banco MySQL no Docker, para realizarmos a conexão é exigido
 --password=root update}
 
 \subsection{Apache Cassandra}
-É um projeto de sistema de banco de dados distribuído altamente escalável de segunda geração, que reúne a arquitetura do DynamoDB, da Amazon Web Services e modelo de dados baseado no BigTable, do Google. 
+É um projeto de sistema para banco de dados distribuído altamente escalável de segunda geração, que reúne a arquitetura do DynamoDB, da Amazon Web Services e modelo de dados baseado no BigTable, do Google. 
 
 Baixar a imagem oficial: \\
 \codigo{\$ docker pull cassandra}
@@ -261,7 +272,7 @@ Chamar o PSQL: \\
 \codigo{\$ docker exec -it meu-post psql -U postgres --password}
 
 Criar uma tabela:
-\begin{lstlisting}
+\begin{lstlisting}[]
 postgres=# create database teste;
 
 postgres=# \connect teste;
@@ -278,12 +289,12 @@ postgres=# \d cidade;
 \end{lstlisting}
 
 Sair do PSQL:
-\begin{lstlisting}
+\begin{lstlisting}[]
 postgres=# \q
 \end{lstlisting}
 
 \subsection{MongoDB}
-É um SGBD orientado a documentos livre, de código aberto e multiplataforma, escrito na linguagem C++. Classificado como um programa de banco de dados NoSQL, o MongoDB usa documentos semelhantes a JSON com esquemas. 
+É um SGBD orientado a documentos livre, de código aberto e multiplataforma, escrito na linguagem C++. Classificado como um programa para banco de dados NoSQL, o MongoDB usa documentos semelhantes a JSON com esquemas. 
 
 Baixar a imagem oficial: \\
 \codigo{\$ docker pull mongo}
@@ -293,7 +304,7 @@ Criar uma instância do banco em um Contêiner: \\
 
 Acessar o administrador do MongoDB: \\
 \codigo{\$ docker exec -it meu-mongo mongo admin}
-\begin{lstlisting}
+\begin{lstlisting}[]
 > show dbs
 > use local
 > show collections
@@ -301,7 +312,7 @@ Acessar o administrador do MongoDB: \\
 \end{lstlisting}
 
 \subsection{TensorFlow}
-É uma biblioteca de código aberto para aprendizado de máquina aplicável a uma ampla variedade de tarefas. Contempla um sistema para criação e treinamento de redes neurais para detectar e decifrar padrões e correlações, análogo à forma como humanos aprendem e raciocinam. 
+É uma biblioteca de código aberto para aprendizado de máquina aplicável a uma ampla variedade de tarefas. Contempla um sistema para criação e treinamento de redes neurais para detectar, decifrar e correlações entre padrões, análogo à forma como humanos aprendem e raciocinam. 
 
 Baixar a imagem oficial: \\
 \codigo{\$ docker pull tensorflow/tensorflow}
@@ -309,7 +320,7 @@ Baixar a imagem oficial: \\
 Criar a primeira vez em um Contêiner: \\
 \codigo{\$ docker run -it --name meu-tensor -p 8181:8888 tensorflow/tensorflow}
 
-Anotar o número do Token e lembrar que a porta é a 8181. 
+Anotar o número do Token e lembrar que a porta é 8181. 
 
 Iniciar novamente: \\
 \codigo{\$ docker start meu-tensor \\
@@ -317,7 +328,7 @@ Iniciar novamente: \\
 	\# jupyter notebook list}
 
 \subsection{Apache NiFi}
-Apache Nifi é utilizado para a construção de fluxos de dados, é uma solução flexível e escalável para automatizar o fluxo de dados entre sistemas de software. 
+Apache Nifi é utilizado na construção e fluxos de dados, é uma solução flexível e escalável para automatizar o fluxo de dados entre sistemas de software. 
 
 Baixar a imagem oficial: \\
 \codigo{\$ docker pull apache/nifi}
@@ -343,7 +354,7 @@ Podemos ver aonde está o Pentaho: \\
 Ou podemos acessá-lo na URL \url{http://localhost:8080} (usuário:admin e senha:password).
 
 \subsection{Airflow}
-Apache Airflow é uma plataforma de modo que programaticamente criar, agendar e monitorar \textit{workflows}. Como workflows são definidos como código, que podem ser mantido, versionado, testado e colaborado. 
+Apache Airflow é uma plataforma de modo que programaticamente criar, agendar e monitorar \textit{workflows}, que são definidos como código, e podem ser mantidos, versionados, testados e colaborados.
 
 Baixar a imagem oficial: \\
 \codigo{\$ docker pull apache/airflow}
@@ -403,15 +414,15 @@ Dockerfile é um arquivo em formato texto que contém todos os comandos necessá
 
 Seus comandos principais são: \vspace{-1em}
 \begin{itemize}
-	\item \textbf{FROM}. Imagem base, é usada com nome da distribuição (Debian, Ubuntu), para não ocorrer a necessidade em se criar toda estrutura.
+	\item \textbf{FROM}. Imagem base, é usada com nome da distribuição (Debian, Ubuntu), para não ocorrer a necessidade em se criar toda estrutura. Obrigatoriamente o primeiro comando.
 	\item \textbf{LABEL}. Ajudar na organização das imagens por projeto, registrar informações de licenciamento, auxiliar na automação ou por quaisquer outros motivos.
 	\item \textbf{MAINTAINER}. Especifica o autor da imagem.
 	\item \textbf{RUN}. As instruções que serão executadas para criação da imagem.
 	\item \textbf{ENV}. Para atualizar uma variável de ambiente PATH para o software que o contêiner instala. É útil para fornecer variáveis de ambiente necessárias especificadas para os serviços.
 	\item \textbf{ADD e COPY}. Embora sejam funcionalmente semelhantes, de um modo geral, a COPY é preferida. Isso é porque é mais transparente que ADD. COPY suporta a cópia básica de arquivos locais no contêiner, enquanto ADD tem alguns recursos (como a extração de tar local-only e o suporte de URL remoto) que não são imediatamente óbvios. Consequentemente, o melhor uso para ADD é a auto-extração local do arquivo do tar na imagem.
-	\item \textbf{CMD}. Usada para executar um software contido pela imagem, juntamente com quaisquer argumentos.
 	\item \textbf{ENTRYPOINT}. Especifica o que será executado ao iniciar o contêiner. Age como precedente à sintaxe CMD, ou seja, caso o ENTRYPOINT seja ``top'', o CMD pode ser ``-b'', que nesse caso executa o top em modo batch. Uma vez que o ENTRYPOINT não seja especificado, e um CMD seja usado, o ENTRYPOINT padrão é ``/bin/sh -c''. 
-	\item \textbf{EXPOSE}. Porta do contêiner que o Docker deve escutar, essa informação é utilizada para interconexão entre contêineres, ao utilizar links. EXPOSE não define qual porta será exposta para o hospedeiro ou tornar possível o acesso externo para portas do contêiner em questão. Para expor essas portas, utiliza-se em tempo de inicialização da imagem a flag ``-p'' ou ``-P''.
+	\item \textbf{EXPOSE}. Porta do contêiner que o Docker deve escutar, essa informação é utilizada para interconexão entre contêineres, ao utilizar links. EXPOSE não define qual porta será exposta para o hospedeiro ou tornar possível o acesso externo para portas do contêiner em questão. Para expor essas, utiliza-se em tempo de inicialização da imagem a flag ``-p'' ou ``-P''.
+	\item \textbf{CMD}. Usada para executar um software contido pela imagem, juntamente com quaisquer argumentos, resumidamente o que deve ser executado quando o contêiner subir. Obrigatoriamente o último comando.
 \end{itemize}
 
 Por exemplo, esses são os passos necessários para se criar uma imagem para o banco MongoDB.
@@ -423,7 +434,7 @@ Entrar na pasta: \\
 \codigo{\$ cd mongod}
 
 Criar um arquivo chamado \textbf{Dockerfile} com o seguinte conteúdo:
-\begin{lstlisting}
+\begin{lstlisting}[]
 FROM ubuntu:yakkety
 MAINTAINER Fernando Anselmo <fernando.anselmo74@gmail.com>
 
@@ -500,7 +511,7 @@ Algumas características do Alpine: \vspace{-1em}
 Vamos realizar um exemplo prático para entendermos melhor esse conceito.
 
 Criar um arquivo chamado \textbf{app.js} com o seguinte conteúdo:
-\begin{lstlisting}
+\begin{lstlisting}[]
 var http = require('http');
 http.createServer(function(req,res) {
  res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -509,18 +520,18 @@ http.createServer(function(req,res) {
 \end{lstlisting}
 
 Criar um arquivo chamado \textbf{package.json} com o seguinte conteúdo:
-\begin{lstlisting}
+\begin{lstlisting}[]
 {
-"name": "docker_web_app",
-"version": "1.0.0",
-"description": "Node.js on Docker",
-"author": "First Last <first.last@example.com>",
-"main": "app.js"
+ "name": "docker_web_app",
+ "version": "1.0.0",
+ "description": "Node.js on Docker",
+ "author": "First Last <first.last@example.com>",
+ "main": "app.js"
 }
 \end{lstlisting}
 
 Criar um arquivo chamado \textbf{Dockerfile} com o seguinte conteúdo:
-\begin{lstlisting}
+\begin{lstlisting}[]
 FROM alpine:3.1
 # Update
 RUN apk add --update nodejs
@@ -557,7 +568,7 @@ A imagem oficial do Node.js pode ser obtida em:
 O \textbf{Docker Hub} possui o objetivo de construir um repositório de Imagens e pode ser usado gratuitamente e de forma pública, através da seguinte URL \url{https://hub.docker.com/} (também é possível pagar uma conta para hospedar imagens particulares).
 
 Criar uma pasta para hospedar os arquivos, e nesta um arquivo em Python chamado \textbf{app.py} com o seguinte conteúdo:
-\begin{lstlisting}
+\begin{lstlisting}[]
 from flask import Flask
 
 app = Flask(__name__)
@@ -571,7 +582,7 @@ if __name__ == "__main__":
 \end{lstlisting}
 
 Criar o arquivo \textbf{Dockerfile} para construir a imagem:
-\begin{lstlisting}
+\begin{lstlisting}[]
 FROM python:3.6.1-alpine
 RUN pip install flask
 CMD ["python","app.py"]
@@ -633,7 +644,7 @@ Ver o log de uma composição de contêineres: \\
 PostgreSQL é um sistema de gerenciamento de banco de dados relacional de objetos (ORDBMS) com ênfase em extensibilidade e conformidade com padrões. Lida com cargas de trabalho que variam de pequenos a grandes aplicativos voltados para a Internet (ou para armazenamento de dados) com muitos usuários simultâneos. Criar uma pasta chamada \textbf{teste}.
 
 Nesta pasta, criar o arquivo \textbf{docker-compose.yml}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 version: '2'
  services:
   db:
@@ -693,7 +704,7 @@ Criar a seguinte estrutura de arquivos:
 \end{figure}
 
 Listagem do arquivo \textbf{src/index.html}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 <html>
  <body>
   <h1>Hello World</h1>
@@ -702,13 +713,13 @@ Listagem do arquivo \textbf{src/index.html}:
 \end{lstlisting}
 
 Listagem do arquivo \textbf{Dockerfile}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 FROM nginx
 COPY src /usr/share/nginx/html
 \end{lstlisting}
 
 Listagem do arquivo \textbf{docker-compose.yml}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 version: '2'
 services:
  app:
@@ -721,14 +732,14 @@ services:
 \end{lstlisting}
 
 Listagem do arquivo \textbf{docker-compose-prod.yml}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 version: '2'
 services:
-app:
-build: .
-image: app:1.0.0
-ports:
-- 80:80 
+ app:
+  build: .
+  image: app:1.0.0
+  ports:
+   - 80:80 
 \end{lstlisting}
 
 Subir o Docker Compose para construir a estrutura: \\
@@ -755,7 +766,7 @@ Em seguida preparar o projeto com o Express.js: \\
 \codigo{\$ npm install express --save}
 
 Modificar o arquivo \textbf{package.json} para:
-\begin{lstlisting}
+\begin{lstlisting}[]
 {
  "name": "docnode",
  "version": "1.0.0",
@@ -773,22 +784,22 @@ Modificar o arquivo \textbf{package.json} para:
 \end{lstlisting}
 
 Criar o arquivo \textbf{index.js} com a seguinte codificação:
-\begin{lstlisting}
+\begin{lstlisting}[]
 var express = require('express');
 var app     = express();
 
 app.get('/', function(req,res){
-res.send('Hello World!');
+ res.send('Hello World!');
 });
 
 var port = 3000;
 app.listen(port,function(){
-console.log('Listening on port:' + port);
+ console.log('Listening on port:' + port);
 });
 \end{lstlisting}
 
 Criar o arquivo \textbf{Dockerfile} com a seguinte codificação:
-\begin{lstlisting}
+\begin{lstlisting}[]
 FROM node:6.5.0
 
 WORKDIR /app
@@ -803,7 +814,7 @@ EXPOSE 3000
 \end{lstlisting}
 
 E o arquivo \textbf{docker-compose.yml} com a seguinte codificação:
-\begin{lstlisting}
+\begin{lstlisting}[]
 db:
  image: mongo
  ports:
@@ -831,9 +842,9 @@ Encerrar a composição: \\
 \codigo{\$ docker-compose down}
 
 \section{Conclusão}
-O Docker também estabelece um padrão de empacotamento de soluções e os contêineres incluem tudo o que é necessário para executar os processos dentro deles, para que não seja necessário instalar dependências adicionais no host. Ou seja, uma vez criada a estrutura do ambiente esta pode ser facilmente replicada, usada como referência para a criação de novas estruturas. Docker fornece blocos construtivos fundamentais necessários às implantações de contêineres distribuídos através da filosofia PODA (\textit{Package Once Deploy Anywhere}).
+O Docker também estabelece um padrão para o empacotamento de soluções e os contêineres incluem tudo o que é necessário para executar os processos dentro deles, para que não seja necessário instalar dependências adicionais no host. Ou seja, uma vez criada a estrutura do ambiente esta pode ser facilmente replicada, usada como referência para a criação de novas estruturas. Docker fornece blocos construtivos fundamentais necessários às implantações de contêineres distribuídos através da filosofia PODA (\textit{Package Once Deploy Anywhere}).
 
-Foi citado nesta o que é o Docker e o que é possível fazer, porém não se deve utilizá-lo para tratar o contêiner como uma máquina virtual. É apenas um serviço, nada mais que um processo de ``host hospedeiro''. O contêiner não pode ter uma vida longa (uptime), como ele é um processo do host hospedeiro, ele precisa ser encerrado e iniciado quando possível. Não armazene dados dentro do , utilize sempre o parâmetro volumes para armazenar os dados dinâmicos. E por fim, assegure que o host hospedeiro possui os recursos necessários de segurança para acesso nos contêineres.
+Foi citado nesta o que vem a ser Docker e suas vastas possibilidades, porém não se deve utilizá-lo para tratar o contêiner como uma máquina virtual. É apenas um serviço, nada mais que um processo de ``host hospedeiro''. O contêiner não pode ter uma vida longa (uptime), como ele é um processo do host hospedeiro, ele precisa ser encerrado e iniciado quando possível. Não armazene dados dentro do , utilize sempre o parâmetro volumes para armazenar os dados dinâmicos. E por fim, assegure que o host hospedeiro possui os recursos necessários de segurança para acesso nos contêineres.
 
 Devido às propriedades de isolamento dos contêineres, podemos programar muitos deles em um único host sem nos preocuparmos com dependências conflitantes. Deste modo, economizaremos custos do servidor. Através do empacotamento dos componentes, das aplicações em seus próprios contêineres e da sua escalabilidade horizontal torna-se um simples processo de iniciar ou desligar múltiplas instâncias de cada componente. 
 
