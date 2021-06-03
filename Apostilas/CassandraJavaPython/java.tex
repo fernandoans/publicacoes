@@ -1,0 +1,211 @@
+\section{Linguagem Java}
+Java é considerada a linguagem de programação orientada a objetos mais utilizada no Mundo, é a base para construção de ferramentas como Hadoop, Pentaho, Weka e muitas outras utilizados comercialmente. Foi desenvolvida na década de 90 por uma equipe de programadores chefiada por \textit{James Gosling} para o projeto Green, na empresa Sun Microsystems - tornou-se nessa época como a linguagem que os programadores mais baixaram e o sucesso foi instantâneo. Em 2008 o Java foi adquirido pela Oracle Corporation.
+
+\subsection{Driver JDBC de Conexão}
+Para proceder a conexão com Java, é necessário baixar um driver JDBC (Java Database Connection). Existem vários drivers construídos, porém o driver oficialmente suportado pelo Apache Cassandra se encontra no endereço: \url{https://docs.datastax.com/en/driver-matrix/doc/driver_matrix/common/driverMatrix.html}
+
+Para utilizar o driver é necessário criar um projeto (Utilizaremos o \textbf{Spring Tool Suite 4}, porém pode utilizar qualquer outro editor de sua preferência).
+
+No STS4 acessar a seguinte opção no menu: File $\triangleright$ New $\triangleright$ Java Project. Informar o nome do projeto (meucass), não esquecer de modificar a opção "Use an environment JRE" para a versão correta da Java Runtime desejada e pressionar o botão Finish. Se está tudo correto teremos a seguinte situação na aba \textit{Project Explorer}.
+
+Vamos convertê-lo para um projeto Apache Maven. Clicar com o botão direito do mouse no projeto e acessar a opção: Configure $\triangleright$ Convert to Maven Project. Na janela apenas pressione o botão \textit{Finish}. Se tudo está correto observamos que o projeto ganhou uma letra \textbf{M} o que indica agora é um projeto padrão Maven. Então foi criado um arquivo chamado \textbf{pom.xml}. 
+
+Acessar este arquivo e antes da tag BUILD, inserir a tag DEPENDENCIES:
+\begin{lstlisting}[]
+<dependencies>
+ <dependency>
+  <groupId>com.datastax.cassandra</groupId>
+  <artifactId>cassandra-driver-core</artifactId>
+  <version>3.1.0</version>
+ </dependency>
+ <dependency>
+  <groupId>org.cassandraunit</groupId>
+  <artifactId>cassandra-unit</artifactId>
+  <version>3.0.0.1</version>
+ </dependency>
+ <dependency>
+  <groupId>org.projectlombok</groupId>
+  <artifactId>lombok</artifactId>
+  <scope>provided</scope>
+  <version>1.18.20</version>
+ </dependency>
+</dependencies>
+\end{lstlisting}
+
+Observamos que na pasta \textbf{Maven Dependencias} foi baixado a versão 3.1.0 do driver JDBC do Cassandra.
+
+\subsection{Classe Livro}
+Estamos prontos para testarmos a conexão entre porém vamos criar uma classe chamada \textbf{Livro} no pacote \textbf{meucass} e inserir nesta a seguinte codificação:
+\begin{lstlisting}[]
+package meucass;
+
+import java.util.UUID;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@ToString
+@AllArgsConstructor
+public class Livro {
+	@Getter @Setter private UUID id;
+	@Getter @Setter private String titulo;
+	@Getter @Setter private String autor;
+}
+\end{lstlisting}
+
+Graças ao pacote Lombok eliminamos a necessidade de criar métodos padrões Gets/Sets, o construtor com os argumentos e método toString. Veja mais detalhes sobre esse pacote em: \url{https://projectlombok.org/}.
+
+\subsection{Classe Conexão}
+Agora vamos criar o escopo de uma classe que realiza ações básicas com o Banco de dados:
+\begin{lstlisting}[]
+package meucass;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Cluster.Builder;
+import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.Session;
+
+public class CassandraConnector {
+
+ private Cluster cluster;
+ private Session session;
+ private final String KEY_SPACE;
+ private final String TABLE_NAME;
+	
+ public CassandraConnector(String keyspaceName, String table) {
+  KEY_SPACE = keyspaceName;
+  TABLE_NAME = table;
+ }
+
+ public boolean conexao(String node) {
+  try {
+   Builder b = Cluster.builder().addContactPoint(node);
+   b.withPort(9042);
+   cluster = b.build();
+   session = cluster.connect();
+   return true;
+  } catch (Exception e) {
+   return false;
+  }
+ }
+	
+ public void fechar() {
+  session.close();
+  cluster.close();
+ }
+	
+ public boolean criarKeyspace(String replicationStrategy, int replicationFactor) {
+  String query = "CREATE KEYSPACE IF NOT EXISTS " + KEY_SPACE + " WITH replication = {'class':'" + replicationStrategy + "','replication_factor':" + replicationFactor + "};";
+  session.execute(query);
+  ResultSet result = session.execute("SELECT * FROM system_schema.keyspaces;");
+  List<String> matchedKeyspaces = result.all().stream().filter(r -> r.getString(0).equals(KEY_SPACE)).map(r -> r.getString(0)).collect(Collectors.toList());
+  return matchedKeyspaces.size() == 1;
+ }
+
+ public void criarTabela() {
+  String query = "CREATE TABLE IF NOT EXISTS " + KEY_SPACE + "." + TABLE_NAME + "(id uuid PRIMARY KEY, titulo text, autor text);";
+  session.execute(query);
+ }
+
+ public void inserir(Livro livro) {
+  String query = "INSERT INTO " + KEY_SPACE + "." + TABLE_NAME + "(id, titulo, autor) VALUES (" + livro.getId() + ", '" + livro.getTitulo() + "', '" + livro.getAutor() + "');";
+  session.execute(query);
+ }
+	
+ public List<livro> getAll() {
+  String query = "SELECT * FROM " + KEY_SPACE + "." + TABLE_NAME;
+  ResultSet rs = session.execute(query);
+  List<Livro> livros = new ArrayList<>();
+  rs.forEach(r -> {
+   livros.add(new Livro(r.getUUID("id"), r.getString("titulo"), r.getString("autor")));
+  });
+  return livros;
+ }
+
+ public void eliminarTabela() {
+  String query = "DROP TABLE IF EXISTS " + KEY_SPACE + "." + TABLE_NAME;
+  session.execute(query);
+ }
+
+ public void eliminarKeyspace() {
+  String query = "DROP KEYSPACE " + KEY_SPACE;
+  session.execute(query);
+ }
+}
+\end{lstlisting}
+
+O método construtor recebe duas variáveis o nome da \textit{KeySpace} e Tabela. O método conexao() realiza a conexão com o banco a partir de um node e o valor da porta, cria uma sessão de conexão (variável \textit{session}) retorna um lógico se conseguiu ou não realizar essa conexão. O método fechar() encerra a conexão com a sessão e o cluster.
+
+Para os métodos de ações temos: criarKeyspace() responsável por criar a \textit{KeySpace}. criarTabela() que cria a estrutura da nossa tabela. inserir() que a partir de um objeto livro adiciona este na tabela. getAll() retorna uma lista de livros que foram inseridos. eliminarTabela() e eliminarKeyspace() removem a tabela e \textit{KeySpace} respectivamente.
+
+Se pararmos um pouco para pensar, veremos que tirando o método conexão todos os outros se comportam como qualquer outro driver de JDBC realizando as ações padrões como se estivéssemos usando um banco Postgres ou MySQL.
+
+\subsection{Classe Teste}
+Por fim vamos criar uma classe que testa toda essa conexão:
+\begin{lstlisting}[]
+package meucass;
+
+import java.util.List;
+import com.datastax.driver.core.utils.UUIDs;
+
+public class Principal {
+ private final String keyspaceName = "livraria";
+ private CassandraConnector cc;
+
+ public static void main(String[] args) {
+  new Principal().executar();
+ }
+
+ private void executar() {
+  cc = new CassandraConnector(keyspaceName, "livro");
+  if (cc.conexao("localhost")) {
+   passo1();
+   passo2();
+   passo3();
+   passo4();
+   passoFatal();
+   cc.close();
+  }
+ }
+
+ private void passo1() {
+  System.out.println("Criar o KeySpace");
+  if (cc.criarKeyspace("SimpleStrategy", 1)) {
+   System.out.println("KeySpace criado");
+  }
+ }
+
+ private void passo2() {
+  System.out.println("Criar a Tabela");
+  cc.criarTabela();
+ }
+
+ private void passo3() {
+  System.out.println("Adicionar Registros");
+  cc.inserir(new Livro(UUIDs.timeBased(), "O Tempo e o Vento", "Érico Veríssimo"));
+  cc.inserir(new Livro(UUIDs.timeBased(), "Mentiras que os Homens Contam", "Luis Fernando Veríssimo"));
+  cc.inserir(new Livro(UUIDs.timeBased(), "Vidas Secas", "Graciliano Ramos"));
+  cc.inserir(new Livro(UUIDs.timeBased(), "Auto da Compadecida", "Ariano Suassuna"));
+ }
+
+ private void passo4() {
+  System.out.println("Mostrar Registros");
+  List<Livro> livros = cc.getAll();
+  for (Livro livro : livros) {
+   System.out.println(livro);
+  }
+ }
+
+ private void passoFatal() {
+  cc.eliminarTabela();
+  cc.eliminarKeyspace();
+ }
+}
+\end{lstlisting}
+
+Esta classe será a nossa principal, agora podemos nos divertir a vontade com esse banco, tente explorar melhor, criar os métodos para alterar, excluir ou mesmo trazer um determinado livro - a CQL não é muito diferente em relação a SQL tradicional. Lembre-se que a Programação Orientada a Objetos é uma metodologia e não uma linguagem, se pratica essa forma ao usarmos os princípios da Orientação a Objetos e aproveitar a qualidade de extensibilidade do código.

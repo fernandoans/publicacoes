@@ -1,0 +1,68 @@
+\section{Python}
+Python é uma linguagem de programação de alto nível, interpretada a partir de um script, Orientada a Objetos e de tipagem dinâmica. Foi lançada por Guido van Rossum em 1991. Não pretendo nesta apostila COMPARAR essa linguagem com Java (espero que nunca o faça), fica claro que os comandos são bem mais fáceis porém essas linguagens possuem diferentes propósitos.
+
+Todos os comandos descritos abaixo foi utilizado no JupyterLab \cite{jupyteroficial}, então basta abrir um Notebook e digitá-los em cada célula conforme se apresentam.
+
+\subsection{Ações com o Banco de Dados}
+Baixar o pacote necessário: \\
+\codigo{ !pip install cassandra-driver}
+
+Importar os pacotes necessários: \\
+\codigo{from cassandra.cluster import Cluster \\
+from cassandra.query import SimpleStatement}
+
+Nos conectamos ao servidor desta forma: \\
+\codigo{cluster = Cluster() \\ session = cluster.connect()}
+
+A partir desse objeto \textit{session} podemos dar qualquer comando para o Cassandra. Criar uma KeySpace:
+\codigo{session.execute("CREATE KEYSPACE usuarios \\ WITH replication=\{'class': 'SimpleStrategy', 'replication\_factor': 1\}")}
+
+Usar uma KeySpace: \\
+\codigo{session.execute('USE usuarios;')}
+
+Criar uma tabela: \\
+\codigo{session.execute('CREATE TABLE usuario (id int primary key, nome text, \\ creditos int)')}
+
+Adicionar uma linha: \\
+\codigo{session.execute('INSERT INTO usuario (nome, creditos, id) VALUES (\%s, \%s, \%s)', \\ ('Fernando Anselmo', 42, 1))}
+
+Nos conectamos a uma coleção desta forma: \\
+\codigo{rows = session.execute('SELECT id, nome, creditos FROM usuario') \\
+for u in rows: \\
+\phantom{x}\hspace{4pt} print(u.id, u.nome, u.creditos)}
+
+\subsection{Programa Completo}
+Mas antes de encerramos realmente vejamos o seguinte programa completo em linguagem Python:
+\begin{lstlisting}[]
+from cassandra.cluster import Cluster
+from cassandra.query import SimpleStatement
+from random import randint
+
+# Passo 1: Conectar ao Mongo
+cluster = Cluster()
+session = cluster.connect()
+
+session.execute(
+ "CREATE KEYSPACE negocios WITH replication={'class': 'SimpleStrategy', 'replication_factor': 1}")
+session.execute('USE negocios;')
+
+session.execute(
+ 'CREATE TABLE restaurante (id int PRIMARY KEY, nome text, nota int, cozinha text)')
+
+# Passo 2: Criar Amostras de Dados
+nomes = ['Kitchen', 'Espiritual', 'Mongo', 'Tastey', 'Big', 'Jr', 'Filho', 'City', 'Linux', 'Tubarão', 'Gado', 'Sagrado', 'Solo', 'Sumo', 'Lazy', 'Fun', 'Prazer', 'Gula']
+tipo_emp = ['LLC', 'Inc', 'Cia', 'Corp.']
+tipo_coz = ['Pizza', 'Bar', 'Fast Food', 'Italiana', 'Mexicana', 'Americana', 'Sushi', 'Vegetariana', 'Churrascaria']
+
+for x in range(1, 501):
+  nome = nomes[randint(0, (len(nomes)-1))] + ' ' + nomes[randint(0, (len(nomes)-1))] + ' ' + tipo_emp[randint(0, (len(tipo_emp)-1))]
+  result = session.execute('INSERT INTO restaurante (id, nome, nota, cozinha) VALUES (%s, %s, %s, %s)', (x, nome, randint(1, 5), tipo_coz[randint(0, (len(tipo_coz)-1))]))
+
+  # Passo 4: Mostrar no console o Object ID do Documento
+  print('Criado {0} de 500 como {1}'.format(x, result))
+
+  # Passo 5: Mostrar mensagem final
+  print('500 Novos Negócios Culinários foram criados...')
+\end{lstlisting}
+
+O programa está auto-documentado e criar uma base com 500 registros.

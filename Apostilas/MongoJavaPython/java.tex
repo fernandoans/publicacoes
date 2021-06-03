@@ -1,12 +1,12 @@
 \section{Linguagem Java}
-Java é considerada a linguagem de programação orientada a objetos mais utilizada no Mundo, ela é a base para construção de ferramentas como Hadoop, Pentaho, Weka e muitos outros utilizados comercialmente. Foi desenvolvida na década de 90 por uma equipe de programadores chefiada por \textit{James Gosling} para o projeto Green, na empresa Sun Microsystems - tornou-se nessa época como a linguagem que os programadores mais baixaram e o sucesso foi instantâneo. Em 2008 o Java foi adquirido pela empresa Oracle Corporation.
+Java é considerada a linguagem de programação orientada a objetos mais utilizada no Mundo, base para a construção de ferramentas como Hadoop, Pentaho, Weka e muitas outras utilizadas comercialmente. Foi desenvolvida na década de 90 por uma equipe de programadores chefiada por \textit{James Gosling} para o projeto Green, na Sun Microsystems - tornou-se nessa época como a linguagem que os programadores mais baixaram e o sucesso foi instantâneo. Em 2008 o Java foi adquirido pela Oracle Corporation.
 
 \subsection{Driver JDBC de Conexão}
 Para proceder a conexão com Java, é necessário baixar um driver JDBC (Java Database Connection). Existem vários drivers construídos, porém o driver oficialmente suportado pelo MongoDB se encontra no endereço: \url{http://mongodb.github.io/mongo-java-driver}
 
 Para utilizar o driver é necessário criar um projeto (vamos usar o \textbf{Spring Tool Suite 4}, utilize se quiser qualquer outro editor de sua preferência).
 
-No STS4 acessar a seguinte opção no menu: File $\triangleright$ New $\triangleright$ Java Project. Informar o nome do projeto, não esquecer de modificar a opção "Use an environment JRE" para a versão correta da Java Runtime desejada e pressionar o botão Finish. Se está tudo correto teremos a seguinte situação na aba \textit{Project Explorer}:
+No STS4 acessar a seguinte opção no menu: File $\triangleright$ New $\triangleright$ Java Project. Informar o nome do projeto (Decus), não esquecer de modificar a opção "Use an environment JRE" para a versão correta da Java Runtime desejada e pressionar o botão Finish. Se está tudo correto teremos a seguinte situação na aba \textit{Project Explorer}:
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.5\textwidth]{imagens/projetoCriado.png}
@@ -53,7 +53,7 @@ Agora a situação do projeto é esta:
 Observamos que na pasta \textbf{Maven Dependencias} foi baixado a versão 4.0.4 do driver MongoDB.
 
 \subsection{Testar a Conexão}
-Estamos prontos para testarmos a conexão entre MongoDB e Java. Vamos criar um pequeno exemplo que nos auxiliará como teste devemos criar uma classe chamada \textbf{Escola} no pacote \textbf{decus.com} e inserir nesta a seguinte codificação:
+Estamos prontos para testarmos a conexão entre MongoDB e Java. Criamos um pequeno exemplo que nos auxiliará como teste, uma classe chamada \textbf{Escola} no pacote \textbf{decus.com} e inserimos nesta a seguinte codificação:
 \begin{lstlisting}[]
 package decus.com;
 	
@@ -74,7 +74,8 @@ public class Escola {
   }
   protected MongoCollection<Document> getCol() {
     return col;
-  }		
+  }
+		
   protected MongoClient getMongo() {
     return mongo;
   }
@@ -127,7 +128,7 @@ public class Escola {
 }
 \end{lstlisting}
 
-Esta classe adiciona três registros ao banco de dados contendo o nome do aluno e sua nota que é gerada de forma randômica e em seguida procede uma consulta para verificar se os registros foram realmente inseridos. A conexão e desconexão ao MongoDB foi colocada em métodos separados.
+Esta classe adiciona três registros ao banco de dados com o nome do aluno e sua nota que é gerada de forma randômica e em seguida procede uma consulta para verificar se os registros foram realmente inseridos. A conexão e desconexão ao MongoDB foi colocada em métodos separados.
 
 No Shell utilizar os seguintes comandos para verificar os dados:
 \begin{lstlisting}[]
@@ -171,24 +172,24 @@ Esta classe agora será a nossa principal, sendo assim removemos os métodos \te
 Para obter informações dos documentos, é possível utilizar diversas ações. 
 
 Listar as bases de dados existentes: \\
-\codigo{ for (String s: getMongo().listDatabaseNames()) \{ \\
+\codigo{for (String s: getMongo().listDatabaseNames()) \{ \\
 	\phantom{x}\hspace{4pt} System.out.println(s); \\
 	\} }
 
 Criar uma nova coleção na base de dados pelo seu nome: \\
-\codigo{ MongoDatabase db2 = getMongo().getDatabase("escola");}
+\codigo{MongoDatabase db2 = getMongo().getDatabase("escola");}
 
 Verificar quais são as coleções existentes em uma determinada base de dados: \\
-\codigo{ for (String s: getDb().listCollectionNames()) \{ \\
+\codigo{for (String s: getDb().listCollectionNames()) \{ \\
 	\phantom{x}\hspace{4pt} System.out.println(s); \\
 	\}}
 
 Criar uma nova coleção pelo seu nome e através deste obter a quantidade de documentos existentes: \\
-\codigo{ MongoCollection<Document> col2 = getDb().getCollection("aluno"); \\
+\codigo{MongoCollection<Document> col2 = getDb().getCollection("aluno"); \\
 	System.out.println("Total de Documentos:" + col2.countDocuments());}
 
 Obter, em formato JSON (\textit{JavaScript Object Notation}), as coleções de uma determinada base de dados: \\
-\codigo{ ListCollectionsIterable<Document> it = getDb().listCollections(); \\
+\codigo{ListCollectionsIterable<Document> it = getDb().listCollections(); \\
 	MongoCursor<Document> cursor = it.iterator(); \\
 	while (cursor.hasNext()) \{ \\
 	\phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
@@ -196,10 +197,10 @@ Obter, em formato JSON (\textit{JavaScript Object Notation}), as coleções de u
 	cursor.close();}
 
 Criar um índice para uma coleção, o parâmetro com valor igual a 1 informa que deve ser ordenado de forma ascendente (descendente utilizamos o valor -1): \\
-\codigo{ getCol().createIndex(new Document("nota", 1));}
+\codigo{getCol().createIndex(new Document("nota", 1));}
 
 Obter, em formato JSON, os índices de uma determinada coleção: \\
-\codigo{ ListIndexesIterable<Document> it = getCol().listIndexes(); \\
+\codigo{ListIndexesIterable<Document> it = getCol().listIndexes(); \\
 	MongoCursor<Document> cursor = it.iterator(); \\
 	while (cursor.hasNext()) \{ \\
 	\phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
@@ -207,10 +208,10 @@ Obter, em formato JSON, os índices de uma determinada coleção: \\
 	cursor.close();}
 
 Eliminar um indice de uma coleção: \\
-\codigo{ getCol().dropIndex(new Document("nota", 1));}
+\codigo{getCol().dropIndex(new Document("nota", 1));}
 
 Obter, em formato JSON, os documentos de uma determinada coleção: \\
-\codigo{ MongoCursor<Document> cursor = getCol().find().iterator(); \\
+\codigo{MongoCursor<Document> cursor = getCol().find().iterator(); \\
 	while (cursor.hasNext()) \{ \\
 	\phantom{x}\hspace{4pt} System.out.println(cursor.next().toJson()); \\
 	\} \\
@@ -232,13 +233,13 @@ private void executar() {
 
 \subsection{Filtrar Coleções}
 Limitar a quantidade de documentos retornados (por exemplo 2): \\
-\codigo{ MongoCursor<Document> cursor = getCol().find().limit(2).iterator();}
+\codigo{MongoCursor<Document> cursor = getCol().find().limit(2).iterator();}
 
 Trazer os alunos que obtiveram nota 10: \\
-\codigo{ MongoCursor<Document> cursor = getCol().find(new Document("nota", 10)).iterator();}
+\codigo{MongoCursor<Document> cursor = getCol().find(new Document("nota", 10)).iterator();}
 
 Através da classe \texttt{com.mongodb.client.model.Filters} é possível realizar a mesma ação: \\
-\codigo{ MongoCursor<Document> cursor = getCol().find(Filters.eq("nota", 10)).iterator();}
+\codigo{MongoCursor<Document> cursor = getCol().find(Filters.eq("nota", 10)).iterator();}
 
 E com a utilização dessa classe, é possível realizar as seguintes ações:
 \begin{itemize}[nolistsep]
@@ -250,7 +251,7 @@ E com a utilização dessa classe, é possível realizar as seguintes ações:
 \end{itemize}
 
 Para realizar a mesma consulta com a utilização dos filtros: \\
-\codigo{ MongoCursor<Document> cursor = getCol().find( \\
+\codigo{MongoCursor<Document> cursor = getCol().find( \\
 	Filters.and(Filters.gt("nota", 3), Filters.lt("nota", 9))).iterator();}
 
 Também podemos utilizar as variáveis: 
@@ -264,17 +265,17 @@ Também podemos utilizar as variáveis:
 \end{itemize}
 
 Obter todos os documentos da coleção com a nota é maior que 6: \\
-\codigo{ MongoCursor<Document> cursor = getCol().find( \\
+\codigo{MongoCursor<Document> cursor = getCol().find( \\
 	new Document("nota", new  Document("\$gt",6))).iterator(); } 
 
 Parece mais complicado, porém é possível criar separadamente um objeto Documento e a partir dele compor combinações. Obter todos os documentos cujas notas são maiores que 3 e menores que 9: \\
-\codigo{ Document doc = new Document(); \\
+\codigo{Document doc = new Document(); \\
 	doc.append("nota", new Document("\$gt", 3).append("\$lt", 9)); \\
 	MongoCursor<Document> cursor = getCol().find(doc).iterator();}
 
 \subsection{Ordenações}
 Através da classe \texttt{com.mongodb.client.model.Sorters}, e podemos utilizar as variáveis ``ascending'' e ``descending'' para obter ordenações: \\
-\codigo{ MongoCursor<Document> cursor = \\
+\codigo{MongoCursor<Document> cursor = \\
 	col.find().sort(Sorts.ascending("nota")).iterator();}
 
 \section{Modificar os documentos da Coleção via Java}
@@ -285,15 +286,15 @@ Uma vez identificado o(s) documento(s) desejado(s) é possível proceder:
 \end{itemize}
 
 Modificar a nota do aluno ``Mario da Silva'' para 5: \\
-\codigo{ getCol().updateOne(new Document("nome","Mario da Silva"), \\
+\codigo{getCol().updateOne(new Document("nome","Mario da Silva"), \\
 	new Document("\$set", new Document("nota", 5))); }
 
 Para eliminar o aluno ``Mario da Silva'': \\
-\codigo{ getCol().deleteMany(new Document("nome","Mario da Silva"));}
+\codigo{getCol().deleteMany(new Document("nome","Mario da Silva"));}
 
 \subsection{Eliminar os documentos}
 Para eliminar a coleção ``aluno'': \\
-\codigo{ getCol().drop(); }
+\codigo{getCol().drop(); }
 
 Para eliminar a base de dados ``escola'': \\
-\codigo{ getDb.drop();}
+\codigo{getDb.drop();}

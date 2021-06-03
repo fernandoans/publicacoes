@@ -5,42 +5,42 @@ Todos os comandos descritos abaixo foi utilizado no JupyterLab \cite{jupyterofic
 
 \subsection{Proceder a Conexão}
 Baixar o pacote necessário: \\
-\codigo{ !pip install pymongo}
+\codigo{!pip install pymongo}
 
 Importar os pacotes necessários: \\
-\codigo{ from pymongo import MongoClient \\
+\codigo{from pymongo import MongoClient \\
 	import random}
 
 Neste caso estamos utilizando o pacote \textbf{random} somente para criarmos o mesmo exemplo já visto e escolher uma nota aleatória para casa aluno.
 
 Nos conectamos ao servidor desta forma: \\
-\codigo{ cliente = MongoClient('localhost', 27017)}
+\codigo{cliente = MongoClient('localhost', 27017)}
 Ou: \\
-\codigo{ cliente = MongoClient('mongodb://localhost:27017/')}
+\codigo{cliente = MongoClient('mongodb://localhost:27017/')}
 
 Listar as bases disponíveis: \\
-\codigo{ cliente.list\_database\_names()) }
+\codigo{cliente.list\_database\_names()) }
 
 Nos conectamos a uma base desta forma: \\
-\codigo{ db = cliente.escola}
+\codigo{db = cliente.escola}
 Ou: \\
-\codigo{ db = cliente['escola']}
+\codigo{db = cliente['escola']}
 
 Listar as coleções disponíveis: \\
-\codigo{ cliente.list\_collection\_names()) }
+\codigo{cliente.list\_collection\_names()) }
 
-Nos conectamos a uma coleção desta forma: \\
-\codigo{ col = db.aluno}
+Conectamos a uma coleção desta forma: \\
+\codigo{col = db.aluno}
 Ou: \\
-\codigo{ col = db['aluno']}
+\codigo{col = db['aluno']}
 
 \subsection{Inserir documentos}
 Inserir um único documento é uma questão de criar um dicionário e enviá-lo para a coleção: \\
-\codigo{ mario = \{ "nome": "Mario da Silva", "nota": random.randint(1,11) \} \\
+\codigo{mario = \{ "nome": "Mario da Silva", "nota": random.randint(1,11) \} \\
 	col.insert\_one(mario) }
 
 Inserir vários documentos é necessário criar uma lista de dicionários e enviar a lista para a coleção: \\
-\codigo{ alunos = [ \\
+\codigo{alunos = [ \\
 	\phantom{x}\hspace{4pt} \{ "nome": "Aline Moraes", "nota": random.randint(1,11) \}, \\
 	\phantom{x}\hspace{4pt} \{ "nome": "Soraya Gomes", "nota": random.randint(1,11) \} \\
 	] \\
@@ -49,7 +49,7 @@ Inserir vários documentos é necessário criar uma lista de dicionários e envi
 
 \subsection{Encontrar documentos}
 Listar toda a coleção: \\
-\codigo{ for doc in col.find(\{\}): \\
+\codigo{for doc in col.find(\{\}): \\
 	\phantom{x}\hspace{4pt} print(doc)}
 
 Listar toda a coleção de modo ordenado ascendente (ou descendente - valor -1): \\
@@ -57,13 +57,13 @@ Listar toda a coleção de modo ordenado ascendente (ou descendente - valor -1):
 	\phantom{x}\hspace{4pt} print(doc)}
 
 Quantos documentos existem na coleção: \\
-\codigo{ col.count\_documents(\{\})}
+\codigo{col.count\_documents(\{\})}
 
 Trazer o primeiro documento: \\
-\codigo{ col.find\_one()}
+\codigo{col.find\_one()}
 
 Trazer um determinado documento: \\
-\codigo{ col.find\_one(\{"nome": "Aline Moraes"\})}
+\codigo{col.find\_one(\{"nome": "Aline Moraes"\})}
 
 Limitar a quantidade de documentos buscados (no caso 5): \\
 \codigo{for doc in col.find(\{\}).limit(5): \\
@@ -74,27 +74,27 @@ Mostrar um determinado campo (e somente ele): \\
 	\phantom{x}\hspace{4pt} print(doc['col'])}
 
 Trazer os documentos que possuem a nota maior que 5 e menor que 7: \\
-\codigo{ for doc in col.find(\{"nota": \{"\$gt": 5, "\$lt": 7\}\}): \\
+\codigo{for doc in col.find(\{"nota": \{"\$gt": 5, "\$lt": 7\}\}): \\
 	\phantom{x}\hspace{4pt} print(doc)}
 
 \subsection{Atualizar documentos}
 * O lado da esquerda é o filtro de consulta e o lado do SET são os campos a alterar.
 
 Alterar um documento que possui o nome "Mario da Silva": \\
-\codigo{ col.update\_one(\{"nome": "Mario da Silva"\}, \{"\$set": \{"nota": 8\}\})}
+\codigo{col.update\_one(\{"nome": "Mario da Silva"\}, \{"\$set": \{"nota": 8\}\})}
 
 Alterar os documentos que possuem a nota menor que 5: \\
-\codigo{ col.update\_many(\{'nota': \{'\$lt': 5\}\}, \{'\$set': \{'nota': 4\}\})}
+\codigo{col.update\_many(\{'nota': \{'\$lt': 5\}\}, \{'\$set': \{'nota': 4\}\})}
 
 Eliminar um documento que possui o nome "Mario da Silva": \\
-\codigo{ col.delete\_one(\{"nome": "Mario da Silva"\})}
+\codigo{col.delete\_one(\{"nome": "Mario da Silva"\})}
 
 Eliminar os documentos que possuem a nota menor que 5: \\
-\codigo{ col.delete\_many(\{'nota': \{'\$lt': 5\}\})}
+\codigo{col.delete\_many(\{'nota': \{'\$lt': 5\}\})}
 
 \subsection{Encerrar}
 É boa prática fechar a base de dados: \\
-\codigo{ cliente.close()}
+\codigo{cliente.close()}
 
 Mas antes de encerramos realmente vejamos o seguinte programa completo em linguagem Python:
 
@@ -107,7 +107,7 @@ cliente = MongoClient(port=27017)
 db = cliente.negocio
 
 # Passo 2: Criar Amostras de Dados
-nomes = ['Kitchen', 'Espiritual', 'Mongo', 'Tastey', 'Big', 'Jr', 'Filho', 'City', 'Linux'
+nomes = ['Kitchen', 'Espiritual', 'Mongo', 'Tastey', 'Big', 'Jr', 'Filho', 'City', 'Linux',
          'Tubarão', 'Gado', 'Sagrado', 'Solo', 'Sumo', 'Lazy', 'Fun', 'Prazer', 'Gula']
 tipo_emp = ['LLC', 'Inc', 'Cia', 'Corp.']
 tipo_coz = ['Pizza', 'Bar', 'Fast Food', 'Italiana', 'Mexicana',
@@ -123,14 +123,15 @@ for x in range(1, 501):
 	'cozinha': tipo_coz[randint(0, (len(tipo_coz)-1))]
   }  
 
-# Passo 3: Inserir o objeto negócio no banco
-result = db.restaurante.insert_one(negocio)
+  # Passo 3: Inserir o objeto negócio no banco
+  result = db.restaurante.insert_one(negocio)
 
-# Passo 4: Mostrar no console o Object ID do Documento
-print('Criado {0} de 500 como {1}'.format(x, result.inserted_id))
+  # Passo 4: Mostrar no console o Object ID do Documento
+  print('Criado {0} de 500 como {1}'.format(x, result.inserted_id))
 
-# Passo 5: Mostrar mensagem final
-print('500 Novos Negócios Culinários foram criados...')
+  # Passo 5: Mostrar mensagem final
+  print('500 Novos Negócios Culinários foram criados...')
+
 cliente.close()
 \end{lstlisting}
 

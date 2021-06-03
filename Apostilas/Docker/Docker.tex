@@ -257,10 +257,10 @@ Baixar a imagem oficial: \\
 \codigo{\$ docker pull cassandra}
 
 Criar uma instância do banco em um Contêiner: \\
-\codigo{\$ docker run --name meu-cassandra -d cassandra}
+\codigo{\$ docker run --name meu-cassandra -p 7000:7000 -p 9042:9042 -d cassandra}
 
 Acessar o administrador: \\
-\codigo{\$ docker run -it --link meu-cassandra:cassandra --rm cassandra sh -c \\ 'exec cqlsh "\$CASSANDRA\_PORT\_9042\_TCP\_ADDR"'}
+\codigo{\$ docker exec -it meu-cassandra cqlsh}
 
 \subsection{Postgres}
 É um SGBD relacional, desenvolvido como projeto de código aberto. 

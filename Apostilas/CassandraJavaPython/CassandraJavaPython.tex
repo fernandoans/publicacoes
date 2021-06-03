@@ -1,0 +1,130 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Cassandra com Java e Python}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{../sty/tutorial}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+
+%----------------------------------------------------------------------
+% RESUMO DO ARTIGO
+%----------------------------------------------------------------------
+	
+\begin{abstract}
+	\initial{A}\textbf{pache Cassandra é um Sistema para Banco de Dados distribuído e altamente escalável de segunda geração, que reúne a arquitetura do DynamoDB, da Amazon Web Services e modelo de dados baseado no BigTable, do Google. O Modelo de Dados do Cassandra é um amplo armazenamento de colunas e essencialmente um híbrido entre o que conhecemos por valor-chave e um sistema de gerenciamento tabular. Consiste com um armazenamento de linha particionado permitindo uma consistência ajustável. Linhas são organizadas em tabelas; o primeiro componente da chave primária de uma tabela é a chave de partição; dentro de uma partição, as linhas são agrupadas pelas colunas restantes da chave. Outras colunas podem ser indexadas separadamente da chave primária. Neste tutorial veremos o que vem a ser o banco Cassandra \cite{cassandraoficial} e como proceder sua utilização utilizando como pano de fundo a linguagem de programação Java \cite{javaoficial} e Python \cite{pythonoficial}.}
+\end{abstract}
+
+%-----------------------------------------------------------------------------
+% CONTEÚDO DO ARTIGO
+%-----------------------------------------------------------------------------
+
+\section{Parte inicial}
+\textbf{Avinash Lakshman}, um dos autores do DynamoDB da Amazon, e Prashant Malik \footnote{Os desenvolvedores nomearam o banco de dados em homenagem ao profeta mitológico \textbf{Trojan Cassandra}, com alusões clássicas à maldição de um oráculo.} desenvolveram inicialmente o Cassandra no Facebook para gerenciar o recurso de pesquisa da caixa de entrada do Facebook. O Facebook lançou o Cassandra como um projeto de código aberto no código do Google em julho de 2008.  Em março de 2009, tornou-se um projeto da Incubadora Apache. Em 17 de fevereiro de 2010, ele se formou em um projeto de nível superior.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.2\textwidth]{imagens/logo}
+	\caption{Logo do Apache Cassandra}
+\end{figure}
+
+A Arquitetura Cassandra consiste nos seguintes componentes:
+\begin{itemize}[nolistsep]
+	\item \textbf{Node (Nó)}. É o componente básico dos dados, uma máquina onde os dados são armazenados.
+	\item \textbf{DataCenter}. Uma coleção de nós relacionados. Pode ser físico ou virtual.
+	\item \textbf{Cluster}. Contém um ou mais \textit{DataCenter}, ele pode se estender por vários locais.
+	\item \textbf{Commit Log}. Cada operação de gravação é primeiro armazenada no \textit{log} (registro) de confirmação. Normalmente é utilizado para recuperação de falhas. 
+	\item \textbf{MemTable}. Depois que os dados são gravados no \textit{log} de confirmação, são armazenados em uma \textit{Memory Table} (tabela em memória), que permanece lá até atingir o limite.
+	\item \textbf{SSTable}. \textit{Sorted-String Table} é um arquivo de disco que armazena dados da \textit{MemTable} assim que atinge o limite. As SSTables são armazenadas em disco sequencialmente e mantidas para cada tabela do banco de dados. 
+\end{itemize}
+
+\subsection{Estratégias de replicação de dados}
+Uma das partes mais importantes para entedermos o Cassandra é sua capacidade de "Replicação dos Dados", isso não é opcional mas um recurso obrigatório para garantir que nenhum dado seja perdido devido a falha de hardware ou rede. Uma estratégia de replicação determina em quais nós colocar réplicas. Cassandra oferece duas estratégias de replicação diferentes.
+
+\textbf{Simple Strategy - Estratégia Simples}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.2\textwidth]{imagens/simpleStrategy.jpg}
+	\caption{Estrutura da Estratégia Simples}
+\end{figure}
+
+Utilizada quando se possui um único \textit{DataCenter}. É colocada a primeira réplica no nó selecionado pelo particionador. Um particionador determina como os dados são distribuídos pelos nós do cluster (incluindo suas réplicas). Depois disso, as réplicas restantes são colocadas no sentido horário no anel do nó.
+
+\textbf{Network Topology Strategy - Estratégia de topologia de rede}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{imagens/networkStrategy.jpg}
+	\caption{Estrutura da estratégia de topologia de rede}
+\end{figure}
+
+Utilizada quando se possui implantações em vários \textit{Datacenters}. Essa estratégia coloca réplicas no mesmo \textit{Datacenter}, percorrendo o anel no sentido horário até chegar ao primeiro nó em outro \textit{rack}. Isso ocorre porque às vezes podem ocorrer falhas ou problemas no \textit{rack}. Então, as réplicas em outros nós podem fornecer dados. Esta estratégia é altamente recomendada para fins de escalabilidade e expansão futura. 
+
+\subsection{Criar o contêiner Docker}
+A forma mais simples de termos o Apache Cassandra é através de um contêiner no Docker, assim facilmente podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
+
+Baixar a imagem oficial: \\
+\codigo{\$ docker pull cassandra}
+
+Criar uma instância do banco em um contêiner: \\
+\codigo{\$ docker run -it -p 9042:9042 --name meu-cassandra -d \\ -v /home/[seuUsuario]/cassandra/data/node1:/var/lib/cassandra/data cassandra}
+
+Nessa instância criada estamos associando a porta 9042 para acessarmos o banco e um volume em nossa máquina para armazenar os dados do contêiner.
+
+Podemos acessar o Shell de comandos do Cassandra no contêiner (espere um pouco até o banco levantar): \\
+\codigo{\$ docker exec -it meu-cassandra cqlsh}
+\begin{lstlisting}[]
+cqlsh> SELECT * FROM system_schema.keyspaces;
+cqlsh> exit
+\end{lstlisting}
+
+Para encerrar o contêiner: \\
+\codigo{\$ docker stop meu-cassandra} 
+
+Para iniciar novamente o contêiner: \\
+\codigo{\$ docker start meu-cassandra} 
+
+\input{console.tex}
+\input{java.tex}
+\input{python.tex}
+
+\section{Conclusão}
+Penso que depois dessa apostila, será possível iniciar a descobrir o Apache Cassandra para seus trabalhos, pois como vimos é bem fácil realizar os passos nesse banco e pouco importa a linguagem de programação. Não busquei nesta mostrar um exemplo mais completo para não limitar suas pesquisas e devemos considerar esta apenas como um pontapé inicial (\textit{KickStart}) para seus projetos.
+
+Como visto este banco de dados pode ser facilmente utilizado com aplicações em linguagem Java ou gerar os modelos para \textit{Machine Learning} com Python e ainda colher o benefício de substituir os bancos de dados relacionais para grandes quantidades de dados, sendo que esta é a grande motivação para NoSQL como forma de resolver o problema de escalabilidade dos bancos tradicionais.
+
+\input{../sty/final.tex}
+
+%-----------------------------------------------------------------------------
+% REFERÊNCIAS
+%-----------------------------------------------------------------------------
+\begin{thebibliography}{8}
+  \bibitem{cassandraoficial} 
+  Página do Banco Apache Cassandra \\
+  \url{https://cassandra.apache.org}
+
+  \bibitem{javaoficial} 
+  Página do Oracle Java \\
+  \url{http://www.oracle.com/technetwork/java}
+  
+  \bibitem{pythonoficial} 
+  Página do Python \\
+  \url{https://www.python.org}
+
+  \bibitem{sts} 
+  Editor Spring Tool Suite para códigos Java \\
+  \url{https://spring.io/tools}
+
+  \bibitem{jupyteroficial} 
+  Página do Jupyter \\
+  \url{https://jupyter.org}
+
+  \input{../sty/referencias.tex}
+\end{thebibliography}
+  
+\end{document}
