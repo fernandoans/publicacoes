@@ -26,6 +26,7 @@ Todas foram criadas com o LaTex e estão em constante modificação. Porquê o L
 
 * Ubuntu (Instalei o Ubuntu e agora?) - Aprenda a utilizar o Sistema Operacional Ubuntu sem medo ou traumas do terminal.
 * Livro ML (Machine Learning na Prática) - Veja como começar no mundo de Ciência de Dados sem sofrer.
+* Livro ASM (Assembly na Prática) - Sempre quis aprender a linguagem Assembly mas cada livro parecia mais enrolado que a própria linguagem? Aqui você programa desde o primeiro capítulo. -- Ainda em Produção.
 
 ## Cartões Disponíveis
 

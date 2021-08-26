@@ -1,0 +1,100 @@
+%------------------------------------------------------------------------------------
+%	Pacotes e Outras Configurações
+%------------------------------------------------------------------------------------
+\documentclass[a4paper,11pt]{book} % Fonte do livro
+\input{structure} % Arquivo de Pacotes e comandos
+
+\begin{document}
+
+%------------------------------------------------------------------------------------
+%	TITLE PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{capa}};
+\draw (8,-22) node [fill=blue!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Assembly na Prática\\[15pt] % Titulo
+{\Large Versão 1.0}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%------------------------------------------------------------------------------------
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\noindent Copyright \copyright\ 2021 Fernando Anselmo% Copyright
+
+\noindent \textsc{Publicação Independente} % Publicado por
+
+\noindent \url{http:\\fernandoanselmo.orgfree.com} % URL
+
+\noindent \\ É permitido a total distribuição, cópia e compartilhamento deste arquivo, desde que se preserve os seguintes direitos, conforme a licença da Creative Commons 3.0. Qualquer marca utilizada aqui correspondem aos seus respectivos direitos de marca são reservados. Logos, ícones e outros itens inseridos nesta obra, são da responsabilidade de seus proprietários e foram utilizadas somente como característica informativa. Não possuo qualquer intenção na apropriação da autoria relativo a nenhum artigo de terceiros. Caso não tenha citado a fonte correta de algum texto que coloquei em qualquer seção, basta me enviar um e-mail que farei as devidas retratações, algumas partes podem ter sido cópias (ou baseadas na ideia) de artigos que li na Internet e que me ajudaram a esclarecer muitas dúvidas, considere este como um documento de pesquisa que resolvi compartilhar para ajudar os outros usuários e não é minha intenção tomar crédito de terceiros. % License information
+
+%------------------------------------------------------------------------------------
+%	SUMARIO
+%------------------------------------------------------------------------------------
+
+% Para nao usar imagem nos capitulos
+% \usechapterimagefalse 
+
+\chapterimage{header01.jpg} % Imagem
+\pagestyle{empty} % Sem Cabecalho
+\tableofcontents % Mostra a tabela de conteudo
+\cleardoublepage % Forca que a primeira pagina seja iniciada em um numero impar
+\pagestyle{fancy} % Volta a imprimir o Cabecalho
+\clearpage % Forca que a primeira pagina seja iniciada em um numero impar
+
+%------------------------------------------------------------------------------------
+%	PARTES
+%------------------------------------------------------------------------------------
+
+% \part{Parte Um - O Básico}
+\input{capitulo01.tex}
+\input{capitulo02.tex}
+
+% 
+\appendix
+\chapter{Considerações Finais}
+\begin{remark}
+Nenhum computador tem consciência do que faz. 
+Mas, na maior parte do tempo, nós também não. (Marvin Minsky)
+\end{remark}
+
+\section{Sobre o Autor}
+Especialista com forte experiência em Java e Python, Banco de Dados Oracle, PostgreSQL e MS SQL Server. Escolhido como Java Champion desde Dezembro/2006 e Coordenador do DFJUG. Experiência em JBoss e diversos frameworks de mercado e na interpretação das tecnologias para sistemas e aplicativos. Programação de acordo com as especificações, normas, padrões e prazos estabelecidos. Disposição para oferecer apoio e suporte técnico a outros profissionais, autor de 17 livros e diversos artigos em revistas especializadas, palestrante em diversos seminários sobre tecnologia. Atualmente ocupa o cargo de Analista de Sistemas na Bancorbras.
+\begin{itemize}
+ \item Perfil no Linkedin: \url{https://www.linkedin.com/in/fernando-anselmo-bb423623/}
+ \item Site Pessoal: \url{http://fernandoanselmo.orgfree.com} 
+\end{itemize}
+
+\clearpage
+%------------------------------------------------------------------------------------
+%	FINAL PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{fundo}};
+\draw (8,-2) node [fill=blue!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Assembly na Prática\\[15pt] % Titulo
+{\Large ESTE LIVRO PODE E DEVE SER DISTRIBUÍDO LIVREMENTE}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	INDEX
+%------------------------------------------------------------------------------------
+% \cleardoublepage
+% \phantomsection
+% \setlength{\columnsep}{0.75cm}
+% \addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+% \printindex
+
+%------------------------------------------------------------------------------------
+\end{document}

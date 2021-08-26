@@ -1,0 +1,25 @@
+\babel@toc {brazil}{}
+\contentsline {chapter}{\numberline {1}Conceitos Introdutórios}{5}{chapter.1}%
+\contentsline {section}{\numberline {1.1}Do que trata esse livro?}{5}{section.1.1}%
+\contentsline {subsection}{\numberline {1.1.1}O que é NASM?}{5}{subsection.1.1.1}%
+\contentsline {subsection}{\numberline {1.1.2}Sobre o Editor}{6}{subsection.1.1.2}%
+\contentsline {section}{\numberline {1.2}Programa 1 - Hello World}{6}{section.1.2}%
+\contentsline {subsection}{\numberline {1.2.1}Magia Negra}{7}{subsection.1.2.1}%
+\contentsline {subsection}{\numberline {1.2.2}Explicação do Programa}{7}{subsection.1.2.2}%
+\contentsline {subsection}{\numberline {1.2.3}Mostrar a mensagem}{9}{subsection.1.2.3}%
+\contentsline {subsection}{\numberline {1.2.4}Faltou um comando}{10}{subsection.1.2.4}%
+\contentsline {section}{\numberline {1.3}Programa 2 - Entrada}{11}{section.1.3}%
+\contentsline {subsection}{\numberline {1.3.1}Entrada do nome}{13}{subsection.1.3.1}%
+\contentsline {subsection}{\numberline {1.3.2}Compilação e Linkedição}{14}{subsection.1.3.2}%
+\contentsline {section}{\numberline {1.4}Programa 3 - Comparar Valores}{14}{section.1.4}%
+\contentsline {section}{\numberline {1.5}Programa 4 - Converter}{17}{section.1.5}%
+\contentsline {subsection}{\numberline {1.5.1}Criar o nosso programa}{18}{subsection.1.5.1}%
+\contentsline {subsection}{\numberline {1.5.2}Funções de Conversão}{20}{subsection.1.5.2}%
+\contentsline {section}{\numberline {1.6}Programa 5 - Calculadora}{21}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Novas funções a biblioteca}{21}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}Menu de Sistema}{22}{subsection.1.6.2}%
+\contentsline {chapter}{\numberline {2}União com C++}{27}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Porquê fazer isso?}{27}{section.2.1}%
+\contentsline {chapter}{\numberline {A}Considerações Finais}{29}{appendix.A}%
+\contentsline {section}{\numberline {A.1}Sobre o Autor}{29}{section.A.1}%
+\contentsfinish 

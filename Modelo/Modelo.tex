@@ -112,6 +112,22 @@ Para figuras contínuas ao texto usar [H]. Exemplo de figura:
 
 Exemplo de figura na mesma linha:
 
+\begin{figure}[ht]
+	\begin{minipage}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{filename1}
+		\caption{default}
+		\label{fig:figure1}
+	\end{minipage}
+	\hspace{0.5cm}
+	\begin{minipage}[b]{0.45\linewidth}
+		\centering
+		\includegraphics[width=\textwidth]{filename2}
+		\caption{default}
+		\label{fig:figure2}
+	\end{minipage}
+\end{figure}
+
 \begin{minipage}{\textwidth}
 	\vspace{5pt}
 	\begin{wrapfigure}{l}{0.15\textwidth}
