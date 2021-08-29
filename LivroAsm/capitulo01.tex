@@ -546,14 +546,14 @@ saidaResultado:
 Funções são criadas na biblioteca para nossa comodidade, acho que o único detalhe que ainda precisamos entender é esse comando \textbf{ret}, pois o resto basta olhar desde o primeiro programa que construímos para entender seu funcionamento. Quando saltos são dados (sejam eles condicionais ou incondicionais) não existe um retorno ao ponto de partida, ao chamarmos funções é diferente espera-se que elas retornem e é exatamente isso que faz esse comando \textbf{ret}, desvia o fluxo de volta para a próxima instrução de onde a função foi chamada.
 
 \subsection{Criar o nosso programa}\index{Conceitos Introdutórios}
-Neste programa vamos compreender 2 ações muito comuns que acontece em programação a conversão de uma cadeia de caracteres para um número e vice versa. Uma característica bem curiosa que o programa será completamente "modular" ou seja, será dividido em pequenos blocos. Observe seu fluxograma:
+Neste programa vamos compreender 2 ações muito comuns que acontece em programação a conversão de uma cadeia de caracteres para um número e vice versa. Observe seu fluxograma:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.9\textwidth]{Pictures/cap01/programa4}
+	\includegraphics[width=0.65\textwidth]{Pictures/cap01/programa4}
 	\caption{Fluxograma do Programa \textbf{Converter}}
 \end{figure}
 
-Vamos começar a montagem inicial:
+Uma característica bem curiosa que o programa será completamente "modular" ou seja, será dividido em pequenos blocos. Vamos começar a montagem inicial:
 \begin{lstlisting}[]
 section .data
 	v1 dw '105', 0xa
@@ -615,7 +615,7 @@ string_to_int:
 	ret
 \end{lstlisting}
 
-Esta função espera que o registrador \textbf{ESI} contenha o valor a ser convertido e ECX a quantidade de caracteres deste. O primeiro passo é zerar o registrado \textbf{EBX}, o comando \textbf{XOR} é um comparador de bit no qual se ambos forem iguais (isto é, ambos 0 ou 1) o resultado será 0 para aquela posição de bit, isso é uma forma elegante de dizer que algo recebe 0 ao invés de simplesmente enviar 0x0.
+Esta função espera que o registrador \textbf{ESI} contenha o valor a ser convertido e \textbf{ECX} a quantidade de caracteres deste. O primeiro passo é zerar o registrado \textbf{EBX}, o comando \textbf{XOR} é um comparador de bit no qual se ambos forem iguais (isto é, ambos 0 ou 1) o resultado será 0 para aquela posição de bit, isso é uma forma elegante de dizer que algo recebe 0 ao invés de simplesmente enviar 0x0.
 
 O comando \textbf{MOVZX} é abreviatura para \textit{Move with Zero-Extend}, isso significa que os bits superiores do operador de destino serão preenchidos com zero. Próximo passo é incrementar a posição do registrador \textbf{ESI} e achar o valor correspondente da letra. A instrução "\textit{sub al,'0'}" converte o caractere em \textbf{AL} isso corresponde a um número entre 0 e 9.
 
