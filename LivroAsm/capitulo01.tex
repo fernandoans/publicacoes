@@ -126,12 +126,12 @@ E agora não apresenta mais erro, e nenhuma informação. Mas o que essas linhas
 	\end{tabular}
 \end{table}
 
-Além desses, existem os registradores de \textbf{r8} a \textbf{r15} (de 64 bits) e \textbf{r8d} a Utilizado na passagem de argumentos, contém a quantidade desses (de 32 bits) que são utilizados nas movimentações correntes durante a nossa programação.
+Além desses, existem os registradores de \textbf{r8} a \textbf{r15} (de 64 bits) e \textbf{r8d} a \textbf{r15d} (de 32 bits) que são utilizados nas movimentações correntes durante a nossa programação.
 
-Show demais isso mas na prática? Bem temos que conhecer como age o comando MOV, este transporta valores de um lugar para outro, porém sua ordem é a seguinte: \textbf{mov destino, origem}. Ou seja, o segundo valor é que será transportado para o primeiro. Assim o comando: \\
+Show demais e isso mas na prática? Bem temos que conhecer como age o comando \textbf{MOV}, este transporta valores de um lugar para outro, porém sua ordem é a seguinte: \textbf{mov destino, origem}. Ou seja, o segundo valor é que será transportado para o primeiro (tem pessoas que leem inversamente). Assim o comando: \\
 {\ttfamily mov eax, 1}
 
-Está colocando o valor numérico 1 no registrador \textbf{eax}. Mas o que isso significa? Esse registrador armazena algumas informações destinadas ao Sistema Operacional e devemos "decorar" esses valores, então vamos fazendo isso a medida que formos utilizando.
+Está na verdade colocando o valor numérico 1 no registrador \textbf{EAX}. Mas o que isso significa? Esse registrador armazena algumas informações destinadas ao Sistema Operacional e devemos "decorar" esses valores, então vamos fazendo isso a medida que formos utilizando.
 
 Para o registrador "eax":
 \begin{table}[H]
@@ -142,7 +142,7 @@ Para o registrador "eax":
 	\end{tabular}
 \end{table}
 
-Ou seja, ao movermos o valor 1 queremos dizer que estamos realizando uma operação de final de execução, sendo que o valor de "ebx" é meramente informativo: \\
+Ou seja, ao movermos o valor 1 queremos dizer que estamos realizando uma operação de final de execução, sendo que o valor de \textbf{EBX} é meramente informativo: \\
 {\ttfamily mov ebx, 0}
 
 Como assim "informativo"? Podemos colocar um valor qualquer, usamos o zero como um padrão para indicar que tudo ocorreu bem com o nosso programa. Troque-o para qualquer outro valor e veja que o resultado será igual. Para que serve então? Para avisar a um outro programa que nos chamou, obviamente o outro deve saber disso.
@@ -150,7 +150,7 @@ Como assim "informativo"? Podemos colocar um valor qualquer, usamos o zero como 
 Por fim mandamos a informação para o sistema operacional com: \\
 {\ttfamily int 0x80}
 
-Esse valor hexadecimal corresponde a 128 em decimal e indica ao SO que agora é com ele que pode realizar as ações sem problemas. Então a programação é feita assim, preparamos tudo e falamos para o SO pode executar.
+Esse valor hexadecimal corresponde a 128 em decimal e indica ao SO que agora é com ele que pode realizar as ações sem problemas. Então a programação é feita assim, preparamos tudo e falamos para o SO: Pode executar.
 
 \subsection{Mostrar a mensagem}\index{Conceitos Introdutórios}
 Com tudo o que vimos acima apenas expandimos a ideia para mostrar uma mensagem na saída do terminal, porém primeiro precisamos declarar duas constantes que é feito na seção .data, são elas: \\
@@ -160,7 +160,7 @@ section .data
 	tam equ $- msg
 \end{lstlisting}
 
-O que queremos dizer com isso, quer dizer mais uma tabela para decorarmos:
+O que queremos dizer com isso? quereremos dizer que lá vem mais uma tabela para decorarmos:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
@@ -174,9 +174,9 @@ O que queremos dizer com isso, quer dizer mais uma tabela para decorarmos:
 	\end{tabular}
 \end{table}
 
-Então temos uma variável chamada "msg" de 8 bits de espaço e os dois valores em hexadecimal significam: 0xA o final de linha (line feed) e 0xD um caracter que corresponde ao nulo (não possui efeito visual se o tirarmos, mas é um padrão de boa prática adotado).
+Então temos uma variável chamada "msg" de 8 bits de espaço e os dois valores em hexadecimal significam: \textbf{0xA} o final de linha (line feed) e \textbf{0xD} um caracter que corresponde ao nulo (não possui efeito visual se o tirarmos, mas é um padrão de boa prática adotado).
 
-A variável chamada "tam" obterá a quantidade de caracteres contida na variável "msg", isso é realizado pelo comando "\$- variável". A palavra chave "equ" apenas está firmando e declarando que "tam" é uma constante.
+A variável chamada "tam" contém a quantidade de caracteres que se encontra em "msg", isso é realizado pelo comando "\textit{\$- variável}". A palavra chave "\textbf{equ}" está apenas firmando e declarando que "tam" é uma constante.
 
 Agora a segunda parte no qual fazemos os movimentos e dizemos para o SO, todo seu:
 \begin{lstlisting}[]
@@ -187,7 +187,7 @@ mov edx, tam
 int 0x80
 \end{lstlisting}
 
-Mais dois valores para decorarmos o que pode acontecer com o registrador "eax":
+Mais dois valores para decorarmos o que pode acontecer com o registrador \textbf{EAX}:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
@@ -197,7 +197,7 @@ Mais dois valores para decorarmos o que pode acontecer com o registrador "eax":
 	\end{tabular}
 \end{table}
 
-E o registrador "ebx" passa a ganhar importância e deve receber valores correspondentes a:
+E o registrador \textbf{EBX} passa a ganhar importância e deve receber valores correspondentes a:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
@@ -208,7 +208,7 @@ E o registrador "ebx" passa a ganhar importância e deve receber valores corresp
 	\end{tabular}
 \end{table}
 
-Os movimentos realizados nesse registrador são extremamente importantes, enviamos o valor 4 para ele e isso significa que iremos realizar uma saída de informação, sendo assim o registrador "ebx" deve indicar aonde isso será feita, e ele disse 1, ou seja, na saída padrão (ou no caso o terminal), o próximo registrador "ecx" contém o conteúdo em caractere do que desejamos mostrar e por fim o registrador "edx" com a quantidade de caracteres que será mostrada (precisa disso? sim o Assembly EXIGE isso).
+Os movimentos realizados nesse registrador são extremamente importantes, ao enviarmos o valor 4 para ele significa que realizaremos uma saída de informação, sendo assim o registrador \textbf{EBX} indica aonde isso será feita, e ele disse 1, ou seja, na saída padrão (ou no caso o terminal). O próximo registrador \textbf{ECX} contém o conteúdo em caractere do que desejamos mostrar e por fim o registrador \textbf{EDX} com a quantidade de caracteres que será mostrada (precisa disso? sim o Assembly EXIGE isso).
 
 E assim obtemos nossa mensagem "Hello World!" no terminal.
 
@@ -217,7 +217,7 @@ E assim obtemos nossa mensagem "Hello World!" no terminal.
 Tá certo sei que faltou: \\
 {\ttfamily ; saída}
 
-Mas esse não precisamos nos incomodar pois trata-se apenas de um comentário, em Assembly do NASM tudo o que estiver depois do ; será desprezado pelo compilador, e normalmente as pessoas programam colocando este em cada linha para indicar o que cada linha está fazendo:
+Mas esse não precisamos nos incomodar, trata-se apenas de um comentário, em Assembly do NASM tudo o que estiver depois do ";" será desprezado pelo compilador, e normalmente as pessoas programam colocando este em cada linha para indicar o que cada linha está fazendo:
 \begin{lstlisting}[]
 ; hello.asm
 ; programa para mostrar uma mensagem Hello World!
@@ -259,7 +259,7 @@ Nosso programa pode ser descrito conforme o seguinte fluxograma:
 	\caption{Fluxograma do Programa \textbf{Entrada}}
 \end{figure}
 
-Ao invés de mostrar o programa inteiro, como fizemos (e provavelmente complexei um monte de leitores) veremos parte a parte deste e assim montaremos até o resultado final.
+Ao invés de mostrar o programa inteiro, como fizemos (e provavelmente complexei um monte de leitores) veremos parte a parte deste e assim o montaremos até o resultado final (ou seja iremos assemblando\footnote{Pode parecer meio esquisito isso mas saiba que muitas pessoas usavam a palavra Assemblar como verbo sinônimo para montar - afinal esse é o significado da palavra, até que o termo caiu em desuso.} o programa).
 
 Iniciamos nossa implementação com a adição de um segmento de dado denominado "segment .data", criamos um novo programa chamado "entrada.asm" e digitamos a seguinte informação:
 \begin{lstlisting}[]
@@ -339,9 +339,9 @@ Próximo bloco corresponde a entrada da informação propriamente dita:
 	int SYS_CALL
 \end{lstlisting}
 
-Os movimentos dos registradores são exatamente os mesmos porém temos uma passagem diferente dos valores das informações, e aí que está toda graça de Assembly pois vemos que transações de entradas e saídas são as mesmas. Para o registrador "eax" temos o valor correspondente a uma operação de leitura ao invés de uma escrita. Para o registrador "ebx" temos o valor correspondente a uma entrada padrão (teclado) ao invés de uma saída padrão (monitor). Os registradores "ecx" e "edx" permanecem com as mesmas informações variável (a diferença que agora o valor informado será armazenado na variável ao invés de obtermos seu conteúdo) e o tamanho.
+Os movimentos dos registradores são exatamente os mesmos porém temos uma passagem diferente dos valores das informações, e aí que está toda graça de Assembly pois vemos que transações de entradas e saídas são as mesmas. Para o registrador \textbf{EAX} temos o valor correspondente a uma operação de leitura ao invés de uma escrita. Para o registrador \textbf{EBX} temos o valor correspondente a uma entrada padrão (teclado) ao invés de uma saída padrão (monitor). Os registradores \textbf{ECX} e \textbf{EDX} permanecem com as mesmas informações variável (a diferença que agora o valor informado será armazenado na variável ao invés de obtermos seu conteúdo) e o tamanho.
 
-Esta última é um problema, pois isso limita a entrada do usuário, nesse caso usamos o hexadecimal 0xA que corresponde ao decimal 10, assim sendo o usuário só pode colocar um nome contendo 10 caracteres, se ultrapassar esse valor a informação será cortada. Em breve resolveremos isso, mas por enquanto deixaremos como está.
+E esta último preenchimento torna-se um problema, isso limita a entrada do usuário, nesse caso usamos o hexadecimal 0xA que corresponde ao decimal 10, assim sendo o usuário só pode colocar um nome contendo 10 caracteres, se ultrapassar esse valor a informação será cortada. Em breve resolveremos isso, mas por enquanto deixaremos como está.
 
 A última parte do programa também já vimos:
 \begin{lstlisting}[]
@@ -354,7 +354,7 @@ Que avisa ao sistema operacional que encerramos todas as atividades e agora pode
 
 \subsection{Compilação e Linkedição}\index{Conceitos Introdutórios}
 
-Ao invés de ficarmos sofrendo tendo que inserir 2 comandos (até parece que é muita coisa) para compilar e linkeditar este programa, podemos criar um arquivo especial que faz esse trabalho. Obrigatoriamente seu nome deve ser \textbf{makefile}, então crie um arquivo com esse nome e digite os seguintes comandos:
+Ao invés de ficarmos sofrendo tendo que inserir 2 comandos (até parece que é muita coisa) para compilar e linkeditar nosso programa, vamos criar um arquivo especial que realiza esse trabalho. Obrigatoriamente seu nome deve ser \textbf{makefile}, então crie um arquivo com esse nome e digite os seguintes comandos:
 \begin{lstlisting}[]
 NOME = entrada
 
@@ -366,14 +366,15 @@ all: $(NOME).o
 	nasm -f elf64 $<
 \end{lstlisting}
 
-Pode parecer bem estranho mas este programa faz exatamente o que esses dois comandos fariam: \\
+Pode parecer bem estranho mas este programa faz exatamente o que esses três comandos fariam: \\
 {\ttfamily\$ nasm -f elf64 entrada.asm} \\
-{\ttfamily\$ ld -s -o entrada entrada.o}
+{\ttfamily\$ ld -s -o entrada entrada.o} \\
+{\ttfamily\$ rm entrada.o}
 
 No início criamos uma variável \textbf{NOME} facilitando assim sua modificação nos próximos programas pois basta modificar essa variável para o nome do programa atual e tudo está pronto. Para executar esse programa digite o seguinte: \\
 {\ttfamily\$ make}
 
-Não erramos na digitação é só "make" mesmo, disse que era um arquivo especial. E pronto, uma vez executado corretamente o programa sera compilado e linkeditado. E ao executá-lo com: \\
+Não erramos na digitação é assim mesmo, disse que era um arquivo especial. E pronto, uma vez executado corretamente o programa sera compilado e linkeditado. Ao executá-lo com: \\
 {\ttfamily\$ ./entrada}
 
 Será mostrado: \\
@@ -382,10 +383,10 @@ Será mostrado: \\
 E o cursor espera que seja informado algo e pressionado a tecla ENTER para dar continuidade ao programa.
 
 \section{Programa 3 - Comparar Valores}\index{Conceitos Introdutórios}
-Neste programa vamos realizar comparações entre valores e compreender como saltos condicionais e incondicionais funcionam na linguagem. Assembly realiza comparações com 2 comandos, um deles normalmente é o comando CMP (outros fazem esse mesmo serviço) que possui a sintaxe: \\
+Neste programa vamos realizar comparações entre valores e compreender como saltos condicionais e incondicionais funcionam na linguagem. Assembly realiza comparações com 2 comandos, um deles normalmente é o comando \textbf{CMP} (outros fazem esse mesmo serviço) que possui a sintaxe: \\
 {\ttfamily\$ cmp registrador1, registrador2}
 
-E aí pergunta-se: está comparando ele como? E aí que entra o segundo comando que executará o salto para um determinado ponto do programa, vamos para mais uma tabela:
+E aí pergunta-se: está comparando os registradores como? Aí entra um segundo comando que executará o salto para determinado ponto do programa, vamos para mais uma tabela:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | l | c | l }
@@ -413,7 +414,7 @@ Esses saltos são chamados de "condicionais", ou seja, dependem que uma compara�
 	\end{minipage}
 \end{figure}
 
-Mas qual o motivo dessa diferença tão gritante? Assembly não possui um comando interno que toma uma decisão e faz blocos de desvios, os blocos de desvio do Assembly são simplesmente pontos "etiquetados" do nosso programa. Lembra no início que criamos um "\_start:", pois bem isso não é um método (como seria em linguagens de alto nível) isso é um \textit{label} (ou uma etiqueta se prefere a palavra em português).
+Mas qual o motivo dessa diferença tão gritante? Assembly não possui um comando interno que toma uma decisão e faz blocos de desvios, os blocos de desvio do Assembly são simplesmente pontos "etiquetados" do nosso programa. Lembra no início que criamos um "\_start:", pois bem isso não é uma função (como seria em linguagens de alto nível) isso é um \textit{label} (ou uma etiqueta se prefere a palavra em português).
 
 Vamos iniciar um programa chamado maiornum.asm, copiamos o nosso segmento de dados (os mesmos vistos anteriormente) e criamos as seguintes variáveis na seção \textbf{.data}:
 \begin{lstlisting}[]
@@ -489,7 +490,7 @@ Declaramos a etiqueta \textbf{final}, sendo aqui que os dois pontos do programa 
 	int SYS_CALL 
 \end{lstlisting}
 
-E fazemos o movimento final encerrando a seção. Pronto agora podemos executar (compile e linkedite com uma cópia do arquivo MAKEFILE visto anteriormente, modificar valor da variável NOME) e testar vários valores para X.
+E fazemos o movimento final encerrando a seção. Pronto agora podemos executar (compilar e linkeditar com uma cópia do arquivo MAKEFILE visto anteriormente, modificar valor da variável NOME) e testar vários valores para X e Y.
 
 \section{Programa 4 - Converter}\index{Conceitos Introdutórios}
 Antes mesmo de começarmos nosso programa, vamos criar uma biblioteca e assim parar de copiar os códigos da "segment .data" além de começarmos a criar alguns funções que podemos usar de modo mais consistente.
