@@ -5,7 +5,7 @@
 \chapter{União com C++}
 
 \begin{remark}
-	Existem apenas dois tipos de linguagens: aquelas que as pessoas reclamam e aquelas que ninguém mais usa. (Bjarne Stroustrup - Criador da Linguagem C++) 
+	Existem apenas dois tipos de linguagens: aquelas que as pessoas reclamam e as que ninguém mais usa. (Bjarne Stroustrup - Criador da Linguagem C++) 
 \end{remark}
 
 \section{Porquê fazer isso?}\index{União com C++}
@@ -31,7 +31,7 @@ int main() {
 
 O comando \textbf{include} indica que iremos trabalhar com uma entrada de dados e a instrução "\textit{using namespace std;}" serve para definir um "espaço para nomes". Isso permite a definição de estruturas, classes e constantes que estão vinculadas para definir funções da biblioteca padrão. 
 
-A instrução que realmente nos interessa é a "extern" que indica o nome de uma função que devemos definir, essa recebe um argumento inteiro e retorna também outro. Em linguagens de alto nível sempre temos um método de entrada neste caso é o "\textbf{int main()}", neste damos uma saída em cadeia de caracteres para o terminal informando: "ASM me deu " + retorno da função \textit{GetValorASM} quando esta recebe 32.
+A instrução que realmente nos interessa é a "extern" que indica o nome de um marcador global que devemos definir, essa recebe um argumento inteiro e retorna também outro. Em linguagens de alto nível sempre temos um ponto de entrada neste caso é o "\textbf{int main()}", neste damos uma saída em cadeia de caracteres para o terminal informando: "ASM me deu " + retorno da chamada \textit{GetValorASM} quando esta recebe 32.
 
 \subsection{Agora sim vamos para o Assembly}\index{União com C++}
 Gostaria muito que não se assustasse com o tamanho do programa, pois o mesmo é extremamente pequeno (pensou que ia falar grande?), mas nesse começo quero deixar as coisas simples, crie um programa chamado "troca.asm", com a seguinte codificação:
@@ -53,9 +53,9 @@ Acredito que nem precise explicar, mas vamos assim mesmo. Antes vamos entender s
 	\caption{Fluxograma do Programa \textbf{Troca de Informações}}
 \end{figure}
 
-Primeiro definimos a parte de entrada, não precisamos da sessão .data então vamos direto para a .text porém com uma grande mudança ao invés de definirmos uma "\textit{\_start}" vamos chamar um método que o programa C++ está esperando e o definiu "\textit{GetValorASM}" (atenção com as letras é tudo case-sensitivo aqui!). 
+Primeiro definimos a parte de entrada, não precisamos da sessão .data então vamos direto para a .text porém com uma grande mudança ao invés de definirmos um marcador global "\textit{\_start}" vamos chamar um que o programa C++ está chamando e o definiu "\textit{GetValorASM}" (atenção com as letras maiúsculas ou minúsculas é tudo \textit{case-sensitive}). 
 
-Nesta função pegamos o valor do registrador \textbf{EDI} (que é utilizado para a passagem do primeiro parâmetro). Outros registradores utilizados são \textbf{ESI} para o segundo e \textbf{EDX} para o terceiro. Colocamos o valor de \textbf{EDI} em \textbf{EAX} (que é utilizado como valor de retorno do método - SEMPRE) e a este adicionamos mais um, ou seja o valor de retorno será sempre o valor de entrada mais um.
+Nesta trecho pegamos o valor do registrador \textbf{EDI} (que é utilizado para a passagem do primeiro parâmetro). Outros registradores utilizados são \textbf{ESI} para o segundo e \textbf{EDX} para o terceiro. Colocamos o valor de \textbf{EDI} em \textbf{EAX} (que é utilizado como valor de retorno da chamada - SEMPRE) e a este adicionamos mais um, ou seja o valor de retorno será sempre o valor de entrada mais um.
 
 \subsection{Modificar o arquivo makefile}\index{União com C++}
 Como agora estamos trabalhando com o C++ precisamos realizar uma pequena alteração para o linkeditor, não podemos mais utilizar o \textbf{LD} e devemos passar a utilizar o \textbf{G++}, assim nossa nova codificação para este deve ter o comando: \\
@@ -128,7 +128,7 @@ _impar:
   ret
 \end{lstlisting}
 
-Conforme definimos no C++ o método chamado é o "Question" que deve estar na nossa seção global, o registrador \textbf{EDI} recebe o parâmetro enviado, agora vamos parar para pensar um pouco (e é isso que amo no Assembly nos força a pensar), quando um número é par? Resposta geral: quando for divisível por 2, correto mas o que isso quer dizer? Resposta geral: quando após a divisão de um número por 2 não restar nada, correto novamente mas então precisamos "transpor" um valor inteiro para um decimal e pegarmos o resto da divisão.
+Conforme definimos no C++ o marcador global chamado é o "Question" que deve estar na nossa seção global, o registrador \textbf{EDI} recebe o parâmetro enviado, agora vamos parar para pensar um pouco (e é isso que amo no Assembly nos força a pensar), quando um número é par? Resposta geral: quando for divisível por 2, correto mas o que isso quer dizer? Resposta geral: quando após a divisão de um número por 2 não restar nada, correto novamente mas então precisamos "transpor" um valor inteiro para um decimal e pegarmos o resto da divisão.
 
 Está vendo com a coisa fica bem complicada? Vamos pensar de modo simplificado, o que vem a seer uma MULTIPLICAÇÃO? É pegarmos o primeiro valor e SOMÁ-LO por ele mesmo quantas vezes indicar o segundo valor. Não é assim que aprendemos lá no primário? Agora a partir desse princípio, o que vem a ser uma DIVISÃO? Ao invés de somar é SUBTRAIR o valor quantas vezes indicar o segundo valor, o resultado é a quantidade de vezes conseguimos fazer isso até um resultado igual a 0. Caso o resultado seja NEGATIVO significa que sobrou um resto. 
 
@@ -144,7 +144,7 @@ Agora podemos montar nosso fluxograma de acordo com o explicado:
 Para compilar e linkeditar copiamos o arquivo makefile indicado anteriormente e mudamos a variável NOME para questao. E podemos modificar o valor do parâmetro passado (que atualmente é 27) para qualquer valor de modo a testarmos as várias possibilidades.
 
 \section{Programa 7 - Parâmetros}\index{União com C++}
-Nosso próximo programa obterá 3 parâmetros e realizará a soma entre eles, mas como os parâmetros chegam em Assembly? Usamos 3 registradores para isso na seguinte sequência EDI (recebe o 1º parâmetro), ESI (o 2º) e EDX (o 3º). Mas e se tivermos de passar mais que isso? Bem, esse é um dos problemas de utilizar esse método, nada na vida é infinito.
+Nosso próximo programa obterá 3 parâmetros e realizará a soma entre eles, mas como os parâmetros chegam em Assembly? Usamos 3 registradores para isso na seguinte sequência EDI (recebe o 1º parâmetro), ESI (o 2º) e EDX (o 3º). Mas e se tivermos de passar mais que isso? Bem, esse é um dos problemas de utilizar essa forma de programção, nada na vida é infinito.
 
 Vamos começar com a criação de um arquivo chamado "param.cpp", com a seguinte codificação:
 \begin{lstlisting}[]
@@ -160,7 +160,7 @@ int main() {
 }
 \end{lstlisting}
 
-Então temos um método chamado \textbf{PassarParam} no qual recebe três valores a, b e c do tipo inteiro e esperamos que nos dê o retorno da soma desses. O programa em Assembly será bem simples de se fazer, não pense que aqui guardei algum peguinha para complicar.
+Então temos uma chamada a \textbf{PassarParam} no qual recebe três valores a, b e c do tipo inteiro e esperamos que nos dê o retorno da soma desses. O programa em Assembly será bem simples de se fazer, não pense que aqui guardei algum peguinha para complicar.
 
 Criamos um arquivo chamado "param.asm", com a seguinte codificação:
 \begin{lstlisting}[]
@@ -325,7 +325,7 @@ int main() {
 }
 \end{lstlisting}
 
-Temos a chamada de duas funções chamadas Teste1 e Teste2, que farão exatamente o que foi proposto anteriormente. Começamos a montagem do programa "decisao.asm" com a seguinte codificação:
+Temos a chamada de dois marcadores chamadas Teste1 e Teste2, que farão exatamente o que foi proposto anteriormente. Começamos a montagem do programa "decisao.asm" com a seguinte codificação:
 \begin{lstlisting}[]
 segment .text
 
@@ -333,7 +333,7 @@ global Teste1
 global Teste2
 \end{lstlisting}
 
-Ou seja, pouco importa a quantidade de funções que criemos no programa Assembly desde que todas estejam declaradas no comando GLOBAL. Para a função \textbf{Teste1}:
+Ou seja, pouco importa a quantidade de marcadores globais que criemos no programa Assembly desde que todas estejam declaradas no comando GLOBAL. Para o marcador \textbf{Teste1}:
 \begin{lstlisting}[]
 Teste1:
   cmp edi, esi
@@ -349,7 +349,7 @@ voltaESI:
   ret
 \end{lstlisting}
 
-Comparamos os dois valores passados se o primeiro (\textbf{EDI}) for maior que o segundo retornamos este movendo-o para o registrador de retorno (EAX), caso contrário o segundo (ESI). Para a função \textbf{Teste2}:
+Comparamos os dois valores passados se o primeiro (\textbf{EDI}) for maior que o segundo retornamos este movendo-o para o registrador de retorno (EAX), caso contrário o segundo (ESI). Para o marcador \textbf{Teste2}:
 \begin{lstlisting}[]
 Teste2:
   cmp edi, 1

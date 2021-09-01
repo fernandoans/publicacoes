@@ -23,8 +23,7 @@ Com base em um determinado valor mostrar um quadrado de asteriscos. Como disse, 
 	\caption{Fluxograma do Programa \textbf{Quadrado}}
 \end{figure}
 
-Vamos para o programa:
-
+Vamos para o programa, criar um arquivo chamado "quadrado.asm" e começamos com a seguinte codificação:
 \begin{lstlisting}[]
 %include 'bibliotecaE.inc'
 
@@ -52,7 +51,7 @@ inicio:
   jmp inicio	
 \end{lstlisting}
 
-Colocamos o valor da altura em \textbf{EDI} (que controla a quantidade de linhas), para o marcador \textbf{inicio}, colocamos o valor da altura em \textbf{ESI} (que controla a quantidade de colunas), chamamos um método para mostrar 1 linha, reduzimos a quantidade de \textbf{EDI} e comparamos seu valor com 0, se for igual vamos para o marcador \textbf{saida} caso contrário retornamos para o marcador \textbf{início}.
+Colocamos o valor da altura em \textbf{EDI} (que controla a quantidade de linhas), para o marcador \textbf{inicio}, colocamos o valor da altura em \textbf{ESI} (que controla a quantidade de colunas), saltamos para um marcador de modo a mostrar 1 linha, reduzimos a quantidade de \textbf{EDI} e comparamos seu valor com 0, se for igual vamos para o marcador \textbf{saida} caso contrário retornamos para o marcador \textbf{início}.
 
 \begin{lstlisting}[]
 impLinha:
@@ -73,7 +72,7 @@ saida:
   int SYS_CALL	
 \end{lstlisting}
 
-Neste ponto apenas fazemos as movimentações para terminar o programa. Mas calma que ainda existem mais dois métodos importantes no conjunto.
+Neste ponto apenas fazemos as movimentações para terminar o programa. Mas calma que ainda existem mais dois marcadores importantes no conjunto.
 
 \begin{lstlisting}[]
 impEstrela:
@@ -98,6 +97,149 @@ impEstrelaFinal:
 \end{lstlisting}
 
 Já neste pedimos para mostrar o tamanho de dois que contém o '*' com Line Feed (ou quebra de linha se prefere) e assim ao mostrar o '*' desce para a próxima linha. Podemos agora imprimir quadrados de vários tamanhos, bastando apenas alterar a variável \textbf{altura}.
+
+\section{Programa 11 - Pirâmide}\index{Quebrar a Cabeça}
+Criar uma pirâmide de Asteriscos com base no valor da altura, por exemplo, se essa for 3 a pirâmide deve ser mostrada da seguinte forma:
+\begin{lstlisting}[]
+  *
+ ***
+*****
+\end{lstlisting}
+
+Para um valor 4, sairá assim:
+\begin{lstlisting}[]
+   *
+  ***
+ *****
+*******
+\end{lstlisting}
+
+O que mais gosto desse desafio é que apresenta um elemento que não estamos vendo, os espaços iniciais, temos aqui duas perguntas que devemos resolver:
+\begin{enumerate}[nolistsep]
+	\item Quantidade de espaços em brancos em cada linha?
+	\item Quantidade de * adicionados a cada 2ª linha?
+\end{enumerate}
+
+Pensemos assim, se a altura passada for 5, na primeira linha quantos espaços em branco iniciais temos? Isso mesmo 4, mas essa é a resposta errada, na verdade temos a altura menos 1 (já que estamos na 1ª linha), na segunda linha a resposta não muda, é a altura menos 2 (agora estamos na 2ª linha). Agora vamos focar na segunda pergunta, temos 1 na 1ª linha, e são adicionados mais 2 asteriscos a cada linha.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.75\textwidth]{Pictures/cap03/programa11}
+	\caption{Fluxograma do Programa \textbf{Pirâmide}}
+\end{figure}
+
+Vamos para o programa, criar um arquivo chamado "piramide.asm" e começamos com a seguinte codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+  estrela  DB  '*', LF, NULL
+  espaco   DB  ' ', LF, NULL
+
+SECTION .bss
+  altura      resb 0xA ; Altura (fixa)
+  linha       resb 0xA ; linha atual
+  qtdespacos  resb 0xA ; Qtd de espacos
+  qtdestrelas resb 0xA ; Qtd de estrelas
+  qtdlinhas   resb 0xA ; Qtd linhas ja impressa
+
+SECTION .text
+
+global _start
+\end{lstlisting}
+
+Essa é a parte fácil: Codificar. Trata apenas de uma simples tradução para o nosso fluxograma que já escrevemos. Gostaria muito que as pessoas observassem que NUNCA podemos iniciar a codificação se primeiro não temos as respostas para nosso problema, seria uma simples perda de tempo (ou se prefere tentativa e erro).E falando sério, é por isso que existem tantas piadas a respeito de programas errados ou de programadores fazendo besteiras pois eles preferem encurtar o caminho.
+
+Seguimos agora para o início do marcador \textbf{\_start} no qual atribuímos os valores as nossas variáveis:
+\begin{lstlisting}[]
+_start:
+  mov byte[altura], 0x8
+  mov byte[linha], 0x1
+  mov byte[qtdestrelas], 0x1
+  mov byte[qtdlinhas], 0x8
+\end{lstlisting}
+
+No marcador \textbf{inicio} é que temos o coração do nosso programa:
+\begin{lstlisting}[]
+inicio:
+  mov edi, dword[altura]
+  sub edi, dword[linha]
+  call impEspacos
+  mov edi, dword[qtdestrelas]
+  call impEstrelas
+  sub byte[qtdlinhas], 0x1
+  cmp byte[qtdlinhas], 0x0
+  je saida
+  add byte[qtdestrelas], 0x2
+  add byte[linha], 0x1
+  jmp inicio	
+\end{lstlisting}
+
+Movemos para \textbf{EDI} o valor da altura e subtraímos da linha atual (resposta da 1ª pergunta) e mostramos os espaços. Movemos para \textbf{EDI} o valor da quantidade de estrelas e mostramos os asteriscos. Reduzimos um na quantidade de linhas e verificamos se chegou a 0 para terminamos, caso contrário, adicionamos mais dois asteriscos na quantidade e mais um a linha atual e saltamos para o início do marcador.
+
+\begin{lstlisting}[]
+impEspacos:
+  cmp edi, 0x1
+  jl finalImpEspaco
+  call impEspaco
+  sub edi, 0x1
+  jmp impEspacos
+  
+finalImpEspaco:
+  ret  	
+\end{lstlisting}
+
+Para mostrar os espaços basta verificarmos o registrador \textbf{EDI} que contém a quantidade que deve ser mostrado, para isso logo no início já o comparamos com um e se for menor chamamos o marcador \textbf{finalImpEspaco} que retorna para quem nos chamou (isso é feito pois reparemos que na última linha não existe nenhum espaço). Saltamos para o marcador que vai mostrar um único espaço, reduzimos um na quantidade de \textbf{EDI} e retornamos para o início desse marcador.
+
+\begin{lstlisting}[]
+impEstrelas:
+  cmp edi, 0x1
+  je impEstrelaFinal
+  call impEstrela
+  sub edi, 0x1
+  jmp impEstrelas	
+\end{lstlisting}
+
+Mais um marcador de controle, agora para a impressão dos asteriscos, basicamente a mesma coisa do anterior porém com a diferença que ao término devemos imprimir o asterisco que conterá o salto de linha. De resto temos uma repetição padrão do anterior.
+
+\begin{lstlisting}[]
+saida:
+  mov eax, SYS_EXIT
+  mov ebx, EXIT_SUCESS
+  int SYS_CALL	
+\end{lstlisting}
+
+E finalmente a saída do programa e encerramento das chamadas. Espera um pouco não faltou mais 3 marcadores? Sim, dois deles vimos no programa anterior:
+\begin{lstlisting}[]
+impEstrela:
+  mov edx, 1
+  mov ecx, estrela
+  mov eax, SYS_WRITE
+  mov ebx, STDOUT
+  int SYS_CALL
+  ret
+
+impEstrelaFinal:
+  mov edx, 2
+  mov ecx, estrela
+  mov eax, SYS_WRITE
+  mov ebx, STDOUT
+  int SYS_CALL
+  ret
+\end{lstlisting}
+
+Que mostra o asterisco na mesma linha e o asterisco com o salto de linha, e agora basta apenas repetir o primeiro marcador, mas ao invés de usarmos o asterisco vamos usar o espaço.
+\begin{lstlisting}[]
+impEspaco:
+  mov edx, 1
+  mov ecx, espaco
+  mov eax, SYS_WRITE
+  mov ebx, STDOUT
+  int SYS_CALL
+  ret	
+\end{lstlisting}
+
+E estamos prontos para mostrarmos uma pirâmide de qualquer tamanho possível, recomendo que tente estender este programa para mostrar um "Losango" (basta inverter a pirâmide). 
 
 % Final do Capítulo
 \clearpage

@@ -85,7 +85,7 @@ Vamos fazer um acordo se ao término dessa seção não compreender o que fizemo
 
 \subsection{Explicação do Programa}\index{Conceitos Introdutórios}
 
-Vamos começar entendendo a estrutura do programa, ele se divide em 2 partes, uma seção ".data" que é aonde declaramos nossas constantes que utilizaremos ao longo do programa e uma seção ".text" que iremos iniciar as nossas funções porém uma função em particular deve ser a primeira e definida através do comando "global" e padronizada com o nome "\_start". Sendo assim a estrutura deve ser essa:
+Vamos começar entendendo a estrutura do programa, ele se divide em 2 partes, uma seção ".data" que é aonde declaramos nossas constantes que utilizaremos ao longo do programa e uma seção ".text" que iremos iniciar nossos marcadores. Um marcador em particular deve ser o primeiro e definido através do comando "global" e padronizado com o nome "\_start". Sendo assim a estrutura deve ser essa:
 \begin{lstlisting}[]
 section .data
 	
@@ -115,10 +115,10 @@ E agora não apresenta mais erro, e nenhuma informação. Mas o que essas linhas
 	\centering 
 	\begin{tabular}{c | c | l }
 		\textbf{64 bits} & \textbf{32 bits} & \textbf{Utilização} \\ \hline
-		rax & eax & Valores que são retornados das funções em um registrador \\
+		rax & eax & Valores que são retornados dos comandos em um registrador \\
 		rbx & ebx & Registrador preservado. Cuidado ao utilizá-lo \\
 		rcx & ecx & Uso livre como por exemplo contador \\
-		rdx & edx & Uso livre em algumas funções \\
+		rdx & edx & Uso livre em alguns comandos \\
 		rsp & esp & Ponteiro de uma pilha \\
 		rbp & ebp & Registrador preservado. Algumas vezes armazena ponteiros de pilhas \\
 		rdi & edi & Na passagem de argumentos, contém a quantidade desses \\
@@ -233,7 +233,7 @@ section .text
 	
 global _start
 	
-; Metodo inicial	
+; Marcador inicial	
 _start:
 	mov eax, 4    ; Informa que se trata de uma saida
 	mov ebx, 1    ; Indica que deve ser realizada no terminal
@@ -414,7 +414,7 @@ Esses saltos são chamados de "condicionais", ou seja, dependem que uma compara�
 	\end{minipage}
 \end{figure}
 
-Mas qual o motivo dessa diferença tão gritante? Assembly não possui um comando interno que toma uma decisão e faz blocos de desvios, os blocos de desvio do Assembly são simplesmente pontos "etiquetados" do nosso programa. Lembra no início que criamos um "\_start:", pois bem isso não é uma função (como seria em linguagens de alto nível) isso é um \textit{label} (ou uma etiqueta se prefere a palavra em português).
+Mas qual o motivo dessa diferença tão gritante? Assembly não possui um comando interno que toma uma decisão e faz blocos de desvios, os blocos de desvio do Assembly são simplesmente pontos "etiquetados" do nosso programa. Lembra no início que criamos um "\_start:", pois bem isso não é uma função (como seria em linguagens de alto nível) isso é um \textit{label} (ou um MARCADOR se prefere a palavra em português que é a palavra que usamos neste livro).
 
 Vamos iniciar um programa chamado maiornum.asm, copiamos o nosso segmento de dados (os mesmos vistos anteriormente) e criamos as seguintes variáveis na seção \textbf{.data}:
 \begin{lstlisting}[]
@@ -493,7 +493,7 @@ Declaramos a etiqueta \textbf{final}, sendo aqui que os dois pontos do programa 
 E fazemos o movimento final encerrando a seção. Pronto agora podemos executar (compilar e linkeditar com uma cópia do arquivo MAKEFILE visto anteriormente, modificar valor da variável NOME) e testar vários valores para X e Y.
 
 \section{Programa 4 - Converter}\index{Conceitos Introdutórios}
-Antes mesmo de começarmos nosso programa, vamos criar uma biblioteca e assim parar de copiar os códigos da "segment .data" além de começarmos a criar alguns funções que podemos usar de modo mais consistente.
+Antes mesmo de começarmos nosso programa, vamos criar uma biblioteca e assim parar de copiar os códigos da "segment .data", além de começarmos a criar alguns marcadores globais que podemos usar de uma forma mais consistente.
 
 Para criar uma biblioteca, crie um novo arquivo com o nome "bibliotecaE.inc" e neste insira a seguinte codificação:
 \begin{lstlisting}[]
@@ -519,11 +519,11 @@ Agora para o nosso programa que chamaremos de "converte.asm" na primeira linha i
 %include 'bibliotecaE.inc'
 \end{lstlisting}
 
-A definição de \textbf{TAM\_BUFFER} e \textbf{BUFFER} iremos ver hoje nas funções propostas, por enquanto só precisamos saber que a segunda é um binário que carrega um determinado valor a ser utilizado.
+A definição de \textbf{TAM\_BUFFER} e \textbf{BUFFER} veremos nos marcadores propostos, por enquanto só necessitamos saber que a segunda é um binário que carrega um determinado valor a ser utilizado.
 
 E estamos prontos, daqui para frente salvo qualquer outra observação sempre que criarmos um programa o primeiro passo será copiar o conteúdo da "bibliotecaE.inc" e adicionar a cláusula \textbf{\%include}. Além obviamente do arquivo "Makefile" para compilarmos e linkeditarmos o programa. Sempre partirei (para não me tornar repetitivo) do princípio que essas ações já aconteceram.
 
-Vamos começar adicionando uma simples função, que já vimos ser executada várias vezes, e deve ser adicionada na "bibliotecaE.inc":
+Vamos começar adicionando um simples marcador, que já vimos ser executado várias vezes, e deve ser adicionada na "bibliotecaE.inc":
 
 \begin{lstlisting}[]
 segment .text
@@ -543,7 +543,7 @@ saidaResultado:
 	ret
 \end{lstlisting}
 
-Funções são criadas na biblioteca para nossa comodidade, acho que o único detalhe que ainda precisamos entender é esse comando \textbf{ret}, pois o resto basta olhar desde o primeiro programa que construímos para entender seu funcionamento. Quando saltos são dados (sejam eles condicionais ou incondicionais) não existe um retorno ao ponto de partida, ao chamarmos funções é diferente espera-se que elas retornem e é exatamente isso que faz esse comando \textbf{ret}, desvia o fluxo de volta para a próxima instrução de onde a função foi chamada.
+Marcadores são criadas na biblioteca para nossa comodidade, acho que o único detalhe que ainda precisamos entender é esse comando \textbf{ret}, pois para o resto basta olhar desde o primeiro programa que construímos para entender seu funcionamento. Quando saltos são dados (sejam eles condicionais ou incondicionais) não existe um retorno ao ponto de partida, ao chamarmos um marcador é diferente esperamos que retornem, é exatamente isso que faz o comando \textbf{RET}, desvia o fluxo de volta para a próxima instrução onde este marcador foi chamado (ou seja por um comando \textbf{CALL}).
 
 \subsection{Criar o nosso programa}\index{Conceitos Introdutórios}
 Neste programa vamos compreender 2 ações muito comuns que acontece em programação a conversão de uma cadeia de caracteres para um número e vice versa. Observe seu fluxograma:
@@ -569,8 +569,7 @@ _start:
 	int SYS_CALL
 \end{lstlisting}
 
-Na seção \textbf{.data} criamos o valor que iremos converter em uma variável chamada \textbf{v1} do tipo Double Word (ou seja um caracter). Já quando começamos o programa em si temos 2 funções \textbf{call}, que no fluxograma corresponde as duas primeiras caixas laranjas, esta função é responsável por chamar um ponto do programa e aguardar seu retorno e continuar a partir desse ponto. E encerramos a nossa seção do programa, ou seja, pode-se dizer que o principal é só isso, e observe realmente que pelo fluxo está totalmente correto.
-
+Na seção \textbf{.data} criamos o valor que iremos converter em uma variável chamada \textbf{v1} do tipo Double Word (ou seja um caracter). Já quando começamos o programa em si temos 2 comandos \textbf{CALL}, que no fluxograma corresponde as duas primeiras caixas laranjas, este comando é responsável por chamar um ponto do programa (marcado), aguardar seu retorno e continuar a partir desse ponto. E encerramos a nossa seção do programa, ou seja, podemos dizer que o principal é só isso, e observe realmente que pelo fluxo está totalmente correto.
 \begin{lstlisting}[]
 converter_valor:
 	lea esi, [v1]
@@ -580,7 +579,7 @@ converter_valor:
 	ret
 \end{lstlisting}
 
-O próximo módulo é responsável por transpor o valor de \textbf{v1} para o registrador \textbf{ESI} e seu tamanho para \textbf{ECX}, em seguida chamar a função \textbf{string\_to\_int} para realizar a conversão dessa variável em inteiro. O valor de convertido estará contido no registrador \textbf{EAX} e a ele adicionaremos mais 2 (apenas para testar se realmente virou inteiro) e retornamos ao ponto que chamou.
+O próximo módulo é responsável por transpor o valor de \textbf{v1} para o registrador \textbf{ESI} e seu tamanho para \textbf{ECX}, em seguida chamar o marcador \textbf{string\_to\_int} para realizar a conversão dessa variável em inteiro. O valor de convertido estará contido no registrador \textbf{EAX} e a ele adicionaremos mais 2 (apenas para testar se realmente virou inteiro) e retornamos ao ponto que chamou.
 
 O comando \textbf{LEA} permite que calculemos efetivamente o endereço de qualquer elemento em uma tabela (ou um endereço) e elimina este endereço em um registrador. Ou seja, diferente do comando \textbf{MOV} é um caminho mais seguro em se tratando de movimentações de variáveis para registradores.
 
@@ -591,13 +590,13 @@ mostrar_valor:
 	ret
 \end{lstlisting}
 
-Este módulo chama a função \textbf{int\_to\_string} para realizar a conversão da variável (que deve estar no registrador EAX) de volta para uma cadeia de caracteres de mosso que possa dar saída nessa no terminal através da função (contida em nossa biblioteca) "saidaResultado".
+Este trecho chama o marcador \textbf{int\_to\_string} para realizar a conversão da variável (que deve estar no registrador EAX) de volta para uma cadeia de caracteres como forma a dar saída no terminal através do marcador (contida em nossa biblioteca) "saidaResultado".
 
-Agora podemos escolher se colocaremos essas duas próximas funções aqui no programa ou na biblioteca, recomendamos sempre que criar uma nova função coloque-a no programa e teste-a, caso tudo funcione corretamente transfira-a para a biblioteca. Porém as bibliotecas que usaremos não devem conter sujeira (códigos não utilizáveis pelo programa) pois senão geraríamos apenas lixo e aumento de tamanho desnecessário no nosso executável final. Ou seja, mantenha essas funções a mão quando forem necessárias seu uso, mas não as coloque sempre para QUALQUER programa que crie.
+Agora podemos escolher se colocaremos esses dois trechos no programa ou na biblioteca, recomendamos sempre que criar uma novo trecho marcado coloque-o primeiro no programa e teste-o, caso tudo funcione corretamente transfira-o para a biblioteca. Porém as bibliotecas que usaremos não devem conter sujeira (códigos não utilizáveis pelo programa) pois senão geraríamos apenas lixo e aumento do tamanho desnecessário no nosso executável final. Ou seja, mantenha esses trechos de código a mão quando necessários o seu uso, mas não os coloque sempre para QUALQUER programa que crie.
 
-\subsection{Funções de Conversão}\index{Conceitos Introdutórios}
+\subsection{Realização de Conversão}\index{Conceitos Introdutórios}
 
-Antes de começarmos a ver as funções devemos entender que os operadores: AH, AL, BH, BL, CH, CL, DH e DL são o que chamamos de segmentos de 8 bits. Toda vez que tratamos de um único caractere temos um byte isolado (ou seja 8 bits) e podemos usar esses operadores para realizar algumas transformações como veremos a seguir.
+Antes de começarmos a ver as conversões devemos entender que os operadores: AH, AL, BH, BL, CH, CL, DH e DL são o que chamamos de segmentos de 8 bits. Toda vez que tratamos de um único caractere temos um byte isolado (ou seja 8 bits) e podemos usar esses operadores para realizar algumas transformações como veremos a seguir.
 
 Convertendo da cadeia de caracteres para inteiro:
 \begin{lstlisting}[]
@@ -615,7 +614,7 @@ string_to_int:
 	ret
 \end{lstlisting}
 
-Esta função espera que o registrador \textbf{ESI} contenha o valor a ser convertido e \textbf{ECX} a quantidade de caracteres deste. O primeiro passo é zerar o registrado \textbf{EBX}, o comando \textbf{XOR} é um comparador de bit no qual se ambos forem iguais (isto é, ambos 0 ou 1) o resultado será 0 para aquela posição de bit, isso é uma forma elegante de dizer que algo recebe 0 ao invés de simplesmente enviar 0x0.
+Este trecho espera que o registrador \textbf{ESI} contenha o valor a ser convertido e \textbf{ECX} a quantidade de caracteres deste. O primeiro passo é zerar o registrado \textbf{EBX}, o comando \textbf{XOR} é um comparador de bit no qual se ambos forem iguais (isto é, ambos 0 ou 1) o resultado será 0 para aquela posição de bit, isso é uma forma elegante de dizer que algo recebe 0 ao invés de simplesmente enviar 0x0.
 
 O comando \textbf{MOVZX} é abreviatura para \textit{Move with Zero-Extend}, isso significa que os bits superiores do operador de destino serão preenchidos com zero. Próximo passo é incrementar a posição do registrador \textbf{ESI} e achar o valor correspondente da letra. A instrução "\textit{sub al,'0'}" converte o caractere em \textbf{AL} isso corresponde a um número entre 0 e 9.
 
@@ -642,9 +641,9 @@ int_to_string:
 	ret
 \end{lstlisting}
 
-Esta função espera que um valor inteiro esteja armazenado no registrador \textbf{EAX}, o primeiro passo é associar o conteúdo de BUFFER ao registrador \textbf{ESI}, ou seja, tudo o que fizermos com este será refletido para o conteúdo de buffer. Adicionamos o valor 9 a \textbf{ESI} e o movemos 10 para a posição final deste (isso é realizado para que a cadeia possa conter o Line Feed), iniciamos \textbf{EBX} com o valor 10.
+Este trecho espera que um valor inteiro esteja armazenado no registrador \textbf{EAX}, o primeiro passo é associar o conteúdo de BUFFER ao registrador \textbf{ESI}, ou seja, tudo o que fizermos com este será refletido para o conteúdo de buffer. Adicionamos o valor 9 a \textbf{ESI} e o movemos 10 para a posição final deste (isso é realizado para que a cadeia possa conter o Line Feed), iniciamos \textbf{EBX} com o valor 10.
 
-No método de repetição zeramos \textbf{EDX} e realizamos uma divisão entre \textbf{EBX} e \textbf{EDX}, a instrução "\textit{add dl,'0'}", transforma o valor correspondente ao caractere na tabela ASCII. Agora decrementamos 1 posição de \textbf{ESI} e adicionamos esse valor convertido. Próximo passo é testar (comando \textbf{TEST}) o registrador \textbf{EAX} para saber se ainda existem valores a serem adicionados, se sim salta de volta para obter esse próximo registro caso contrário retorna para a posição de quem chamou esta função.
+No marcador de repetição zeramos \textbf{EDX} e realizamos uma divisão entre \textbf{EBX} e \textbf{EDX}, a instrução "\textit{add dl,'0'}", transforma o valor correspondente ao caractere na tabela ASCII. Agora decrementamos 1 posição de \textbf{ESI} e adicionamos esse valor convertido. Próximo passo é testar (comando \textbf{TEST}) o registrador \textbf{EAX} para saber se ainda existem valores a serem adicionados, se sim salta de volta para obter esse próximo registro caso contrário retorna para a posição de quem chamou este marcador.
 
 Na prática, nosso valor será 107, começamos montando a cadeia com um "LF", e pegamos o primeiro elemento que é o valor 7, convertemos este e adicionamos na cadeia que agora será "7LF", no próximo passo o valor 0 é obtido que resulta em "07LF", e por fim, o valor 1 resultando na cadeia final "107LF".
 
@@ -657,8 +656,8 @@ Como último programa para fecharmos esse capítulo vamos construir o menu compl
 
 Para realizar cada uma das operações seriam necessárias muitas movimentações, mas prometo que em breve faremos isso, por enquanto precisamos apenas fixar esses conhecimentos básicos e o uso dos registrados "E" (de 32 bits) para podermos seguir adiante.
 
-\subsection{Novas funções a biblioteca}\index{Conceitos Introdutórios}
-Observe que um menu existem muitas saídas de dados, e isso é uma característica preocupante pois temos que repetir várias vezes os mesmos comandos, além de criar aquela variável que guarda o tamanho da cadeia de caracteres. Então vamos resolver esses dois problemas primeiro e adicionar duas novas funções na nossa biblioteca.
+\subsection{Novas funcionalidades a biblioteca}\index{Conceitos Introdutórios}
+Observe que um menu existem muitas saídas de dados, e isso é uma característica preocupante pois temos que repetir várias vezes os mesmos comandos, além de criar aquela variável que guarda o tamanho da cadeia de caracteres. Então vamos resolver esses dois problemas primeiro e adicionar dois novos marcadores principais na nossa biblioteca.
 
 \begin{lstlisting}[]
 ; ---------------------------------------------
@@ -679,7 +678,7 @@ terminei:
 	ret
 \end{lstlisting}
 
-Vamos passar uma cadeia de caracteres no registrador \textbf{ECX} e de modo bem simples vamos contar (tem que ser manualmente pois não existe um "método" que faça isso) caractere a caractere, observe que no inicio mantemos o valor de \textbf{ECX} em \textbf{EDX}, o conteúdo do centro é simples conta todos os caracteres até achar o valor NULL (0xD). O pulo do gato está no comando \textbf{SUB} (que possui a sintaxe \textit{sub destino, secundário}). Isso parace bem esquisito para quem vem das linguagens de alto nível: \textbf{EDX} contém 2 valores, o primeiro é a cadeia de caracteres e o segundo um valor inteiro contendo os incrementos que fizemos no centro, se queremos somente o valor inteiro basta remover essa cadeia de caracteres (para isso subtraímos).
+Vamos passar uma cadeia de caracteres no registrador \textbf{ECX} e de modo bem simples vamos contar (tem que ser manualmente pois não existe um comando que realize isso) caractere a caractere, observe que no inicio mantemos o valor de \textbf{ECX} em \textbf{EDX}, o conteúdo do centro é simples conta todos os caracteres até achar o valor NULL (0xD). O pulo do gato está no comando \textbf{SUB} (que possui a sintaxe \textit{sub destino, secundário}). Isso parace bem esquisito para quem vem das linguagens de alto nível: \textbf{EDX} contém 2 valores, o primeiro é a cadeia de caracteres e o segundo um valor inteiro contendo os incrementos que fizemos no centro, se queremos somente o valor inteiro basta remover essa cadeia de caracteres (para isso subtraímos).
 
 \begin{lstlisting}[]
 ; ---------------------------------------------
@@ -696,7 +695,7 @@ mst_saida:
 	ret
 \end{lstlisting}
 
-Para nosso método de saída, recebemos a cadeia de caractere através do registrador \textbf{ECX}, chamamos o método descrito anteriormente para obtermos tamanho que virá em \textbf{EDX}. Agora basta finalizar com os valores de \textbf{EAX}, \textbf{EBX} e informar ao sistema operacional que pode processar.
+Para nosso marcador de saída, recebemos a cadeia de caractere através do registrador \textbf{ECX}, chamamos o marcador descrito anteriormente para obtermos tamanho que virá em \textbf{EDX}. Agora basta finalizar com os valores de \textbf{EAX}, \textbf{EBX} e informar ao sistema operacional que pode processar.
 
 \subsection{Menu de Sistema}\index{Conceitos Introdutórios}
 
@@ -726,7 +725,7 @@ section .bss
 	num2    resb  1
 \end{lstlisting}
 
-Um fator importante é que cada cadeia de caracteres deve obrigatoriamente terminar com o caractere NULL, senão nossa função de conta dará totalmente errado. Temos 3 variáveis na seção .bss a opção que o usuário pode escolher e os dois valores para realizar a operação.
+Um fator importante é que cada cadeia de caracteres deve obrigatoriamente terminar com o caractere NULL, senão nossa marcador de conta calculará totalmente errado. Temos 3 variáveis na seção .bss a opção que o usuário pode escolher e os dois valores para realizar a operação.
 
 \begin{lstlisting}[]
 section .text
@@ -764,7 +763,7 @@ Solicitamos a entrada do primeiro valor para o usuário que mostra a mensagem: "
 	int SYS_CALL
 \end{lstlisting}
 
-Processamos de mesma forma agora para solicitar o segundo valor (não valeria a pena criar uma função para isso? Utilize como um exercício de formatura desse capítulo).
+Processamos de mesma forma agora para solicitar o segundo valor (não valeria a pena criar uma marcador isolado para isso? Utilize como um exercício de formatura desse capítulo).
 
 \begin{lstlisting}[]
 	mov ecx, opc1     ; 1. Adicionar
@@ -793,7 +792,7 @@ Mostramos agora as quatro opções disponíveis para nosso usuário de modo que 
 	int SYS_CALL
 \end{lstlisting}
 
-E solicitamos que o usuário determine uma opção (é realmente isso está implorando uma função, observe que temos exatamente os mesmos comandos porém com valores distintos).
+E solicitamos que o usuário determine uma opção (é realmente isso está implorando um marcador isolado, observe que temos exatamente os mesmos comandos porém com valores distintos).
 
 \begin{lstlisting}[]
 	mov ah, [opc]
@@ -845,7 +844,7 @@ dividir:
 	jmp exit
 \end{lstlisting}
 
-Agora cada método será bem similar, apenas modificando a mensagem para termos a certeza que entrou na opção correta. E por fim:
+Agora cada marcador será bem similar, apenas modificando a mensagem para termos a certeza que entrou na opção correta. E por fim:
 \begin{lstlisting}[]
 exit:
 	mov ecx, msgfim    ; Terminei.
