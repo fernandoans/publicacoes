@@ -3,7 +3,6 @@
 %------------------------------------------------------------------------------------
 \chapterimage{headerCap.jpeg}
 \chapter{Conceitos Introdutórios}
-
 \begin{remark}
 O novo Google Plus deixa a impressão de que tudo está errado no Facebook. (Hans Peter Anvin - Líder dos projetos NASM e SYSLINUX) 
 \end{remark}
@@ -33,7 +32,7 @@ As pessoas se chateiam por ser franco, mas prefiro não lhe dar esperanças que 
 
 No curso em vídeo utilizei vários editores mas como isso é um livro ele não será necessário assim recomendo o que você se sinta mais confortável, seja do Vim ao Visual Studio Code. Os únicos editores que não são possíveis utilizar estão na linha do MS-Word ou Writer (LibreOffice) por introduzirem códigos no programa, mas qualquer outro é possível.
 
-\section{Programa 1 - Hello World}\index{Conceitos Introdutórios}
+\section{Programa 1.1 - Hello World}\index{Conceitos Introdutórios}
 Abra seu editor favorito e digite o seguinte programa:
 \begin{lstlisting}[]
 section .data
@@ -111,6 +110,7 @@ _start:
 \end{lstlisting}
 
 E agora não apresenta mais erro, e nenhuma informação. Mas o que essas linhas querem dizer? Assembly trabalha com registradores de memória e isso corresponde a uma tabela que sempre devemos ter em mente quando programamos com esta linguagem:
+
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
@@ -137,7 +137,7 @@ Para o registrador "eax":
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
-		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline
+		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
 		1 & 0x1 & Indica o final de operação, corresponde a \textbf{System.exit}
 	\end{tabular}
 \end{table}
@@ -163,14 +163,14 @@ section .data
 O que queremos dizer com isso? quereremos dizer que lá vem mais uma tabela para decorarmos:
 \begin{table}[H]
 	\centering 
-	\begin{tabular}{c | c | l }
-		\textbf{Sigla} & \textbf{Tipo} & \textbf{Significado} \\ \hline
-		db & byte & variável de 8 bits \\
-		dw & word & variável de 16 bits \\
-		dd & double & variável de 32 bits \\
-		dq & quad & variável de 64 bits \\
-		ddq & double quad & variável de 128 bits - para inteiros \\
-		dt & float & variável de 128 bits - para decimais
+	\begin{tabular}{c | c | l | l }
+		\textbf{Sigla} & \textbf{Tipo} & \textbf{Significado} & \textbf{Bytes} \\ \hline
+		db & Define Byte & variável de 8 bits & 1 byte\\
+		dw & Define Word & variável de 16 bits & 2 bytes \\
+		dd & Define Doubleword & variável de 32 bits & 4 byte\\
+		dq & Define Quadword & variável de 64 bits & 8 byte \\
+		ddq & Define Double Quad & variável de 128 bits - para inteiros & 10 bytes \\
+		dt & Define Ten Bytes & variável de 128 bits - para decimais & 10 bytes
 	\end{tabular}
 \end{table}
 
@@ -249,7 +249,7 @@ _start:
  
 E apesar de ter bem mais informações (poluição visual), fica bem mais claro escrito dessa forma. Então tente tornar isso um hábito quando for escrever seus programas em Assembly.
 
-\section{Programa 2 - Entrada}\index{Conceitos Introdutórios}
+\section{Programa 1.2 - Entrada}\index{Conceitos Introdutórios}
 Outra boa prática que podemos realizar quando se programa com Assembly é colocar todos os dados, que vimos nas tabelas como descritivos de valores. Porém devemos compreender que quando programamos em Assembly temos uma paixão por hexadecimais e normalmente colocamos tudo nessa base.
 
 Nosso programa pode ser descrito conforme o seguinte fluxograma:
@@ -382,7 +382,7 @@ Será mostrado: \\
 
 E o cursor espera que seja informado algo e pressionado a tecla ENTER para dar continuidade ao programa.
 
-\section{Programa 3 - Comparar Valores}\index{Conceitos Introdutórios}
+\section{Programa 1.3 - Comparar Valores}\index{Conceitos Introdutórios}
 Neste programa vamos realizar comparações entre valores e compreender como saltos condicionais e incondicionais funcionam na linguagem. Assembly realiza comparações com 2 comandos, um deles normalmente é o comando \textbf{CMP} (outros fazem esse mesmo serviço) que possui a sintaxe: \\
 {\ttfamily\$ cmp registrador1, registrador2}
 
@@ -492,7 +492,7 @@ Declaramos a etiqueta \textbf{final}, sendo aqui que os dois pontos do programa 
 
 E fazemos o movimento final encerrando a seção. Pronto agora podemos executar (compilar e linkeditar com uma cópia do arquivo MAKEFILE visto anteriormente, modificar valor da variável NOME) e testar vários valores para X e Y.
 
-\section{Programa 4 - Converter}\index{Conceitos Introdutórios}
+\section{Programa 1.4 - Converter}\index{Conceitos Introdutórios}
 Antes mesmo de começarmos nosso programa, vamos criar uma biblioteca e assim parar de copiar os códigos da "segment .data", além de começarmos a criar alguns marcadores globais que podemos usar de uma forma mais consistente.
 
 Para criar uma biblioteca, crie um novo arquivo com o nome "bibliotecaE.inc" e neste insira a seguinte codificação:
@@ -651,7 +651,7 @@ Mas qual o sentido da divisão? Note que quando convertemos da cadeia para intei
 
 Pronto já podemos compilar, linkeditar e executar o programa. Lembre-se que se for testar com valores diferentes de 3 casas modificar o registrador ECX, na instrução "\textit{mov ecx,0x3}", para refletir esta mudança. Além disso qualquer valor colocado será aumentado em 2 graças a instrução "\textit{add eax,0x2}".
 
-\section{Programa 5 - Calculadora}\index{Conceitos Introdutórios}
+\section{Programa 1.5 - Calculadora}\index{Conceitos Introdutórios}
 Como último programa para fecharmos esse capítulo vamos construir o menu completo para uma calculadora que realiza as quatro operações básicas. Na primeira parte solicita 2 valores e em seguida qual operação deve realizar adicionar, subtrair, multiplicar ou dividir. Porém não fique triste pois não iremos realizar as operações apenas mostrar uma saída informando que chegamos ao ponto correto.
 
 Para realizar cada uma das operações seriam necessárias muitas movimentações, mas prometo que em breve faremos isso, por enquanto precisamos apenas fixar esses conhecimentos básicos e o uso dos registrados "E" (de 32 bits) para podermos seguir adiante.
@@ -855,7 +855,91 @@ exit:
 	int SYS_CALL
 \end{lstlisting}
 
-Mostrar a mensagem de término e encerrar a seção. E finalizamos esta parte introdutória da linguagem Assembly nos vemos no próximo capítulo.
+Mostrar a mensagem de término e encerrar a seção. 
+
+\section{Programa 1.6 - Arrays}\index{Conceitos Introdutórios}
+Vetores (ou Arrays se prefere o termo mais técnico) em Assembly são extremamente comuns, nem sentimos quando estamos o usando, essa frase é tão verdadeira que as pessoas nem reparam que isso aqui em um array:
+\begin{lstlisting}[]
+	msg1: DB 'Parte 1', LF, NULL
+	msg2: DB 'Parte 2', LF, NULL
+	msg3: DB 'Parte 3', LF, NULL
+	msg4: DB 'Parte 4', LF, NULL
+\end{lstlisting}
+
+Pronto peguei um erro nesse livro e esse autor é doido, isso são quatro variáveis! Muitas pessoas agora vão estar pensando isso, mas deixe-me esclarecer, por tudo o que vimos até o momento o que significa qualquer coisa e depois um dois pontos? Isso mesmo um MARCADOR, mas espera aí isso são nomes de var... Não meu gafanhoto isso são marcadores a um determinado ponto do programa. E um detalhe os dois pontos não importam nem são obrigatórios (pode tirá-los e verá que o programa continua mas essa regra não se aplica aos marcadores da seção \textbf{.text}). 
+
+Vamos brincar um pouco a palavra 'Parte 1' + LF + NULL contém 9 caracteres certo, então vamos criar o seguinte programa:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+  msg1: DB 'Parte 1', LF, NULL
+  msg2: DB 'Parte 2', LF, NULL
+  msg3: DB 'Parte 3', LF, NULL
+  msg4: DB 'Parte 4', LF, NULL
+
+SECTION .text
+
+global _start
+
+_start:
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, msg1
+  mov edx, 36
+  int 0x80
+
+  mov eax, 1
+  mov ebx, 5
+  int 0x80  
+\end{lstlisting}
+
+Se cada linha tem 9 caracteres as 4 linhas terão 36 deles por isso \textbf{EDX} contém esse valor (deixei em decimal mesmo para não causar confusão mas se quiser pode usar 0x24). Ao compilar e executar o programa temos: \\
+{\ttfamily Parte 1} \\
+{\ttfamily Parte 2} \\
+{\ttfamily Parte 3} \\
+{\ttfamily Parte 4}
+
+Agora façamos 2 mudanças, mover msg3 para \textbf{ECX} e 18 para \textbf{EDX}, e obviamente como resultado temos: \\
+{\ttfamily Parte 3} \\
+{\ttfamily Parte 4}
+
+É exatamente por esse motivo que usamos o NULL no final para podermos identificar essa posição e aplicarmos um corte quando vimos o marcador \textbf{tamStr} que calcula o tamanho da cadeia de caracteres a mostrar. 
+
+\subsection{Arrays de Inteiros}\index{Conceitos Introdutórios}
+Mas como seria um Array de inteiros? No programa \textbf{Converter} temos dois marcadores que utilizaremos aqui, são eles: \textbf{int\_to\_string} e \textbf{saidaResultado}. Adicionamos ambos a nossa biblioteca.
+
+Criar um arquivo chamado "arrays.asm" e vamos iniciá-lo com o seguinte conteúdo:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+	array: DD 10, 22, 13, 14, 55
+\end{lstlisting}
+
+Definimos um array (não é por causa do nome do marcador - poderíamos ter colocado "casinha" para este) com 5 números, agora devemos pensar o seguinte, cadê a posição de cada um? Temos um DD, isso significa "Define Doubleword" que aloca 4 bytes (a chave aqui é o número de bytes). Então para obtermos qualquer posição precisamos de uma simples equação: \\
+{\ttfamily [nome marcador] + 4 * [posição]}
+
+Então se fizermos:
+\begin{lstlisting}[]
+SECTION .text
+
+global _start:
+
+_start:
+  mov eax, [array + 4 * 3]
+  call int_to_string
+  call saidaResultado
+
+saida:
+  mov eax, SYS_EXIT
+  mov ebx, EXIT_SUCESS
+  int SYS_CALL 	
+\end{lstlisting}
+
+Qual será a resposta desse programa? Isso mesmo \textbf{14} que é a nossa \textbf{4º posição}, mas espera foi  colocado 3 e isso não corresponde a 3ª? Não pois a primeira posição é o número 0 e agora acabou de compreender porquê em QUALQUER linguagem de alto nível TODO índice do array começa com 0 e não 1.
+
+Aprender Assembly não vai lhe tornar um Hacker, nem você vai criar sistemas complexos com este. Aprender Assembly faz conhecer detalhes das linguagens que normalmente as pessoas não conhecem e não sabem porquê é feito dessa maneira. E finalizamos esta parte introdutória da linguagem Assembly no próximo capítulo veremos uma junção desta com a linguagem C++.
 
 % Final do Capítulo
 \clearpage

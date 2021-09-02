@@ -13,7 +13,7 @@ Talvez a pergunta mais simples seja: O que ganhamos com isso? Fico pensando sinc
 
 Resolvi incluir este capítulo no livro, pois pessoalmente prefiro utilizar o C++ para realizar as entradas e saídas de dados enquanto que o Assembly toda a parte de processamento, ou seja, é aproveitar um melhor de dois mundos. Vejamos como isso funciona e alguns exemplos nas seções seguintes.
 
-\section{Programa 5 - Troca de Informações}\index{União com C++}
+\section{Programa 2.1 - Troca de Informações}\index{União com C++}
 
 Diferentemente do que sempre fazemos vamos começar iniciando um programa em C++, chamaremos de "troca.cpp" com o seguinte conteúdo:
 \begin{lstlisting}[]
@@ -78,7 +78,7 @@ Continuamos utilizando o comando \textbf{make} para compilar e linkeditar sem o 
 
 Realmente as coisas estão começando a ficar fáceis demais, e me falaram que o Assembly era difícil.
 
-\section{Programa 6 - Questão}\index{União com C++}
+\section{Programa 2.2 - Questão}\index{União com C++}
 Um grande problema que podemos encontrar nessa solução é que agora temos de conhecer a sintaxe de duas linguagens e não apenas de uma e ficamos mais "presos". Porém isso pode ser uma excelente solução na criação de bibliotecas para soluções complexas que envolvem performance de sistemas.
 
 Me perdoe pois aqui devemos pensar de modo simples para sermos didático de modo que possamos compreender na integra como tudo funciona, mas nada impede de alçarmos mais altos voos a partir do que é mostrado aqui.
@@ -143,7 +143,7 @@ Agora podemos montar nosso fluxograma de acordo com o explicado:
 
 Para compilar e linkeditar copiamos o arquivo makefile indicado anteriormente e mudamos a variável NOME para questao. E podemos modificar o valor do parâmetro passado (que atualmente é 27) para qualquer valor de modo a testarmos as várias possibilidades.
 
-\section{Programa 7 - Parâmetros}\index{União com C++}
+\section{Programa 2.3 - Parâmetros}\index{União com C++}
 Nosso próximo programa obterá 3 parâmetros e realizará a soma entre eles, mas como os parâmetros chegam em Assembly? Usamos 3 registradores para isso na seguinte sequência EDI (recebe o 1º parâmetro), ESI (o 2º) e EDX (o 3º). Mas e se tivermos de passar mais que isso? Bem, esse é um dos problemas de utilizar essa forma de programção, nada na vida é infinito.
 
 Vamos começar com a criação de um arquivo chamado "param.cpp", com a seguinte codificação:
@@ -179,12 +179,12 @@ Nada consegue ser mais fácil que isso, colocamos o valor do primeiro parâmetro
 
 Agora basta copiar o arquivo \textbf{makefile}, alterar o valor da variável NOME e testarmos o programa com a passagem de vários valores.
 
-\section{Programa 8 - Fibonacci}\index{União com C++}
+\section{Programa 2.4 - Fibonacci}\index{União com C++}
 O italiano \textit{Leonardo Bigollo Pisano} nos deu uma das mais lindas sequências que é observada constantemente na natureza consiste em uma sucessão de números, tais que, sendo os dois primeiros números da sequência como 1 e 1, os seguintes são obtidos por meio da soma dos antecessores, assim sendo: \\
 {\ttfamily 1, 1, 2, 3, 5, 8, 13, 21, 34, ...}
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\textwidth]{Pictures/cap02/fibonacci}
+	\includegraphics[width=0.35\textwidth]{Pictures/cap02/fibonacci}
 	\caption{Sequência de Fibonacci observada na natureza}
 \end{figure}
 
@@ -271,7 +271,7 @@ Terminar:
 
 Mas deste modo o que teríamos para discutir ou aprender? Pois todos os movimentos já foram vistos anteriormente. O objetivo aqui é aprendermos a programar de um jeito simples e observando os detalhes da linguagem, se deseja aprender \textbf{lógica} lhe recomendo buscar um bom curso ou livro que ensine isso, pois aqui não pretendo ficar preocupado com o perfeccionismo.
 
-\section{Programa 9 - Dupla Chamada}\index{União com C++}
+\section{Programa 2.5 - Dupla Chamada}\index{União com C++}
 Tudo bem até o momento compreendemos que podemos passar valores do C++ para o Assembly, porém com tudo que foi mostrado parece que só podemos ter uma única chamada. Errado podemos ter várias chamadas, inclusive a vários pontos do programa, desde que esses tenham a seguinte característica sejam declarados com o comando \textbf{GLOBAL} e finalizem com o comando \textbf{RET}. 
 
 Vamos pensar em 2 estruturas, primeira:

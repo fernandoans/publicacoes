@@ -15,7 +15,7 @@ Ou seja fazia algo que muitas pessoas consideravam idiota (achou que ia falar im
 
 Para todos os programas utilizaremos a biblioteca apenas com o conjunto do segmento data (de modo que possamos escrever os nomes e não os códigos) e o arquivo makefile para compilar e linkeditar, então se acostume a copiá-los para cada um dos programas descritos e que seja seu ponto de partida.
 
-\section{Programa 10 - Quadrado}\index{Quebrar a Cabeça}
+\section{Programa 3.1 - Quadrado}\index{Quebrar a Cabeça}
 Com base em um determinado valor mostrar um quadrado de asteriscos. Como disse, as pessoas consideravam desafios idiotas pois nunca teremos um usuário pedindo: "Me dê um quadrado de asteriscos". Esse desafio é excelente para aprendermos a controlar estruturas de repetição determinada aninhas (vulgo comando "for" dentro de outro "for"). 
 \begin{figure}[H]
 	\centering
@@ -23,7 +23,7 @@ Com base em um determinado valor mostrar um quadrado de asteriscos. Como disse, 
 	\caption{Fluxograma do Programa \textbf{Quadrado}}
 \end{figure}
 
-Vamos para o programa, criar um arquivo chamado "quadrado.asm" e começamos com a seguinte codificação:
+Criar um arquivo chamado "quadrado.asm" e começamos com a seguinte codificação:
 \begin{lstlisting}[]
 %include 'bibliotecaE.inc'
 
@@ -36,8 +36,7 @@ SECTION .text
 global _start
 \end{lstlisting}
 
-Começamos então com a definição da nossa cadeia de caracteres para a saída e do valor da altura. Vamos montar o corpo principal:
-
+Começamos então com a definição da nossa cadeia de caracteres para a saída e do valor da altura. Montamos o corpo principal:
 \begin{lstlisting}[]
 _start:
   mov edi, altura
@@ -98,7 +97,7 @@ impEstrelaFinal:
 
 Já neste pedimos para mostrar o tamanho de dois que contém o '*' com Line Feed (ou quebra de linha se prefere) e assim ao mostrar o '*' desce para a próxima linha. Podemos agora imprimir quadrados de vários tamanhos, bastando apenas alterar a variável \textbf{altura}.
 
-\section{Programa 11 - Pirâmide}\index{Quebrar a Cabeça}
+\section{Programa 3.2 - Pirâmide}\index{Quebrar a Cabeça}
 Criar uma pirâmide de Asteriscos com base no valor da altura, por exemplo, se essa for 3 a pirâmide deve ser mostrada da seguinte forma:
 \begin{lstlisting}[]
   *
@@ -128,7 +127,7 @@ Pensemos assim, se a altura passada for 5, na primeira linha quantos espaços em
 	\caption{Fluxograma do Programa \textbf{Pirâmide}}
 \end{figure}
 
-Vamos para o programa, criar um arquivo chamado "piramide.asm" e começamos com a seguinte codificação:
+Criar um arquivo chamado "piramide.asm" e começamos com a seguinte codificação:
 \begin{lstlisting}[]
 %include 'bibliotecaE.inc'
 
