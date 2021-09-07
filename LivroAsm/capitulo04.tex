@@ -1,0 +1,207 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 4
+%------------------------------------------------------------------------------------
+\chapterimage{headerCap.jpeg}
+\chapter{Lidar com Arquivos}
+
+\begin{remark}
+	Os cabelos brancos são arquivos do passado. (Edgar Alan Poe - Escritor) 
+\end{remark}
+
+\section{O Segredo}\index{Lidar com Arquivos}
+Vou lhe contar um segredo, quando sai do mundo Pascal (com o Delphi) para iniciar no C (com o Java) rodei por muito tempo pois os conceitos simplesmente não se encaixavam, tinha alguns bons anos de programação mas estes não me ajudavam a migrar, foi aí que descobri um "pulo do gato", porquê não começava por algo que já sabia muito bem: manipular arquivos.
+
+Foi exatamente os conceitos da manipulação de arquivos que me fizeram compreender a linguagem e quem sabe isso também possa lhe servir para auxiliá-lo nessa jornada com o Assembly, ou pelo menos acaba sendo bem divertido.
+
+Primeiro devemos conhecer mais alguns valores para o registrador \textbf{EAX}, são eles:
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | c | l }
+		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
+		3 & 0x3 & Operação de leitura do arquivo \\
+		4 & 0x4 & Operação de escrita no arquivo \\
+		5 & 0x5 & Operação de abertura do arquivo \\
+		6 & 0x6 & Operação de fechamento do arquivo \\
+		8 & 0x8 & Operação de criação do arquivo
+	\end{tabular}
+\end{table}
+
+E para o registrador \textbf{ECX}:
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | c | l }
+		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
+		0 & 0x0 & Arquivo aberto para leitura \\
+		1 & 0x1 & Arquivo aberto para escrita \\
+		2 & 0x2 & Arquivo aberto para leitura e escrita \\
+		64 & 0x40 & Caso o arquivo não exista deve ser criado \\
+		1024 & 0x400 & Preparado para novas adições de valores
+	\end{tabular}
+\end{table}
+
+Sendo assim agora a nossa "bibliotecaE.inc" possui a seguinte codificação (atualize esta):
+\begin{lstlisting}[]
+; -------------------------------------
+; Biblioteca para os registradores E
+; -------------------------------------
+segment .data
+  LF          equ 0xA   ; Line Feed
+  NULL        equ 0xD   ; Final da String
+  RET_EXIT    equ 0x0   ; Operacao com Sucesso
+  SYS_EXIT    equ 0x1   ; Codigo de chamada para finalizar
+
+  STD_IN      equ 0x0   ; Entrada padrao
+  STD_OUT     equ 0x1   ; Saida padrao
+  STD_ERR     equ 0x2   ; Erro de operacao
+ 
+  SYS_READ    equ 0x3   ; Operacao de Leitura
+  SYS_WRITE   equ 0x4   ; Operacao de Escrita
+
+  READ_FILE   equ 0x3   ; ler o arquivo
+  WRITE_FILE  equ 0x4   ; escrever no arquivo
+  OPEN_FILE   equ 0x5   ; abrir o arquivo
+  CLOSE_FILE  equ 0x6   ; fechar o arquivo
+  CREATE_FILE equ 0x8   ; criar o arquivo
+  
+  OPEN_READ   equ 0x0   ; Arquivo para leitura
+  OPEN_WRITE  equ 0x1   ; Arquivo para escrita
+  OPEN_RW     equ 0x2   ; Arquivo para leitura/escrita
+  OPEN_CREATE equ 0x40  ; Se arquivo nao existe, cria
+  OPEN_APPEND equ 0x400 ; Arquivo para adicao  
+
+  SYS_CALL    equ 0x80  ; Envia informacao ao SO	
+\end{lstlisting}	
+
+Mas e as funções que criamos anteriormente? Essa biblioteca deve ser sempre personalizada, as funções guarde-as para quando se mostrarem necessárias, mas não neste arquivo para não colocar códigos desnecessários ao programa.
+
+Mas acabou em comentar sobre código desnecessário para quê então constantes com o mesmo valor? (por exemplo RET\_EXIT, STD\_IN e OPEN\_READ), o motivo de criarmos essas é apenas para facilitar a leitura do código, deste modo prefiro manter assim para saber com qual operação estamos lidando.
+
+Algo curioso acontece é com o valor de Leitura/Escrita (0x2), por exemplo, nos programas que fizemos para dar entrada no terminal utilizamos o valor 0x0 e para saída o valor 0x1, porém troque-os para 0x2 que o programa funcionará sem o menor problema\footnote{Inclusive já vi muitos tutoriais colocando esse valor como Entrada ou Saída padrão.}, porém NÃO devemos utilizá-lo, no caso da saída/entrada padrão ou estamos realizando uma leitura (através do teclado) ou uma saída (no monitor) NUNCA os dois. É uma simples questão de BOA PRÁTICA.
+
+\section{Programa 4.1 - Ler Arquivo}\index{Lidar com Arquivos}
+Devemos pensar em arquivos de modo semelhante que pensamos para o terminal, até o momento fazemos assim: \textbf{EAX} indica a operação e \textbf{EBX} para onde vai, por exemplo, 0x3 em \textbf{EAX} indica uma leitura e 0x0 em \textbf{EBX} que é na entrada padrão. Sendo assim, para um arquivo o registrador \textbf{EBX} é quem vai ditar para qual local que a informação vai entrar.
+
+Vamos começar com a criação de um arquivo chamado "Musica.txt" com o seguinte conteúdo:
+\begin{lstlisting}[]
+Speak:
+And disciplinary remains mercifully
+Yes and um, I'm with you Derek, this star nonsense
+Yes, yes
+Now which is it?
+I am sure of it
+
+Music:
+So, so you think you can tell
+Heaven from hell?
+Blue skies from pain?
+Can you tell a green field
+From a cold steel rail?
+A smile from a veil?
+Do you think you can tell?
+Did they get you to trade
+Your heroes for ghosts?
+Hot ashes for trees?
+Hot air for a cool breeze?
+Cold comfort for change?
+Did you exchange
+A walk-on part in the war
+For a leading role in a cage?
+How I wish, how I wish you were here
+We're just two lost souls
+Swimming in a fish bowl
+Year after year
+Running over the same old ground
+What have we found?
+The same old fears
+Wish you were here
+\end{lstlisting}	
+
+A música "\textit{Wish you were here}", grande sucesso da banda britânica \textit{Pink Floyd}, usaremos durante alguns programas. Faremos aqui um programa para ler esse arquivo e mostrá-lo na saída padrão. Nosso programa pode ser estruturado conforme o seguinte fluxo:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.2\textwidth]{Pictures/cap04/programa41}
+	\caption{Fluxograma do Programa \textbf{Ler Arquivo}}
+\end{figure}
+
+O fluxo está completamente errado existe um laço de repetição para ler o arquivo, é assim que muitos vão pensar. O fluxo está correto e não existirá tal laço. Vamos para o programa que isso ficará mais claro.
+
+Criar um arquivo chamado \textbf{lerarquivo.asm} e vamos começar com a seguinte codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+  nom_arq db "Musica.txt"
+  tam_arq equ 1024
+
+SECTION .bss
+  fd resb 4
+  buffer resb 1024
+\end{lstlisting}	
+
+Na seção \textbf{.data} temos o nome do arquivo e um tamanho em bytes deste, em Assembly precisamos saber o tamanho de tudo o que estamos fazendo, calma que existe solução para isso, esse tamanho deve conter todo o arquivo. Pode ultrapassar sem problemas, por exemplo este arquivo contém exatos 703 bytes (troque para este valor que não apresentará o menor problema).
+
+Na seção \textbf{.bss} definimos o \textbf{fd} (abreviatura para \textit{file descriptor}) esse é o mais importante de todos pois indica o ponteiro descritor do arquivo, quando abrimos um arquivo devemos guardar seu local de memória para quando formos fazer qualquer operação com este. E temos o \textbf{buffer} que indica de quantos em quantos bytes ocorrerá um descarrego de memória.
+
+Vamos compreender essa parte, quando lemos, ou mesmo gravamos, um arquivo esse conteúdo é lido (ou gravado) por partes e não de modo instantâneo, o SO envia a informação para um BUFFER de memória e o descarrega fisicamente na trilha de informação. Sendo assim quanto maior esse BUFFER mais rápido será feito os processos com o arquivo, esse pensamento está correto, porém mais memória será utilizada. 
+
+Vamos iniciar a seção do programa propriamente dito:
+\begin{lstlisting}[]
+SECTION .text
+
+global _start:
+
+_start:
+  mov eax, OPEN_FILE
+  mov ebx, nom_arq
+  mov ecx, OPEN_READ
+  int SYS_CALL	
+\end{lstlisting}	
+
+Começamos com a abertura do arquivo, realizamos para isso o movimento da operação no registrador \textbf{EAX}, neste caso a abertura do arquivo, para \textbf{EBX} então recebe o nome do arquivo que tentamos abrir, \textbf{ECX} o processo que lidamos e enviamos a informação para o SO executar.
+
+A parte mais importante é que \textbf{EAX} contém nosso \textit{File Descriptor} então antes de realizar qualquer outro processo precisamos guardá-lo:
+\begin{lstlisting}[]
+  mov [fd], eax	
+\end{lstlisting}	
+
+Realizamos a leitura deste:
+\begin{lstlisting}[]
+  mov eax, READ_FILE
+  mov ebx, [fd]
+  mov ecx, buffer
+  mov edx, tam_arq
+  int SYS_CALL	
+\end{lstlisting}	
+
+Indicamos a operação em \textbf{EAX}, o \textit{File Descriptor} com o ponteiro do arquivo para \textbf{EBX}, o tamanho do BUFFER de leitura (neste caso) em \textbf{ECX} e a quantidade de bytes que desejamos obter (por isso não existe aqui um laço de repetição) e enviamos a informação para o SO executar.
+
+Mandamos a informação para saída padrão:
+\begin{lstlisting}[]
+  mov eax, SYS_WRITE
+  mov ebx, STD_OUT
+  mov ecx, buffer
+  mov edx, tam_arq
+  int SYS_CALL	
+\end{lstlisting}	
+
+Movimentos totalmente conhecidos, só que observe o seguinte, BUFFER contém TODO o conteúdo do nosso arquivo, basicamente é isso que estamos fazendo, lendo o arquivo e colocando todo seu conteúdo em BUFFER. Não tente fazer isso com arquivos "gigantes" pois provavelmente acabará com sua memória, esse programa só serve apenas para entendimento de como funciona uma leitura. Mas para frente leremos "parceladamente" um arquivo.
+
+Precisamos fechar o arquivo:
+\begin{lstlisting}[]
+  mov eax, CLOSE_FILE
+  mov ebx, [fd]
+  int SYS_CALL	
+\end{lstlisting}	
+
+Um arquivo aberto deve ser fechado antes de finalizarmos o programa, em caso contrário este pode corromper, os movimentos são idênticos a terminar o programa. O processo em \textbf{EAX}, o \textbf{file descriptor} em \textbf{EBX} e enviamos a informação para o SO executar.
+
+E só nos resta encerrar o programa:
+\begin{lstlisting}[]
+  mov eax, SYS_EXIT
+  mov ebx, RET_EXIT
+  int SYS_CALL	
+\end{lstlisting}	
+
+Compilamos, linkeditamos e executamos conforme visto e teremos toda a letra da belíssima música do \textit{Pink Floyd} em nosso monitor.
+% Final do Capítulo
+\clearpage

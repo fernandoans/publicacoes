@@ -59,7 +59,7 @@ _start:
 Que pode ser descrito conforme o seguinte fluxograma:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.25\textwidth]{Pictures/cap01/programa1}
+	\includegraphics[width=0.25\textwidth]{Pictures/cap01/programa11}
 	\caption{Fluxograma do Programa \textbf{Hello World}}
 \end{figure}
 
@@ -204,7 +204,6 @@ E o registrador \textbf{EBX} passa a ganhar importância e deve receber valores 
 		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline
 		0 & 0x0 & Indica uma entrada de valor, corresponde a \textbf{System.in} \\
 		1 & 0x1 & Indica uma saída de valor, corresponde a \textbf{System.out} \\
-		2 & 0x2 & Indica uma erro de operação, corresponde a \textbf{System.err}
 	\end{tabular}
 \end{table}
 
@@ -255,7 +254,7 @@ Outra boa prática que podemos realizar quando se programa com Assembly é coloc
 Nosso programa pode ser descrito conforme o seguinte fluxograma:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.25\textwidth]{Pictures/cap01/programa2}
+	\includegraphics[width=0.25\textwidth]{Pictures/cap01/programa12}
 	\caption{Fluxograma do Programa \textbf{Entrada}}
 \end{figure}
 
@@ -403,13 +402,13 @@ Esses saltos são chamados de "condicionais", ou seja, dependem que uma compara�
 \begin{figure}[ht]
 	\begin{minipage}[b]{0.45\linewidth}
 		\centering
-		\includegraphics[width=0.80\textwidth]{Pictures/cap01/programa3a}
+		\includegraphics[width=0.80\textwidth]{Pictures/cap01/programa13a}
 		\caption{Fluxograma estruturado}
 	\end{minipage}
 	\hspace{0.5cm}
 	\begin{minipage}[b]{0.45\linewidth}
 		\centering
-		\includegraphics[width=0.85\textwidth]{Pictures/cap01/programa3}
+		\includegraphics[width=0.85\textwidth]{Pictures/cap01/programa13}
 		\caption{Do programa \textbf{Comparar Valores}}
 	\end{minipage}
 \end{figure}
@@ -549,7 +548,7 @@ Marcadores são criadas na biblioteca para nossa comodidade, acho que o único d
 Neste programa vamos compreender 2 ações muito comuns que acontece em programação a conversão de uma cadeia de caracteres para um número e vice versa. Observe seu fluxograma:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.65\textwidth]{Pictures/cap01/programa4}
+	\includegraphics[width=0.65\textwidth]{Pictures/cap01/programa14}
 	\caption{Fluxograma do Programa \textbf{Converter}}
 \end{figure}
 
@@ -649,7 +648,7 @@ Na prática, nosso valor será 107, começamos montando a cadeia com um "LF", e 
 
 Mas qual o sentido da divisão? Note que quando convertemos da cadeia para inteiro fomos percorrendo caractere a caractere pois podemos fazer isso em uma cadeia, porém em um número isso é impossível ir de frente para trás, então temos que andar de trás para frente.
 
-Pronto já podemos compilar, linkeditar e executar o programa. Lembre-se que se for testar com valores diferentes de 3 casas modificar o registrador ECX, na instrução "\textit{mov ecx,0x3}", para refletir esta mudança. Além disso qualquer valor colocado será aumentado em 2 graças a instrução "\textit{add eax,0x2}".
+Pronto já podemos compilar, linkeditar e executar o programa. Lembre-se que se for testar com valores diferentes de 3 casas modificar o registrador ECX, na instrução "\textit{mov ecx,0x3}", para refletir esta mudança. Além disso qualquer valor colocado será aumentado em 2 conforme a instrução "\textit{add eax,0x2}".
 
 \section{Programa 1.5 - Calculadora}\index{Conceitos Introdutórios}
 Como último programa para fecharmos esse capítulo vamos construir o menu completo para uma calculadora que realiza as quatro operações básicas. Na primeira parte solicita 2 valores e em seguida qual operação deve realizar adicionar, subtrair, multiplicar ou dividir. Porém não fique triste pois não iremos realizar as operações apenas mostrar uma saída informando que chegamos ao ponto correto.
