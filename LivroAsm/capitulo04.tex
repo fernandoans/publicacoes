@@ -203,5 +203,86 @@ E só nos resta encerrar o programa:
 \end{lstlisting}	
 
 Compilamos, linkeditamos e executamos conforme visto e teremos toda a letra da belíssima música do \textit{Pink Floyd} em nosso monitor.
+
+\section{Programa 4.2 - Gravar Arquivo}\index{Lidar com Arquivos}
+Estranho como são as coisas nos Sistemas Operacionais quem conhece o MacOS ou Linux se acostuma com alguns valores em Base Octal (Octal? é uma base numérica com 8 símbolos do 0 ao 7) composta por 3 dígitos, sendo que o primeiro corresponde ao dono (criador) do arquivo, o segundo aos usuários de mesmo grupo e o terceiro a usuários externos. E esses dígitos correspondem as seguintes permissões:
+\begin{itemize}[nolistsep]
+	\item 1 executar
+	\item 2 escrever
+	\item 3 executar e escrever
+	\item 4 ler
+	\item 5 executar e ler
+	\item 6 escrever e ler
+	\item 7 executar, escrever e ler
+\end{itemize}
+
+Essas permissões devem ser definidas para cada arquivo que criamos, em linguagens de alto nível basicamente são esquecidas por um padrão definido, mas aqui são extremamente necessárias.
+\\[2mm]
+\begin{dica}[Na verdade]
+Só precisamos decorar os valores 1, 2 e 4. Pois se pensarmos um pouco vemos que as permissões se combinam, por exemplo, o valor 3 significa a permissão 1 + 2 e assim sucessivamente.
+\end{dica}
+
+Não precisamos nos assustar pois basicamente vamos ver que tudo se trata de uma simples sequencia repetida de movimentos para os 4 registradores padrões: \textbf{EAX}, \textbf{EBX}, \textbf{ECX} e \textbf{EDX}. E garanto que tudo será bem mais simples do que se supõe.
+
+Vamos iniciar um programa chamado \textbf{gravararquivo.asm} com a seguinte codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+  msg db "Hello World! Voltamos ao Inicio...", LF
+  tamMsg equ $ - msg
+  arq db 'Hello', NULL
+  tamArq equ $ - arq
+  fd dq 0
+\end{lstlisting}	
+
+Temos a mensagem (msg) que queremos gravar e seu respectivo tamanho (tamMsg). Em seguida o nome do arquivo (arq) e o tamanho desse nome (tamArq) isso é necessário para criarmos. E por fim o conhecido \textit{file descriptor} (fd) para conter o apontamento do arquivo.
+
+\begin{lstlisting}[]
+SECTION .text
+
+global _start:
+
+_start:
+  mov eax, CREATE_FILE
+  mov ebx, arq
+  mov ecx, 0o664
+  mov edx, tamArq
+  int SYS_CALL	
+\end{lstlisting}	
+
+Primeiro passo é mover o valor 0x8 para \textbf{EAX} que indica um processo de criação (ou abertura se o arquivo existe), em seguida o nome deste para \textbf{EBX}, em \textbf{ECX} colocamos o valor \textbf{0o664} os dois primeiros indicam que se trata de um valor na base octal e esses são: 6 (permissão de escrever e ler para o dono), 6 (permissão de escrever e ler para os usuários do mesmo grupo) e 4 (permissão de ler para qualquer outro tipo de usuário), colocamos o tamanho do nome do arquivo em \textbf{EDX} e por fim dizemos ao SO para executar essa ação.
+
+\begin{lstlisting}[]
+  mov [fd], eax  
+  mov eax, WRITE_FILE
+  mov ebx, [fd]
+  mov ecx, msg
+  mov edx, tamMsg
+  int SYS_CALL	
+\end{lstlisting}	
+
+Para executar a ação de gravar em bem semelhante ao que já vimos na saída padrão com a ~diferença que em \textbf{EBX} deve ir o apontamento para \textit{file descritor}.
+
+\begin{lstlisting}[]
+  mov eax, CLOSE_FILE
+  mov ebx, [fd]
+  int SYS_CALL	
+\end{lstlisting}	
+
+Fechamos o arquivo, aqui este comando se torna essencial pois caso contrário com certeza iremos corrompê-lo.
+
+\begin{lstlisting}[]
+  mov eax, SYS_EXIT
+  mov ebx, RET_EXIT
+  int SYS_CALL	
+\end{lstlisting}	
+
+E só nos resta avisar ao SO que terminamos o programa. Porém vamos alguns detalhes que ainda devemos compreender. Compilamos, linkeditamos e executamos o programa e teremos um arquivo chamado \textbf{Hello} criado e ao abri-lo existe uma linha com o valor de \textbf{msg}. Executamos novamente e continua com uma única linha. Abrimos com um editor qualquer alteramos essa linha completamente e inclusive colocamos mais linhas e ao executarmos novamente o arquivo retorna para a uma única linha original. Mas qual o motivo disso acontecer?
+
+Quando abrimos um arquivo estamos posicionados na linha 0 e coluna 0 deste, sendo assim sempre o estamos iniciando. Mas porquê perde o conteúdo que escrevemos? Pois esse é o objetivo do 0x8 dizer que queremos um arquivo novo em folha, o que é bem diferente do 0x5 que vimos no programa anterior.
+
+Mas como fazemos então para criar ou abrir um arquivo se esse já existe e principalmente colocar mais conteúdo? Isso deixaremos para responder no próximo programa.
+
 % Final do Capítulo
 \clearpage
