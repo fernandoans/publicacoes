@@ -2,7 +2,7 @@
 
 Sempre quis aprender a linguagem Assembly mas cada livro parecia mais enrolado que a própria linguagem? Aqui iremos programar desde o primeiro capítulo. 
 
-Porém não se iluda, Assembly é uma linguagem que EXIGE compatibilidade com o Sistema Operacional e aqui utilizarei o Ubuntu, ou seja um Linux, e podemos lançar 2 perguntas:
+Porém não se iluda, Assembly é uma linguagem que EXIGE compatibilidade com o Sistema Operacional e aqui utilizarei o Ubuntu, ou seja um Linux, e podemos lançar algumas perguntas:
 
 * Possuo o Windows (ou o MacOS), serve para mim? Com certeza NÃO, muita coisa deve sofrer adaptação (a menos que assim deseje, lhe recomendo conhecer sobre o WASM).
 * Possuo outra distribuição de Linux, serve para mim? Pode ser que um detalhe ou outro deva ser modificado, mas a sua maioria será semelhante.
