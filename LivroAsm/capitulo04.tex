@@ -284,5 +284,72 @@ Quando abrimos um arquivo estamos posicionados na linha 0 e coluna 0 deste, send
 
 Mas como fazemos então para criar ou abrir um arquivo se esse já existe e principalmente colocar mais conteúdo? Isso deixaremos para responder no próximo programa.
 
+\section{Programa 4.3 - Adicionar no Arquivo}\index{Lidar com Arquivos}
+Conseguimos então criar um arquivo e adicionar conteúdo neste, porém toda vez que rodamos o programa todo arquivo é apagado e não conseguimos manter o conteúdo anterior.
+
+Para resolver este problema criamos um novo arquivo chamado "maisUma.asm" e adicionamos o seguinte conteúdo (coloque o arquivo "Hello" criado no programa anterior nesta pasta):
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+  msg2    db "Aqui temos mais uma linha", LF
+  tamMsg2 equ $ - msg2
+  arq     db 'Hello', NULL
+  tamArq  equ $ - arq
+  fd      dq 0 ;
+\end{lstlisting}
+
+Na nossa seção de constantes temos a mensagem que desejamos adicionar no arquivo: "Aqui temos mais uma linha", o nome do arquivo e nosso já conhecido ponteiro (\textit{File Descriptor}) para o arquivo.
+
+Todo "pulo do gato" esta no próximo código do programa:
+\begin{lstlisting}[]
+SECTION .text
+
+global _start:
+
+_start:
+  mov eax, OPEN_FILE
+  mov ebx, arq
+  mov ecx, OPEN_CREATE+OPEN_WRITE+OPEN_APPEND
+  mov edx, 0o664
+  int SYS_CALL
+  
+  mov [fd], eax	
+\end{lstlisting}	
+
+Movimentamos para \textbf{EAX} o código de abertura do arquivo e para \textbf{EBX} o nome deste, porém para \textbf{ECX} realizamos uma combinação de 3 valores:
+\begin{itemize}[nolistsep]
+	\item \textbf{OPEN\_CREATE} (0x40) - Se o arquivo não existe cria.
+	\item \textbf{OPEN\_WRITE} (0x4) - Abrir o arquivo para escrita.
+	\item \textbf{OPEN\_APPEND} (0x400) - Abrir o arquivo de modo inclusão.
+\end{itemize}	
+
+É exatamente essa combinação que permite Criar/Abrir o arquivo em modo para adição de conteúdo, em \textbf{EDX} colocamos as permissões do arquivo e enviamos ao SO proceder essas instruções, para \textbf{EDX} indicamos as permissões do arquivo conforme já vimos.
+
+\begin{lstlisting}[]
+escreverNoArquivo:
+  mov eax, WRITE_FILE
+  mov ebx, [fd]
+  mov ecx, msg2
+  mov edx, tamMsg2
+  int SYS_CALL 	
+\end{lstlisting}	
+
+Se fizermos um comparativo com o programa anterior teremos aqui os mesmos movimentos para gravar a informação no arquivo porém como este foi aberto com o parâmetro de adição toda essa informação será inserida ao final do conteúdo da última linha no arquivo.
+
+\begin{lstlisting}[]
+fecharArquivo:
+  mov eax, CLOSE_FILE
+  mov ebx, [fd]
+  int SYS_CALL    
+
+final:
+  mov eax, SYS_EXIT
+  mov ebx, EXIT_SUCESS
+  int SYS_CALL 	
+\end{lstlisting}	
+
+E fazemos os movimentos para fechar o arquivo e encerrar o programa. O mais interessante é que a cada vez que rodamos este programa uma nova linha será adicionada. Então se pararmos para pensar até este ponto já sabemos ler um arquivo, inciar e gravar uma informação em um novo e adicionar mais conteúdo.
+
 % Final do Capítulo
 \clearpage

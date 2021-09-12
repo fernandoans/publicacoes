@@ -26,17 +26,17 @@ Para o Ubuntu um simples comando instala o NASM a partir do terminal:\\
 	Um detalhe que incomoda muito no Assembly e sua exigência de hardware e software compatível. Meu ambiente é o Ubuntu, uma distribuição do Linux, assim todos os programas aqui mostrados foram escritos e criados para ele. Tenho o Windows, posso usar esse livro? A resposta categórica é "Não". Para Windows existe o WASM e recomendo que você pare de ler agora e procure um livro para ele pois infelizmente o que está escrito aqui não servirá para você.
 \end{dica}
 
-As pessoas se chateiam por ser franco, mas prefiro não lhe dar esperanças que não posso cumprir do que lhe dizer, usuário Windows leia esse livro que aprenderá algo, a única coisa que provavelmente aprenderá é me odiar por não ter lhe avisado e feito perder seu tempo.
+As pessoas se chateiam por ser franco, mas prefiro não lhe dar esperanças que não posso cumprir do que lhe dizer, usuário Windows leia esse livro que aprenderá algo, a única coisa que provavelmente irá aprender é me odiar por não ter lhe avisado e feito perder seu tempo.
 
 \subsection{Sobre o Editor}\index{Conceitos Introdutórios}
 
 No curso em vídeo utilizei vários editores mas como isso é um livro ele não será necessário assim recomendo o que você se sinta mais confortável, seja do Vim ao Visual Studio Code. Os únicos editores que não são possíveis utilizar estão na linha do MS-Word ou Writer (LibreOffice) por introduzirem códigos no programa, mas qualquer outro é possível.
 
 \section{Programa 1.1 - Hello World}\index{Conceitos Introdutórios}
-Abra seu editor favorito e digite o seguinte programa:
+Abrimos nosso editor favorito e digitamos o seguinte programa:
 \begin{lstlisting}[]
 section .data
-  msg db 'Hello World!', 0xA, 0xD
+  msg db 'Hello World!', 0xA
   tam equ $- msg
 
 section .text
@@ -44,15 +44,15 @@ section .text
 global _start
 
 _start:
-  mov eax, 4
-  mov ebx, 1
+  mov eax, 0x4
+  mov ebx, 0x1
   mov ecx, msg
   mov edx, tam
   int 0x80
 
-; saida
-  mov eax, 1
-  mov ebx, 0
+saida:
+  mov eax, 0x1
+  mov ebx, 0x0
   int 0x80
 \end{lstlisting}
 
@@ -76,15 +76,13 @@ E aparece a mensagem: \textbf{Hello World!} no nosso terminal.
 
 \subsection{Magia Negra}\index{Conceitos Introdutórios}
 
-Sei o que vai dizer: "Está bem parecido a algo relacionado com magia negra", mas compreenda que criamos esse programa apenas para saber que tudo está funcionando corretamente e olhe o fluxo dele verá que é algo bem simples. 
+Sei o que vai dizer: "Está bem parecido a algo relacionado com magia negra", mas compreenda que criamos esse programa apenas para saber que tudo está funcionando corretamente e olhe o fluxo dele verá que é algo bem simples. O problema é que as pessoas se preocupam demais em querer aprender tudo em uma simples frase ou mesmo em um único início de seção. Peço apenas que relaxemos pois ainda estamos arranhando a superfície. Temos muito mais coisa para vermos.
 
-O problema é que as pessoas se preocupam demais em querer aprender tudo em uma simples frase ou mesmo um único vídeo de 8 minutos colocado no YouTube (\url{https://www.youtube.com/watch?v=cnBP3G29KM8}). Relaxa pois ainda estamos arranhando a superfície. Temos muito mais coisa para vermos.
-
-Vamos fazer um acordo se ao término dessa seção não compreender o que fizemos, aí sim pode chorar, reclamar e inclusive parar de ler esse livro. Tirando isso digo de coração para determinadas pessoas: \textbf{Para de ser chato} e vai produzir algo ao invés de ficar criticando o trabalho dos outros.
+Vamos fazer um acordo se ao término dessa seção não compreender o que fizemos, aí sim pode chorar, reclamar e inclusive parar de ler esse livro. Tirando isso, permitamos ter paciência no nosso coração.
 
 \subsection{Explicação do Programa}\index{Conceitos Introdutórios}
 
-Vamos começar entendendo a estrutura do programa, ele se divide em 2 partes, uma seção ".data" que é aonde declaramos nossas constantes que utilizaremos ao longo do programa e uma seção ".text" que iremos iniciar nossos marcadores. Um marcador em particular deve ser o primeiro e definido através do comando "global" e padronizado com o nome "\_start". Sendo assim a estrutura deve ser essa:
+Vamos começar entendendo a estrutura do programa. Se divide em 2 partes, uma seção ".data" que é aonde declaramos nossas constantes que utilizaremos ao longo do programa e uma seção ".text" que teremos realmente o que este programa executará. Um marcador em particular deve ser o primeiro e definido através do comando "global" e padronizado com o nome "\_start". Sendo assim a estrutura deve ser essa:
 \begin{lstlisting}[]
 section .data
 	
@@ -104,13 +102,12 @@ section .text
 global _start
 
 _start:
-  mov eax, 1
-  mov ebx, 0
+  mov eax, 0x1
+  mov ebx, 0x0
   int 0x80
 \end{lstlisting}
 
 E agora não apresenta mais erro, e nenhuma informação. Mas o que essas linhas querem dizer? Assembly trabalha com registradores de memória e isso corresponde a uma tabela que sempre devemos ter em mente quando programamos com esta linguagem:
-
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
@@ -129,35 +126,35 @@ E agora não apresenta mais erro, e nenhuma informação. Mas o que essas linhas
 Além desses, existem os registradores de \textbf{r8} a \textbf{r15} (de 64 bits) e \textbf{r8d} a \textbf{r15d} (de 32 bits) que são utilizados nas movimentações correntes durante a nossa programação.
 
 Show demais e isso mas na prática? Bem temos que conhecer como age o comando \textbf{MOV}, este transporta valores de um lugar para outro, porém sua ordem é a seguinte: \textbf{mov destino, origem}. Ou seja, o segundo valor é que será transportado para o primeiro (tem pessoas que leem inversamente). Assim o comando: \\
-{\ttfamily mov eax, 1}
+{\ttfamily mov eax, 0x1}
 
-Está na verdade colocando o valor numérico 1 no registrador \textbf{EAX}. Mas o que isso significa? Esse registrador armazena algumas informações destinadas ao Sistema Operacional e devemos "decorar" esses valores, então vamos fazendo isso a medida que formos utilizando.
+Está na verdade colocando o valor hexadecimal (indicado pelo prefixo "0x") que corresponde ao valor 1 no registrador \textbf{EAX}. Mas o que isso significa? Esse registrador armazena algumas informações destinadas ao Sistema Operacional e devemos "decorar" esses valores, então vamos fazendo isso a medida que formos utilizando.
 
-Para o registrador "eax":
+Para o registrador \textbf{EAX}:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
-		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
+		\textbf{Decimal} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
 		1 & 0x1 & Indica o final de operação, corresponde a \textbf{System.exit}
 	\end{tabular}
 \end{table}
 
-Ou seja, ao movermos o valor 1 queremos dizer que estamos realizando uma operação de final de execução, sendo que o valor de \textbf{EBX} é meramente informativo: \\
-{\ttfamily mov ebx, 0}
+Ou seja, ao movermos este valor "0x1" queremos dizer que estamos procedendo uma operação de encerramento, sendo que o valor de \textbf{EBX} é meramente informativo: \\
+{\ttfamily mov ebx, 0x0}
 
-Como assim "informativo"? Podemos colocar um valor qualquer, usamos o zero como um padrão para indicar que tudo ocorreu bem com o nosso programa. Troque-o para qualquer outro valor e veja que o resultado será igual. Para que serve então? Para avisar a um outro programa que nos chamou, obviamente o outro deve saber disso.
+Como assim "informativo"? Podemos colocar um valor qualquer, usamos o zero como um padrão para indicar que tudo ocorreu bem com o nosso programa. Troque-o para qualquer outro valor e veja que teremos o mesmo resultado. Para que serve então? Para avisar a um outro programa que nos chamou, obviamente o outro deve saber disso.
 
 Por fim mandamos a informação para o sistema operacional com: \\
 {\ttfamily int 0x80}
 
-Esse valor hexadecimal corresponde a 128 em decimal e indica ao SO que agora é com ele que pode realizar as ações sem problemas. Então a programação é feita assim, preparamos tudo e falamos para o SO: Pode executar.
+Esse valor hexadecimal corresponde a 128 em decimal e indica ao SO que agora é com ele e que pode realizar as ações sem problemas. Então a programação é feita assim, preparamos tudo e falamos para o SO: Pode executar.
 
 \subsection{Mostrar a mensagem}\index{Conceitos Introdutórios}
 Com tudo o que vimos acima apenas expandimos a ideia para mostrar uma mensagem na saída do terminal, porém primeiro precisamos declarar duas constantes que é feito na seção .data, são elas: \\
 \begin{lstlisting}[]
 section .data
-	msg db 'Hello World!', 0xA, 0xD
-	tam equ $- msg
+  msg db 'Hello World!', 0xA
+  tam equ $- msg
 \end{lstlisting}
 
 O que queremos dizer com isso? quereremos dizer que lá vem mais uma tabela para decorarmos:
@@ -165,58 +162,58 @@ O que queremos dizer com isso? quereremos dizer que lá vem mais uma tabela para
 	\centering 
 	\begin{tabular}{c | c | l | l }
 		\textbf{Sigla} & \textbf{Tipo} & \textbf{Significado} & \textbf{Bytes} \\ \hline
-		db & Define Byte & variável de 8 bits & 1 byte\\
-		dw & Define Word & variável de 16 bits & 2 bytes \\
-		dd & Define Doubleword & variável de 32 bits & 4 byte\\
-		dq & Define Quadword & variável de 64 bits & 8 byte \\
-		ddq & Define Double Quad & variável de 128 bits - para inteiros & 10 bytes \\
-		dt & Define Ten Bytes & variável de 128 bits - para decimais & 10 bytes
+		db & Define Byte & alocação de 8 bits & 1 byte\\
+		dw & Define Word & alocação de 16 bits & 2 bytes \\
+		dd & Define Doubleword & alocação de 32 bits & 4 byte\\
+		dq & Define Quadword & alocação de 64 bits & 8 byte \\
+		ddq & Define Double Quad & alocação de 128 bits - para inteiros & 10 bytes \\
+		dt & Define Ten Bytes & alocação de 128 bits - para decimais & 10 bytes
 	\end{tabular}
 \end{table}
 
-Então temos uma variável chamada "msg" de 8 bits de espaço e os dois valores em hexadecimal significam: \textbf{0xA} o final de linha (line feed) e \textbf{0xD} um caracter que corresponde ao nulo (não possui efeito visual se o tirarmos, mas é um padrão de boa prática adotado).
-
-A variável chamada "tam" contém a quantidade de caracteres que se encontra em "msg", isso é realizado pelo comando "\textit{\$- variável}". A palavra chave "\textbf{equ}" está apenas firmando e declarando que "tam" é uma constante.
+Então temos uma marcação chamada "msg" com 8 bits de espaço e o valor em hexadecimal 0xA (que corresponde ao 10 decimal), significa: quebra de linha (line feed). A marcação "tam" contém a quantidade de caracteres que se encontra em "msg", isso é realizado pelo comando "\textit{\$- variável}". A palavra chave "\textbf{equ}" está apenas firmando e declarando que "tam" é uma constante.
 
 Agora a segunda parte no qual fazemos os movimentos e dizemos para o SO, todo seu:
 \begin{lstlisting}[]
-mov eax, 4
-mov ebx, 1
-mov ecx, msg
-mov edx, tam
-int 0x80
+  mov eax, 4
+  mov ebx, 1
+  mov ecx, msg
+  mov edx, tam
+  int 0x80
 \end{lstlisting}
 
-Mais dois valores para decorarmos o que pode acontecer com o registrador \textbf{EAX}:
+Mais dois valores para decorarmos com o registrador \textbf{EAX}:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
-		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline
+		\textbf{Decimal} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline
 		3 & 0x3 & Para operações de leitura, corresponde a \textbf{read} \\
 		4 & 0x4 & Para operações de saída, corresponde a \textbf{write}
 	\end{tabular}
 \end{table}
 
-E o registrador \textbf{EBX} passa a ganhar importância e deve receber valores correspondentes a:
+Agora o registrador \textbf{EBX} passa a ganhar importância e deve receber valores correspondentes a:
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
-		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline
-		0 & 0x0 & Indica uma entrada de valor, corresponde a \textbf{System.in} \\
-		1 & 0x1 & Indica uma saída de valor, corresponde a \textbf{System.out} \\
+		\textbf{Decimal} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline
+		0 & 0x0 & Indica uma entrada de valor na padrão do Sistema, corresponde a \textbf{System.in} \\
+		1 & 0x1 & Indica uma saída de valor na padrão do Sistema, corresponde a \textbf{System.out} \\
 	\end{tabular}
 \end{table}
 
-Os movimentos realizados nesse registrador são extremamente importantes, ao enviarmos o valor 4 para ele significa que realizaremos uma saída de informação, sendo assim o registrador \textbf{EBX} indica aonde isso será feita, e ele disse 1, ou seja, na saída padrão (ou no caso o terminal). O próximo registrador \textbf{ECX} contém o conteúdo em caractere do que desejamos mostrar e por fim o registrador \textbf{EDX} com a quantidade de caracteres que será mostrada (precisa disso? sim o Assembly EXIGE isso).
+Os movimentos realizados nesse registrador são extremamente importantes, ao enviarmos o valor 0x4 significa que realizaremos uma saída de informação, e acompanhando o registrador \textbf{EBX} indica aonde isso será feita, e ele disse 0x1, ou seja, na saída padrão (ou no caso o terminal). O próximo registrador \textbf{ECX} contém o conteúdo em caractere do que desejamos mostrar e por fim o registrador \textbf{EDX} com a quantidade de caracteres que será mostrada (precisa disso? Assembly EXIGE isso).
 
 E assim obtemos nossa mensagem "Hello World!" no terminal.
 
 \subsection{Faltou um comando}\index{Conceitos Introdutórios}
 
 Tá certo sei que faltou: \\
-{\ttfamily ; saída}
+{\ttfamily saida:}
 
-Mas esse não precisamos nos incomodar, trata-se apenas de um comentário, em Assembly do NASM tudo o que estiver depois do ";" será desprezado pelo compilador, e normalmente as pessoas programam colocando este em cada linha para indicar o que cada linha está fazendo:
+Mas esse não é apenas um marcador (label) que criamos para indicar o início de um bloco, não existe qualquer motivo para ele apenas como uma característica de clareza no código.
+
+E falando em clareza, podemos nos utilizar de comentários. Em Assembly NASM tudo o que estiver depois do ";" será desprezado pelo compilador, sendo extremamente normal as pessoas programarem e colocarem este no final de cada linha, exatamente para indicar o que está fazendo:
 \begin{lstlisting}[]
 ; hello.asm
 ; programa para mostrar uma mensagem Hello World!
@@ -224,8 +221,8 @@ Mas esse não precisamos nos incomodar, trata-se apenas de um comentário, em As
 
 ; Secao de variaveis
 section .data
-	msg db 'Hello World!', 0xA, 0xD ; Mensagem a mostrar
-	tam equ $- msg                  ; Quantidade de caracteres da mensagem
+	msg db 'Hello World!', 0xA ; Mensagem a mostrar
+	tam equ $- msg             ; Quantidade de caracteres da mensagem
 	
 ; Secao do Programa	
 section .text
@@ -240,7 +237,7 @@ _start:
 	mov edx, tam  ; Quantidade de caracteres
 	int 0x80      ; Envia a informacao ao Sistema Operacional
 	
-; saida
+saida:
 	mov eax, 1    ; Informa que terminamos as acoes
 	mov ebx, 0    ; Informa o estado final do programa - 0 sem erro
 	int 0x80      ; Envia a informacao ao Sistema Operacional
