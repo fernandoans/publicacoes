@@ -17,7 +17,7 @@ Primeiro devemos conhecer mais alguns valores para o registrador \textbf{EAX}, s
 \begin{table}[H]
 	\centering 
 	\begin{tabular}{c | c | l }
-		\textbf{Numérico} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
+		\textbf{Decimal} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
 		3 & 0x3 & Operação de leitura do arquivo \\
 		4 & 0x4 & Operação de escrita no arquivo \\
 		5 & 0x5 & Operação de abertura do arquivo \\
@@ -294,7 +294,7 @@ Para resolver este problema criamos um novo arquivo chamado "maisUma.asm" e adic
 SECTION .data
   msg2    db "Aqui temos mais uma linha", LF
   tamMsg2 equ $ - msg2
-  arq     db 'Hello', NULL
+  arq     db 'Hello'
   tamArq  equ $ - arq
   fd      dq 0 ;
 \end{lstlisting}
@@ -349,7 +349,153 @@ final:
   int SYS_CALL 	
 \end{lstlisting}	
 
-E fazemos os movimentos para fechar o arquivo e encerrar o programa. O mais interessante é que a cada vez que rodamos este programa uma nova linha será adicionada. Então se pararmos para pensar até este ponto já sabemos ler um arquivo, inciar e gravar uma informação em um novo e adicionar mais conteúdo.
+E fazemos os movimentos para fechar o arquivo e encerrar o programa. Sabemos porém que o mais interessante a cada vez que rodamos este programa uma nova linha será adicionada ao arquivo. Então se pararmos para pensar até este ponto já sabemos ler um arquivo, iniciar, gravar uma informação em um novo e adicionar mais conteúdo.
+
+\section{Programa 4.3 - Adicionar no Arquivo}\index{Lidar com Arquivos}
+Talvez uma das partes mais complicada seja localizar um determinado ponto dentro do arquivo, permita-me reformular esta frase, já vamos ter que aprender mais valores e adicionar mais informação a nossa biblioteca.
+
+Primeiro devemos conhecer mais alguns valores para o registrador \textbf{EAX}, são eles:
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | c | l }
+		\textbf{Decimal} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
+		18 & 0x13 & Operação de localização no arquivo
+	\end{tabular}
+\end{table}
+
+E para o registrador \textbf{EDX}:
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | c | l }
+		\textbf{Decimal} & \textbf{Hexadecimal} & \textbf{Utilização} \\ \hline 
+		0 & 0x0 & A partir do início do arquivo \\
+		1 & 0x1 & Na posição que estiver o cursor \\
+		2 & 0x2 & Final do Arquivo
+	\end{tabular}
+\end{table}
+
+Sendo assim agora a nossa "bibliotecaE.inc" possui a seguinte codificação complementar (atualize esta):
+\begin{lstlisting}[]
+; -------------------------------------
+; Biblioteca para os registradores E
+; -------------------------------------
+segment .data
+...
+SEEK_FILE   equ 0x13  ; posicionar no arquivo
+SEEK_SET    equ 0x0   ; inicio do arquivo
+SEEK_CUR    equ 0x1   ; posicao do cursor
+SEEK_END    equ 0x2   ; final do arquivo	
+\end{lstlisting}	
+
+Vamos com calma para se posicionar em um arquivo, após abrí-lo precisamos em \textbf{EAX} indicar a operação, ou seja, o SEEK\_FILE (0x19), para \textbf{EBX} nosso já conhecido \textit{File Descriptor} (ponteiro do arquivo), em \textbf{ECX} a quantidade de caracteres para saltar (essa é a parte complicada) e finalmente em \textbf{EDX} se desejamos proceder o salto a partir do início no arquivo (SEEK\_SET), ou do ponto de leitura que já estamos (SEEK\_CUR - obviamente no momento que abrimos o arquivo esse valor será idêntico ao primeiro) ou estamos lendo de trás para frente a partir do final no arquivo (SEEK\_END).
+
+Lembra da nossa música que lemos no primeiro programa dessa seção? Então coloque-a nesta pasta além do makefile, e vamos criar um novo arquivo chamado "lerPosicao.asm" com a seguinte codificação inicial:
+
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+SECTION .data
+  arq    db "Musica.txt"
+  tam    equ 1024
+
+SECTION .bss
+  fd     resb 4
+  buffer resb 1024
+
+SECTION .text
+
+global _start:
+
+_start:
+  mov eax, OPEN_FILE
+  mov ebx, arq
+  mov ecx, OPEN_READ
+  int SYS_CALL
+  mov [fd], eax
+\end{lstlisting}	
+
+Se ainda tem alguma dúvida sobre qualquer código escrito até aqui recomendo que retorne ao início deste capítulo e reveja qualquer conceito, pois neste ponto vamos nos concentrar apenas na parte de pegar uma determinada informação e ler.
+
+Vamos criar três blocos:
+\begin{lstlisting}[]
+posicionar:
+  ; TODA PESQUISA VEM AQUI
+
+ler:
+  mov eax, READ_FILE
+  mov ebx, [fd]
+  mov ecx, buffer
+  mov edx, tam
+  int SYS_CALL
+
+saidaNoConsole:
+  mov eax, SYS_WRITE
+  mov ebx, STDOUT
+  mov ecx, buffer
+  mov edx, tam
+  int SYS_CALL
+\end{lstlisting}	
+
+Calma que está faltando informação, o bloco \textbf{ler} e \textbf{saidaNoConsole} fazem exatamente a mesma coisa que vimos no primeiro programa. E os dois últimos blocos:
+\begin{lstlisting}[]
+fechar:
+  mov eax, CLOSE_FILE
+  mov ebx, [fd]
+  int SYS_CALL
+
+termino:
+  mov eax, SYS_EXIT
+  mov ebx, EXIT_SUCESS
+  int SYS_CALL
+\end{lstlisting}
+
+Também já estamos cansados de ver neste capítulo procedendo o fechamento do arquivo e o término do programa.
+
+\section{Concentrar na Pesquisa}\index{Lidar com Arquivos}
+Vamos nos concentrar exclusivamente naquele bloco posicionar, se executarmos da forma como se encontra o código temos exatamente o primeiro programa encontrado neste capítulo, ou seja, vamos ler o arquivo inteiro, mas se adicionarmos a seguinte codificação:
+\begin{lstlisting}[]
+posicionar:
+  mov eax, SEEK_FILE
+  mov ebx, [fd]
+  mov ecx, 144
+  mov edx, SEEK_SET
+  int SYS_CALL
+\end{lstlisting}
+
+Começaremos a ler o nosso arquivo a partir do caractere 144, se contar essa posição no arquivo teremos bem no começo da música e saltamos toda a parte da introdução, ou seja mostra a partir de: \\
+{\ttfamily So, so you think you can tell... Wish you were here}
+
+O mesmo efeito teria o valor de SEEK\_CUR em \textbf{EDX} pois como acabamos de abrir o arquivo, sua posição inicial de leitura é 0 e contaremos os mesmos 144 caracteres a partir dessa posição, porém se mudamos para:
+
+\begin{lstlisting}[]
+posicionar:
+  mov eax, SEEK_FILE
+  mov ebx, [fd]
+  mov ecx, 144
+  mov edx, SEEK_SET
+  int SYS_CALL
+
+  mov eax, SEEK_FILE
+  mov ebx, [fd]
+  mov ecx, 428
+  mov edx, SEEK_CUR
+  int SYS_CALL
+\end{lstlisting}
+
+No primeiro conjunto estamos indo até a posição 144 (ou seja no começo da música propriamente dito), em seguida percorremos mais 428 caracteres e temos basicamente o último verso desta a partir de: \\
+{\ttfamily Swimming in a fish bowl... Wish you were here}
+
+Também podemos nos posicionar de trás para frente:
+\begin{lstlisting}[]
+posicionar:
+  mov eax, SEEK_FILE
+  mov ebx, [fd]
+  mov ecx, -131
+  mov edx, SEEK_END
+  int SYS_CALL
+\end{lstlisting}
+
+E obtermos exatamente o mesmo resultado. Calma que este programa é apenas para exemplificar como é aplicado os saltos dentro de arquivos e na prática não faríamos desta forma, provavelmente pedimos a informação para o usuário (como uma palavra dentro do arquivo) e damos saltos até localizá-la.
 
 % Final do Capítulo
 \clearpage
