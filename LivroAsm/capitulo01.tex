@@ -935,7 +935,146 @@ saida:
 
 Qual será a resposta desse programa? Isso mesmo \textbf{14} que é a nossa \textbf{4º posição}, mas espera foi  colocado 3 e isso não corresponde a 3ª? Não pois a primeira posição é o número 0 e agora acabou de compreender porquê em QUALQUER linguagem de alto nível TODO índice do array começa com 0 e não 1.
 
-Aprender Assembly não vai lhe tornar um Hacker, nem você vai criar sistemas complexos com este. Aprender Assembly faz conhecer detalhes das linguagens que normalmente as pessoas não conhecem e não sabem porquê é feito dessa maneira. E finalizamos esta parte introdutória da linguagem Assembly no próximo capítulo veremos uma junção desta com a linguagem C++.
+\section{Programa 1.7 - Par ou Ímpar}\index{Conceitos Introdutórios}
+Esse é um dos programas que mais vejo as pessoas tentarem em Assembly e sei que existem milhares de formas, porém a mais simples é sempre dividir o número por dois e verificar se o resto é 0, mas como se verifica isso? Com 4 (quatro) de código:
+\begin{lstlisting}[]
+  mov edx, 0
+  mov eax, 57
+  mov ebx, 2
+  div ebx
+\end{lstlisting}
+
+Primeiro iniciamos o registrador \textbf{EDX} com 0 (vamos fazer tudo com decimais para facilitar o entendimento), em seguida para \textbf{EAX} o valor que desejamos testar (no caso 57) e para \textbf{EBX} o valor do divisor (obviamente 2) e pedimos a divisão de \textbf{EBX}. Agora aparece a beleza do Assembly a função DIV executa $EAX = EAX \div EBX$, ou seja, o resultado da divisão irá para \textbf{EAX}, porém o resto dessa 
+vai para \textbf{EDX} (exatamente por isso tivemos que iniciar esse registrador).
+
+Vamos criar um simples programa para vermos esse resultado, coloquemos na "bibliotecaE.inc" os seguintes blocos de marcadores (já vistos anteriormente):
+\begin{itemize}[nolistsep]
+	\item string\_to\_int
+	\item int\_to\_string
+	\item saidaResultado
+\end{itemize}
+
+Além obviamente dos valores constantes já vistos e criamos um programa chamado "testResto.asm" com a seguinte codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+section .text
+
+global _start
+
+_start:
+  mov edx, 0
+  mov eax, 57
+  mov ebx, 2
+  div ebx
+
+  mov eax, edx
+  call int_to_string
+  call saidaResultado
+
+saida: 
+  mov eax, SYS_EXIT
+  int SYS_CALL
+\end{lstlisting}
+
+Além das linhas já vistas, movemos o resultado de \textbf{EDX} para \textbf{EAX}, convertemos o valor de inteiro para uma cadeia de caracteres (através da chamada a \textit{int\_to\_string}) e mostramos esse valor na saída do terminal (através da chamada a \textit{saidaResultado}).
+
+Compilamos, linkeditamos e executamos esse programa e temos como saída o valor 1 indicando que trata de um número ímpar já que o mesmo possui um resto diferente de 0. Mude o valor de EAX para 56 e teremos a saída 0.
+
+Antes de continuar a leitura, tente realizar esse exercício de criar um programa para solicitar um valor de 3 dígitos para o usuário e mostrar se esse valor é Par ou Ímpar.
+
+\subsection{Resposta do Problema}\index{Conceitos Introdutórios}
+Com a utilização da nossa biblioteca (por isso já deixamos o bloco string\_to\_int preparado) vamos criar um programa chamado "parImpar.asm" com o seguinte início de codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+section .data
+  msg      db 'Entre com o valor de 3 digitos:', LF, NULL
+  tamMsg   equ $ - msg  
+  parMsg   db 'Numero Par!', LF, NULL
+  tamPar   equ $ - parMsg
+  imparMsg db 'Numero Impar!', LF, NULL
+  tamImpar equ $ - imparMsg
+
+section .bss
+  num resb 1
+
+section .text
+
+global _start
+\end{lstlisting}
+
+Temos a definição de todos os nossos marcadores que serão mostrados com seus respectivos tamanho na seção \textbf{.data} e o marcador \textbf{num} que o usuário deve entrar com a informação.
+\begin{lstlisting}[]
+_start:
+  mov eax, SYS_WRITE
+  mov ebx, STD_OUT
+  mov ecx, msg
+  mov edx, tamMsg
+  int SYS_CALL
+
+entrada_valor:
+  mov eax, SYS_READ
+  mov ebx, STD_IN
+  mov ecx, num 
+  mov edx, 0x4
+  int SYS_CALL	
+\end{lstlisting}
+
+Os próximos blocos mostram a informação '\textit{Entre com o valor de 3 digitos:}' e aguarda que o usuário entre com um valor que DEVE ser um número de 3 POSIÇÕES (mas ali tem 0x4, sim estamos considerando o ENTER que será usado), se desejar alterar isso sinta-se a vontade mas valores com tamanhos diferentes darão resultados inesperados (e provavelmente errados).
+\begin{lstlisting}[]
+  lea esi, [num]
+  mov ecx, 0x3         ; Tamanho do Numero de Entrada
+  call string_to_int
+\end{lstlisting}
+
+Em \textbf{ESI} colocamos o valor digitado pelo usuário e em \textbf{ECX} indicamos que este valor possui 3 posições para que o bloco \textit{string\_to\_int} converta-o corretamente para um inteiro e coloque-o em \textbf{EAX}.
+\begin{lstlisting}[]
+verificar:	
+  mov edx, 0x0
+  mov ebx, 0x2
+  div ebx
+  cmp edx, 0x0
+  jz mostra_par
+\end{lstlisting}
+
+Conforme vimos anteriormente iniciamos \textbf{EDX} com 0 e \textbf{EBX} com 2 e procedemos a divisão. Resta-nos analisar se o resultado é 0 no qual saltamos para o marcador \textit{mostra\_par}, caso contrário o fluxo prossegue.
+\begin{lstlisting}[]
+mostra_impar:
+  mov eax, SYS_WRITE
+  mov ebx, STD_OUT
+  mov ecx, imparMsg
+  mov edx, tamImpar
+  int SYS_CALL
+  jmp saida
+\end{lstlisting}
+
+Caso o fluxo prossiga mostramos na saída do terminal a mensagem '\textit{Numero Impar!}' e saltamos incondicionalmente (função \textbf{JMP}) para o marcador \textit{saida}.
+\begin{lstlisting}[]
+mostra_par:
+  mov eax, SYS_WRITE
+  mov ebx, STD_OUT
+  mov ecx, parMsg
+  mov edx, tamPar
+  int SYS_CALL
+\end{lstlisting}
+
+Caso no bloco \textit{verificar} tenhamos procedido o salto mostramos na saída do terminal a mensagem '\textit{Numero Par!}' e seguimos adiante.
+\begin{lstlisting}[]
+saida: 
+  mov eax, SYS_EXIT
+  mov ebx, RET_EXIT
+  int SYS_CALL	
+\end{lstlisting}
+
+O bloco do marcador \textit{saida} encerra nosso programa. Basta compilar, linkeditar e executar para testarmos diversos valores de 3 dígitos, se desejar pode mudar essa característica. E aqui está o fluxograma deste programa para um melhor entendimento:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.25\textwidth]{Pictures/cap01/programa17}
+	\caption{Fluxograma do Programa \textbf{Par ou Ímpar}}
+\end{figure}
+
+Aprender Assembly não vai lhe tornar um Hacker, nem você vai criar sistemas complexos com este. Assembly nos permite conhecer detalhes das linguagens de alto nível que normalmente as pessoas desconhecem e não sabem o motivo de ser criado dessa maneira. E assim finalizamos esta parte introdutória da linguagem Assembly no próximo capítulo veremos uma junção desta com a linguagem C++.
 
 % Final do Capítulo
 \clearpage
