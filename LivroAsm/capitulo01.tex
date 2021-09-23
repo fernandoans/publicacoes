@@ -910,7 +910,7 @@ Criar um arquivo chamado "arrays.asm" e vamos iniciá-lo com o seguinte conteúd
 %include 'bibliotecaE.inc'
 
 SECTION .data
-	array: DD 10, 22, 13, 14, 55
+  array: DD 10, 22, 13, 14, 55
 \end{lstlisting}
 
 Definimos um array (não é por causa do nome do marcador - poderíamos ter colocado "casinha" para este) com 5 números, agora devemos pensar o seguinte, cadê a posição de cada um? Temos um DD, isso significa "Define Doubleword" que aloca 4 bytes (a chave aqui é o número de bytes). Então para obtermos qualquer posição precisamos de uma simples equação: \\

@@ -13,7 +13,47 @@ Quando era mais jovem e iniciei no mundo da programação propus uma vez um desa
 
 Ou seja fazia algo que muitas pessoas consideravam idiota (achou que ia falar impossível) e talvez realmente fosse, mas idiota no sentido de não ser algo prático para se utilizar, mas era meu modo de criar um "Hello World" mais inteligente. Nessa seção teremos meus quatro desafios básicos, e se posso quero lhe sugerir que tente resolvê-los antes de ler a solução. Veja qual é o desafio, entenda o requisito e resolva-o depois pode ver a solução. Vou lhe dar uma dica preciosa antes mesmo de começarmos, escreva no papel o que pretende fazer e organize suas ideias, senão conseguir organizá-las então isso não serve como programa.
 
-Para todos os programas utilizaremos a biblioteca apenas com o conjunto do segmento data (de modo que possamos escrever os nomes e não os códigos) e o arquivo makefile para compilar e linkeditar, então se acostume a copiá-los para cada um dos programas descritos e que seja seu ponto de partida.
+Para todos os programas utilizaremos a biblioteca descrita a seguir e o arquivo makefile para compilar e linkeditar, então se acostume a copiá-los para cada um dos programas descritos e que seja nosso ponto de partida. 
+A parte mais desafiadora será que nossa 'bibliotecaE.inc' deve conter a seguinte codificação para todos os programas:
+
+\begin{lstlisting}[]
+segment .data
+  LF          equ 0xA  ; Line Feed
+  NULL        equ 0x0  ; Final da String
+  EXIT_SUCESS equ 0x0  ; Operacao com Sucesso
+  SYS_EXIT    equ 0x1  ; Codigo de chamada para finalizar
+
+  STDIN       equ 0x0  ; System.in
+  SYS_WRITE   equ 0x4  ; print
+  SYS_CALL    equ 0x80 ; inteiro final
+
+  estrela  DB  '*', LF
+  espaco   DB  ' ', LF
+
+segment .text
+
+impEspaco:
+  mov eax, SYS_WRITE
+  mov ebx, STD_OUT
+  mov ecx, espaco
+  int SYS_CALL
+  ret
+
+impEstrela:
+  mov eax, SYS_WRITE
+  mov ebx, STD_OUT
+  mov ecx, estrela
+  int SYS_CALL
+  ret  
+\end{lstlisting}
+
+E não podemos adicionar, para os desafios aqui propostos, qualquer elemento na seção .data ou mesmo novas impressões a não ser dos blocos \textit{impEspaco} e \textit{impEstrela}. Então existe aqui um macete nos desenhos que podemos adotar e guardar isso como técnica para nossos programas. Observemos este ponto do código:
+\begin{lstlisting}[]
+  estrela  DB  '*', LF
+  espaco   DB  ' ', LF
+\end{lstlisting}
+
+O macete que devemos conhecer é quando vamos imprimir ou não uma quebra de linha. Se durante a impressão da estrela (ou espaco) enviamos para \textbf{EDX} (que inclusive falta nos blocos) o valor 1 não quebramos a linha se for 2 (o \textbf{LF} é incluído) temos a quebra de linha.
 
 \section{Programa 3.1 - Quadrado}\index{Quebrar a Cabeça}
 Com base em um determinado valor mostrar um quadrado de asteriscos. Como disse, as pessoas consideravam desafios idiotas pois nunca teremos um usuário pedindo: "Me dê um quadrado de asteriscos". Esse desafio é excelente para aprendermos a controlar estruturas de repetição determinada aninhas (vulgo comando "for" dentro de outro "for"). 
@@ -27,22 +67,26 @@ Criar um arquivo chamado "quadrado.asm" e começamos com a seguinte codificaçã
 \begin{lstlisting}[]
 %include 'bibliotecaE.inc'
 
-SECTION .data
-  estrela DB '*', LF, NULL
-  altura EQU 4
+SECTION .bss
+  lado resb 0x1 ; Valor do Lado Inicial
 
 SECTION .text
 
 global _start
+
+_start:
+  mov byte[lado], 0x4  ; Valor inicial do Lado
+  mov edi, dword[lado]
 \end{lstlisting}
 
-Começamos então com a definição da nossa cadeia de caracteres para a saída e do valor da altura. Montamos o corpo principal:
-\begin{lstlisting}[]
-_start:
-  mov edi, altura
+Apenas para facilitar nossa definição do tamanho do quadrado criamos um marcador chamado 'lado', então definimos seu inicial para 4 (ou seja teremos um quadrado de 4 por 4, mude-o a vontade para testar outros tamanhos). Colocamos o valor de lado em \textbf{EDI} (que controla a quantidade de linhas), para o marcador \textbf{inicio}.
 
+O interessante aqui é observamos como são realizadas as operações de movimentação entre um valor para um marcador da seção .bss e deste para um registrador. Do lado .bss usamos seu tipo que no caso é \textbf{byte}, porém quando vamos enviar para o registrador utilizamos \textbf{word}. 
+
+Montamos o corpo principal:
+\begin{lstlisting}[]
 inicio:
-  mov esi, altura
+  mov esi, dword[lado]
   call impLinha
   sub edi, 0x1
   cmp edi, 0x0
@@ -50,20 +94,20 @@ inicio:
   jmp inicio	
 \end{lstlisting}
 
-Colocamos o valor da altura em \textbf{EDI} (que controla a quantidade de linhas), para o marcador \textbf{inicio}, colocamos o valor da altura em \textbf{ESI} (que controla a quantidade de colunas), saltamos para um marcador de modo a mostrar 1 linha, reduzimos a quantidade de \textbf{EDI} e comparamos seu valor com 0, se for igual vamos para o marcador \textbf{saida} caso contrário retornamos para o marcador \textbf{início}.
-
+A cada linha, o valor de lado deve ser colocado em \textbf{ESI} (que controla a quantidade de colunas, já que um quadrado tem a mesma quantidade de linhas e colunas), saltamos para o marcador de modo a mostrar uma linha. Reduzimos a quantidade de \textbf{EDI} e comparamos seu valor com 0, se for igual saltamos para o marcador \textbf{saida} caso contrário retornamos para o \textbf{início}. Ou seja, este será o bloco principal do programa que gera todas as linhas do nosso quadrado.
 \begin{lstlisting}[]
 impLinha:
+  mov edx, 0x1
   call impEstrela
   sub esi, 0x1
   cmp esi, 0x1
   jg impLinha
-  je impEstrelaFinal
+  mov edx, 0x2
+  call impEstrela
   ret
 \end{lstlisting}
 
-No marcador \textbf{impLinha} mostramos um * na saída do terminal, reduzimos o valor de \textbf{ESI} e verificamos se este for maior que 1 retornamos para o marcador \textbf{impLinha}, se for igual mostramos "* + LF" (para saltar de linha) e retornamos para o ponto que nos chamou.
-
+No marcador \textbf{impLinha} usamos o valor de EDX em 1 para mostramos um '*' na saída do terminal, reduzimos o valor de \textbf{ESI} e se este for maior que 1 retornamos para o marcador \textbf{impLinha}. Quando o valor de \textbf{ESI} não for maior que 1, usamos o valor de EDX em 2 para mostramos "* + LF" (para saltar de linha) e retornamos para o ponto que nos chamou.
 \begin{lstlisting}[]
 saida:
   mov eax, SYS_EXIT
@@ -71,31 +115,7 @@ saida:
   int SYS_CALL	
 \end{lstlisting}
 
-Neste ponto apenas fazemos as movimentações para terminar o programa. Mas calma que ainda existem mais dois marcadores importantes no conjunto.
-
-\begin{lstlisting}[]
-impEstrela:
-  mov eax, SYS_WRITE
-  mov ebx, STDOUT
-  mov ecx, estrela
-  mov edx, 0x1
-  int SYS_CALL
-  ret	
-\end{lstlisting}
-
-Observe que a cadeia de caracteres estrelas é formada por 3 elementos, dois deles é que nos interessam, se enviamos o tamanho em 1 apenas estamos tratando de mostrar '*' na saída do terminal e o cursor ficará na mesma linha, sem "cair" para a próxima.
-
-\begin{lstlisting}[]
-impEstrelaFinal:
-  mov eax, SYS_WRITE
-  mov ebx, STDOUT
-  mov ecx, estrela
-  mov edx, 0x2
-  int SYS_CALL
-  ret	
-\end{lstlisting}
-
-Já neste pedimos para mostrar o tamanho de dois que contém o '*' com Line Feed (ou quebra de linha se prefere) e assim ao mostrar o '*' desce para a próxima linha. Podemos agora imprimir quadrados de vários tamanhos, bastando apenas alterar a variável \textbf{altura}.
+Neste ponto apenas fazemos as movimentações para terminar o programa. Mas calma que ainda existem mais dois marcadores importantes no conjunto. Podemos agora imprimir quadrados de vários tamanhos, bastando apenas alterar os valores iniciais de \textbf{EDI} e \textbf{ESI}.
 
 \section{Programa 3.2 - Pirâmide}\index{Quebrar a Cabeça}
 Criar uma pirâmide de Asteriscos com base no valor da altura, por exemplo, se essa for 3 a pirâmide deve ser mostrada da seguinte forma:
@@ -115,8 +135,8 @@ Para um valor 4, sairá assim:
 
 O que mais gosto desse desafio é que apresenta um elemento que não estamos vendo, os espaços iniciais, temos aqui duas perguntas que devemos resolver:
 \begin{enumerate}[nolistsep]
-	\item Quantidade de espaços em brancos em cada linha?
-	\item Quantidade de * adicionados a cada 2ª linha?
+	\item Quantidade de espaços em cada linha.
+	\item Quantidade de * adicionados a partir da 2ª linha.
 \end{enumerate}
 
 Pensemos assim, se a altura passada for 5, na primeira linha quantos espaços em branco iniciais temos? Isso mesmo 4, mas essa é a resposta errada, na verdade temos a altura menos 1 (já que estamos na 1ª linha), na segunda linha a resposta não muda, é a altura menos 2 (agora estamos na 2ª linha). Agora vamos focar na segunda pergunta, temos 1 na 1ª linha, e são adicionados mais 2 asteriscos a cada linha.
@@ -131,34 +151,30 @@ Criar um arquivo chamado "piramide.asm" e começamos com a seguinte codificaçã
 \begin{lstlisting}[]
 %include 'bibliotecaE.inc'
 
-SECTION .data
-  estrela  DB  '*', LF, NULL
-  espaco   DB  ' ', LF, NULL
-
 SECTION .bss
-  altura      resb 0xA ; Altura (fixa)
-  linha       resb 0xA ; linha atual
-  qtdespacos  resb 0xA ; Qtd de espacos
-  qtdestrelas resb 0xA ; Qtd de estrelas
-  qtdlinhas   resb 0xA ; Qtd linhas ja impressa
+  altura      resb 0x4 ; Altura (fixa)
+  linha       resb 0x4 ; linha atual
+  qtdespacos  resb 0x4 ; Qtd de espacos
+  qtdestrelas resb 0x4 ; Qtd de estrelas
+  qtdlinhas   resb 0x4 ; Qtd linhas ja impressa
 
 SECTION .text
 
 global _start
 \end{lstlisting}
 
-Essa é a parte fácil: Codificar. Trata apenas de uma simples tradução para o nosso fluxograma que já escrevemos. Gostaria muito que as pessoas observassem que NUNCA podemos iniciar a codificação se primeiro não temos as respostas para nosso problema, seria uma simples perda de tempo (ou se prefere tentativa e erro).E falando sério, é por isso que existem tantas piadas a respeito de programas errados ou de programadores fazendo besteiras pois eles preferem encurtar o caminho.
+Essa é a parte fácil: Codificar. Trata apenas de uma simples tradução para o nosso fluxograma que já escrevemos. Gostaria muito que as pessoas observassem que NUNCA podemos iniciar a codificação se primeiro não temos as respostas para nosso problema, seria uma simples perda de tempo (ou se prefere tentativa e erro).E falando sério, é por isso que existem tantas piadas a respeito de programas errados ou de programadores fazendo besteiras pois tentam encurtar o caminho.
 
 Seguimos agora para o início do marcador \textbf{\_start} no qual atribuímos os valores as nossas variáveis:
 \begin{lstlisting}[]
 _start:
   mov byte[altura], 0x8
+  mov byte[qtdlinhas], 0x8
   mov byte[linha], 0x1
   mov byte[qtdestrelas], 0x1
-  mov byte[qtdlinhas], 0x8
 \end{lstlisting}
 
-No marcador \textbf{inicio} é que temos o coração do nosso programa:
+Inicializamos os valores das nossas "constantes" que vamos utilizar como iniciais, apenas para facilitar. No marcador \textbf{inicio} é que realmente temos o coração do nosso programa:
 \begin{lstlisting}[]
 inicio:
   mov edi, dword[altura]
@@ -193,10 +209,16 @@ Para mostrar os espaços basta verificarmos o registrador \textbf{EDI} que cont�
 \begin{lstlisting}[]
 impEstrelas:
   cmp edi, 0x1
-  je impEstrelaFinal
+  je finalImpEstrela
+  mov edx, 0x1
   call impEstrela
   sub edi, 0x1
-  jmp impEstrelas	
+  jmp impEstrelas
+
+finalImpEstrela:
+  mov edx, 0x2
+  call impEstrela
+  ret  	
 \end{lstlisting}
 
 Mais um marcador de controle, agora para a impressão dos asteriscos, basicamente a mesma coisa do anterior porém com a diferença que ao término devemos imprimir o asterisco que conterá o salto de linha. De resto temos uma repetição padrão do anterior.
@@ -208,37 +230,87 @@ saida:
   int SYS_CALL	
 \end{lstlisting}
 
-E finalmente a saída do programa e encerramento das chamadas. Espera um pouco não faltou mais 3 marcadores? Sim, dois deles vimos no programa anterior:
-\begin{lstlisting}[]
-impEstrela:
-  mov edx, 1
-  mov ecx, estrela
-  mov eax, SYS_WRITE
-  mov ebx, STDOUT
-  int SYS_CALL
-  ret
+E finalmente a saída do programa e encerramento das chamadas. E estamos prontos para mostrarmos uma pirâmide de qualquer tamanho possível, recomendo que tente estender este programa para mostrar um "Losango" (basta continuar a impressão e inverter a pirâmide). 
 
-impEstrelaFinal:
-  mov edx, 2
-  mov ecx, estrela
-  mov eax, SYS_WRITE
-  mov ebx, STDOUT
-  int SYS_CALL
-  ret
+\section{Programa 3.3 - Xadrez}\index{Quebrar a Cabeça}
+Realmente desenhar um tabuleiro de Xadrez é um desafio para muitos programadores, pois existe uma intercalação entre '*' e ' ' principalmente nas linhas pois o que começava com '*' agora vai começar com um ' '. O resultado é bem bonito:
+\begin{lstlisting}[]
+* * * * * * * *
+ * * * * * * * * 
+* * * * * * * *
+ * * * * * * * * 
+* * * * * * * *
+ * * * * * * * * 
+* * * * * * * *
+ * * * * * * * * 
 \end{lstlisting}
 
-Que mostra o asterisco na mesma linha e o asterisco com o salto de linha, e agora basta apenas repetir o primeiro marcador, mas ao invés de usarmos o asterisco vamos usar o espaço.
+Vamos começar com a criação de um arquivo chamado 'xadrez.asm' com a seguinte codificação:
 \begin{lstlisting}[]
-impEspaco:
-  mov edx, 1
-  mov ecx, espaco
-  mov eax, SYS_WRITE
-  mov ebx, STDOUT
-  int SYS_CALL
-  ret	
+SECTION .text
+
+global _start
+
+_start:
+  mov edi, 0x0
 \end{lstlisting}
 
-E estamos prontos para mostrarmos uma pirâmide de qualquer tamanho possível, recomendo que tente estender este programa para mostrar um "Losango" (basta inverter a pirâmide). 
+Criar esse efeito do Xadrez é interessante pois devemos controlar simultaneamente 2 laços usaremos para o primeiro o registrador \textbf{EDI} que controlará a quantidade de linhas. Seguimos para o bloco principal:
+\begin{lstlisting}[]
+montaTabuleiro:
+  add edi, 0x1
+  cmp edi, 0x9
+  je saida
+  mov esi, 0x0
+  mov edx, 0x0
+  mov eax, edi
+  mov ebx, 0x2
+  div ebx
+  cmp edx, 0x0
+  jg linhaIniciaEstrela 
+  jmp linhaIniciaEspaco	
+\end{lstlisting}
+
+Todo o programa se concentra neste bloco. Adicionamos 1 ao controlador de linha (\textbf{EDI}) e verificamos se estamos na nona linha, se for o caso vamos para o marcador \textit{saida}. Movemos 0 para o controlador de coluna (\textbf{ESI}), agora vamos usar a técnica de saber se o número é par ou ímpar: movemos 0 para \textbf{EDX}, o valor do controlador de coluna para \textbf{EAX}, o valor 2 para \textbf{EBX}, realizamos a divisão em comparamos se \textbf{EDX} contém 0 (indicando número par) caso afirmativo saltamos para o marcador \textit{linhaIniciaEstrela} caso contrário incondicionalmente saltamos para o marcador \textit{linhaIniciaEspaco}.
+
+\begin{lstlisting}[]
+linhaIniciaEstrela:
+  add esi, 0x1
+  mov edx, 0x1
+  call impEstrela 
+  call impEspaco
+  cmp esi, 0x7
+  jl linhaIniciaEstrela
+  mov edx, 0x2
+  call impEstrela 
+  jmp montaTabuleiro	
+\end{lstlisting}
+
+Neste bloco devemos imprimir uma linha começada com '*', para isso adicionamos 1 ao controlador de coluna, movemos 1 para \textbf{EDX} (de modo que não ocorra o salto de linha), mostramos um '*' e um ' ', verificamos se o controlador de coluna está em 7, caso seja menor retornamos ao começo do bloco. Caso contrário movemos 2 para \textbf{EDX} (indicando que agora queremos o salto de linha) e mostramos o '*' final e voltamos para o marcador \textbf{montaTabuleiro}.
+
+\begin{lstlisting}[]
+linhaIniciaEspaco:
+  add esi, 0x1
+  mov edx, 0x1
+  call impEspaco
+  call impEstrela 
+  cmp esi, 0x8
+  jl linhaIniciaEspaco
+  mov edx, 0x2
+  call impEspaco 
+  jmp montaTabuleiro	
+\end{lstlisting}
+
+Neste bloco devemos imprimir uma linha começada com ' ', para isso adicionamos 1 ao controlador de coluna, movemos 1 para \textbf{EDX} (de modo que não ocorra o salto de linha), mostramos um ' ' e um '*', verificamos se o controlador de coluna está em 8 (pois precisamos de um '*' a mais), caso seja menor retornamos ao começo do bloco. Caso contrário movemos 2 para \textbf{EDX} (indicando que agora queremos o salto de linha) e mostramos o ' ' final e voltamos para o marcador \textbf{montaTabuleiro}.
+
+\begin{lstlisting}[]
+saida:
+  mov eax, SYS_EXIT
+  mov ebx, EXIT_SUCESS
+  int SYS_CALL	
+\end{lstlisting}
+
+E finalizamos nosso programa e podemos imprimir nosso tabuleiro sem problemas.
 
 % Final do Capítulo
 \clearpage
