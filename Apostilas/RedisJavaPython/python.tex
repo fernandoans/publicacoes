@@ -1,0 +1,119 @@
+\section{Python}
+Python é uma linguagem de programação de alto nível, interpretada a partir de um script, Orientada a Objetos e de tipagem dinâmica. Foi lançada por Guido van Rossum em 1991. Não pretendo nesta apostila COMPARAR essa linguagem com Java (espero que nunca o faça), fica claro que os comandos são bem mais fáceis porém essas linguagens possuem diferentes propósitos.
+
+Todos os comandos descritos abaixo foi utilizado no JupyterLab \cite{jupyteroficial}, então basta abrir um Notebook e digitá-los em cada célula conforme se apresentam.
+
+\subsection{Pacote Necessário}
+Baixar o pacote necessário: \\
+\codigo{!pip install redis}
+
+Importar os pacotes necessários: \\
+\codigo{import redis}
+
+Criamos um objeto da classe Redis para realizarmos nossas manipulações: \\
+\codigo{r = redis.Redis()} \\
+ou então: \\
+\codigo{r = redis.Redis(host= 'localhost',port= '6379')}
+
+Devemos nos atentar que sempre podemos obter todas as chaves criadas com o comando: \\
+\codigo{r.keys()}
+
+\subsection{Padrão simples Chave-Valor}
+E usamos o método \textbf{mset} para darmos entrada nas informações:
+\begin{lstlisting}[]
+r.mset({
+  "AC":"Rio Branco", "AL":"Maceió", "AP":"Macapá",
+  "AM":"Manaus", "BA":"Salvador", "CE":"Fortaleza", "DF":"Brasília",
+  "ES":"Vitória", "GO":"Goiânia", "MA":"São Luís", "MT":"Cuiabá",
+  "MS":"Campo Grande", "MG":"Belo Horizonte", "PA":"Belém", "PB":"João Pessoa",
+  "PR":"Curitiba", "PE":"Recife", "PI":"Teresina", "RJ":"Rio de Janeiro",
+  "RN":"Natal", "RS":"Porto Alegre", "RO":"Porto Velho", "RR":"Boa Vista",
+  "SC":"Florianópolis", "SP":"São Paulo", "SE":"Aracaju", "TO":"Palmas"})
+\end{lstlisting}
+
+Para consultar qualquer capital brasileira com o método \textbf{get(chave)}: \\
+\codigo{r.get("PB").decode("UTF8")}
+
+Usamos o padrão de decodificação "UTF-8" de forma que os acentos apareçam corretamente. Poderíamos também criar separadamente cada uma das 27 capitais com o método: \\
+\codigo{r.set(chave, valor)}
+
+Mas obviamente daria muito mais trabalho. Para verificar a existência de qualquer chave, utilizamos o método:
+\codigo{r.exists("PA")}
+
+Que nos devolve o valor 1 caso a chave exista ou 0 caso contrário. 
+
+\subsection{Tempo de vida da chave}
+Para criarmos uma chave com um tempo determinado de expiração (em microssegundos): \\
+\codigo{r.psetex(chave, tempo\_ms, valor)}
+
+Obter o tempo da chave: \\
+\codigo{r.pttl(name)}
+
+Ou mesmo removê-lo completamente: \\
+\codigo{r.persist(chave)}
+
+\subsection{Conjuntos}
+Conjuntos são criados da seguinte forma:
+\begin{lstlisting}[]
+frutas = {"abacate", "manga", "abacate"}
+r.sadd("frutas", *frutas)
+\end{lstlisting}
+
+E obtidos: \\
+\codigo{r.smembers("frutas")}
+
+\subsection{Conjuntos Ordenados}
+Basicamente trabalha de mesma forma mantendo uma lista de valores ordenados no seguinte formato:
+\begin{lstlisting}[]
+r.zadd('desempenho', {'Aluno 1': 56.3})
+r.zadd('desempenho', {'Aluno 2': 46.2})
+r.zadd('desempenho', {'Aluno 3': 67.3})
+r.zadd('desempenho', {'Aluno 4': 51.7})
+\end{lstlisting}
+
+E para trazemos uma listagem inversa de valores: \\
+\codigo{print(r.zrange('desempenho', 0, -1))}
+
+\subsection{Hash}
+Já vimos este formato com Java, e também podemos aplicá-lo ao Python, ou seja, se desejarmos criar o mesmo programa que vimos anteriormente (por isso que dissemos que comparações são totalmente desnecessárias):
+\begin{lstlisting}[]
+r.hset("camisa", "modelo", "social")
+r.hset("camisa", "tamanho", "P")
+r.hset("camisa", "valor", 23.50)
+\end{lstlisting}
+
+E obtermos com: \\
+\codigo{r.hget("camisa", "modelo")}
+
+Outra forma é como um bloco de informação, também conhecido como \textit{Pipeline}, observemos o seguinte código:
+\begin{lstlisting}[]
+import random
+
+random.seed(444)
+camisas = {f"camisas:{random.getrandbits(32)}": i for i in (
+	{
+		"cor": "preto",
+		"preço": 49.99,
+		"qtd": 1000
+	},{
+		"cor": "marom",
+		"preço": 59.99,
+		"qtd": 500
+	},{
+		"cor": "verde",
+		"preço": 99.99,
+		"qtd": 200
+	})
+}
+with r.pipeline() as pipe:
+	for h_id, camisa in camisas.items():
+		for item, valor in camisa.items():
+			pipe.hset(h_id, item, valor)
+		pipe.execute()
+	r.bgsave()
+\end{lstlisting}
+
+E podemos localizar uma chave qualquer através do comando:
+\codigo{print(r.hgetall(chave))}
+
+Que nos devolve um objeto do tipo dicionário.

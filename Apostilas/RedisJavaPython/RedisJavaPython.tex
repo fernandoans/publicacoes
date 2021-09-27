@@ -1,0 +1,134 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Redis com Java e Python}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{../sty/tutorial}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+
+%----------------------------------------------------------------------
+% RESUMO DO ARTIGO
+%----------------------------------------------------------------------
+	
+\begin{abstract}
+	\initial{R}\textbf{edis é um banco do tipo NoSQL de Chave-Valor que pode ser utilizado tanto como banco de dados, bem como mecanismos de cache e agente de mensagens. O Redis fornece uma estruturas de dados como strings, hashes, listas e conjuntos. Sendo que os conjuntos podem ser classificados com consultas de intervalo, bitmaps, hiperloglogs, índices geoespaciais e fluxos. O Redis tem replicação integrada, script Lua, despejo de LRU, transações e diferentes níveis de persistência em disco. Ainda por cima oferece uma alta disponibilidade por meio do Redis Sentinel e particionamento automático com Redis Cluster. Neste tutorial veremos o que vem a ser o banco NoSQL Redis \cite{redisoficial} e como proceder sua utilização utilizando como pano de fundo a linguagem de programação Java \cite{javaoficial} e Python \cite{pythonoficial}.}
+\end{abstract}
+
+%-----------------------------------------------------------------------------
+% CONTEÚDO DO ARTIGO
+%-----------------------------------------------------------------------------
+
+\section{Parte inicial}
+Redis é um dos mais rápidos bancos NoSQL conhecidos, possui tempos de resposta abaixo um milissegundo, permite milhões de solicitações por segundo para aplicativos em tempo real de setores como jogos, tecnologia de publicidade, serviços financeiros, saúde e IoT. Atualmente é considerado um dos mais populares para mecanismos de cacheamento, ganhou o título do banco de dados "Mais Amado" pelo Stack Overflow por cinco anos consecutivos. Por causa de seu rápido desempenho, é a escolha popular para armazenamento em cache, gerenciamento de sessão, placares e estatística de jogos, análises em tempo real, informação geoespacial, sistemas de bate-papo e mensagens e streaming de mídia.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{imagens/redislogo}
+	\caption{Logo do Redis}
+\end{figure}
+
+Todos os dados do Redis residem na memória, o que permite acesso a dados de baixa latência e alto rendimento. Ao contrário dos bancos de dados tradicionais, os armazenamentos de dados na memória não exigem uma leitura física ao disco, reduzindo a latência do mecanismo para microssegundos. Por causa disso, os armazenamentos de dados na memória podem suportar uma ordem de magnitude a mais de operações e tempos de resposta mais rápidos. O resultado é um desempenho extremamente rápido com operações médias de leitura e gravação levando menos de um milissegundo e suporte para milhões de operações por segundo.
+
+Ao contrário de outros armazenamentos no padrão chave-valor, o Redis possui uma grande variedade de estruturas de dados para atender às necessidades de seu aplicativo. Os tipos de dados Redis incluem:
+\begin{itemize}[nolistsep]
+  \item \textbf{Strings} - texto ou dados binários de até 512 MB de tamanho.
+  \item \textbf{Listas} - uma coleção de Strings na ordem em que foram adicionadas.
+  \item \textbf{Conjuntos} - uma coleção não ordenada de strings com a capacidade de cruzar, unir e diferenciar outros tipos de Conjunto.
+  \item \textbf{Conjuntos classificados} - conjuntos ordenados por um valor.
+  \item \textbf{Hashes} - destinado a armazenar uma lista de chaves e valores.
+  \item \textbf{Bitmaps} - um tipo de dados que oferece operações a nível de bits.
+  \item \textbf{HyperLogLogs} - uma estrutura de dados probabilística para estimar os itens únicos em um conjunto de dados.
+  \item \textbf{Streams} - uma estrutura de dados de registro Fila de mensagens.
+  Geoespacial - uma entrada baseada em longitude / latitude Mapas, "nas proximidades".
+\end{itemize}
+
+\subsection{Criar o contêiner Docker}
+A forma mais simples para obtermos o Redis é através de um contêiner no Docker, deste modo podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
+
+Baixar a imagem oficial: \\
+\codigo{\$ docker pull redis}
+
+Antes de criarmos o contêiner precisamos criar uma pasta em nosso disco para hospedar o banco, por exemplo minha pasta chama-se: "/home/fernando/redis-data". Deste modo a criação do contêiner será: \\
+\codigo{\$ docker run -p 6379:6379 -v /home/fernando/redis-data:/data --name meu-redis -d redis redis-server --appendonly yes}
+
+Para encerrar o contêiner: \\
+\codigo{\$ docker stop meu-redis} 
+
+Para iniciar novamente o contêiner: \\
+\codigo{\$ docker start meu-redis}
+
+\subsection{Gerenciar o Redis}
+Para realizar o gerenciamento do Redis optamos por uma interface gráfica conhecida como "\textit{Another Redis Desktop Manager}"\cite{ardmoficial} que é um projeto no GitHub criado por Qishibo, e para o Linux a forma mais prática para instalar é baixar uma AppImage que é simplesmente fazer download e torná-la um executável. Esta pode ser encontrada neste endereço: \url{https://appimage.github.io/Another_Redis_Desktop_Manager/}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/ARDM}
+	\caption{Tela Principal do Another Redis Desktop Manager}
+\end{figure}
+
+Se não pode usar AppImage em seu sistema ou se preferir pode realizar um clone do repositório, mas lembrando que para isso é necessário ter o npm instalado: \\
+\codigo{\$ git clone https://github.com/qishibo/AnotherRedisDesktopManager.git} \\
+\codigo{\$ cd AnotherRedisDesktopManager}
+
+Instalar as dependências: \\
+\codigo{\$ npm install}
+
+DICA: Se falhou para instalar o Electron durante a instalação utilize o seguinte comando: \\
+\codigo{\$ ELECTRON\_MIRROR="https://npm.taobao.org/mirrors/electron/" npm install}
+
+E inicie a aplicação que estará na "localhost:9988": \\
+\codigo{\$ npm start}
+
+Para iniciar o cliente basta usar o electron com o seguinte comando: \\
+\codigo{\$ npm run electron}
+
+Este é um aplicativo extremamente simples, basta realizarmos uma conexão com o banco redis indicando seu endereço e porta, teremos todos os dados do servidor, memória, conexões, estatísticas e completas informações sobre o banco. Ao se posicionar em uma chave gravada (um registro) podemos ver sua estrutura, modificar ou eliminar seus valores além de realizar pesquisas.
+
+\input{java.tex}
+\input{python.tex}
+
+\section{Conclusão}
+O Redis nos permite escrever códigos tradicionalmente complexos com menos linhas e de modo mais simplificado. Utilizamos menos linhas de código para armazenar e obter os dados nos aplicativos. A diferença é que podemos usar estruturas de comandos mais simplificadas em oposição às linguagens de consulta de bancos de dados tradicionais (como o SQL). Por exemplo, podemos usar a estrutura de dados hash do Redis para mover dados de um armazenamento de dados com apenas uma linha de código. Uma tarefa semelhante em um armazenamento de dados sem estruturas de dados hash exigiria muitas linhas de código para converter de um formato para outro. 
+
+O Redis vem com estruturas de dados nativas e muitas opções para manipulação e interação. Existem ainda muitos clientes de código aberto disponíveis. As principais linguagens de programação possuem suporte e aqui vimos apenas Java e Python, porém existem muitas outras como PHP, C, C++, C\#, JavaScript, Node.js, Ruby, R e Go. 
+
+\input{../sty/final.tex}
+
+%-----------------------------------------------------------------------------
+% REFERÊNCIAS
+%-----------------------------------------------------------------------------
+\begin{thebibliography}{8}
+  \bibitem{redisoficial} 
+  Página do Redis \\
+  \url{https://redis.io}
+
+  \bibitem{javaoficial} 
+  Página do Oracle Java \\
+  \url{http://www.oracle.com/technetwork/java}
+  
+  \bibitem{pythonoficial} 
+  Página do Python \\
+  \url{https://www.python.org}
+
+  \bibitem{ardmoficial}
+  Projeto GitHub do Another Redis Desktop Manager \\
+  \url{https://github.com/qishibo/AnotherRedisDesktopManager}
+
+  \bibitem{sts} 
+  Editor Spring Tool Suite para códigos Java \\
+  \url{https://spring.io/tools}
+
+  \bibitem{jupyteroficial} 
+  Página do Jupyter \\
+  \url{https://jupyter.org/}
+
+  \input{../sty/referencias.tex}
+\end{thebibliography}
+  
+\end{document}
