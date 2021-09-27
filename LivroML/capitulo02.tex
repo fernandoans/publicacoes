@@ -280,7 +280,7 @@ Obtemos como resultado:
 	\caption{Distribuição Binomial}
 \end{figure}
 
-A principal diferença para a normal é que essa é contínua, enquanto que a binomial é discreta, mas se houver pontos de dados suficientes, serão bastante semelhantes (inclusive com a Poisson).
+Enquanto que a normal é uma distribuição contínua a binomial é discreta, mas se houver pontos de dados suficientes, serão bastante semelhantes (inclusive com a Poisson).
 
 \begin{lstlisting}[]
 sns.distplot(np.random.normal(loc=50, scale=7, size=1000), hist=False, label='Normal')
@@ -298,7 +298,7 @@ Obtemos como resultado:
 
 Mas e na prática? Imaginemos que 90\% dos passageiros reservados chegam de fato para sua viagem. Suponhamos um transporte que pode conter 45 assentos. Muitas vezes as companhias praticam "excesso de reservas" (conhecido por \textit{Overbooking}) isso significa que vende mais passagens do que os assentos disponíveis. Isso se deve ao fato de que às vezes os passageiros não aparecem um assento vazio representa perda. No entanto, ao reservar em excesso corre o risco de ter mais passageiros do que assentos.
 
-Com esses riscos em mente, uma companhia decide vender mais de 45 bilhetes. Supondo que desejam manter a probabilidade de ter mais de 45 passageiros para embarcar no voo abaixo de 0,4 quantas passagens podem vender?
+Com esses riscos em mente, uma companhia decide vender mais de 45 bilhetes. Supondo que desejamos manter a probabilidade em se ter mais de 45 passageiros para embarcar no voo abaixo de 0,4 quantas passagens podem vender?
 
 Para resolvermos isso precisamos da SciPy, e procedemos a seguinte codificação:
 \begin{lstlisting}[]
@@ -335,7 +335,7 @@ Obtemos como resultado:
 \end{figure}
 
 \section{Feature Selection}\index{Conceitos Introdutórios}
-\textbf{Seleção de Atributos}, Variáveis, Recursos ou Subconjuntos de Variáveis, são os vários nomes do processo que realiza a seleção de atributos relevantes para a construção de modelos. 
+\textbf{Seleção de atributos}, variáveis, recursos ou subconjuntos de variáveis, são os vários nomes do processo que realiza a seleção de atributos relevantes para a construção de modelos. 
 
 O objetivo da \textit{Feature Selection} é o de selecionar os atributos que funcionam melhor como \textbf{preditores}. Essa etapa ajuda a reduzir o \textit{overfitting}, aumenta a acurácia do modelo e reduz o tempo de treinamento.
 
