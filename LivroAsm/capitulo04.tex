@@ -497,5 +497,107 @@ posicionar:
 
 E obtermos exatamente o mesmo resultado. Calma que este programa é apenas para exemplificar como é aplicado os saltos dentro de arquivos e na prática não faríamos desta forma, provavelmente pedimos a informação para o usuário (como uma palavra dentro do arquivo) e damos saltos até localizá-la.
 
+\section{Programa 4.5 - Obter informação do teclado}\index{Lidar com Arquivos}
+Vamos tentar realizar algo bem corriqueiro que é criar um programa que permita ler uma informação do teclado (neste caso a nota de um determinado aluno) e colocá-la no arquivo. Só que não será simplesmente uma única vez vamos repetir essa entrada de informação até o momento que o usuário informe que é o suficiente.
+
+Primeiro devemos copiar nossa biblioteca com todas as constantes que criamos, em seguida criar um arquivo chamado "obterTeclado.asm" e começar a seguinte codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
+
+section .data
+  msg        db  "Entre com o valor da Nota (formato 00 a 10 ou 20 para terminar):", LF, NULL
+  tamMsg     equ $ - msg
+  arq        db  'Nota', STDIN
+  tamArq     equ $ - arq
+  dispMsg    db  "Nota Gravadas!", LF, NULL
+  tamDispMsg equ $ - dispMsg 
+  fd         dq  0
+
+section .bss
+  inpt resb 2	
+\end{lstlisting}
+
+Neste ponto que estamos, é bem possível que acreditemos não existir mais nenhuma dificuldade no entendimento do que foi criado, pois bem, na seção \textbf{.data} temos os seguintes marcadores: "msg" é a mensagem que iremos solicitar a informação para o usuário, "arq" contém o nome do arquivo que iremos gravar, "dispMsg" a mensagem que daremos na saída do usuário e "fd" nosso ponteiro para o arquivo de modo que possamos colocar a informação neste. na seção \textbf{.bss} temos somente o marcador "inpt" que recebe a informação passada pelo usuário.
+\begin{lstlisting}[]
+section .text
+
+global _start
+	
+_start:
+  mov eax, OPEN_FILE
+  mov ebx, arq
+  mov ecx, OPEN_CREATE+OPEN_WRITE+OPEN_APPEND
+  mov edx, 0o664
+  int SYS_CALL
+  mov [fd], eax	
+\end{lstlisting}
+
+Nosso primeiro bloco de programa temos a abertura do arquivo com a informação de que o estaremos abrindo (ou criando se necessário) para escrita em modo de adição dos dados, e adicionamos as permissões necessárias para isso e em seguida armazenamos o \textit{file descriptor}.
+\begin{lstlisting}[]
+mostrarMsg:
+  mov eax, SYS_WRITE
+  mov ebx, STDOUT
+  mov ecx, msg
+  mov edx, tamMsg
+  int SYS_CALL
+  
+obterNota:
+  mov eax, SYS_READ
+  mov ebx, STDIN
+  mov ecx, inpt
+  mov edx, 3
+  int SYS_CALL  
+\end{lstlisting}
+
+Nestes blocos mostramos a mensagem com a solicitação para que o usuário proceda a entrada da informação e como deve fazer isso com 2 dígitos (00 a 10) e o valor de término (20). Qual o motivo de ser 20 e não por exemplo 11? Para realizarmos uma comparação devemos proceder uma conversão desse valor para inteiro, poderíamos utilizar o método já visto que converte String para Inteiro, porém para não complicar muito vamos tentar manter aqui as coisas mais simples.
+
+Quando subtraímos qualquer registrador por '0' estamos convertendo String para seu valor respectivo em CHAR e isso só vale para o primeiro caractere, por isso mesmo estamos usando 2 dígitos, então pensemos o valor 02 quando convertido seu resultado será 0 e assim sucessivamente para qualquer número abaixo de 10, porém ao converter 10 teremos o valor 1 assim como qualquer valor subsequente até o 19 (assim não podemos usar esse conjunto), 20 convertido será o valor 2 e é exatamente esse que utilizaremos a título de comparação.
+\begin{lstlisting}[]
+verificar20:
+  mov ah, [inpt]
+  sub ah, '0'
+  cmp ah, 2
+  je fecharArquivo	
+\end{lstlisting}
+
+Como dito movemos o valor informado pelo usuário em "inpt" para o registrador \textbf{AH}, procedemos neste a subtração por '0' e comparamos se o valor resultante com 2, caso seja igual saltamos para o marcador "fecharArquivo". Caso contrário seguimos em frente.
+\begin{lstlisting}[]
+escreverNoArquivo:
+  mov eax, WRITE_FILE
+  mov ebx, [fd]
+  mov ecx, inpt
+  mov edx, 3
+  int SYS_CALL
+  jmp mostrar	
+\end{lstlisting}
+
+Seguir em frente significa basicamente adicionar a informação no arquivo e saltar incondicionalmente para o marcador "mostrarMsg" de modo que o usuário possa proceder uma nova entrada de informação.
+\begin{lstlisting}[]
+fecharArquivo:
+  mov eax, CLOSE_FILE
+  mov ebx, [fd]
+  int SYS_CALL	
+\end{lstlisting}
+
+Aqui não tem muito mistério fechamos nosso arquivo que contém todas as notas gravadas.
+\begin{lstlisting}[]
+mostrarMsgFinal:
+  mov eax, SYS_WRITE
+  mov ebx, STDOUT
+  mov ecx, dispMsg
+  mov edx, tamDispMsg
+  int SYS_CALL	
+\end{lstlisting}
+
+Mostramos a mensagem final para o usuário indicando que tudo foi realizado de forma correta e não ocorreram problemas.
+\begin{lstlisting}[]
+final:
+  mov eax, SYS_EXIT
+  mov ebx, EXIT_SUCESS
+  int SYS_CALL
+\end{lstlisting}
+
+Encerramos nosso programa e podemos gravar um arquivo com as notas dos nossos alunos que usaremos no próximo programa, sendo assim adicionemos um bom conjunto de notas.
+
 % Final do Capítulo
 \clearpage
