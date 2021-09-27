@@ -64,6 +64,11 @@
 \usepackage{microtype} % Slightly tweak font spacing for aesthetics
 \usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
 %----------------------------------------------------------------------------------
+%	HYPERREF
+%----------------------------------------------------------------------------------
+\usepackage{hyperref}
+\hypersetup{ pdfborder = {0 0 0}}
+%----------------------------------------------------------------------------------
 %	BIBLIOGRAPHY AND INDEX
 %----------------------------------------------------------------------------------
 % \usepackage[style=numeric,citestyle=numeric,sorting=nyt,sortcites=true,autopunct=true,hyperref=true,abbreviate=false,backref=true,backend=biber]{biblatex}
@@ -76,34 +81,44 @@
 %	MAIN TABLE OF CONTENTS
 %----------------------------------------------------------------------------------
 \usepackage{titletoc} % Required for manipulating the table of contents
+\setcounter{tocdepth}{1}
 \contentsmargin{0cm} % Removes the default margin
 % Part text styling
 \titlecontents{part}[0cm]
-{\addvspace{20pt}\centering\large\bfseries}
+{\addvspace{2pt}\centering\large\bfseries}
 {}
 {}
 {}
+%------------------------
 % Chapter text styling
+%------------------------
 \titlecontents{chapter}[1.25cm] % Indentation
 {\addvspace{12pt}\large\sffamily\bfseries} % Spacing and font options for chapters
 {\color{ocre!60}\contentslabel[\Large\thecontentslabel]{1.25cm}\color{ocre}} % Chapter number
-{\color{ocre}}  
-{\color{ocre!60}\normalsize\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+{\color{ocre}}
+{} % No Page number
+% {\color{ocre!60}\normalsize\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
+%------------------------
 % Section text styling
+%------------------------
 \titlecontents{section}[1.25cm] % Indentation
 {\addvspace{3pt}\sffamily\bfseries} % Spacing and font options for sections
 {\contentslabel[\thecontentslabel]{1.25cm}} % Section number
 {}
-{\hfill\color{black}\thecontentspage} % Page number
+{\color{black}\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 []
+%------------------------
 % Subsection text styling
+%------------------------
 \titlecontents{subsection}[1.25cm] % Indentation
 {\addvspace{1pt}\sffamily\small} % Spacing and font options for subsections
 {\contentslabel[\thecontentslabel]{1.25cm}} % Subsection number
 {}
 {\ \titlerule*[.5pc]{.}\;\thecontentspage} % Page number
 []
+%------------------------
 % List of figures
+%------------------------
 \titlecontents{figure}[0em]
 {\addvspace{-5pt}\sffamily}
 {\thecontentslabel\hspace*{1em}}
@@ -122,7 +137,7 @@
 %----------------------------------------------------------------------------------
 % Chapter text styling
 \titlecontents{lchapter}[0em] % Indenting
-{\addvspace{15pt}\large\sffamily\bfseries} % Spacing and font options for chapters
+{\addvspace{25pt}\large\sffamily\bfseries} % Spacing and font options for chapters
 {\color{ocre}\contentslabel[\Large\thecontentslabel]{1.25cm}\color{ocre}} % Chapter number
 {}  
 {\color{ocre}\normalsize\sffamily\bfseries\;\titlerule*[.5pc]{.}\;\thecontentspage} % Page number
@@ -279,7 +294,7 @@
     linewidth=4pt,
     innerbottommargin=0pt]{dBox}	
 % Caixa de Dica
-\newmdenv[skipabove=7pt,
+\newmdenv[skipabove=0pt,
     skipbelow=7pt,
     rightline=false,
     leftline=true,
@@ -289,7 +304,7 @@
     backgroundcolor=black!5,
     innerleftmargin=5pt,
     innerrightmargin=5pt,
-    innertopmargin=5pt,
+    innertopmargin=18pt,
     leftmargin=0cm,
     rightmargin=0cm,
     linewidth=4pt,
@@ -304,7 +319,7 @@
 %------------------------------------------------------------------------------------
 %	REMARK ENVIRONMENT
 %------------------------------------------------------------------------------------
-\newenvironment{remark}{\par\vspace{10pt}\small % Vertical white space above the remark and smaller font size
+\newenvironment{remark}{\par\vspace{1pt}\small % Vertical white space above the remark and smaller font size
 \begin{list}{}{
     \leftmargin=35pt % Indentation on the left
     \rightmargin=25pt}\item\ignorespaces % Indentation on the right
@@ -425,7 +440,7 @@
     \draw[anchor=west] (\Gm@lmargin+.3cm,-9cm) node {\huge\sffamily\bfseries\color{black}#1\strut};
     \end{tikzpicture}};
     \end{tikzpicture}
-    \fi\fi\par\vspace*{270\p@}}}
+    \fi\fi\par\vspace*{180\p@}}}
 \def\@makeschapterhead#1{
 \begin{tikzpicture}[remember picture,overlay]
     \node at (current page.north west)
@@ -435,7 +450,7 @@
         \draw[anchor=west] (\Gm@lmargin+.3cm,-9cm) node {\huge\sffamily\bfseries\color{black}#1\strut};
     \end{tikzpicture}};
 \end{tikzpicture}
-\par\vspace*{270\p@}}
+\par\vspace*{180\p@}}
 \makeatother
 %------------------------------------------------------------------------------------
 %	HYPERLINKS IN THE DOCUMENTS
@@ -456,6 +471,12 @@
 }
 
 \raggedbottom
+%------------------------------------------------------------------------------------
+%	TABLES - TABULAR
+%------------------------------------------------------------------------------------
+\setlength{\arrayrulewidth}{0.5mm}
+% \setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.3}
 
 %------------------------------------------------------------------------------------
 % A comentar
