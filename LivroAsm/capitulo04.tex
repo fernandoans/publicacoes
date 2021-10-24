@@ -430,7 +430,7 @@ ler:
 
 saidaNoConsole:
   mov eax, SYS_WRITE
-  mov ebx, STDOUT
+  mov ebx, STD_OUT
   mov ecx, buffer
   mov edx, tam
   int SYS_CALL
@@ -507,7 +507,7 @@ Primeiro devemos copiar nossa biblioteca com todas as constantes que criamos, em
 section .data
   msg        db  "Entre com o valor da Nota (formato 00 a 10 ou 20 para terminar):", LF, NULL
   tamMsg     equ $ - msg
-  arq        db  'Nota', STDIN
+  arq        db  "Nota"
   tamArq     equ $ - arq
   dispMsg    db  "Nota Gravadas!", LF, NULL
   tamDispMsg equ $ - dispMsg 
@@ -536,14 +536,14 @@ Nosso primeiro bloco de programa temos a abertura do arquivo com a informação 
 \begin{lstlisting}[]
 mostrarMsg:
   mov eax, SYS_WRITE
-  mov ebx, STDOUT
+  mov ebx, STD_OUT
   mov ecx, msg
   mov edx, tamMsg
   int SYS_CALL
   
 obterNota:
   mov eax, SYS_READ
-  mov ebx, STDIN
+  mov ebx, STD_IN
   mov ecx, inpt
   mov edx, 3
   int SYS_CALL  
@@ -583,7 +583,7 @@ Aqui não tem muito mistério fechamos nosso arquivo que contém todas as notas 
 \begin{lstlisting}[]
 mostrarMsgFinal:
   mov eax, SYS_WRITE
-  mov ebx, STDOUT
+  mov ebx, STD_OUT
   mov ecx, dispMsg
   mov edx, tamDispMsg
   int SYS_CALL	
@@ -598,6 +598,25 @@ final:
 \end{lstlisting}
 
 Encerramos nosso programa e podemos gravar um arquivo com as notas dos nossos alunos que usaremos no próximo programa, sendo assim adicionemos um bom conjunto de notas.
+
+\section{Programa 4.6 - Calcular as notas}\index{Lidar com Arquivos}
+A primeira parte desse programa vai ser uma organização que devemos fazer na nossa 'bibliotecaE.inc', adicionando os seguintes marcadores:
+\begin{itemize}[nolistsep]
+	\item string\_to\_int - para convertermos uma String em um inteiro.
+	\item int\_to\_string - para convertermos um inteiro em uma String.
+	\item tamStr - obter o tamanho da String.
+\end{itemize}
+
+Porém precisamos realizar uma modificação neste último visto que a saída do marcador 'int\_to\_string' não retorna um NULL no final da String e sim um byte 0, sendo assim devemos trocar essa linha:
+\begin{lstlisting}[]
+  cmp byte[edx], NULL
+\end{lstlisting}
+
+Por essa:
+\begin{lstlisting}[]
+  cmp byte[edx], byte 0
+\end{lstlisting}
+
 
 % Final do Capítulo
 \clearpage
