@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Redis com Java e Python}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.1}
 
 \usepackage{../sty/tutorial}
 
@@ -56,12 +56,21 @@ Baixar a imagem oficial: \\
 \codigo{\$ docker pull redis}
 
 Antes de criarmos o contêiner precisamos criar uma pasta em nosso disco para hospedar o banco, por exemplo minha pasta chama-se: "/home/fernando/redis-data". Deste modo a criação do contêiner será: \\
-\codigo{\$ docker run -p 6379:6379 -v /home/fernando/redis-data:/data --name meu-redis -d redis redis-server --appendonly yes}
+\codigo{\$ docker run -p 6379:6379 -v /home/fernando/redis-data:/data --name meu-redis \\ -d redis redis-server --appendonly yes}
 
-Para encerrar o contêiner: \\
+Acessar o \textbf{redis-cli} no contêiner: \\
+\codigo{\$ docker exec -it meu-redis redis-cli}
+
+Verificamos informações da base de dados: \\
+\codigo{> info}
+
+Ou retornamos ao terminal: \\
+\codigo{> exit}
+
+Deste modo podemos executar quaisquer comandos que veremos na seção \textbf{Redis-Cli}. Paramos o contêiner: \\
 \codigo{\$ docker stop meu-redis} 
 
-Para iniciar novamente o contêiner: \\
+E reiniciamos novamente: \\
 \codigo{\$ docker start meu-redis}
 
 \subsection{Gerenciar o Redis}
@@ -90,14 +99,16 @@ Para iniciar o cliente basta usar o electron com o seguinte comando: \\
 
 Este é um aplicativo extremamente simples, basta realizarmos uma conexão com o banco redis indicando seu endereço e porta, teremos todos os dados do servidor, memória, conexões, estatísticas e completas informações sobre o banco. Ao se posicionar em uma chave gravada (um registro) podemos ver sua estrutura, modificar ou eliminar seus valores além de realizar pesquisas.
 
+\input{console.tex}
 \input{java.tex}
 \input{python.tex}
 
 \section{Conclusão}
-O Redis nos permite escrever códigos tradicionalmente complexos com menos linhas e de modo mais simplificado. Utilizamos menos linhas de código para armazenar e obter os dados nos aplicativos. A diferença é que podemos usar estruturas de comandos mais simplificadas em oposição às linguagens de consulta de bancos de dados tradicionais (como o SQL). Por exemplo, podemos usar a estrutura de dados hash do Redis para mover dados de um armazenamento de dados com apenas uma linha de código. Uma tarefa semelhante em um armazenamento de dados sem estruturas de dados hash exigiria muitas linhas de código para converter de um formato para outro. 
+O Redis nos permite escrever códigos tradicionalmente complexos com menos linhas e de modo mais simplificado. Utilizamos menos código para armazenar e obter os dados nos aplicativos. A diferença é que podemos usar estruturas de comandos mais simplificadas em oposição às linguagens tradicionais de consulta (como o SQL). Por exemplo, podemos usar a estrutura de dados hash do Redis para mover de uma base para outra com apenas uma linha de código. Uma tarefa semelhante exigiria muitas linhas para converter de um formato para outro. 
 
-O Redis vem com estruturas de dados nativas e muitas opções para manipulação e interação. Existem ainda muitos clientes de código aberto disponíveis. As principais linguagens de programação possuem suporte e aqui vimos apenas Java e Python, porém existem muitas outras como PHP, C, C++, C\#, JavaScript, Node.js, Ruby, R e Go. 
+O Redis vem com estruturas de dados nativas e muitas opções para manipulação e interação. Existem ainda muitos clientes de código aberto disponíveis. Redis é um banco de dados remoto "\textit{in-memory}" que oferece um alto desempenho, replicação e um modelo de dados exclusivo para produzir uma plataforma de armazenamento simplificado para resolver problemas comuns. 
 
+\input{../sty/serie.tex}
 \input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
