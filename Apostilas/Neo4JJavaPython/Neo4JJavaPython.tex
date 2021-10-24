@@ -1,0 +1,160 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Neo4J com Java e Python}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{../sty/tutorial}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+
+%----------------------------------------------------------------------
+% RESUMO DO ARTIGO
+%----------------------------------------------------------------------
+	
+\begin{abstract}
+	\initial{N}\textbf{eo4j é um banco do tipo NoSQL que é considerado como um sistema gerenciador para banco de dados Grafo. Oferece aos desenvolvedores e cientistas de dados as ferramentas mais confiáveis e avançadas para criar rapidamente os aplicativos inteligentes e fluxos para aprendizado de máquina. Disponível como um serviço de nuvem totalmente gerenciado ou auto-hospedado. Neste tutorial veremos o que vem a ser o banco NoSQL Neo4j \cite{neo4joficial} e como proceder sua utilização utilizando como pano de fundo a linguagem de programação Java \cite{javaoficial} e Python \cite{pythonoficial}.}
+\end{abstract}
+
+%-----------------------------------------------------------------------------
+% CONTEÚDO DO ARTIGO
+%-----------------------------------------------------------------------------
+
+\section{Parte inicial}
+Neo4j foi criador em 2000, quando \textit{Emil Eifrem}, \textit{Johan Svensson} e \textit{Peter Naubauer} começaram a notar uma quantidade significativa de sobrecarga tanto no desempenho quanto ao trabalho exigido em uma de suas aplicações. O primeiro e mais significativo aspecto da sobrecarga pode ser atribuído à incompatibilidade do modelo na forma como o SGBD Relacional estava trabalhando. Observaram que as conexões entre os dados impunham um longo tempo de processamento para as consultas. Além disso, o desempenho dessas ficou pior à medida que as conexões entre os dados se tornaram mais complexas. Finalmente, o tempo e esforço necessários para gerenciar esses relacionamentos colocaram ainda mais sobrecarga no ciclo de vida no desenvolvimento do aplicativo.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{imagens/neo4jlogo}
+	\caption{Logo do Neo4j}
+\end{figure}
+
+Depois de buscarem alternativas e algumas pesquisas, começaram a construir um projeto denominado \textbf{Neo}. O objetivo era apresentar um banco de dados que oferecesse uma maneira melhor de modelar, armazenar e recuperar dados, ao mesmo tempo em que mantinha todos os conceitos básicos, tais como ACID ou transações, que tornavam os SGBD Relacionais seguros e conhecidos.
+
+Uma transação num banco relacional é essencialmente um grupo de consultas que devem ser bem-sucedidas para serem aplicadas. Se algo em uma transação falhar, toda ela deve também falhar. As transações possuem dois propósitos básicos, ambos envolvendo consistência, apenas de maneiras diferentes: O primeiro é garantir que todas os comandos dentro dessa sejam realmente executados. O segundo diz respeito a duas ações que acontecem ao mesmo tempo: se um banco de dados está sendo consultado simultaneamente por várias fontes, então existe a possibilidade da integridade dos dados ser comprometida.
+
+Os princípios usados no ACID (Atomicidade, Consistência, Isolação e Durabilidade) são relativos ao Teorema CAP, também conhecido como \textit{Teorema de Brewer}. \textit{Eric Brewer} afirmou que é impossível para um sistema de computador distribuído (ou banco de dados) garantir simultaneamente as três condições a seguir:
+\begin{itemize}[nolistsep]
+	\item \textbf{Disponibilidade} cada solicitação recebe uma resposta sobre se foi bem-sucedida ou falha.
+	\item \textbf{Consistência} os dados estão disponíveis para todos os nós ao mesmo tempo.
+	\item \textbf{Tolerância de partição} o sistema ainda pode operar apesar de perder contato com outros
+nós devido a problemas de rede.
+\end{itemize}
+
+Assim pegaram esses conceitos e adicionaram os princípios da \textbf{teoria dos grafos} aplicando-os ao projeto \textbf{Neo}. Graças a este trabalho árduo, os relacionamentos entre dados é a característica levada muito a sério. Em um sentido matemático, a teoria dos grafos é o estudo das estruturas usadas para modelar o  relacionamento entre os objetos. 
+
+Neo4j armazena dados como vértices e arestas ou, na terminologia dos grafos, nós e relacionamentos. Por exemplo donos são representados como nós e carros serão representadas como relacionamentos entre nós de usuários. Assim rapidamente podemos associar todas as pessoas que compraram determinado veículo (com apenas um único relacionamento).
+
+\subsection{O que é um Grafo?}
+O primeiro artigo conhecido sobre a teoria dos grafos foi escrito em 1736, chamado de "\textit{As 7 Pontes de Königsberg}" por Leonhard Euler, um matemático e físico, considerado preeminente do século XVIII. A cidade de \textit{Königsberg}, na Prússia (atual Rússia), foi construída no topo do rio \textit{Pregel} e incluía duas grandes ilhas que eram conectadas entre si e ao continente por sete pontes. O problema era conhecer a possibilidade em se cruzar cada uma das sete pontes de Königsberg apenas uma vez e visitar todas as partes da cidade.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagens/pontes}
+	\caption{As 7 Pontes de Königsberg}
+\end{figure}
+
+Após abstrair o problema em um gráfico, Euler percebeu um padrão, baseado no número de vértices e arestas. No gráfico de Königsberg, existem 4 vértices e 7 arestas. No sentido literal, Euler percebeu que se caminhasse para uma das ilhas e sair para outra, usaria uma ponte de entrada e uma ponte de saída. Essencialmente, para atravessar um caminho sem cruzar uma aresta mais de uma vez, seria então necessário um número par de arestas.
+
+Euler teorizou que percorrer um gráfico inteiramente, usando cada aresta apenas uma vez, depende dos graus de um nó. No contexto de um nó ou vértice, graus se refere à quantidade de arestas que tocam o nó. Se percorrermos um gráfico completamente (usando apenas uma aresta por vez), podemos ter de 0 ou 2 nós com graus ímpares (cruzar um gráfico dessa forma é conhecido como \textit{Caminho de Euler}). 
+
+Nesse contexto, um grafo é composto de nós (ou vértices) e potencialmente arestas que os conectam. Para visualizarmos isso, podemos usar uma seta para indicar que um nó está conectado a outro nó. Por exemplo, se tivéssemos dois nós, A e B, aos quais A está conectado a B com uma aresta, isso poderia ser expresso como A $\triangleright$ B. A direção é mostrada aqui em que A está conectado a B, mas B não está conectado a A. Se as arestas que compõem um gráfico não têm uma direção associada (por exemplo, A $\triangleright$ B é o mesmo que B $\triangleright$ A), então o gráfico é classificado como não direcionado. Se, no entanto, a orientação da aresta tiver algum significado, o gráfico é direcionado.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagens/Elementary.jpg}
+	\caption{Cena da Série Elementary (CBS)}
+\end{figure}
+
+Existem outras aplicações para a teoria dos grafos fora do mundo da matemática. Uma vez que a teoria dos gráficos, em seu nível mais baixo, descreve como os dados se relacionam uns com os outros, pode ser aplicada a uma série de diferentes setores e cenários onde relacionar os dados é importante. Pode ser usada para mapear estruturas químicas, criar diagramas de estradas e até mesmo analisar dados de redes sociais. As aplicações são bastante amplas. 
+
+\subsection{Criar o contêiner Docker}
+A forma mais simples para obtermos o Redis é através de um contêiner no Docker, deste modo podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
+
+Baixar a imagem oficial: \\
+\codigo{\$ docker pull redis}
+
+Antes de criarmos o contêiner precisamos criar uma pasta em nosso disco para hospedar o banco, por exemplo minha pasta chama-se: "/home/fernando/neo4j". Deste modo a criação do contêiner será: \\
+\codigo{\$ docker run -d -p 7687:7687 -p 7474:7474 -v \$HOME/neo4j/data:/data \\ -v \$HOME/neo4j/logs:/logs -v \$HOME/neo4j/import:/import \\ -v \$HOME/neo4j/plugins:/plugins --env NEO4J\_AUTH=neo4j/test --name meu-neo4j neo4j}
+
+Podemos entrar no \textit{Cypher-shell} dentro do nosso contêiner: \\
+\codigo{\$ docker exec -it meu-neo4j bash}
+
+Acessar o Cypher-shell: \\
+\codigo{\$ cypher-shell -u neo4j -p test}
+
+Quando criamos o contêiner usamos a opção: \codigo{--env NEO4J\_AUTH=neo4j/test}, neste ponto indicamos a senha \textbf{test} para o \textit{Cypher-shell} e devemos usá-la quando entramos neste. Executamos uma consulta para verificarmos que está tudo OK: \\
+\codigo{neo4j> MATCH (n) RETURN count(n);}
+
+E obtemos:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagens/cyphershell}
+	\caption{Execução do comando no Cypher-shell}
+\end{figure}
+
+Podemos sair do \textit{Cypher-shell} com o comando: \\
+\codigo{neo4j> :exit}
+
+E com o comando: \\
+\codigo{\$ exit}
+
+Para sairmos do contêiner. Na seção \textbf{Cypher} investigaremos mais sobre essa linguagem. Podemos parar o contêiner com: \\
+\codigo{\$ docker stop meu-neo4j} 
+
+Ou iniciá-lo novamente: \\
+\codigo{\$ docker start meu-neo4j}
+
+\subsection{Gerenciar o Neo4J}
+Uma vez que subimos nosso contêiner, após alguns segundos, está a nossa disposição uma das ferramentas mais úteis incluídas em um banco de dados o "Neo4j Browser", no endereço: \url{http://localhost:7474}.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/browser}
+	\caption{Neo4j Browser}
+\end{figure}
+
+É possível com este aplicativo realizar melhorias significativas para os recursos, velocidade e testes no banco através dessa ferramenta de visualização com base na Web. Na barra superior da janela principal, devemos dar o máximo de atenção na indicação \textbf{neo4j$\textdollar$ }pois neste ponto podemos inserir comandos em linguagem \textbf{Cypher}.
+
+\input{cypher.tex}
+% \input{java.tex}
+% \input{python.tex}
+
+\section{Conclusão}
+\textbf{Neo4j} é significativamente mais rápido na consulta de dados relacionados do que usar um banco de dados relacional tradicional. Além disso, uma única instância do Neo4j pode lidar com conjuntos de dados contendo três ordens de magnitude sem penalidades de desempenho. A independência do desempenho transversal no tamanho do gráfico é um dos principais aspectos que tornam o \textbf{Neo4j} torna-se um candidato ideal para resolver problemas de grafos, mesmo quando os conjuntos de dados são muito grandes.
+
+Para auxiliar \textbf{Neo4j} a ser o mais rápido possível, dois sistemas de cache diferentes são usados: um cache de buffer e um de objetos. O primeiro tem como objetivo acelerar as consultas, ao armazenar uma cópia das informações recuperadas do gráfico, enquanto que o de objetos armazena versões otimizadas de nós, propriedades e relacionamentos para acelerar a travessia do grafo.
+
+\input{../sty/serie.tex}
+\input{../sty/final.tex}
+
+%-----------------------------------------------------------------------------
+% REFERÊNCIAS
+%-----------------------------------------------------------------------------
+\begin{thebibliography}{8}
+  \bibitem{neo4joficial} 
+  Página do Neo4j \\
+  \url{https://neo4j.com/}
+
+  \bibitem{javaoficial} 
+  Página do Oracle Java \\
+  \url{http://www.oracle.com/technetwork/java}
+  
+  \bibitem{pythonoficial} 
+  Página do Python \\
+  \url{https://www.python.org}
+
+  \bibitem{sts} 
+  Editor Spring Tool Suite para códigos Java \\
+  \url{https://spring.io/tools}
+
+  \bibitem{jupyteroficial} 
+  Página do Jupyter \\
+  \url{https://jupyter.org/}
+
+  \input{../sty/referencias.tex}
+\end{thebibliography}
+  
+\end{document}

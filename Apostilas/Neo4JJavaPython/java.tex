@@ -35,21 +35,24 @@ package decus.com;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import redis.clients.jedis.Jedis;
 
 public class Escola {
 	
- private String [] materias = new String[] {
-  "Matemática Computacional", "Programação", "Estatística",
-  "SQL", "NoSQL", "Java", "Python", "Análise de Dados",
-  "Arquitetura de DW", "Big Data"
- };
- public static void main(String [] args) {
-  new Escola().executar();
- }
- private void executar() {
-  adicionarNotas();
- }
+	private String [] materias = new String[] {
+	  "Matemática Computacional", "Programação", "Estatística",
+  	  "SQL", "NoSQL", "Java", "Python", "Análise de Dados",
+	  "Arquitetura de DW", "Big Data"
+    };
+
+	public static void main(String [] args) {
+		new Escola().executar();
+	}
+	
+	private void executar() {
+		adicionarNotas();
+	}
 }
 \end{lstlisting}
 
@@ -57,30 +60,30 @@ Nossa escola promove cursos mensais e temos um conjunto contendo todas as matér
 
 No método principal que chama o executar, em Java não devemos programar no método "main". No executar colocamos uma chamada ao método criarAlunos() que terá a seguinte codificação:
 \begin{lstlisting}[]
-private void adicionarNotas() {
- Jedis jedis = new Jedis();
- String data = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
- String chave = "";
- String [] nomes = new String[] {
-  "Alice", "Miguel", "Sophia", "Arthur", "Helena", "Bernardo", "Valentina", 
-  "Heitor", "Laura", "Davi", "Isabella", "Lorenzo", "Manuela", "Théo", "Júlia", 
-  "Pedro", "Heloísa", "Gabriel", "Luiza", "Enzo", "Maria", "Luiza", "Matheus", 
-  "Lorena", "Lucas", "Lívia", "Benjamin", "Giovanna", "Nicolas", "Maria", 
-  "Eduarda", "Guilherme", "Beatriz", "Rafael", "Clara", "Joaquim", "Cecília"
- };
- String nome = "";
- for (int i = 0; i < 50; i++) {
-  nome = nomes[(int)(Math.random()*nomes.length)] + " " + nomes[(int)(Math.random()*nomes.length)];
-  for (int j = 0; j < materias.length; j++) {
-   chave = "MAT" + i + "-" + j + "-" + data;
-   jedis.hset(chave, "nome", nome);
-   jedis.hset(chave, "materia", materias[j]);
-   jedis.hset(chave, "nota", ""+(int)(Math.random()*11));
-   jedis.close();
+  private void adicionarNotas() {
+	Jedis jedis = new Jedis();
+	String data = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
+	String chave = "";
+	String [] nomes = new String[] {
+	  "Alice", "Miguel", "Sophia", "Arthur", "Helena", "Bernardo", "Valentina", 
+	  "Heitor", "Laura", "Davi", "Isabella", "Lorenzo", "Manuela", "Théo", "Júlia", 
+	  "Pedro", "Heloísa", "Gabriel", "Luiza", "Enzo", "Maria", "Luiza", "Matheus", 
+	  "Lorena", "Lucas", "Lívia", "Benjamin", "Giovanna", "Nicolas", "Maria", 
+	  "Eduarda", "Guilherme", "Beatriz", "Rafael", "Clara", "Joaquim", "Cecília"
+	};
+	String nome = "";
+	for (int i = 0; i < 50; i++) {
+	  nome = nomes[(int)(Math.random()*nomes.length)] + " " + nomes[(int)(Math.random()*nomes.length)];
+  	  for (int j = 0; j < materias.length; j++) {
+	    chave = "MAT" + i + "-" + j + "-" + data;
+		jedis.hset(chave, "nome", nome);
+		jedis.hset(chave, "materia", materias[j]);
+		jedis.hset(chave, "nota", ""+(int)(Math.random()*11));
+		jedis.close();
+	  }
+	}
+	System.out.println("Notas Adicionadas");
   }
- }
- System.out.println("Notas Adicionadas");
-}
 \end{lstlisting}
 
 Obviamente como isto é um simples exemplo vamos adicionar as notas de uma forma totalmente aleatória.
@@ -90,7 +93,7 @@ Neste método temos a definição do objeto do Jedis que é responsável pela co
 Para inserir a informação no objeto Jedis temos o método "hset" que recebe 3 parâmetros a chave, o nome do campo e o valor deste, e assim inserimos os campos nome, matéria e nota que será obtida também de forma aleatória (entre o valor de 0 a 10). Uma vez executado temos como resposta na console a mensagem "Notas Adicionadas" se verificamos no aplicativo "Another Redis Desktop Manager" teremos os seguintes dados:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{imagens/notasAlunos}
+	\includegraphics[width=0.8\textwidth]{imagens/notasAlunos}
 	\caption{Another Redis Desktop Manager}
 \end{figure}
 
@@ -99,19 +102,19 @@ Obviamente que os dados podem dar diferença pois o nome e as notas foram seleci
 \subsection{Localizações}
 No método executar comentamos a chamada ao método "adicionarNotas()" e criamos outra para o método "trazerAluno(1)" que terá a seguinte codificação:
 \begin{lstlisting}[]
-private void trazerAluno(int mat) {
- Jedis jedis = new Jedis();
- Set<String> nomes = jedis.keys("MAT" + mat + "-*");
- java.util.Iterator<String> it = nomes.iterator();
- String s;
- while (it.hasNext()) {
-  s = it.next();
-  System.out.print(jedis.hget(s, "nome") + " - ");
-  System.out.print(jedis.hget(s, "materia") + " - ");
-  System.out.println(jedis.hget(s, "nota"));
- }
- jedis.close();
-}	
+  private void trazerAluno(int mat) {
+	Jedis jedis = new Jedis();
+	Set<String> nomes = jedis.keys("MAT" + mat + "-*");
+	java.util.Iterator<String> it = nomes.iterator();
+	String s;
+	while (it.hasNext()) {
+      s = it.next();
+      System.out.print(jedis.hget(s, "nome") + " - ");
+      System.out.print(jedis.hget(s, "materia") + " - ");
+      System.out.println(jedis.hget(s, "nota"));
+	}
+	jedis.close();
+  }	
 \end{lstlisting}
 
 As coisas no Redis são bem fáceis e rápidas, recebemos a matrícula e obtemos um conjunto (objeto Set) com todas as chaves que começam pela expressão "MAT1-" (como o valor que passamos foi 1) podemos utilizar esse método para realizar qualquer tipo de pesquisa, por exemplo "*-26/09/2021" trará todas as chaves do dia "26/09/2021". 
@@ -120,25 +123,25 @@ Percorremos esse conjunto e obtemos os dados que desejamos através do método "
 
 Mas e se por exemplo desejamos saber a média geral das matérias dessa turma em cada matéria? Comentamos a chamada ao "trazerAluno(1)" no método executar por "mediaGeral()" e adicionamos a seguinte codificação:
 \begin{lstlisting}[]
-private void mediaGeral() {
- Jedis jedis = new Jedis();
- String materia = "";
- for (int i = 0; i < materias.length; i++) { 
-  int totNota = 0;
-  int qtdNota = 0;
-  Set<String> nomes = jedis.keys("*-"+i+"-*");
-  java.util.Iterator<String> it = nomes.iterator();
-  String s;
-  while (it.hasNext()) {
-   s = it.next();
-   materia = jedis.hget(s, "materia");
-   totNota += Integer.parseInt(jedis.hget(s, "nota"));
-   qtdNota++;
-  }
-  System.out.println(materia + " - " + (totNota/qtdNota));
- }
- jedis.close();
-}	
+  private void mediaGeral() {
+	Jedis jedis = new Jedis();
+	String materia = "";
+	for (int i = 0; i < materias.length; i++) { 
+		int totNota = 0;
+		int qtdNota = 0;
+		Set<String> nomes = jedis.keys("*-"+i+"-*");
+		java.util.Iterator<String> it = nomes.iterator();
+		String s;
+		while (it.hasNext()) {
+			s = it.next();
+			materia = jedis.hget(s, "materia");
+			totNota += Integer.parseInt(jedis.hget(s, "nota"));
+			qtdNota++;
+		}
+		System.out.println(materia + " - " + (totNota/qtdNota));
+	}
+	jedis.close();
+  }	
 \end{lstlisting}
 
 E temos na saída da console cada uma das matérias e sua respectiva média.
@@ -146,18 +149,18 @@ E temos na saída da console cada uma das matérias e sua respectiva média.
 \subsection{Eliminar Registro}
 Assim como a consulta do registro é obtida através da chave o mesmo se aplica para a eliminação do mesmo, vamos comentar a chamada ao método "mediaGeral()" e chamar o método "eliminarAluno(1)" e adicionarmos a seguinte  codificação:
 \begin{lstlisting}[]
-private void eliminarAluno(int mat) {
- Jedis jedis = new Jedis();
- Set<String> nomes = jedis.keys("MAT" + mat + "-*");
- java.util.Iterator<String> it = nomes.iterator();
- String s;
- while (it.hasNext()) {
-  s = it.next();
-  jedis.del(s);
- }
- jedis.close();
- System.out.println("Notas Eliminadas");
-} 	
+  private void eliminarAluno(int mat) {
+	Jedis jedis = new Jedis();
+	Set<String> nomes = jedis.keys("MAT" + mat + "-*");
+	java.util.Iterator<String> it = nomes.iterator();
+	String s;
+	while (it.hasNext()) {
+		s = it.next();
+		jedis.del(s);
+	}
+	jedis.close();
+	System.out.println("Notas Eliminadas");
+  } 	
 \end{lstlisting}
 
 Localizamos as chaves do aluno e executamos o método "del(chave)" para cada registro. Ou seja, extremamente simples e prático.
@@ -169,9 +172,10 @@ Aqui utilizamos o modelo estrutural de um Hash com mapeamento de um campo String
 
 É o modelo mais simples uma chave e um valor, pode ser utilizado por exemplo para uma associação de palavras como localidade e endereço:
 \begin{lstlisting}[]
-jedis.set("Joaquim Lucas", "Qd 28 Casa 47 Rua Amélia Cidade Vale Alegre");
-jedis.set("Nicolas Cecília", "Qd 7 Casa 7 Rua Sete da Cidade Amarela");
-System.out.println(jedis.get("Joaquim Lucas"));
+  jedis.set("Joaquim Lucas", "Qd 28 Casa 47 Rua Amélia Cidade Vale Alegre");
+  jedis.set("Nicolas Cecília", "Qd 7 Casa 7 Rua Sete da Cidade Amarela");
+  
+  System.out.println(jedis.get("Joaquim Lucas"));
 \end{lstlisting}
 
 Ou seja, utilizamos o método "set(chave, valor)" para inserirmos a informação e o método "get(chave)" para obtê-la. Esse modelo também pode ser utilizado como uma camada de cache extremamente rápida e simples de se usar para solicitações HTTP recebidas de um aplicativo Web ou outros requisitos de cache. 

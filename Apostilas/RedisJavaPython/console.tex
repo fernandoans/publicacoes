@@ -1,0 +1,109 @@
+\section{Redis-Cli}
+Diferente dos outros bancos o Redis preza por ser extremamente simples, podemos selecionar qualquer base com o seguinte comando: \\
+\codigo{> select N}
+
+Onde este N é simplesmente o número da base, a primeira inicia com 0, sendo assim: \\
+\codigo{> select 0}
+
+Este comando verifica a quantidade de elementos: \\
+\codigo{> dbsize}
+
+Outro simples comando para saber que está tudo OK é: \\
+\codigo{> ping}
+
+E a resposta deve ser \textbf{PONG} o que significa "estamos sem problemas". Para inserirmos um simples elemento: \\
+\codigo{> set valor 100}
+
+E para resgatá-lo: \\
+\codigo{> get valor}
+
+Qualquer tipo para o Redis pode ser tratado como uma String, assim para obtermos o tamanho de uma determinada chave: \\
+\codigo{> strlen valor}
+
+Mas observamos também que por ser um número podemos realizar operações como incrementar o valor: \\
+\codigo{> incr valor}
+
+Ou decrementar o valor: \\
+\codigo{> decr valor}
+
+O mais curioso é que podemos ainda concatenar (anexar) mais informações: \\
+\codigo{> decr 200}
+
+E agora nossa chave tem o valor "100200". E podemos adicionar mais valores: \\
+\codigo{> incrby valor 50}
+
+Ou diminuir valores: \\
+\codigo{> decrby valor 50}
+
+\subsection{Chave-Valor}
+O maior uso do Redis e o armazenamento de informações como uma tabela no formato chaves-valores: \\
+\codigo{> hmset identificacao nome Fernando cargo Analista materia Estatística}
+
+Adicionar mais uma propriedade: \\
+\codigo{> hset identificacao cidade Brasília}
+
+Recuperar uma determinada propriedade: \\
+\codigo{> hmget identificacao cargo}
+
+Obter todos os valores: \\
+\codigo{> hvals identificacao}
+
+Obter todos os nomes das chaves: \\
+\codigo{> hkeys identificacao}
+
+Ou mais completo como: \\
+\codigo{> hgetall identificacao}
+
+Obter o tamanho: \\
+\codigo{> hlen identificacao}
+
+Eliminar uma propriedade: \\
+\codigo{> hdel identificacao materia}
+
+\subsection{Listas de valores}
+Para criar uma chave como valores de lista e adicionar elementos a ela (a direita ou no final): \\
+\codigo{> rpush tipos persa ragdoll bengali}
+
+Ou então (a esquerda ou no início): \\
+\codigo{> lpush tipos siamês}
+
+Recuperar todos os tipos (se ainda não percebeu de gatos): \\
+\codigo{> lrange tipos 0 -1}
+
+Ou um determinado tipo (por exemplo o terceiro elemento - a lista inicia do 0): \\
+\codigo{> lrange tipos 2 2}
+
+Verificar o tamanho da lista: \\
+\codigo{> llen tipos}
+
+Eliminar determinado elemento: \\
+\codigo{> lpop tipos 2}
+
+\subsection{Conjuntos de valores}
+Para criarmos uma chave como valores de conjuntos e adicionar elementos a ela: \\
+\codigo{> sadd paises Brasil EUA Portugal Espanha}
+
+Recuperar a quantidade de países: \\
+\codigo{> scard paises}
+
+Recuperamos todos os países: \\
+\codigo{> smembers paises}
+
+Ou obter um país aleatoriamente: \\
+\codigo{> srandmember paises 1}
+
+Eliminar determinado elemento: \\
+\codigo{> srem paises 2}
+
+\subsection{Movimentos e Exclusão}
+Vericar se uma determinada chave existe: \\
+\codigo{> exists paises}
+
+Mover uma determinada chave para outro banco: \\
+\codigo{> move tipos 1}
+
+Modificar o nome de uma determinada chave: \\
+\codigo{> rename paises destinos}
+
+Para excluirmos qualquer chave temos mais um comando extremamente simples: \\
+\codigo{> del destinos}
