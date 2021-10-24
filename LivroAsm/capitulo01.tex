@@ -738,6 +738,51 @@ Começamos nossa programação mostrando o título inicial que como resultado de
 {\ttfamily +--------------------------+ }
 
 \begin{lstlisting}[]
+	mov ecx, opc1     ; 1. Adicionar
+	call mst_saida
+	mov ecx, opc2     ; 2. Subtrair
+	call mst_saida
+	mov ecx, opc3     ; 3. Multiplicar
+	call mst_saida
+	mov ecx, opc4     ; 4. Dividir
+	call mst_saida
+\end{lstlisting}
+
+Mostramos agora as quatro opções disponíveis para nosso usuário de modo que possa fazer sua escolha, que resulta em: \\
+{\ttfamily 1. Adicionar} \\
+{\ttfamily 2. Subtrair} \\
+{\ttfamily 3. Multiplicar} \\
+{\ttfamily 4. Dividir}
+
+\begin{lstlisting}[]
+	mov ecx, msgOpc     ; Deseja Realizar?
+	call mst_saida
+	mov eax, SYS_READ
+	mov ebx, STD_IN
+	mov ecx, opc
+	mov edx, 0x2
+	int SYS_CALL
+\end{lstlisting}
+
+E solicitamos que o usuário determine uma opção (é realmente isso está implorando um marcador isolado, observe que temos exatamente os mesmos comandos porém com valores distintos).
+
+\begin{lstlisting}[]
+	mov ah, [opc]
+	sub ah, '0'
+\end{lstlisting}
+
+Toda entrada é realiza em cadeia de caracteres, se desejamos realizar comparações devemos converter o valor para inteiro, como é um único caractere que será informado basta subtrair por '0' que teremos o valor em inteiro. Como assim? Agora vamos ter que pensar na tabela ASCII, a posição do '0' nesta corresponde ao valor decimal 48 (ou 0x30 se prefere em hexadecimal), os próximos números estão em sequencia, assim '1' corresponde a 49 e assim sucessivamente. Ou seja, se subtraímos o valor 49 (caractere '1') por 48 (caractere '0') temos o decimal 1.
+
+\begin{lstlisting}[]
+	cmp ah, 4   
+	jg msterro
+	cmp ah, 1
+	jl msterro
+\end{lstlisting}
+
+Vamos verificar se o valor informado é maior que 4 ou menor que 1, caso seja desviamos o fluxo para uma label chamada \textbf{msterro}, caso contrário podemos prosseguir para obter os valores a serem calculados.
+
+\begin{lstlisting}[]
 	mov ecx, obVal1   ; Valor 1:
 	call mst_saida
 	mov eax, SYS_READ
@@ -762,42 +807,9 @@ Solicitamos a entrada do primeiro valor para o usuário que mostra a mensagem: "
 Processamos de mesma forma agora para solicitar o segundo valor (não valeria a pena criar uma marcador isolado para isso? Utilize como um exercício de formatura desse capítulo).
 
 \begin{lstlisting}[]
-	mov ecx, opc1     ; 1. Adicionar
-	call mst_saida
-	mov ecx, opc2     ; 2. Subtrair
-	call mst_saida
-	mov ecx, opc3     ; 3. Multiplicar
-	call mst_saida
-	mov ecx, opc4     ; 4. Dividir
-	call mst_saida
-\end{lstlisting}
-
-Mostramos agora as quatro opções disponíveis para nosso usuário de modo que possa fazer sua escolha, que resulta em: \\
-{\ttfamily 1. Adicionar} \\
-{\ttfamily 2. Subtrair} \\
-{\ttfamily 3. Multiplicar} \\
-{\ttfamily 4. Dividir}
-
-\begin{lstlisting}[]
-	mov ecx, msgOpc     ; Deseja Realizar?
-	call mst_saida
-	mov eax, SYS_READ
-	mov ebx, STD_IN
-	mov ecx, opc
-	mov edx, 2
-	int SYS_CALL
-\end{lstlisting}
-
-E solicitamos que o usuário determine uma opção (é realmente isso está implorando um marcador isolado, observe que temos exatamente os mesmos comandos porém com valores distintos).
-
-\begin{lstlisting}[]
 	mov ah, [opc]
-	sub ah, '0'
-\end{lstlisting}
-
-Toda entrada é realiza em cadeia de caracteres, se desejamos realizar comparações devemos converter o valor para inteiro, como é um único caractere que será informado basta subtrair por '0' que teremos o valor em inteiro. Como assim? Agora vamos ter que pensar na tabela ASCII, a posição do '0' nesta corresponde ao valor decimal 48 (ou 0x30 se prefere em hexadecimal), os próximos números estão em sequencia, assim '1' corresponde a 49 e assim sucessivamente. Ou seja, se subtraímos o valor 49 (caractere '1') por 48 (caractere '0') temos o decimal 1.
-
-\begin{lstlisting}[]
+	sub ah, '0' 
+	
 	cmp ah, 1
 	je adicionar
 	cmp ah, 2
@@ -808,50 +820,51 @@ Toda entrada é realiza em cadeia de caracteres, se desejamos realizar comparaç
 	je dividir
 \end{lstlisting}
 
-Agora é realizar os comparativos para saber qual opção nosso usuário selecionou. E se não entrar em nenhuma dessas opções:
-
+Reobtemos o valor digitado em \textbf{opc}, convertemos para inteiro e podemos realizar os comparativos para saber qual opção nosso usuário selecionou. E chegamos no ponto de saída, pois qualquer valor correto desviará o fluxo do programa para outro ponto.
 \begin{lstlisting}[]
-	mov ecx, msgErro  ; Valor da Opcao Invalido
-	call mst_saida
-	jmp exit
-\end{lstlisting}
-
-Mostrar a mensagem de erro para opção inválida e sair do programa.
-
-\begin{lstlisting}[]
-adicionar:
-	mov ecx, p1       ; Processo Adicionar
-	call mst_saida
-	jmp exit
-
-subtrair:
-	mov ecx, p2       ; Processo Subtrair
-	call mst_saida
-	jmp exit
-
-multiplicar:
-	mov ecx, p3       ; Processo Multiplicar
-	call mst_saida
-	jmp exit
-
-dividir:
-	mov ecx, p4       ; Processo Dividir
-	call mst_saida
-	jmp exit
-\end{lstlisting}
-
-Agora cada marcador será bem similar, apenas modificando a mensagem para termos a certeza que entrou na opção correta. E por fim:
-\begin{lstlisting}[]
-exit:
+saida:
 	mov ecx, msgfim    ; Terminei.
 	call mst_saida
-
+	
 	mov eax, SYS_EXIT
 	mov ebx, RET_EXIT
 	int SYS_CALL
 \end{lstlisting}
 
-Mostrar a mensagem de término e encerrar a seção. 
+Mostrar a mensagem de término e encerrar a seção. Mas vai continuar o código? Compilador poderia seguir em frente após "encerrar a seção" (naquele último comando "int SYS\_CALL")? A resposta é não, um vez que recebeu o aviso para encerrar o programa termina, só vai entrar nesses pontos abaixo se "saltar" do marcador \textbf{saída}.
+
+\begin{lstlisting}[]
+adicionar:
+	mov ecx, p1       ; Processo Adicionar
+	call mst_saida
+	jmp saida
+
+subtrair:
+	mov ecx, p2       ; Processo Subtrair
+	call mst_saida
+	jmp saida
+
+multiplicar:
+	mov ecx, p3       ; Processo Multiplicar
+	call mst_saida
+	jmp saida
+
+dividir:
+	mov ecx, p4       ; Processo Dividir
+	call mst_saida
+	jmp saida
+\end{lstlisting}
+
+Agora cada marcador será bem similar, apenas modificando a mensagem para termos a certeza que entrou na opção correta. E temos o último marcador que identifica caso tenha ocorrido uma entrada errônea:
+
+\begin{lstlisting}[]
+msterro:	
+	mov ecx, msgErro
+	call mst_saida
+	jmp saida
+\end{lstlisting}
+
+Mostrar a mensagem de erro para opção inválida e sair do programa. Notemos que ainda falta para esse realizar os cálculos de soma, subtração, multiplicação e divisão porém com todo o que já foi passado (principalmente com os marcadores de conversão "String para Inteiro" e vice-versa) podemos usar isso como uma forma de exercício.
 
 \section{Programa 1.6 - Arrays}\index{Conceitos Introdutórios}
 Vetores (ou Arrays se prefere o termo mais técnico) em Assembly são extremamente comuns, nem sentimos quando estamos o usando, essa frase é tão verdadeira que as pessoas nem reparam que isso aqui em um array:
