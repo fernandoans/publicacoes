@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Cassandra com Java e Python}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.1}
 
 \usepackage{../sty/tutorial}
 
@@ -83,10 +83,10 @@ cqlsh> SELECT * FROM system_schema.keyspaces;
 cqlsh> exit
 \end{lstlisting}
 
-Para encerrar o contêiner: \\
+Podemos parar o contêiner com: \\
 \codigo{\$ docker stop meu-cassandra} 
 
-Para iniciar novamente o contêiner: \\
+Ou iniciá-lo novamente: \\
 \codigo{\$ docker start meu-cassandra} 
 
 \input{console.tex}
@@ -98,6 +98,7 @@ Penso que depois dessa apostila, será possível iniciar a descobrir o Apache Ca
 
 Como visto este banco de dados pode ser facilmente utilizado com aplicações em linguagem Java ou gerar os modelos para \textit{Machine Learning} com Python e ainda colher o benefício de substituir os bancos de dados relacionais para grandes quantidades de dados, sendo que esta é a grande motivação para NoSQL como forma de resolver o problema de escalabilidade dos bancos tradicionais.
 
+\input{../sty/serie.tex}
 \input{../sty/final.tex}
 
 %-----------------------------------------------------------------------------
