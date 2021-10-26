@@ -71,6 +71,14 @@ Nesse contexto, um grafo é composto de nós (ou vértices) e potencialmente are
 
 Existem outras aplicações para a teoria dos grafos fora do mundo da matemática. Uma vez que a teoria dos gráficos, em seu nível mais baixo, descreve como os dados se relacionam uns com os outros, pode ser aplicada a uma série de diferentes setores e cenários onde relacionar os dados é importante. Pode ser usada para mapear estruturas químicas, criar diagramas de estradas e até mesmo analisar dados de redes sociais. As aplicações são bastante amplas. 
 
+No Neo4j todos esses conceitos estão amplamente aplicados: \vspace{-1em}
+\begin{itemize}
+	\item \textbf{Nó} representamos entidades com Nó. Identificamos ao criar nosso modelo de dados. Junto com os relacionamentos, nó é uma das unidades fundamentais que formam um gráfico.
+	\item \textbf{Propriedades} representam os atributos do nó e relacionamentos. São pares nome-valor usados para adicionar qualidades a nós ou relacionamentos.
+	\item \textbf{Rótulo (label) do nó} Podemos atribuir funções ou tipos a um nó usando um ou mais rótulos. São utilizados para agrupar nós onde todos com o mesmo rótulo pertencem ao mesmo grupo.
+	\item \textbf{Relação} Usamos um relacionamento para conectar dois nós. Deve ter exatamente um tipo de relacionamento.
+\end{itemize}
+	
 \subsection{Criar o contêiner Docker}
 A forma mais simples para obtermos o Redis é através de um contêiner no Docker, deste modo podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
 
@@ -119,7 +127,7 @@ Uma vez que subimos nosso contêiner, após alguns segundos, está a nossa dispo
 É possível com este aplicativo realizar melhorias significativas para os recursos, velocidade e testes no banco através dessa ferramenta de visualização com base na Web. Na barra superior da janela principal, devemos dar o máximo de atenção na indicação \textbf{neo4j$\textdollar$ }pois neste ponto podemos inserir comandos em linguagem \textbf{Cypher}.
 
 \input{cypher.tex}
-% \input{java.tex}
+\input{java.tex}
 % \input{python.tex}
 
 \section{Conclusão}
