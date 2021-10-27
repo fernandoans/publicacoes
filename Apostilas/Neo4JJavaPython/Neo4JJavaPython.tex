@@ -1,7 +1,7 @@
 \documentclass[a4paper,11pt]{article}
 
 % Identificação
-\newcommand{\pbtitulo}{Neo4J com Java e Python}
+\newcommand{\pbtitulo}{Neo4j com Java e Python}
 \newcommand{\pbversao}{1.0}
 
 \usepackage{../sty/tutorial}
@@ -30,7 +30,7 @@
 Neo4j foi criador em 2000, quando \textit{Emil Eifrem}, \textit{Johan Svensson} e \textit{Peter Naubauer} começaram a notar uma quantidade significativa de sobrecarga tanto no desempenho quanto ao trabalho exigido em uma de suas aplicações. O primeiro e mais significativo aspecto da sobrecarga pode ser atribuído à incompatibilidade do modelo na forma como o SGBD Relacional estava trabalhando. Observaram que as conexões entre os dados impunham um longo tempo de processamento para as consultas. Além disso, o desempenho dessas ficou pior à medida que as conexões entre os dados se tornaram mais complexas. Finalmente, o tempo e esforço necessários para gerenciar esses relacionamentos colocaram ainda mais sobrecarga no ciclo de vida no desenvolvimento do aplicativo.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\textwidth]{imagens/neo4jlogo}
+	\includegraphics[width=0.35\textwidth]{imagens/neo4jlogo}
 	\caption{Logo do Neo4j}
 \end{figure}
 
@@ -54,7 +54,7 @@ Neo4j armazena dados como vértices e arestas ou, na terminologia dos grafos, n�
 O primeiro artigo conhecido sobre a teoria dos grafos foi escrito em 1736, chamado de "\textit{As 7 Pontes de Königsberg}" por Leonhard Euler, um matemático e físico, considerado preeminente do século XVIII. A cidade de \textit{Königsberg}, na Prússia (atual Rússia), foi construída no topo do rio \textit{Pregel} e incluía duas grandes ilhas que eram conectadas entre si e ao continente por sete pontes. O problema era conhecer a possibilidade em se cruzar cada uma das sete pontes de Königsberg apenas uma vez e visitar todas as partes da cidade.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagens/pontes}
+	\includegraphics[width=0.5\textwidth]{imagens/pontes}
 	\caption{As 7 Pontes de Königsberg}
 \end{figure}
 
@@ -116,11 +116,11 @@ Para sairmos do contêiner. Na seção \textbf{Cypher} investigaremos mais sobre
 Ou iniciá-lo novamente: \\
 \codigo{\$ docker start meu-neo4j}
 
-\subsection{Gerenciar o Neo4J}
+\subsection{Gerenciar o Neo4j}
 Uma vez que subimos nosso contêiner, após alguns segundos, está a nossa disposição uma das ferramentas mais úteis incluídas em um banco de dados o "Neo4j Browser", no endereço: \url{http://localhost:7474}.
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagens/browser}
+	\includegraphics[width=0.7\textwidth]{imagens/browser}
 	\caption{Neo4j Browser}
 \end{figure}
 
@@ -128,7 +128,7 @@ Uma vez que subimos nosso contêiner, após alguns segundos, está a nossa dispo
 
 \input{cypher.tex}
 \input{java.tex}
-% \input{python.tex}
+\input{python.tex}
 
 \section{Conclusão}
 \textbf{Neo4j} é significativamente mais rápido na consulta de dados relacionados do que usar um banco de dados relacional tradicional. Além disso, uma única instância do Neo4j pode lidar com conjuntos de dados contendo três ordens de magnitude sem penalidades de desempenho. A independência do desempenho transversal no tamanho do gráfico é um dos principais aspectos que tornam o \textbf{Neo4j} torna-se um candidato ideal para resolver problemas de grafos, mesmo quando os conjuntos de dados são muito grandes.

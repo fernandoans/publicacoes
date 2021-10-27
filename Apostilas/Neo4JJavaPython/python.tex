@@ -5,115 +5,123 @@ Todos os comandos descritos abaixo foi utilizado no JupyterLab \cite{jupyterofic
 
 \subsection{Pacote Necessário}
 Baixar o pacote necessário: \\
-\codigo{!pip install redis}
+\codigo{!pip install neo4j}
 
 Importar os pacotes necessários: \\
-\codigo{import redis}
+\codigo{from neo4j import GraphDatabase}
 
-Criamos um objeto da classe Redis para realizarmos nossas manipulações: \\
-\codigo{r = redis.Redis()} \\
-ou então: \\
-\codigo{r = redis.Redis(host= 'localhost',port= '6379')}
-
-Devemos nos atentar que sempre podemos obter todas as chaves criadas com o comando: \\
-\codigo{r.keys()}
-
-\subsection{Padrão simples Chave-Valor}
-E usamos o método \textbf{mset} para darmos entrada nas informações:
+Para realizarmos a manipulação dos dados a melhor forma é criarmos uma classe que terá a seguinte estrutura:
 \begin{lstlisting}[]
-r.mset({
-  "AC":"Rio Branco", "AL":"Maceió", "AP":"Macapá",
-  "AM":"Manaus", "BA":"Salvador", "CE":"Fortaleza", "DF":"Brasília",
-  "ES":"Vitória", "GO":"Goiânia", "MA":"São Luís", "MT":"Cuiabá",
-  "MS":"Campo Grande", "MG":"Belo Horizonte", "PA":"Belém", "PB":"João Pessoa",
-  "PR":"Curitiba", "PE":"Recife", "PI":"Teresina", "RJ":"Rio de Janeiro",
-  "RN":"Natal", "RS":"Porto Alegre", "RO":"Porto Velho", "RR":"Boa Vista",
-  "SC":"Florianópolis", "SP":"São Paulo", "SE":"Aracaju", "TO":"Palmas"})
+class Teste:
+  def __init__(self, uri, usuario, senha):
+    try:
+      self.driver = GraphDatabase.driver(uri, auth=(usuario, senha))
+    except Exception as e:
+      print("Falhou para acessar o Driver:", e)
+
+  def close(self):
+    self.driver.close()
+\end{lstlisting}	
+
+Nossa classe Teste possui o construtor que recebe URI (endereço), usuário e a senha de acesso ao banco e realiza essa conexão através da classe \textit{GraphDatabase}. Ao encerrar o objeto a conexão é encerrada.
+Implementamos a chamada principal:
+\begin{lstlisting}[]
+if __name__ == "__main__":
+  app = Teste("bolt://localhost:7687", "neo4j", "test")
+  app.close()
 \end{lstlisting}
 
-Para consultar qualquer capital brasileira com o método \textbf{get(chave)}: \\
-\codigo{r.get("PB").decode("UTF8")}
-
-Usamos o padrão de decodificação "UTF-8" de forma que os acentos apareçam corretamente. Poderíamos também criar separadamente cada uma das 27 capitais com o método: \\
-\codigo{r.set(chave, valor)}
-
-Mas obviamente daria muito mais trabalho. Para verificar a existência de qualquer chave, utilizamos o método:
-\codigo{r.exists("PA")}
-
-Que nos devolve o valor 1 caso a chave exista ou 0 caso contrário. 
-
-\subsection{Tempo de vida da chave}
-Para criarmos uma chave com um tempo determinado de expiração (em microssegundos): \\
-\codigo{r.psetex(chave, tempo\_ms, valor)}
-
-Obter o tempo da chave: \\
-\codigo{r.pttl(name)}
-
-Ou mesmo removê-lo completamente: \\
-\codigo{r.persist(chave)}
-
-\subsection{Conjuntos}
-Conjuntos são criados da seguinte forma:
+Agora podemos testar a vontade sabendo que existem 2 métodos principais: \textit{write\_transaction} que nos permite realizar as operações de gravação na base de dados e \textit{read\_transaction} para realizarmos as transações de consulta. Vamos começar inserindo as pessoas na base, para tanto na classe abaixo do método \textit{close()}, inserimos a seguinte codificação:
 \begin{lstlisting}[]
-frutas = {"abacate", "manga", "abacate"}
-r.sadd("frutas", *frutas)
-\end{lstlisting}
+  def criarPessoa(self, nome_pessoa, modelo):
+    with self.driver.session() as session:
+      session.write_transaction(
+        self._criarPessoa, nome_pessoa, modelo)
 
-E obtidos: \\
-\codigo{r.smembers("frutas")}
+  @staticmethod
+  def _criarPessoa(tx, nome_pessoa, modelo):
+    tx.run("CREATE (:Pessoa {nome: $n1, modelo_carteira: $m1})", n1=nome_pessoa, m1=modelo)	
+\end{lstlisting}	
 
-\subsection{Conjuntos Ordenados}
-Basicamente trabalha de mesma forma mantendo uma lista de valores ordenados no seguinte formato:
+O primeiro método abre uma seção com o \textit{Driver} em seguida uma transação de escrita e chama o segundo método para proceder a inclusão do registro em linguagem \textit{Cypher}. Para executar na chamada principal entre a criação do objeto \textit{app} e seu fechamento, inserimos:
 \begin{lstlisting}[]
-r.zadd('desempenho', {'Aluno 1': 56.3})
-r.zadd('desempenho', {'Aluno 2': 46.2})
-r.zadd('desempenho', {'Aluno 3': 67.3})
-r.zadd('desempenho', {'Aluno 4': 51.7})
-\end{lstlisting}
+  app.criarPessoa('Fernando', 'AB')
+  app.criarPessoa('Anselmo', 'B')
+\end{lstlisting}	
 
-E para trazemos uma listagem inversa de valores: \\
-\codigo{print(r.zrange('desempenho', 0, -1))}
-
-\subsection{Hash}
-Já vimos este formato com Java, e também podemos aplicá-lo ao Python, ou seja, se desejarmos criar o mesmo programa que vimos anteriormente (por isso que dissemos que comparações são totalmente desnecessárias):
+Executamos e comentamos essas chamadas pois se rodarmos novamente criará mais objetos. Para testarmos de forma simples a leitura criamos mais 2 métodos na classe:
 \begin{lstlisting}[]
-r.hset("camisa", "modelo", "social")
-r.hset("camisa", "tamanho", "P")
-r.hset("camisa", "valor", 23.50)
-\end{lstlisting}
+  def obterPessoas(self):
+    with self.driver.session() as session:
+      result = session.read_transaction(self._obterPessoas)
+      return result
 
-E obtermos com: \\
-\codigo{r.hget("camisa", "modelo")}
+  @staticmethod
+  def _obterPessoas(tx):
+    result = tx.run("MATCH (p:Pessoa) RETURN p.nome AS nome")
+    return [record["nome"] for record in result]
+\end{lstlisting}	
 
-Outra forma é como um bloco de informação, também conhecido como \textit{Pipeline}, observemos o seguinte código:
+E inserimos a chamada deste no ponto que comentamos as chamadas anteriores:
 \begin{lstlisting}[]
-import random
+  print(app.obterPessoas())	
+\end{lstlisting}	
 
-random.seed(444)
-camisas = {f"camisas:{random.getrandbits(32)}": i for i in (
-	{
-		"cor": "preto",
-		"preço": 49.99,
-		"qtd": 1000
-	},{
-		"cor": "marom",
-		"preço": 59.99,
-		"qtd": 500
-	},{
-		"cor": "verde",
-		"preço": 99.99,
-		"qtd": 200
-	})
-}
-with r.pipeline() as pipe:
-	for h_id, camisa in camisas.items():
-		for item, valor in camisa.items():
-			pipe.hset(h_id, item, valor)
-		pipe.execute()
-	r.bgsave()
-\end{lstlisting}
+E como resposta teremos a lista de pessoas registradas: \\
+\codigo{['Anselmo', 'Fernando']}
 
-E podemos localizar uma chave qualquer através do comando:
-\codigo{print(r.hgetall(chave))}
+\subsection{Sem utilizar uma Estrutura de Classe}
+Não necessitamos utilizar uma estrutura de classe para criarmos nossas transações basta que elas sejam executadas através de uma seção única, vamos criar um exemplo mais completo para demonstrar isso:
+\begin{lstlisting}[]
+from neo4j import GraphDatabase
 
-Que nos devolve um objeto do tipo dicionário.
+graphDB_Driver = GraphDatabase.driver("bolt://localhost:7687", auth=("neo4j", "test"))
+
+# Consultas
+cqlUniversidades = "MATCH (u:universidade) RETURN u.nome"
+cqlDistancia = "MATCH (p:professor {nome:'Fernando Anselmo'})-[r]->(u:universidade) RETURN u.nome,r.km"
+
+# Criação dos registros
+cqlCriar = """CREATE (p:professor { nome: "Fernando Anselmo"}),
+(s:universidade {nome: "IESB Campus Sul"}),
+(n:universidade {nome: "IESB Campus Norte"}),
+(c:universidade {nome: "IESB Campus Ceilândia"}),
+(p)-[:PERCORRE {km: 8}]->(s),
+(p)-[:PERCORRE {km: 1}]->(n),
+(p)-[:PERCORRE {km: 18}]->(c)"""
+
+with graphDB_Driver.session() as secao:
+  secao.run(cqlCriar)
+  nodes = secao.run(cqlUniversidades)
+
+  print("Lista dos Campus do IESB:")
+  for node in nodes:
+    print(node["u.nome"])
+
+  nodes = secao.run(cqlDistancia)
+  print("\nDistância Percorrida:")
+  for node in nodes:
+    print("Para ir ao", node["u.nome"], "percorre", node["r.km"], "Km")
+\end{lstlisting}	
+
+Criamos a conexão com o banco, e definimos 3 variáveis (apenas para um melhor entendimento): \textbf{cqlUniversidades} que mostra os campus criados, \textbf{cqlDistancia} que mostra a distância percorrida por um determinado professor e \textbf{cqlCriar} que cria todos os registros. Abrimos uma seção com \textbf{with} e podemos rodar qualquer comando para obter os resultados desejados. E como saída teremos: \\
+\codigo{Lista dos Campus do IESB:} \\
+\codigo{IESB Campus Norte} \\
+\codigo{IESB Campus Sul} \\
+\codigo{IESB Campus Ceilândia}
+
+\codigo{Distância Percorrida:} \\
+\codigo{Para ir ao IESB Campus Norte percorre 1 Km} \\
+\codigo{Para ir ao IESB Campus Sul percorre 8 Km} \\
+\codigo{Para ir ao IESB Campus Ceilândia percorre 18 Km}
+
+Não pretendo de modo nenhum, nessa apostila, repetir mais do mesmo, sendo assim já temos o básico para realizar todos os exemplos que foram mostrados anteriormente. Se deseja ir além existem excelentes tutoriais na Internet e entre eles recomendo: \vspace{-1em}
+\begin{itemize}
+	\item \textbf{Create a graph database in Neo4j using Python} de CJ Sulivan \\ \url{https://towardsdatascience.com/create-a-graph-database-in-neo4j} \\ 
+	\url{-using-python-4172d40f89c4}
+	\item \textbf{Build a Restaurant Recommendation Engine Using Neo4j} de Ng Wai Foong \\ \url{https://betterprogramming.pub/build-a-restaurant-recommendation-engine} \\
+	\url{-using-neo4j-9d13ebdd4736}
+	\item \textbf{Neo4j Movies Application} do  Github de Neoj-examples \\
+	\url{https://github.com/neo4j-examples/movies-python-bolt}
+	\item \textbf{Building a Career Recommendation Engine With Neo4j} de Otavio Santana \\ \url{https://dzone.com/articles/when-neo4j-faces-java-ee-ops-ee4j}
+\end{itemize}

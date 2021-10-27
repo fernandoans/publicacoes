@@ -86,15 +86,15 @@ Foi como usar um canhão para matar um mosquito, porém estrutura básica é est
   public void exemplo() {
     try (Session session = driver.session()) {
       session.run("CREATE (:Pessoa {nome: $nome, modelo_carteira : $modelo})", 
-    parameters("nome", "Fernando", "modelo", "AB") 
+        parameters("nome", "Fernando", "modelo", "AB") 
       );
       session.run("CREATE (:Pessoa {nome: $nome, modelo_carteira : $modelo})", 
-    parameters("nome", "Anselmo", "modelo", "A") 
+        parameters("nome", "Anselmo", "modelo", "A") 
       );
       session.run("CREATE (:Automovel {nome: $nome})", 
-    parameters("nome", "Ecosport") 
+        parameters("nome", "Ecosport") 
       );
-  }
+    }
   }
 \end{lstlisting}
 
@@ -141,14 +141,7 @@ No método \textit{exemplo()} criamos a seção que através de uma transação 
 Resumidamente, tudo que vimos na seção \textbf{Cypher} podemos aplicar com a linguagem Java, porém antes de encerrarmos esta parte vamos criar uma nova classe e fazer um programa que com toda certeza seria um modelo completo ideal para iniciarmos nossas explorações.
 
 \subsection{Locadora Java}
-Vejamos agora mais um exemplo sobre tudo o que vimos anteriormente e ao término da execução dessa classe o seguinte relacionamento será montado:
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.4\textwidth]{imagens/locadora}
-	\caption{Relacionamentos da Locadora}
-\end{figure}
-
-Com este exemplo temos o ponto de partida para a construção do que pode ser um interessante sistema sobre Aluguel de Carros, os relacionamentos entre vendedores, clientes e empresas.
+Neste exemplo um pouco mais completo temos um interessante ponto de partida para a construção do que pode ser um sistema sobre Aluguel de Veículos que pode abranger relacionamentos entre vendedores, clientes e empresas.
 \begin{lstlisting}[]
 package decus.com;
 
@@ -166,7 +159,8 @@ import org.neo4j.driver.Result;
 import org.neo4j.driver.Session;
 import org.neo4j.driver.Transaction;
 
-public class Locadora implements AutoCloseable {
+public class Locadora implements AutoCloseable {
+
   private final Driver driver;
   
   public Locadora(String uri, String user, String password) {
@@ -246,5 +240,12 @@ public class Locadora implements AutoCloseable {
   }
 }
 \end{lstlisting}
+
+E ao término da execução dessa classe o seguinte relacionamento será montado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.4\textwidth]{imagens/locadora}
+	\caption{Relacionamentos da Locadora}
+\end{figure}
 
 Observaremos cada seção no método \textbf{construir()} é formado por um conjunto lógico de chamadas, com uma execução em formato de \textit{Pipeline} para cada transação a ser chamada dentro de uma seção. Creio que essa ser a forma mais elegante de se construir em Java.
