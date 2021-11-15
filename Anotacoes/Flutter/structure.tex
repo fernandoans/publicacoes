@@ -1,0 +1,119 @@
+%----------------------------------------------------------------------------------------
+%	PACKAGES AND OTHER DOCUMENT CONFIGURATIONS
+%----------------------------------------------------------------------------------------
+
+\usepackage{amsmath, amsfonts, amsthm} % Math packages
+\usepackage{listings} % Code listings, with syntax highlighting
+\usepackage[brazil]{babel} % padronizar a linguagem
+\usepackage[utf8]{inputenc} % permitir a acentuação
+\usepackage{graphicx} % Required for inserting images
+\graphicspath{{Figures/}{./}} % Specifies where to look for included images (trailing slash required)
+\usepackage{booktabs} % Required for better horizontal rules in tables
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\setlength\parindent{0pt} % Removes all indentation from paragraphs
+\usepackage{enumitem} % Required for list customisation
+\setlist{noitemsep} % No spacing between list items
+\usepackage{color}    % definir cores
+\usepackage{listings} % listagens
+\usepackage{url} % codigo para as URLs
+
+%----------------------------------------------------------------------------------------
+%	DOCUMENT MARGINS
+%----------------------------------------------------------------------------------------
+
+% Espaçamento dos Parágrafos
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+\usepackage{geometry} % Required for adjusting page dimensions and margins
+
+\geometry{
+	paper=a4paper, % Paper size, change to letterpaper for US letter size
+	top=2.5cm, % Top margin
+	bottom=3cm, % Bottom margin
+	left=2cm, % Left margin
+	right=2cm, % Right margin
+	headheight=0.5cm, % Header height
+	footskip=1.5cm, % Space from the bottom margin to the baseline of the footer
+	headsep=0.75cm, % Space from the top margin to the baseline of the header
+	%showframe, % Uncomment to show how the type block is set on the page
+}
+
+%----------------------------------------------------------------------------------------
+%	FONTS
+%----------------------------------------------------------------------------------------
+
+\usepackage[utf8]{inputenc} % Required for inputting international characters
+\usepackage[T1]{fontenc} % Use 8-bit encoding
+\usepackage{fourier} % Use the Adobe Utopia font for the document
+
+%----------------------------------------------------------------------------------------
+%	SECTION TITLES
+%----------------------------------------------------------------------------------------
+\usepackage{sectsty} % Allows customising section commands
+\sectionfont{\vspace{6pt}\centering\normalfont\scshape} % \section{} styling
+\subsectionfont{\normalfont\bfseries} % \subsection{} styling
+\subsubsectionfont{\normalfont\itshape} % \subsubsection{} styling
+\paragraphfont{\normalfont\scshape} % \paragraph{} styling
+
+%----------------------------------------------------------------------------------------
+%	HEADERS AND FOOTERS
+%----------------------------------------------------------------------------------------
+\usepackage{scrlayer-scrpage} % Required for customising headers and footers
+
+\ohead*{} % Right header
+\ihead*{} % Left header
+\chead*{} % Centre header
+
+\ofoot*{} % Right footer
+\ifoot*{} % Left footer
+\cfoot*{\pagemark} % Centre footer
+
+%-----------------------------------------------------------------------------
+% Definição para as caixas de listagens
+%-----------------------------------------------------------------------------
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset {
+	aboveskip=3mm,
+	backgroundcolor=\color{backcolour},
+	basicstyle={\small\ttfamily},
+	belowskip=3mm,
+	breaklines=true,
+	breakatwhitespace=true,
+	columns=flexible,
+	commentstyle=\textit,
+	extendedchars=true,
+	frame=tb,
+	keepspaces=true,
+	keywordstyle=\color{blue}\bfseries,
+	language=HTML,
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{codegray},
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=3,
+	literate=%
+	{á}{{\'a}}1
+	{é}{{\'e}}1
+	{í}{{\'i}}1
+	{ó}{{\'o}}1
+	{ú}{{\'u}}1
+	{â}{{\^a}}1
+	{ê}{{\^e}}1
+	{ã}{{\~a}}1
+	{õ}{{\~o}}1
+	{ç}{{\c{c}}}1
+	{Á}{{\'A}}1
+	{É}{{\'E}}1
+	{Í}{{\'I}}1
+	{Ó}{{\'O}}1
+	{Ú}{{\'U}}1
+	{Ê}{{\^E}}1
+	{Ã}{{\~A}}1
+	{Õ}{{\~O}}1
+	{Ç}{{\c{C}}}1
+}

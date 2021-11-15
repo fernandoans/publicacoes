@@ -1,0 +1,522 @@
+%----------------------------------------------------------------------------------------
+% PACOTES E OUTRAS CONFIGURAÇÕES
+%----------------------------------------------------------------------------------------
+\documentclass[11pt]{scrartcl}
+\input{structure.tex}
+
+%----------------------------------------------------------------------------------------
+% INICIAL
+%----------------------------------------------------------------------------------------
+\title{	
+ \normalfont\normalsize
+ \textsc{Centro Universitário IESB}\\
+ \vspace{5pt} % Whitespace
+ \rule{\linewidth}{0.5pt}\\
+ \vspace{20pt} % Whitespace
+ {\huge Notas sobre Flutter}\\
+ \vspace{12pt} % Whitespace
+ \rule{\linewidth}{2pt}
+}
+
+\author{\LARGE Fernando Anselmo}
+\date{v.1.0 em \normalsize\today}
+
+\begin{document}
+
+\maketitle
+
+Não contém neste programas completos ou descrições, está no estilo de \textit{HANDS-ON} (mão na massa) composto por anotações soltas para auxiliar no desenvolvimento ou problemas que podem surgir.
+
+%----------------------------------------------------------------------------------------
+% TEXTO
+%----------------------------------------------------------------------------------------
+\section{Básico}
+
+Ambiente Dart para testes: \\
+\url{https://dartpad.dev/}
+
+Novo projeto: \\
+{\ttfamily\$ flutter create --org dev.decus -a java meu-projeto}
+
+Reconstruir um projeto: Na pasta do projeto
+\\
+{\ttfamily\$ flutter create .}
+
+Parar AVD:
+\\
+{\ttfamily\$ adb shell
+\\
+sync \&\& reboot -p}
+
+Rodar:
+\\
+{\ttfamily\$ flutter run [--profile] [--release]}
+
+%------------------------------------------------
+\subsection{Problemas que podem acontecer}
+
+Não encontrou \textbf{material.dart}: \\
+{\ttfamily\$ flutter doctor -v} \\
+{\ttfamily\$ flutter packages get} \\
+{\ttfamily\$ flutter clean}
+
+Resolução Geral:
+\\
+{\ttfamily\$ flutter channel dev} \\
+{\ttfamily\$ flutter doctor} \\
+{\ttfamily\$ flutter channel master} \\
+{\ttfamily\$ flutter doctor}
+
+Definir caminhos das variáveis: (os caminhos se referem ao meu SO) \\
+{\ttfamily\$ flutter config $--android-sdk="/home/fernando/Android/Sdk"$} \\
+{\ttfamily\$ flutter config $--android-studio-dir="/opt/android-studio"$} \\
+{\ttfamily\$ /home/fernando/Android/Sdk/tools/bin/sdkmanager $--install "cmdline-tools;latest"$} \\
+{\ttfamily\$ flutter doctor $--android-licenses$}
+
+Habilitar ambientes: \\
+{\ttfamily\$ flutter config $--enable-linux-desktop$} \\
+{\ttfamily\$ flutter config $--enable-windows-desktop$} \\
+{\ttfamily\$ flutter config $--enable-macos-desktop$}
+
+Não use o comando \textbf{print}: \\
+{\ttfamily log(texto);} e adicionar o pacote: {\ttfamily import 'dart:developer';}
+
+Para implementar classe com a anotação @immutable: \\
+Todas variáveis devem ser \textbf{final} e o construtor \textbf{const}.
+
+No caso de Cores: \\
+Ao invés de: {\ttfamily Colors.grey[300]} usar {\ttfamily Color(0xFFE0E0E0)} \\
+Ao invés de: {\ttfamily Colors.grey[100]} usar {\ttfamily Color(0xFFF5F5F5)}
+
+Para resolver o \textbf{accentColor} depreciado:
+
+1º Criar um objeto de ThemeData:
+\begin{lstlisting}[]
+ final ThemeData theme = ThemeData(
+  primarySwatch: white,
+ );
+\end{lstlisting}
+
+2º Usar este objeto no MaterialApp:
+\begin{lstlisting}[]
+ theme: theme.copyWith(
+  colorScheme: theme.colorScheme.copyWith(secondary: Colors.black),
+ ),
+\end{lstlisting}
+
+Tema \textbf{Dark}:
+\begin{lstlisting}[]
+ MaterialApp(
+  themeMode: ThemeMode.dark,
+  theme: _lightTheme,
+  darkTheme: _darkTheme,
+  ...
+ ),	
+\end{lstlisting}
+
+Aparecer além da barra:
+\begin{lstlisting}[]
+ return Scaffold(
+  extendBodyBehindAppBar: true,
+ ); 
+\end{lstlisting}
+
+Mudar a barra superior e inferior do Telefone:
+\begin{lstlisting}[]
+ void main() {
+  var systemUiOverlayStyle = const SystemUiOverlayStyle(
+   statusBarColor: Colors.orangeAccent, // ou Colors.transparent,
+   systemNavigationBarColor: Colors.orangeAccent, // ou Colors.transparent,
+  );
+  SystemChrome.setSystemUIOverlayStyle(
+   systemUiOverlayStyle,
+  );
+  runApp(const MyApp());
+ }
+\end{lstlisting}
+
+\textbf{FlatButton} depreciado, trocar para \textbf{TextButton} com estilo:
+\begin{lstlisting}[]
+ final ButtonStyle flatButtonStyle = TextButton.styleFrom(
+  backgroundColor: Colors.grey,
+  padding: const EdgeInsets.all(0),
+ );
+
+ ... 
+   TextButton(
+    style: flatButtonStyle,
+   ...
+\end{lstlisting}
+
+Erro no http: \\
+Criar uma: {\ttfamily var url = Uri.parse(END\_URL);} \\
+E usar esta no HTTP: {\ttfamily final response = await http.get(url);}
+
+Ou mesmo usar uma url mais completa:
+\begin{lstlisting}[]
+ Uri apiUri = Uri.https('api.tvmaze.com', 'singlesearch/shows',
+  {'q': 'house', 'embed': 'episodes'});
+\end{lstlisting}
+
+Definir um elemento completo de Cor:
+\begin{lstlisting}[]
+const MaterialColor white = MaterialColor(
+  0xFFFFFFFF,
+  <int, Color>{
+    50: Color(0xFFFFFFFF),
+    100: Color(0xFFFFFFFF),
+    200: Color(0xFFFFFFFF),
+    300: Color(0xFFFFFFFF),
+    400: Color(0xFFFFFFFF),
+    500: Color(0xFFFFFFFF),
+    600: Color(0xFFFFFFFF),
+    700: Color(0xFFFFFFFF),
+    800: Color(0xFFFFFFFF),
+    900: Color(0xFFFFFFFF),
+  },
+);
+\end{lstlisting}
+
+%----------------------------------------------------------------------------------------
+\section{Widgets}
+
+%----------------------------------------------------------------------------------------
+\subsection{Contâineres}
+Com \textit{children}:
+\begin{itemize}[nolistsep]
+	\item {\ttfamily Column(children: [])}
+	\item {\ttfamily Row(children: [])}
+	\item {\ttfamily Wrap(children: [])} - Quebra a linha
+	\item {\ttfamily Stack(children: [\_image, \_text,],)} - Imagem mesclada com texto
+\end{itemize}
+
+Com \textit{child}:
+\begin{itemize}[nolistsep]
+	\item {\ttfamily Container(child: )}
+	\item {\ttfamily Card(child: )}
+	\item {\ttfamily Align(alignment: Alignment.[tipo], child: )}
+	\item {\ttfamily Padding(padding: const EdgeInsets.all(5.0), child: )}
+	\item {\ttfamily SafeArea(child: )}
+	\item {\ttfamily ClipRRect(borderRadius: BorderRadius.circular(25), child: )}
+	\item {\ttfamily Center(child: )} - Centraliza o texto
+	\item {\ttfamily FittedBox(child: )} - Maximiza o texto
+	\item {\ttfamily Visibility(visible: true/false, child: )} - faz o objeto aparecer ou desaparecer
+	\item {\ttfamily Positioned(top: , left: , height: , width: , child: )}
+\end{itemize}
+
+Decorar um \textit{Container}:
+\begin{lstlisting}[]
+ Container(
+  decoration: BoxDecoration(
+   borderRadius: BorderRadius.circular(8.0),
+   color: Colors.blueAccent,
+  ),
+ ),
+\end{lstlisting}
+
+%----------------------------------------------------------------------------------------
+\subsection{Divisores}
+Obter um determinado espaçamento:
+\begin{itemize}[nolistsep]
+	\item {\ttfamily Expanded(flex: [fator], child: )}
+	\item {\ttfamily Flexible(flex: [fator], child: )}
+	\item {\ttfamily SizedBox(height: alt, width: larg, child: )}
+	\item {\ttfamily Placeholder(fallbackHeight: 200, color: Colors.blue, strokeWidth: 5)}
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+\subsection{Relativos a Imagem}
+Imagens podem vir de Asset ou Web: \\
+Asset: {\ttfamily Image.asset('assets/images/notfound.png')} \\
+Web: {\ttfamily Image.network('endereço', fit: BoxFit.cover)}
+
+Não quebrar uma imagem vinda da Web:
+\begin{lstlisting}[]
+ Hero(
+  tag: 'hero', 
+  child: Image.network('https://food.bolt.eu/og-img.jpg'),
+ ),
+\end{lstlisting}
+
+Criar uma imagem circular:
+\begin{lstlisting}[]
+ CircleAvatar(
+  radius: ,
+  backgroundColor: ,
+  child: _image,
+ )
+\end{lstlisting}
+
+Exata proporção de uma imagem:
+\begin{lstlisting}[]
+ AspectRatio(
+  aspectRatio: 1 / 2, (ou 3/4, 7/2)
+  child: _image,
+ ),
+\end{lstlisting}
+
+Mudar a opacidade de uma imagem:
+\begin{lstlisting}[]
+ Opacity(
+  child: _image,
+  opacity: 0.3,
+ ),	
+\end{lstlisting}
+
+Adicionar um filtro de cor:
+\begin{lstlisting}[]
+ ColorFiltered(
+  colorFilter: const ColorFilter.mode(
+   Colors.red,
+   BlendMode.modulate,
+  ),
+  child: _image,
+ ),	
+\end{lstlisting}
+
+Efeito de aparecer (fade) em imagens da Internet:
+\begin{lstlisting}[]
+ FadeInImage.assetNetwork(
+  placeholder: 'images/loading.gif',
+  fadeOutDuration: Duration(seconds: 2),
+  image: 'https://picsum.photos/250?image=9',
+ ),	
+\end{lstlisting}
+
+%----------------------------------------------------------------------------------------
+\subsection{Relativos a Textos (Labels)}
+Texto padrão com estilo:
+\begin{lstlisting}[]
+ Text(
+  episodio['name'] ?? '',
+  style: TextStyle(color: corEpisodio, fontSize: 20),
+ ),
+\end{lstlisting}
+
+Texto selecionável:
+\begin{lstlisting}[]
+ SelectableText('', style: [estilo])
+\end{lstlisting}
+
+Texto com elementos de estilo interno:
+\begin{lstlisting}[]
+ child: RichText(
+  text: TextSpan(
+   style: TextStyle(fontSize: 20, color: Colors.black),
+   children: <TextSpan>[
+    const TextSpan(text: 'Este é um exemplo de '),
+    TextSpan(
+     text: 'RichText',
+     style: TextStyle(
+      fontWeight: FontWeight.bold,
+      color: Colors.blue[400],
+     ),
+    ),
+   ],
+  ),
+ ),
+\end{lstlisting}
+
+%----------------------------------------------------------------------------------------
+\subsection{Relativos as Listas de Widgets}
+Barra de rolagem:
+\begin{lstlisting}[]
+ Scrollbar(
+  isAlwaysShown: true,
+  child: ...
+ ), 
+\end{lstlisting}
+
+Slider - Intervalo de Valores: 
+\begin{lstlisting}[]
+ Slider(
+  value: valorCorrente,
+  onChanged: (novoValor) {
+   setState(() {
+    valorCorrente = novoValor; 
+   });
+  },
+  min: 0,
+  max: 100,
+ ),
+\end{lstlisting}
+
+Chip - Lista de algo
+\begin{lstlisting}[]
+ Chip(
+  avatar: CircleAvatar(
+   child: Text(emails[index].substring(0, 1)),
+  ),
+  label: Text(emails[index]),
+  onDeleted: () {
+   setState(() {
+    emails.removeAt(index);
+   });
+  },
+ ),	
+\end{lstlisting}
+
+PageView - Várias Visões:
+\begin{lstlisting}[]
+ PageView(
+  scrollDirection: Axis.vertical,
+  children: _widgets,
+ ),	
+\end{lstlisting}
+
+Tabela:
+\begin{lstlisting}[]
+ DataTable(
+  columns: [
+   DataColumns(label: nomcol1),
+   DataColumns(label: nomcol2),
+  ],
+  rows: [
+   DataRows(cells: [
+    DataCell(Text(val1c1)),
+    DataCell(Text(val1c2)),
+   ]),
+   DataRows(cells: [
+    DataCell(Text(val2c1)),
+    DataCell(Text(val2c2)),
+   ]),
+  ],
+ )
+\end{lstlisting}
+
+Lista lateral:
+\begin{lstlisting}[]
+ return Scaffold(
+  ...
+  drawer: Drawer(
+   child: _listView,
+  ),
+ );
+\end{lstlisting}
+
+%----------------------------------------------------------------------------------------
+\subsection{Diversos e úteis}
+
+Dica rápida:
+\begin{lstlisting}[]
+ Tooltip(
+  message: 'Aqui a dica', 
+  child: [widget]
+ ),
+\end{lstlisting}
+
+Future.delayed - Espera um tempo:
+\begin{lstlisting}[]
+ onPressed: () async {
+  await Future.delayed(
+   Duration(seconds: 1),
+  );
+  ...
+ }
+\end{lstlisting}
+
+Quando tiver uma espera:
+\begin{lstlisting}[]
+ import 'dart:io'; // import
+ import 'package:flutter/cupertino.dart'; // Cupertino
+
+ Platform.isAndroid
+  ? CircularProgressIndicator(): CupertinoActivityIndicator()
+\end{lstlisting}
+
+Mensagem SnackBar:
+\begin{lstlisting}[]
+ child: Builder(
+  builder: (context) => GestureDetector(
+   onTap: () {
+    ScaffoldMessenger.of(context).showSnackBar(
+     const SnackBar(
+      duration: Duration(seconds: 1),
+      content: Text('This is the Snackbar'),
+     ),
+    );
+   },
+  ),
+ ),
+\end{lstlisting}
+
+Criar um QrCode:
+\begin{lstlisting}[]
+ QrImage(
+  data: 'o que quiser aqui',
+  version: QrVersions.auto,
+  size: 200.0,
+ ),
+\end{lstlisting}
+
+
+%----------------------------------------------------------------------------------------
+\section{Top Pacotes e Plugins}
+
+Página dos Pacotes:
+\\
+\url{https://pub.dev/}
+
+\url{https://pub.dev/packages/introduction_screen} \\
+{\ttfamily\$ flutter pub add introduction\_screen}
+
+\url{https://pub.dev/packages/flutter_native_splash} \\
+{\ttfamily\$ flutter pub add flutter\_native\_splash}
+
+\url{https://pub.dev/packages/google_fonts} \\
+{\ttfamily\$ flutter pub add google\_fonts}
+
+Ex: 
+\begin{lstlisting}[]
+ ttfamilyText('Algo', style: GoogleFonts.aguafinaScript().copyWith(fontSize: 40),),
+\end{lstlisting}
+
+\url{https://pub.dev/packages/flutter_launch_icons} \\
+{\ttfamily\$ flutter pub add flutter\_launch\_icons}
+
+\url{https://pub.dev/packages/fluttertoast} \\
+{\ttfamily\$ flutter pub add fluttertoast} 
+
+Ex:
+\begin{lstlisting}[]
+ onPressed: () {
+  Fluttertoast.showToast(
+   msg: 'Mensagem da Torrada',
+   backgroundColor: Colors.deepOrange,
+   textColor: Colors.white,
+   fontSize: 16.0,
+  );
+ },
+\end{lstlisting}
+
+\url{https://pub.dev/packages/screenshot} \\
+{\ttfamily\$ flutter pub add screenshot}
+
+\subsection{Plugins para o VS Code}
+\begin{itemize}[nolistsep]
+	\item Dart - Dart Code
+	\item Flutter - Dart Code
+	\item Material Icon Theme - Phillipp Kief
+	\item Pubspec Assist - Jeroen Meijer
+	\item Android Emulator Launcher - Dannark
+	\item Awesome Flutter Snippets - Neevash Ramdial
+	\item Error Lens - Alexander
+\end{itemize}
+
+%----------------------------------------------------------------------------------------
+\section{Dicas de Dart}
+
+Ao invés de usar: {\ttfamily episodio['name'] == null ? '' : episodio['name']} \\
+Converter para: {\ttfamily episodio['name'] ?? ''}
+
+Obter o tamanho da tela:
+\begin{lstlisting}[]
+ Size size = MediaQuery.of(context).size;
+ double height = size.height;
+ double width = size.width;
+\end{lstlisting}
+
+Ao invés de usar: {\ttfamily String text = '$\setminus$\$100';} \\
+Converter para: {\ttfamily String text = r'\$100';}
+
+\end{document}
