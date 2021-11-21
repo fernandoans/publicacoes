@@ -36,7 +36,7 @@ Ambiente Dart para testes: \\
 \url{https://dartpad.dev/}
 
 Novo projeto: \\
-{\ttfamily\$ flutter create --org dev.decus -a java meu-projeto}
+{\ttfamily\$ flutter create ---org dev.decus -a java meu-projeto}
 
 Reconstruir um projeto: Na pasta do projeto
 \\
@@ -50,7 +50,7 @@ sync \&\& reboot -p}
 
 Rodar:
 \\
-{\ttfamily\$ flutter run [--profile] [--release]}
+{\ttfamily\$ flutter run [---profile] [---release]}
 
 %------------------------------------------------
 \subsection{Problemas que podem acontecer}
@@ -68,15 +68,15 @@ Resolução Geral:
 {\ttfamily\$ flutter doctor}
 
 Definir caminhos das variáveis: (os caminhos se referem ao meu SO) \\
-{\ttfamily\$ flutter config $--android-sdk="/home/fernando/Android/Sdk"$} \\
-{\ttfamily\$ flutter config $--android-studio-dir="/opt/android-studio"$} \\
-{\ttfamily\$ /home/fernando/Android/Sdk/tools/bin/sdkmanager $--install "cmdline-tools;latest"$} \\
-{\ttfamily\$ flutter doctor $--android-licenses$}
+{\ttfamily\$ flutter config ---android-sdk=``/home/fernando/Android/Sdk''} \\
+{\ttfamily\$ flutter config ---android-studio-dir=``/opt/android-studio''} \\
+{\ttfamily\$ /home/fernando/Android/Sdk/tools/bin/sdkmanager ---install ``cmdline-tools;latest''} \\
+{\ttfamily\$ flutter doctor ---android-licenses}
 
 Habilitar ambientes: \\
-{\ttfamily\$ flutter config $--enable-linux-desktop$} \\
-{\ttfamily\$ flutter config $--enable-windows-desktop$} \\
-{\ttfamily\$ flutter config $--enable-macos-desktop$}
+{\ttfamily\$ flutter config ---enable-linux-desktop} \\
+{\ttfamily\$ flutter config ---enable-windows-desktop} \\
+{\ttfamily\$ flutter config ---enable-macos-desktop}
 
 Não use o comando \textbf{print}: \\
 {\ttfamily log(texto);} e adicionar o pacote: {\ttfamily import 'dart:developer';}
