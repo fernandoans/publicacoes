@@ -80,10 +80,10 @@ No Neo4j todos esses conceitos estão amplamente aplicados: \vspace{-1em}
 \end{itemize}
 	
 \subsection{Criar o contêiner Docker}
-A forma mais simples para obtermos o Redis é através de um contêiner no Docker, deste modo podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
+A forma mais simples para obtermos o Neo4J é através de um contêiner no Docker, deste modo podemos ter várias versões do banco instalada e controlar mais facilmente qual banco está ativo ou não. E ainda colhemos o benefício adicional de não termos absolutamente nada deixando sujeira em nosso sistema operacional ou áreas de memória.
 
 Baixar a imagem oficial: \\
-\codigo{\$ docker pull redis}
+\codigo{\$ docker pull neo4j}
 
 Antes de criarmos o contêiner precisamos criar uma pasta em nosso disco para hospedar o banco, por exemplo minha pasta chama-se: "/home/fernando/neo4j". Deste modo a criação do contêiner será: \\
 \codigo{\$ docker run -d -p 7687:7687 -p 7474:7474 -v \$HOME/neo4j/data:/data \\ -v \$HOME/neo4j/logs:/logs -v \$HOME/neo4j/import:/import \\ -v \$HOME/neo4j/plugins:/plugins --env NEO4J\_AUTH=neo4j/test --name meu-neo4j neo4j}
