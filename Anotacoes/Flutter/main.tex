@@ -408,11 +408,53 @@ Dica rápida:
 Future.delayed - Espera um tempo:
 \begin{lstlisting}[]
  onPressed: () async {
-  await Future.delayed(
-   Duration(seconds: 1),
-  );
+  await Future.delayed(const Duration(seconds: 1));
   ...
  }
+\end{lstlisting}
+
+FutureBuilder - Widget:
+
+1º) Construir o método que vai dar a resposta:
+\begin{lstlisting}[]
+Future<String> getData() async {
+  await Future.delayed(const Duration(seconds: 1));
+  // throw "Para testar o erro";
+  return "Funciona...";
+}
+\end{lstlisting}
+
+2º) Ação no Scaffold:
+\begin{lstlisting}[]
+ return Scaffold(
+   ...
+   body: Center(
+    child: FutureBuilder(
+     future: getData(),
+     builder: (context, snapshot) {
+      if (snapshot.connectionState == ConnectionState.waiting) {
+       return const CircularProgressIndicator.adaptive();
+      }
+      if (snapshot.hasError) {
+       return Text(snapshot.error);
+      } else {
+       return Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+         Text(snapshot.data.toString()),
+         ElevatedButton(
+          onPressed: () {
+           setState(() {});
+          },
+          child: const Text("Refresh"),
+         ),
+        ],
+       );
+      }
+     }
+    ),
+   ),
+ );
 \end{lstlisting}
 
 Quando tiver uma espera:
