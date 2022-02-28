@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Hadoop}
-\newcommand{\pbversao}{1.3}
+\newcommand{\pbversao}{1.4}
 
 \usepackage{../sty/tutorial}
 
@@ -125,39 +125,26 @@ O Hadoop conta ainda com os seguintes produtos no seu ecosistema para acrescenta
 
 \section{Hadoop no Docker}
 O modo mais simples de se conseguir trabalhar com o Hadoop é utilizando o Docker, para baixar a imagem do Hadoop: \\
-\codigo{\$ docker pull sequenceiq/hadoop-docker:2.7.1}
+\codigo{\$ docker pull suhothayan/hadoop-spark-pig-hive:2.9.2}
 
-E para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-\codigo{\$ docker run -it --name hadoop -v \$(pwd):/home/tsthadoop \\ sequenceiq/hadoop-docker:2.7.1 /etc/bootstrap.sh -bash}
+Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark, Pig e Hive que trataremos em outras apostilas.
+
+Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
+\codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 -v \\ \$(pwd):/home/tsthadoop suhothayan/hadoop-spark-pig-hive:2.9.2 bash}
 
 Uma vez interrompido o contêiner: \\
-\codigo{\$ docker stop hadoop}
+\codigo{\$ docker stop meu-hadoop}
 
 Podemos executá-lo novamente com os seguintes comandos: \\
-\codigo{\$ docker start hadoop \\
-\ttfamily\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
-
-\subsection{No bash do Hadoop}
-A primeira vez é necessário configurar a variável de ambiente e um caminho para a pasta de saída, para tanto, usamos os seguintes comandos: \\
-\codigo{ bash-4.1\# cd ~ \\
- \ttfamily bash-4.1\# vi .bashrc}
-
-E inserimos [i] as seguintes linhas:
-\begin{lstlisting}
-export HADOOP_PREFIX=/usr/local/hadoop
-export PATH=$PATH:$HADOOP_PREFIX/bin
-cd /home/tsthadoop/
-\end{lstlisting}
-
-Gravar [esc] [:w] e sair [:q] do Editor VI. E podemos sair do bash com o comando: \\
-\codigo{ bash-4.1\# exit}
+\codigo{\$ docker start meu-hadoop \\
+\ttfamily\$ docker exec -it meu-hadoop bash}
 
 \subsection{Testando o ambiente}
-Primeiramente, devemos ter ciência do que o Hadoop consome verificando a memória: \\
-\codigo{\$ free -m}
+Vamos sair do bash: \\
+\codigo{\# exit}
 
 Em seguida verificar seu endereço padrão: \\
-\codigo{\$ docker inspect hadoop | grep IP}
+\codigo{\$ docker inspect meu-hadoop | grep IP}
 
 E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos testar os seguintes endereços: \vspace{-1em}
 \begin{itemize}
@@ -165,6 +152,7 @@ E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos
 	\item Cluster: \url{http://172.17.0.2:8088}
 	\item Nodes: \url{http://172.17.0.2:8042}
 	\item Status: \url{http://172.17.0.2:50090}
+	\item Spark: \url{http://172.17.0.2:8080/}
 \end{itemize}
 Além desses ainda temos o endereço de acesso ao HDFS: \url{hdfs://172.17.0.2:9000}.
 
@@ -182,48 +170,45 @@ Estes são os arquivos de configuração do Hadoop: \vspace{-1em}
 \end{itemize}
 
 Nesta imagem os arquivos se encontram na pasta: \\
-\codigo{ /usr/local/hadoop-2.7.0/etc/hadoop}
+\codigo{ /usr/local/hadoop-2.9.2/etc/hadoop}
 
 \subsection{Comandos básicos no bash}
 Se o Hadoop está rodando corretamente: \\
-\codigo{ bash-4.1\# jps}
-
-Informações do config: \\
-\codigo{ bash-4.1\# ifconfig}
+\codigo{ \# jps}
 
 Relatório informativo do HDFS: \\
-\codigo{ bash-4.1\# hdfs dfsadmin -report}
+\codigo{ \# hdfs dfsadmin -report}
 
 Se quiser ir para a pasta HOME do Hadoop: \\
-\codigo{ bash-4.1\# cd \$HADOOP\_PREFIX}
+\codigo{ \# cd \$HADOOP\_PREFIX}
 
 Rodar o mapreduce \\
-\codigo{ bash-4.1\# hadoop jar \\ share/hadoop/mapreduce/hadoop-mapreduce-examples-2.7.1.jar grep input \\ output 'dfs[a-z.]+'}
+\codigo{ \# hadoop jar \\ share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar grep input \\ output 'dfs[a-z.]+'}
 
 Verificar o diretório de saída: \\
-\codigo{ bash-4.1\# hdfs dfs -cat output/*}
+\codigo{ \# hdfs dfs -cat output/*}
 
 Listar todos os arquivos do diretório de entrada: \\
-\codigo{ bash-4.1\# hdfs dfs -ls input/*}
+\codigo{ \# hdfs dfs -ls input/*}
 
 Remover todos arquivos do diretório de saída: \\
-\codigo{ bash-4.1\# hdfs dfs -rm rf  output/*}
+\codigo{ \# hdfs dfs -rm rf  output/*}
 
 Listagem dos arquivos \\
-\codigo{ bash-4.1\# hdfs dfs -ls /}
+\codigo{ \# hdfs dfs -ls /}
 
 E podemos sair do bash com o comando: \\
-\codigo{ bash-4.1\# exit}
+\codigo{ \# exit}
 
 \section{Exemplo Completo}
-Acessamos os dados disponibilizados pelo Portal da Transparência\cite{portaltransp} sobre o Bolsa Família (acessar a opção "Benefícios ao Cidadão" - "Bolsa Família - Pagamentos") baixar qualquer mês/ano desejado e temos um arquivo CSV para trabalhar (colocamos o arquivo em uma pasta a partir do \$PWD - usado na associação do Docker - /Aplicativo/hadoop-model/bolsa).
+Acessamos os dados disponibilizados pelo Portal da Transparência\cite{portaltransp} sobre o Bolsa Família (acessar a opção "Benefícios ao Cidadão" - "Bolsa Família - Pagamentos") baixar qualquer mês/ano desejado e temos um arquivo CSV para trabalhar (colocamos o arquivo em uma pasta a partir do PWD - usado na associação do Docker - /Aplicativo/hadoop-model/bolsa).
 
 \subsection{Fora do Hadoop}
 O primeiro tratamento que fazemos é convertê-lo para um formato UTF-8 com o comando: \\
 \codigo{\$ iconv -f ISO-8859-1 -t UTF-8 [arqOriginal].csv > 2018\_Pagamento.utf8.csv}
 
 Observamos que este arquivo é gigante para realizarmos um teste (demandará muito tempo de processamento), então usaremos o seguinte programa para gerar um arquivo AMOSTRA de 20.000 elementos (com base na técnica de Amostragem Sistemática). Listagem para o \textbf{amostra.py} (em linguagem Python):
-\begin{lstlisting}
+\begin{lstlisting}[]
 #!/usr/bin/env python
 import sys
 import os
@@ -257,7 +242,7 @@ Executamos da seguinte forma: \\
 \codigo{\$ cat 2018\_Pagamento.utf8.csv | ./mapper.py}
 
 Utilizaremos este arquivo para o exemplo, mas se desejar pode utilizar o arquivo completo com a realização das devidas alterações no nome deste. Para processar o MapReduce precisamos criar dois arquivos. Listagem para o \textbf{mapper.py}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 #!/usr/bin/env python
 import sys
 
@@ -276,7 +261,7 @@ Podemos testar este com a seguinte linha de código: \\
 \codigo{\$ cat 201808\_BF\_Amostra.csv | ./mapper.py}
 
 Observe que o resultado desta primeira fase fornece como saída o par "chave + valor" (estado e o valor pago) para cada linha encontrada no arquivo. E a listagem para o \textbf{reducer.py}:
-\begin{lstlisting}
+\begin{lstlisting}[]
 #!/usr/bin/env python
 import sys
 
@@ -308,39 +293,44 @@ Executar o bash do Hadoop: \\
 \codigo{\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
 
 Verificar a pasta na qual estamos: \\
-\codigo{ bash-4.1\# pwd}
+\codigo{ \# pwd}
 
-E como resposta devemos obter: \textbf{/home/tsthadoop} que é a pasta que nos liga ao sistema externo. Selecionar a pasta aonde se localizam os arquivos: \\
-\codigo{ bash-4.1\# cd Aplicativos/hadoop-model/bolsa}
+E como resposta devemos obter: \textbf{/home/tsthadoop} que é a pasta que nos liga ao sistema externo. Caso contrário digitar: \\
+\codigo{ \# cd /home/tsthadoop/}
 
-Verificar a existência dos arquivos com o comando: \\
-\codigo{ bash-4.1\# ls}
+Considere que essa é nossa pasta de trabalho e sempre devemos estar nela. Esta pasta deve conter a visão dos aquivos que iremos trabalhar externamente, verificar isso com o comando: \\
+\codigo{ \# ls}
+
+Os arquivos mapper.py, reducer.py e 201808\_BF\_Amostra.csv não estão nesta pasta? Saímos do bash, selecionamos a pasta correta onde estão os arquivos, algo como: \\
+\codigo{ \# cd Aplicativos/hadoop-model/bolsa}
+
+E retornamos para o bash e verificamos novamente a existência dos arquivos.
 
 Adicionar os arquivos no HDFS: \\
-\codigo{ bash-4.1\# hadoop fs -put mapper.py \\
-bash-4.1\# hadoop fs -put reducer.py \\
-bash-4.1\# hadoop fs -put 201808\_BF\_Amostra.csv}
+\codigo{ \# hadoop fs -put mapper.py \\
+\# hadoop fs -put reducer.py \\
+\# hadoop fs -put 201808\_BF\_Amostra.csv}
 
 Verificar os arquivos no HDFS: \\
-\codigo{ bash-4.1\# hdfs dfs -ls}
+\codigo{ \# hdfs dfs -ls}
 
 Executar o MapReduce: \\
-\codigo{ bash-4.1\# hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.7.0.jar -mapper "python mapper.py" \- -reducer "python reducer.py" \- -input 201808\_BF\_Amostra.csv -output OutputDir -file mapper.py -file reducer.py -file 201808\_BF\_Amostra.csv}
+\codigo{ \# hadoop jar /usr/local/hadoop/share/hadoop/tools/lib/hadoop-streaming-2.9.2.jar -mapper "python mapper.py" \- -reducer "python reducer.py" \- -input 201808\_BF\_Amostra.csv -output OutputDir -file mapper.py -file reducer.py -file 201808\_BF\_Amostra.csv}
 
 Verificar o diretório de saída: \\
-\codigo{ bash-4.1\# hadoop fs -ls OutputDir}
+\codigo{ \# hadoop fs -ls OutputDir}
 
 Verificar a informação de saída: \\
-\codigo{ bash-4.1\# hadoop fs -cat OutputDir/part-00000 | head}
+\codigo{ \# hadoop fs -cat OutputDir/part-00000 | head}
 
 Baixar o arquivo para a pasta local: \\
-\codigo{ bash-4.1\# hadoop fs -getmerge OutputDir/ my-local-file.txt}
+\codigo{ \# hadoop fs -getmerge OutputDir/ my-local-file.txt}
 
 Para remover os arquivos do HDFS: \\
-\codigo{ bash-4.1\# hdfs dfs -rm mapper1.py \\
-bash-4.1\# hdfs dfs -rm reducer1.py \\
-bash-4.1\# hdfs dfs -rm 2018\_Pagamento.utf8.csv \\
-bash-4.1\# hdfs dfs -rm -r OutputDir}
+\codigo{ \# hdfs dfs -rm mapper.py \\
+\# hdfs dfs -rm reducer.py \\
+\# hdfs dfs -rm 201808\_BF\_Amostra.csv \\
+\# hdfs dfs -rm -r OutputDir}
 
 \section{Conclusão}
 "Big Data" é um termo que ganha cada vez mais espaço no vocabulário das empresas de TI e entre administradores de data centers. Afinal de contas, o volume de dados gerado hoje, graças à facilidade de acesso à internet a partir de quase qualquer lugar, é maior do que se podia imaginar há alguns anos atrás.
