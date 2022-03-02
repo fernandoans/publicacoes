@@ -19,7 +19,7 @@
 %--------------------------------------------------------------------------
 \begin{abstract}
 	% O primeiro caractere deve vir com \initial{}
-	\initial{K}afka ou "Apache Kafka" (aqui chamarei apenas de Kafka) é parte do Ecosistema Hadoop e uma plataforma de streaming de eventos distribuída pela comunidade capaz de lidar com trilhões por dia. Inicialmente concebido como uma simples fila de mensagens, Kafka é baseado em uma abstração de um log de confirmação distribuído. Desde que foi criado e aberto pelo LinkedIn em 2011, evoluiu rapidamente da fila de mensagens para uma plataforma de streaming de eventos completa.
+	\initial{K}afka\cite{kafkaoficial} ou "Apache Kafka" (aqui chamarei apenas de Kafka) é parte do Ecosistema Hadoop e uma plataforma de streaming de eventos distribuída pela comunidade capaz de lidar com trilhões por dia. Inicialmente concebido como uma simples fila de mensagens, Kafka é baseado em uma abstração de um log de confirmação distribuído. Desde que foi criado e aberto pelo LinkedIn em 2011, evoluiu rapidamente da fila de mensagens para uma plataforma de streaming de eventos completa.
 \end{abstract}
 
 %--------------------------------------------------------------------------
@@ -85,7 +85,7 @@ Qual o papel do Zookeeper? É usado para selecionar automaticamente um líder pa
 Estando tudo OK, vamos baixar a imagem do Kafka da \textbf{Confluent}: \\
 \codigo{\$ docker pull confluentinc/cp-kafka}
 
-A \textbf{Confluent} é uma empresa fundada pelos desenvolvedores do Kafka. Fornecem conectores adicionais ao Kafka por meio de versões Aberta e Comercial do Confluent Kafka. Também oferecem suporte por meio de qualquer Kafka Cluster ou configuração de aplicativo, caso necessite em sua organização.
+A \textbf{Confluent}\cite{confluentoficial} é uma empresa fundada pelos desenvolvedores do Kafka. Fornecem conectores adicionais ao Kafka por meio de versões Aberta e Comercial do Confluent Kafka. Também oferecem suporte por meio de qualquer Kafka Cluster ou configuração de aplicativo, caso necessite em sua organização.
 
 E criar o contêiner do Kafka: \\
 \codigo{\$ docker run -d --name meu-kafka -p 9092:9092 \\
@@ -430,7 +430,7 @@ public class ConsumeMensagens {
 
 Cada vez são geradas 100 mensagens para o "testTopic", o padrão de mensagem pode ser qualquer coisa que desejamos, o que mais impressiona nesse sistema é a velocidade como essas mensagens são consumidas de forma quase instantânea. Não pense que é porquê estamos na mesma máquina, Kafka foi criado para ser um sistema extremamente performático. 
 
-Imagine então que através dele sistemas totalmente heterogêneos e que antes não trocavam informações agora podem fazê-lo sem o menor problema. E em linguagens totalmente diferentes.
+Imagine então que através dele sistemas totalmente heterogêneos e que antes não trocavam informações agora podem fazê-lo sem o menor problema. E em linguagens totalmente diferentes. Mais fontes de informação podem ser obtidas em diversos sites que apresenta tutoriais completos sobre o Apache Hive como a Tutorials Point\cite{tutorialspoint}.
 	
 \section{Conclusão}
 Kafka é ideal para justificar a necessidade que o mundo tem gerado um volume cada vez maior de informações. Um cenário comum é que estes dados, uma vez gerados, precisam ser transportados para diversas aplicações. Kafka é uma plataforma de streaming de dados distribuído que pode publicar, assinar, armazenar e processar streams de registros em tempo real. Projetado para lidar com fluxos de dados de várias fontes e entregá-los a vários consumidores. Em resumo: mover grandes quantidades de dados – não apenas do ponto A ao B, mas dos pontos A ao Z e a qualquer outro lugar que necessitemos e tudo ao mesmo tempo.
@@ -445,9 +445,17 @@ Kafka pode lidar com milhões de dados por segundo, o que o torna adequado para 
 % REFERÊNCIAS
 %--------------------------------------------------------------------------
 \begin{thebibliography}{4}
-	\bibitem{wekaoficial} 
-	Página do Weka \\
-	\url{https://www.cs.waikato.ac.nz/ml/weka/}
+	\bibitem{kafkaoficial} 
+	Página do Apache Kafka \\
+	\url{https://kafka.apache.org/}
+
+	\bibitem{confluentoficial} 
+	Página da Confluent \\
+	\url{https://www.confluent.io/what-is-apache-kafka/}
+	
+	\bibitem{tutorialspoint} 
+	Tutorials Point sobre Kafka \\
+	\url{https://www.tutorialspoint.com/apache_kafka/index.htm}	
 	
 	\input{../sty/referencias.tex}
 \end{thebibliography}
