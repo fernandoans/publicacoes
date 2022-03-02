@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Hive}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.01}
 
 \usepackage{../sty/tutorial}
 
@@ -34,17 +34,22 @@ O Hive fornece a funcionalidade de leitura, gravação e gerenciamento de grande
 	\caption{Logo do Apache Hive}
 \end{figure}
 
-Além disso tudo, por ser criado utilizando \textit{Open Source} a comunidade Weka e muito ativa e constantemente produz \textit{plugins} (chamados de pacotes) que podem ser incorporados e fornece funcionalidades não previstas originalmente.
+O Hive permite que você projete estrutura em grandes volumes de dados sem estrutura. Depois de definir a estrutura, você pode usar o HiveQL para consultar os dados sem conhecimento de Java ou do MapReduce. Também fornece suporte a serializador/desserializadores (SerDe) personalizados para dados complexos ou com estrutura irregular.
 
-Kafka fornece um banco de dados de streaming de vários sistemas de origem. Kafka propõe ter os seguintes recursos mencionados para seus bancos de dados de streaming: \vspace{-1em}
+Há dois tipos de tabelas que você pode criar com o Hive:
 \begin{itemize}
-	\item Rápido e escalável.
-	\item Fornece consultas semelhantes a SQL (ou seja, HQL) que são transformadas implicitamente em trabalhos MapReduce ou Spark.
-	\item É capaz de analisar grandes conjuntos de dados armazenados em HDFS.
-	\item Permite diferentes tipos de armazenamento, como texto simples, RCFile e HBase.
-	\item Utiliza indexação para acelerar as consultas.
-	\item Pode operar em dados compactados armazenados no ecossistema Hadoop.
-	\item Suporta funções definidas pelo usuário (UDFs) onde o usuário pode fornecer sua funcionalidade. 
+	\item \textit{Interna}: os dados são armazenados no data warehouse do Hive. O data warehouse está localizado no /hive/warehouse/ no armazenamento padrão para o cluster. São usadas nas seguintes condições:
+	\begin{itemize}
+		\item Os dados são temporários.
+		\item Deseja que o Hive gerencie o ciclo de vida da tabela e dos dados.
+	\end{itemize}
+	\item \textit{Externa}: os dados são armazenados fora do data warehouse. Os dados podem ser guardados em qualquer armazenamento acessível pelo cluster. São usadas nas seguintes condições:
+   	\begin{itemize}
+   		\item Os dados também são usados fora do Hive. Por exemplo, os arquivos de dados são atualizados por outro processo (que não bloqueia os arquivos.)
+   		\item Os dados devem permanecer no local anterior, mesmo depois de descartar a tabela.
+   		\item Você precisa de um local personalizado, como uma conta de armazenamento não padrão.
+   		\item Um programa que não seja o hive gerencia o formato de dados, local e assim por diante.
+    \end{itemize}
 \end{itemize}
 
 \section{Arquitetura do Hive}
