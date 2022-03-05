@@ -130,7 +130,9 @@ O modo mais simples de se conseguir trabalhar com o Hadoop é utilizando o Docke
 Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark, Pig e Hive que trataremos em outras apostilas.
 
 Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-\codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 -v \\ \$(pwd):/home/tsthadoop suhothayan/hadoop-spark-pig-hive:2.9.2 bash}
+\codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 \\
+-p 10000:10000 -v \$(pwd):/home/tsthadoop suhothayan/hadoop-spark-pig-hive:2.9.2 \\
+bash}
 
 Uma vez interrompido o contêiner: \\
 \codigo{\$ docker stop meu-hadoop}
@@ -293,7 +295,7 @@ Iniciar o contêiner: \\
 \codigo{\$ docker start hadoop}
 
 Executar o bash do Hadoop: \\
-\codigo{\$ docker exec -it hadoop /etc/bootstrap.sh -bash}
+\codigo{\$ docker exec -it meu-hadoop -bash}
 
 Verificar a pasta na qual estamos: \\
 \codigo{ \# pwd}
