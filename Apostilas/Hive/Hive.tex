@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Hive}
-\newcommand{\pbversao}{1.01}
+\newcommand{\pbversao}{1.02}
 
 \usepackage{../sty/tutorial}
 
@@ -88,7 +88,7 @@ O Hive é bem mais intricado e dependente do ambiente do Hadoop que qualquer out
 Baixar a imagem oficial do Hadoop com o Spark, Pig e Hive: \\
 \codigo{\$ docker pull suhothayan/hadoop-spark-pig-hive:2.9.2}
 
-Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark, Pig e Hive que trataremos em outras apostilas.
+Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark e Pig que trataremos em outras apostilas.
 
 Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
 \codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 \\
@@ -154,7 +154,7 @@ E entre novamente no database que criamos: \\
 \codigo{hive> use amostra;}
 
 Não é por escolha minha, mas infelizmente todos os campos dessa base são do tipo String, foram todos colocados em aspas duplas, então como desejo apenas testar a funcionalidade vamos criar todos os campos da tabela assim: \\
-\codigo{hive> create table amostra2018 (anoPag string, ano2 string, estado string, \\ cod string, cidade string, cpf string, nome string, valor string) ROW FORMAT \\ DELIMITED FIELDS TERMINATED BY ";";}
+\codigo{hive> create table amostra2018 (anoPag string, ano2 string, estado string, \\ cod string, cidade string, cpf string, nome string, valor string) ROW FORMAT \\ DELIMITED FIELDS TERMINATED BY ';';}
 
 O comando SQL é basicamente a mesma coisa o final é que existem algumas palavras chaves indicando para o Hive como deve se comportar, para importarmos os dados: \\
 \codigo{hive> LOAD DATA INPATH '201808\_BF\_Amostra.csv' into table amostra2018;}
@@ -166,6 +166,32 @@ Ou sem usar a cláusula limit para vermos todos. Agora o mais interessante é, s
 \codigo{\# hadoop fs -ls}
 
 E descobrimos que o arquivo "sumiu" do HDFS, pois o Hive disse para o Hadoop: "Ele agora é meu!". E ficou com a guarda do arquivo.
+
+\subsection{Inserir Dados}
+Vamos criar um novo Database: \\
+\codigo{hive> create database novo;}
+
+Acessar este Database: \\
+\codigo{hive> use novo;}
+
+Criar uma tabela: \\
+\codigo{hive> create table teste (codigo int, nome string) ROW FORMAT DELIMITED \\
+FIELDS TERMINATED BY ',';}
+
+E inserir alguns dados nela: \\
+\codigo{hive> insert into table teste \\ 
+values(123, 'Fernando Anselmo'),(456, 'Maria Claudia')}
+
+Neste momento vemos que o processo é basicamente similar a obter os dados do HDFS. Realizando um Map/Reduce automático para adicionar os dados a tabela. Podemos verificar seu conteúdo. \\
+\codigo{hive> select * from teste;}
+
+Basicamente todas as funcionalidades do comnando SELECT do SQL estão a disposição do Hive. Como por exemplo: \\
+\codigo{hive> select * from teste where nome like '\%Anselmo';}
+
+Conceito de chave primária não existe aqui, assim ao dispararmos novamente o comando: \\
+\codigo{hive> insert into table teste values(123, 'Fernando Anselmo');}
+
+Temos mais um registro com o código igual a 123 e o nome igual a 'Fernando Anselmo'.
 
 \section{Acesso via JDBC}
 Nada disso teria graça senão usássemos Java para demonstrar as ligações do Hive, para isso vamos utilizar o Spring Tool Suite no qual criamos um projeto \textit{Maven Project}. Só que antes de fazermos isso precisamos configurar algumas questões de segurança.
