@@ -1,0 +1,72 @@
+No endereço oficial http://archive.apache.org/dist/sqoop/1.99.7/baixar o arquivo sqoop-1.99.7-bin-hadoop200.tar.gz e colocá-lo na pasta associativa da imagem.
+
+Retornar a pasta raiz:
+# cd ~
+
+Descompactar o arquivo:
+# tar vfx /home/tsthadoop/sqoop-1.99.7-bin-hadoop200.tar.gz
+
+Mover o pasta descompactada para o endereço local (e aonde estão os outros produtos do Ecossistema):
+# mv sqoop-1.99.7-bin-hadoop200 /usr/local/.
+
+Criar um link simbólico para facilitar o acesso:
+# ln -s /usr/local/sqoop-1.99.7-bin-hadoop200 sqoop
+
+No arquivo core-site.xml do Hadoop habilitar os acessos, editar o arquivo:
+# vim \$HADOOP\_PREFIX/etc/hadoop/core-site.xml.template
+
+Pressionar "i" para entrar em modo de edição e adicionar as seguintes propriedades:
+<property>
+  <name>hadoop.proxyuser.sqoop2.hosts</name>
+  <value>*</value>
+</property>
+<property>
+  <name>hadoop.proxyuser.sqoop2.groups</name>
+  <value>*</value>
+</property>
+
+Pressionar "ESC" para sair do modo de edição e salvar o arquivo pressionando ":wq".
+
+Na pasta de configuração do Sqoop precisamos modificar o caminho do Hadoop, editar o arquivo:
+# vim /usr/local/sqoop/conf/sqoop.properties
+
+Localizar a linha:
+# Hadoop configuration directory
+
+E modificar o valor da variável (entrar em modo de edição pressionando a tecla "i") para:
+org.apache.sqoop.submission.engine.mapreduce.configuration.directory=/usr/local/hadoop/share/hadoop/mapreduce
+
+Pressionar "ESC" para sair do modo de edição e salvar o arquivo pressionando ":wq".
+
+O Scoop precisa acessar bancos de dados, sendo assim precisamos adicionar os arquivos JAR de JDBC dos bancos que desejamos inserir. Criar uma pasta:
+# mkdir -p /var/lib/sqoop2/
+
+Copiar para esta pasta os arquivos JAR necessários. Vamos modificar o arquivo "etc/bootstrap.sh" o seguinte EXPORT:
+# vim etc/bootstrap.sh
+
+E adicionar as seguintes linhas abaixo dos comandos EXPORT:
+export PATH=$PATH:/usr/local/sqoop/bin
+export SQOOP_SERVER_EXTRA_LIB=/var/lib/sqoop2/
+
+Aproveitamos e inserimos o caminha do path para a pasta do Scoop. Pressionar "ESC" para sair do modo de edição e salvar o arquivo pressionando ":wq".  Sair da imagem, parar e iniciar o contêiner, entrar no bash novamente.
+
+Acessar a pasta associativa:
+# cd /home/tsthadoop
+
+E verificar se o Scoop está correto:
+# sqoop2-tool verify
+
+Se aparecer a mensagem "Verification was successful." está tudo bem, porém caso mostrar "Verification has failed, please check Server logs for further details." devemos verificar o arquivo de Log que se encontra nas pasta @LOGDIR@.
+
+Executar o Scoop
+
+Com tudo OK, executamos o servidor do Scoop:
+# sqoop2-server start
+
+Que deve mostrar a mensagem "Sqoop2 server started.". Por padrão utiliza a porta 12000. Podemos modificar a porta na variável "org.apache.sqoop.jetty.port" no arquivo de configuração em "conf/sqoop.properties". Podemos pará-lo com o comando:
+# sqoop2-server stop
+
+Para acessar o cliente, executamos o comando:
+# sqoop2-shell
+
+

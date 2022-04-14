@@ -1,0 +1,45 @@
+private void mysqlToHDFS() {
+
+		String url = "http://192.168.2.100:12000/sqoop/";
+		SqoopClient client = new SqoopClient(url);
+
+		MLink fromLink = client.createLink("generic-jdbc-connector");
+		fromLink.setName("jdbc connector");
+		fromLink.setCreationUser("pfd");
+		MLinkConfig fromLinkConfig = fromLink.getConnectorLinkConfig();
+		fromLinkConfig.getStringInput("linkConfig.connectionString")
+				.setValue("jdbc:mysql://192.168.2.128:3306/recommend");
+		fromLinkConfig.getStringInput("linkConfig.jdbcDriver").setValue("com.mysql.jdbc.Driver");
+		fromLinkConfig.getStringInput("linkConfig.username").setValue("root");
+		fromLinkConfig.getStringInput("linkConfig.password").setValue("root");
+		fromLinkConfig.getStringInput("dialect.identifierEnclose").setValue("");
+		client.saveLink(fromLink);
+
+		MLink toLink = client.createLink("hdfs-connector");
+		toLink.setName("hdfs connector");
+		toLink.setCreationUser("pfd");
+		MLinkConfig toLinkConfig = toLink.getConnectorLinkConfig();
+		toLinkConfig.getStringInput("linkConfig.uri").setValue("hdfs://192.168.2.100:9000");
+		client.saveLink(toLink);
+
+		MJob job = client.createJob("jdbc connector", "hdfs connector");
+		job.setName("MySQL to HDFS job");
+		job.setCreationUser("pfd");
+
+		MFromConfig fromJobConfig = job.getFromJobConfig();
+		fromJobConfig.getStringInput("fromJobConfig.schemaName").setValue("recommend");
+		fromJobConfig.getStringInput("fromJobConfig.tableName").setValue("rate");
+		fromJobConfig.getStringInput("fromJobConfig.partitionColumn").setValue("rateId");
+		MToConfig toJobConfig = job.getToJobConfig();
+		toJobConfig.getStringInput("toJobConfig.outputDirectory").setValue("/data/rate");
+
+		MDriverConfig driverConfig = job.getDriverConfig();
+		driverConfig.getIntegerInput("throttlingConfig.numExtractors").setValue(3);
+
+		client.saveJob(job);
+
+		client.startJob("MySQL to HDFS job");
+		client.deleteJob(job.getName());
+		client.deleteLink(fromLink.getName());
+		client.deleteLink(toLink.getName());
+	}

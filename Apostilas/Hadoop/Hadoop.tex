@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Hadoop}
-\newcommand{\pbversao}{1.4}
+\newcommand{\pbversao}{1.41}
 
 \usepackage{../sty/tutorial}
 
@@ -123,29 +123,13 @@ O Hadoop conta ainda com os seguintes produtos no seu ecosistema para acrescenta
 	\caption{Ecosistema completo do Hadoop}
 \end{figure}
 
-\section{Hadoop no Docker}
-O modo mais simples de se conseguir trabalhar com o Hadoop é utilizando o Docker, para baixar a imagem do Hadoop: \\
-\codigo{\$ docker pull suhothayan/hadoop-spark-pig-hive:2.9.2}
-
-Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark, Pig e Hive que trataremos em outras apostilas.
-
-Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-\codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 \\
--p 10000:10000 -v \$(pwd):/home/tsthadoop suhothayan/hadoop-spark-pig-hive:2.9.2 \\
-bash}
-
-Uma vez interrompido o contêiner: \\
-\codigo{\$ docker stop meu-hadoop}
-
-Podemos executá-lo novamente com os seguintes comandos: \\
-\codigo{\$ docker start meu-hadoop \\
-\ttfamily\$ docker exec -it meu-hadoop bash}
+\input{../sty/hadoopDocker.tex}
 
 \subsection{Testando o ambiente}
 Vamos sair do bash: \\
 \codigo{\# exit}
 
-Em seguida verificar seu endereço padrão: \\
+Verificamos o IP da imagem: \\
 \codigo{\$ docker inspect meu-hadoop | grep IP}
 
 E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos testar os seguintes endereços: \vspace{-1em}
@@ -159,7 +143,13 @@ E veremos algo como "IPAddress": "172.17.0.2", sendo assim, no navegador podemos
 Além desses ainda temos o endereço de acesso ao HDFS: \url{hdfs://172.17.0.2:9000}.
 
 \subsection{Arquivos de Configuração}
-Estes são os arquivos de configuração do Hadoop: \vspace{-1em}
+Retornamos a entrar na imagem: \\
+\codigo{\$ docker exec -it meu-hadoop /etc/bootstrap.sh bash}
+
+Os arquivos se encontram na pasta: \\
+\codigo{/usr/local/hadoop/etc/hadoop}
+
+E esses são os arquivos de configuração do Hadoop: \vspace{-1em}
 \begin{itemize}
 	\item \textbf{hadoop-env.sh} - Variáveis de configuração que são usadas para executar os scripts.
 	\item \textbf{core-site.xml} - Definições de configuração para o Hadoop Core, como configurações de E/S que são comuns ao HDFS e MapReduce.
@@ -170,9 +160,6 @@ Estes são os arquivos de configuração do Hadoop: \vspace{-1em}
 	\item \textbf{hadoop-metrics.properties} - Propriedades para controlar quais métricas são publicadas no Hadoop.
 	\item \textbf{log4j.properties} - Propriedades para o registros (logfiles) do sistema, registro de auditoria do \textit{NameNode}, e os registros de tarefas para os processos do \textit{tasktracker}.
 \end{itemize}
-
-Nesta imagem os arquivos se encontram na pasta: \\
-\codigo{ /usr/local/hadoop-2.9.2/etc/hadoop}
 
 \subsection{Comandos básicos no bash}
 Verificar a versão do Hadoop: \\
@@ -186,6 +173,9 @@ Relatório informativo do HDFS: \\
 
 Se quiser ir para a pasta HOME do Hadoop: \\
 \codigo{ \# cd \$HADOOP\_PREFIX}
+
+Ou então:
+\codigo{ \# cd \$HADOOP\_HOME}
 
 Rodar o mapreduce \\
 \codigo{ \# hadoop jar \\ share/hadoop/mapreduce/hadoop-mapreduce-examples-2.9.2.jar grep input \\ output 'dfs[a-z.]+'}

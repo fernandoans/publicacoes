@@ -1,0 +1,25 @@
+\section{Hadoop no Docker}
+O modo mais simples de se conseguir trabalhar com o Hadoop é utilizando o Docker, para baixar a imagem do Hadoop: \\
+\codigo{\$ docker pull suhothayan/hadoop-spark-pig-hive:2.9.2}
+
+Nessa imagem temos outros produtos do Ecossistema Hadoop: Spark, Pig e Hive. Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/tsthadoop}): \\
+\codigo{\$ docker run -it -d --name meu-hadoop -v \$(pwd):/home/tsthadoop \\ suhothayan/hadoop-spark-pig-hive:2.9.2}
+
+Uma vez interrompido o contêiner: \\
+\codigo{\$ docker stop meu-hadoop}
+
+Podemos executá-lo novamente com os seguintes comandos: \\
+\codigo{\$ docker start meu-hadoop \\
+\$ docker exec -it meu-hadoop /etc/bootstrap.sh bash}
+
+\subsection{Erro de Permissão}
+Na primeira vez que entramos é dado um erro na execução do script "bootstrap.sh" de permissão negada para executar o script "spark-env.sh", vamos corrigir isso com o comando: \\
+\codigo{\# chmod 777 /usr/local/spark/conf/spark-env.sh}
+
+Vamos sair do bash: \\
+\codigo{\# exit}
+
+Podemos executá-lo novamente: \\
+\codigo{\$ docker exec -it meu-hadoop /etc/bootstrap.sh bash}
+
+E o erro desapareceu.

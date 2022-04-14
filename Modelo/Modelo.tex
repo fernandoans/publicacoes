@@ -3,7 +3,7 @@
 % Identificação
 \newcommand{\pbtitulo}{Modelo Doc}
 \newcommand{\pbversao}{1.0}
-\usepackage{../sty/tutorial}
+\usepackage{sty/tutorial}
 \usepackage{lipsum}
 
 %----------------------------------------------------------------------
@@ -22,16 +22,6 @@ Codigo de espacamento (nao use acentos aqui):
 \begin{lstlisting}[]
 \end{lstlisting}
 
-% TECLAS
-\keystroke{$x \lessgtr y$} The quick brown fox jumps over the lazy dog.
-Colocações da Calculadora
-\keystroke{Page $\uparrow$} \keystroke{Esc} \keystroke{F1}
-Colocações da Calculadora
-\keystroke{CHS} \keystroke{\ 1 } \keystroke{\ 2 } \keystroke{Enter}
-\keystroke{$\bigtriangleup$\%} \keystroke{$y^x$} \keystroke{$\sqrt{x}$}
-\keystroke{$\sum$} \keystroke{$\hat{X}$} \keystroke{$\bar{X}$}
-
-	
 \maketitle % mostrar o título
 \thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
 
@@ -41,13 +31,14 @@ Colocações da Calculadora
 \end{abstract}
 
 Valores:
-Circumflexo -> $\string^$
+Circumflexo - $\string^$
 
 \section{Exemplos}
 
 Fórmulas: \\
 Interseção ou União: $A \cap B \cup C$ \\
-Fração mais atraente: $\nicefrac{X}{Y}$ 
+Fração mais atraente: $\nicefrac{X}{Y}$ \\
+Elevado: $10^2$
 
 Isso aqui é uma nota\footnote{Na verdade essa é a nota} então NÃO USE PARENTESES.
 
@@ -63,7 +54,7 @@ Sendo: \vspace{-1em}
 Separação ideal para título de um MENU: \\
 A partir do menu: Opção 1 $\triangleright$ Opção 2 $\triangleright$ Opção 3.
 
-Comando qualquer:
+Comando qualquer: \\
 {\ttfamily\$ sudo apt install docker docker.io} \\
 {\ttfamily set PATH=\%PATH\%;C:$\setminus$Users$\setminus$xpto$\setminus$Anaconda3}
 
@@ -76,12 +67,6 @@ Comando qualquer:
 \begin{quotation}
 	Exemplo de Frase (Autor)
 \end{quotation}
-
-LIVROS
-
-\begin{note}[Socorro]{}
-	\lipsum[4-1]
-\end{note}
 
 APOSTILA
 
@@ -115,14 +100,14 @@ Exemplo de figura na mesma linha:
 \begin{figure}[ht]
 	\begin{minipage}[b]{0.45\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{filename1}
+		\includegraphics[width=\textwidth]{imagens/exemplo.jpg}
 		\caption{default}
 		\label{fig:figure1}
 	\end{minipage}
 	\hspace{0.5cm}
 	\begin{minipage}[b]{0.45\linewidth}
 		\centering
-		\includegraphics[width=\textwidth]{filename2}
+		\includegraphics[width=\textwidth]{imagens/exemplo.jpg}
 		\caption{default}
 		\label{fig:figure2}
 	\end{minipage}
@@ -190,13 +175,13 @@ Sem espaçamento na lista:
 
 \section{Conclusão}
 
-\input{../sty/final.tex}
+\input{sty/final.tex}
 
 %--------------------------------------------------------------------------
 % REFERÊNCIAS
 %--------------------------------------------------------------------------
 \begin{thebibliography}{3}
-	\input{../sty/referencias.tex}
+	\input{sty/referencias.tex}
 \end{thebibliography}
 
 

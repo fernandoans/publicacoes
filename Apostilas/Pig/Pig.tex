@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Pig}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.01}
 
 \usepackage{../sty/tutorial}
 
@@ -61,25 +61,7 @@ Tipos de modelos de dados no Pig: \vspace{-1em}
 	\item \textit{Map}: Conjunto de pares chave/valor.
 \end{itemize}
 
-\subsection{Criar o contêiner Docker}
-Pig (assim como Hive) é bem mais intricado e dependente do ambiente do Hadoop que qualquer outro do ecossistema desse, os passos para conseguirmos instalar Pig já foram vistos na Apostila do Hadoop, porém vamos reproduzir nesta.
-
-Baixar a imagem oficial do Hadoop com o Spark, Pig e Hive: \\
-\codigo{\$ docker pull suhothayan/hadoop-spark-pig-hive:2.9.2}
-
-Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark e Hive que trataremos em outras apostilas.
-
-Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-\codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 \\
--p 10000:10000 -v \$(pwd):/home/tsthadoop suhothayan/hadoop-spark-pig-hive:2.9.2 \\
-bash}
-
-Uma vez interrompido o contêiner: \\
-\codigo{\$ docker stop meu-hadoop}
-
-Podemos executá-lo novamente com os seguintes comandos: \\
-\codigo{\$ docker start meu-hadoop \\
-\$ docker exec -it meu-hadoop bash}
+\input{../sty/hadoopDocker.tex}
 
 E podemos verificar a versão do Hadoop e Hive que estão instalados: \\
 \codigo{\$ hadoop version \\
@@ -253,10 +235,14 @@ grunt> CAT saidaNotas;}
 
 E teremos com resultado do processo:
 \begin{lstlisting}[]
-nome***
-Joana*5.0*6.0*7
-Carlos*7.0*3.0*8
-Marla*6.5*4.2*7
+nome***
+
+Joana*5.0*6.0*7
+
+Carlos*7.0*3.0*8
+
+Marla*6.5*4.2*7
+
 \end{lstlisting}
 
 Ficou separado por '*' pois foi esse caractere que definimos na função "PigStore(char)".

@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Hive}
-\newcommand{\pbversao}{1.02}
+\newcommand{\pbversao}{1.03}
 
 \usepackage{../sty/tutorial}
 
@@ -82,25 +82,7 @@ Temos ainda duas ferramentas destinadas a suportar essa camada:
 	\item \textit{Hive Execution Engine} - Otimizador responsável por gerar um plano lógico na forma de DAG de tarefas de redução de mapa e tarefas HDFS. No final, o mecanismo de execução executa as tarefas recebidas na ordem de suas dependências. 
 \end{itemize}
 
-\subsection{Criar o contêiner Docker}
-O Hive é bem mais intricado e dependente do ambiente do Hadoop que qualquer outro do ecossistema desse, os passos para conseguirmos instalar o Hive já foram vistos na Apostila do Hadoop, porém vamos reproduzir nesta.
-
-Baixar a imagem oficial do Hadoop com o Spark, Pig e Hive: \\
-\codigo{\$ docker pull suhothayan/hadoop-spark-pig-hive:2.9.2}
-
-Nessa imagem teremos ainda outros produtos do Ecossistema Hadoop como o Spark e Pig que trataremos em outras apostilas.
-
-Para criar e executar a primeira vez o contêiner (a pasta que este comando for executado será associada a uma pasta interna chamada \textbf{/home/hadoop}): \\
-\codigo{\$ docker run -it --name meu-hadoop -p 50070:50070 -p 8088:8088 -p 8080:8080 \\
--p 10000:10000 -v \$(pwd):/home/tsthadoop suhothayan/hadoop-spark-pig-hive:2.9.2 \\
-bash}
-
-Uma vez interrompido o contêiner: \\
-\codigo{\$ docker stop meu-hadoop}
-
-Podemos executá-lo novamente com os seguintes comandos: \\
-\codigo{\$ docker start meu-hadoop \\
-\ttfamily\$ docker exec -it meu-hadoop bash}
+\input{../sty/hadoopDocker.tex}
 
 E podemos verificar a versão do Hadoop e Hive que estão instalados: \\
 \codigo{\$ hadoop version \\
@@ -199,16 +181,11 @@ Nada disso teria graça senão usássemos Java para demonstrar as ligações do 
 Primeiro precisamos saber qual o nosso hostname: \\
 \codigo{\# hostname}
 
-Anote esse número (que é o CONTEINER ID), de posse deste, vamos editar o arquivo \textbf{core-site.xml} do Hadoop com o seguinte comando: \\
-\codigo{\# vim /usr/local/hadoop-2.9.2/etc/hadoop/core-site.xml}
+Anote esse número (que é o CONTEINER ID), de posse deste, vamos editar o arquivo \textbf{core-site.xml.template} do Hadoop com o seguinte comando: \\
+\codigo{\# vim \$HADOOP\_PREFIX/etc/hadoop/core-site.xml.template}
 
-Deixe-o com a seguinte codificação:
+Adicionar as seguintes propriedades:
 \begin{lstlisting}[]
-<configuration>
-  <property>
-    <name>fs.defaultFS</name>
-    <value>hdfs://[hostname]:9000</value>
-  </property>
   <property>
     <name>hadoop.proxyuser.root.hosts</name>
     <value>*</value>
@@ -221,10 +198,11 @@ Deixe-o com a seguinte codificação:
     <name>hive.execution.engine</name>
     <value>spark</value>
   </property>  
-</configuration>
 \end{lstlisting}
 
-Para salvar pressione ESC e digite \textbf{:wq}. Essas configurações permitirão que o usuário root consiga atravessar o proxy do Hadoop e acessar o Hive. Agora precisamos ativar o serviço do Hive para permitir a conexão: \\
+Para salvar pressione ESC e digite \textbf{:wq}. Essas configurações permitem que o usuário root consiga atravessar o proxy do Hadoop e acessar o Hive. Sair da imagem, parar e iniciar o contêiner, entrar no bash novamente.
+
+Agora precisamos ativar o serviço do Hive para permitir a conexão: \\
 \codigo{\# hive --service hiveserver2 \&}
 
 Quando terminar de processar basta dar Enter para retornar ao terminal e podemos testar se está funcionando com o comando \textbf{beeline}: \\

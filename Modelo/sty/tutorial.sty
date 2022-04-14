@@ -1,0 +1,188 @@
+%-----------------------------------------------------------------------------
+% Pacotes Necessários
+%-----------------------------------------------------------------------------
+\usepackage[brazil]{babel} % padronizar a linguagem
+\usepackage[utf8]{inputenc} % permitir a acentuação
+\usepackage[protrusion=true,expansion=true]{microtype} % obter melhor tipografia
+\usepackage[svgnames]{xcolor} % habitar cores para 'svgnames'
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % customizar captions acima/abaixo de tabelas ou figuras
+\usepackage{color}    % definir cores
+\usepackage{graphicx} % adicionar imagens
+\usepackage{fix-cm}   % customizar o tamanho das fontes
+\usepackage{sectsty}  % habilitar a customização dos títulos das seções
+\usepackage{fancyhdr} % definir cabeçalhos e rodapés
+\usepackage{listings} % listagens
+\usepackage[ddmmyyyy]{datetime} % mostrar a data
+\usepackage{titling} % Permite a configuração do título
+\usepackage{url} % codigo para as URLs
+\usepackage[a4paper, inner=1.5cm, outer=2cm, top=2cm, bottom=3cm, 
+bindingoffset=1cm]{geometry} %
+\usepackage{enumerate} % simplicidade para as listas
+\usepackage{enumitem} % para usar o noitemsep
+\usepackage{nicefrac} % Fração de Linha
+\usepackage{float} % Imagens flutuantes
+\usepackage[framemethod=TikZ]{mdframed} % janela de ATENÇÃO
+\usepackage{array} % Para usar tabelas
+\usepackage{wrapfig} % Imagens que se cruzam com texto
+
+%-----------------------------------------------------------------------------
+% Definições Iniciais
+%-----------------------------------------------------------------------------
+% modificar toda a fonte de todas as seções
+\allsectionsfont{\usefont{OT1}{phv}{b}{n}}
+% habilitar a customização de cabeçalhos e rodapés
+\pagestyle{fancy} 
+
+% Definições para Tabela
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.4}
+
+% Espaçamento dos Parágrafos
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+\addto\captionsenglish{ % modificar os nomes do ingles
+	\renewcommand{\abstractname}{Resumo}
+	\renewcommand{\bibname}{Consulte também...}
+	\renewcommand{\contentsname}{Sumário}
+	\renewcommand{\listfigurename}{Figuras}
+	\renewcommand{\lstlistingname}{Listagem}
+	\renewcommand{\lstlistlistingname}{Listagens}
+	\renewcommand{\refname}{Referências}
+}
+
+%-----------------------------------------------------------------------------
+% Definição para as caixas de listagens
+%-----------------------------------------------------------------------------
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+\lstset {
+	aboveskip=3mm,
+	backgroundcolor=\color{backcolour},
+	basicstyle={\small\ttfamily},
+	belowskip=3mm,
+	breaklines=true,
+	breakatwhitespace=true,
+	columns=flexible,
+	commentstyle=\textit,
+	extendedchars=true,
+	frame=tb,
+	keepspaces=true,
+	keywordstyle=\color{blue}\bfseries,
+	language=HTML,
+	numbers=left,
+	numbersep=5pt,
+	numberstyle=\tiny\color{codegray},
+	showstringspaces=false,
+	showtabs=false,
+	tabsize=3,
+	literate=%
+	{á}{{\'a}}1
+	{é}{{\'e}}1
+	{í}{{\'i}}1
+	{ó}{{\'o}}1
+	{ú}{{\'u}}1
+	{â}{{\^a}}1
+	{ê}{{\^e}}1
+	{ã}{{\~a}}1
+	{õ}{{\~o}}1
+	{ç}{{\c{c}}}1
+	{Á}{{\'A}}1
+	{É}{{\'E}}1
+	{Í}{{\'I}}1
+	{Ó}{{\'O}}1
+	{Ú}{{\'U}}1
+	{Ê}{{\^E}}1
+	{Ã}{{\~A}}1
+	{Õ}{{\~O}}1
+	{Ç}{{\c{C}}}1
+}
+
+% Cabeçalhos - limpar tudo
+\lhead{}
+\chead{}
+\rhead{}
+
+% Rodapés
+\lfoot{\tiny \pbtitulo}
+\cfoot{\tiny \pbversao}
+\rfoot{\tiny Folha \thepage\ }
+
+\renewcommand{\headrulewidth}{0.0pt} % No header rule
+\renewcommand{\footrulewidth}{0.4pt} % Thin footer rule
+
+\usepackage{lettrine} % Package to accentuate the first letter of the text
+\newcommand{\initial}[1]{ % Defines the command and style for the first letter
+	\lettrine[lines=3,lhang=0.3,nindent=0em]{
+		\color{DarkGoldenrod}
+		{\textsf{#1}}
+	}{}
+}
+
+
+%-----------------------------------------------------------------------------
+% ESTILOS DO TEXTO
+%-----------------------------------------------------------------------------
+\newcommand{\opcmenu}[1]{\color{DarkBlue}\textbf{#1}\color{Black}}
+\newcommand{\opcbotao}[1]{\color{DarkRed}\textbf{#1}\color{Black}}
+\newcommand{\codigo}[1]{{\ttfamily #1}}
+% \newcommand{\aspas}[1]{$\textquotedblright$#1$\textquotedblright$}
+\newcommand{\aspas}[1]{"#1"}
+
+%-----------------------------------------------------------------------------
+% TÍTULO DO DOCUMENTO
+%-----------------------------------------------------------------------------
+% comando para as barras
+\newcommand{\HorRule}{\color{DarkGoldenrod} \rule{\linewidth}{1pt}} 
+
+% barra horizontal superior
+\pretitle{\vspace{-90pt} \begin{flushleft} \HorRule \fontsize{50}{50} 
+		\usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont}
+	
+	% título do documento
+	\title{\pbtitulo}
+	\posttitle{\par\end{flushleft}\vskip 0.1em} % espaço abaixo do título
+
+% autor do documento
+\preauthor{\begin{flushleft}\large \lineskip 0.1em \usefont{OT1}{phv}{b}{sl} 
+		\color{DarkRed}} % fonte do autor
+	\vspace{-20pt} \author{Fernando Anselmo}
+	\postauthor{\footnotesize \usefont{OT1}{phv}{m}{sl} \color{Black} \\
+		\url{http://fernandoanselmo.orgfree.com/wordpress/} % endereço
+		\vspace{-20pt} \par\end{flushleft}\HorRule} % barra horizontal inferior
+
+\date{Versão \pbversao\ em \today} % mostrar a data do artigo 
+
+%-----------------------------------------------------------------------------
+% BLOCO DE ATENÇÃO
+%-----------------------------------------------------------------------------
+
+\newenvironment{theo}[2][]{%
+	\ifstrempty{#1}%
+	% if condition (without title)
+	{\mdfsetup{%
+		frametitle={%
+			\tikz[baseline=(current bounding box.east),outer sep=0pt]%
+			\node[anchor=east,rectangle,fill=red!20]%
+			{\strut ATENÇÃO};}%
+		}%
+	}{\mdfsetup{%
+			frametitle={%
+				\tikz[baseline=(current bounding box.east),outer sep=0pt]%
+				\node[anchor=east,rectangle,fill=red!20]%
+				{\strut ATENÇÃO:~#1};}%
+		}%
+	}%
+	% Both conditions
+	\mdfsetup{%
+		innertopmargin=10pt,linecolor=red!20,%
+		linewidth=2pt,topline=true,%
+		frametitleaboveskip=\dimexpr-\ht\strutbox\relax%
+	}%
+	\begin{mdframed}[]\relax}{%
+	\end{mdframed} \vspace{-3mm}
+}
