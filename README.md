@@ -29,7 +29,6 @@ Todas foram criadas com o LaTex e estão em constante modificação. Porquê o L
 * Pig - Ferramenta para o Hadoop.
 * Redis com Java e Python - Como acessar esse NoSQL através das duas linguagens mais usadas no mundo.
 * Sqoop - Ferramenta para o Hadoop.
-* Ubuntu Fácil - De maneira simples como usar esse SO.
 * HP12c - Como usar essa calculadora programada.
 
 ## Livros Disponíveis
