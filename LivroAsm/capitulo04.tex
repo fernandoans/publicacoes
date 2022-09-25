@@ -600,6 +600,9 @@ final:
 Encerramos nosso programa e podemos gravar um arquivo com as notas dos nossos alunos que usaremos no próximo programa, sendo assim adicionemos um bom conjunto de notas.
 
 \section{Programa 4.6 - Calcular as notas}\index{Lidar com Arquivos}
+Em nosso último programa com arquivos vamos pegar as notas criadas anteriormente e realizar um pequeno cálculo de média, a regra é simples, cada 2 notas pertencem a um determinado aluno e essas devem ser somadas e divididas por 2 para termos a média desse aluno.
+
+
 A primeira parte desse programa vai ser uma organização que devemos fazer na nossa 'bibliotecaE.inc', adicionando os seguintes marcadores:
 \begin{itemize}[nolistsep]
 	\item string\_to\_int - para convertermos uma String em um inteiro.
@@ -617,6 +620,166 @@ Por essa:
   cmp byte[edx], byte 0
 \end{lstlisting}
 
+O programa em si não é complexo, apenas devemos ter algumas regras em mente: primeiro o número de linhas deve ser exatamente PAR pois estaremos lendo 2 a 2. Segundo que todos os números devem ter 2 bytes assim ao invés da nota 5, teremos 05. E por fim a última nota será 00 para indicar o fim do arquivo. Com isso posto criamos um arquivo chamado "somarNotas.asm" e começar a seguinte codificação:
+\begin{lstlisting}[]
+%include 'bibliotecaE.inc'
 
+section .data
+  arq db 'Nota'
+  tam equ 3
+  fd  dq 0
+  dispMsg db 'Resultado:'
+  tamDispMsg  equ $-dispMsg
+  salto   db '',LF
+  tamValor    db 0
+
+section .bss
+  val1    resw    2
+  val2    resw    2
+  soma    resb    10
+
+section .text
+
+global _start:
+
+_start:
+\end{lstlisting}
+
+Acredito que nas alturas dos acontecimentos todo esse código está claro para você, se não está recomendo que retorne ao início e comece tudo novamente. O único detalhe estranho é a presença de 3 indicadores "val1", "val2" e "soma" que serão utilizados para realizar o cálculo das notas.
+
+Vamos começar então lendo nosso arquivo:
+\begin{lstlisting}[]
+_start:
+  mov EAX, OPEN_FILE
+  mov EBX, arq
+  mov ECX, OPEN_READ
+  int SYS_CALL
+  mov [fd], EAX
+\end{lstlisting}
+
+Sem muita mudança do que já sabemos até aqui, apenas abrimos o arquivo e guardamos o \textit{File Descriptor} em "fd".
+\begin{lstlisting}[]
+lerLinha1:
+  mov byte[soma], 0x0 
+
+  mov EAX, READ_FILE
+  mov EBX, [fd]
+  mov ECX, val1
+  mov EDX, tam   
+  int SYS_CALL
+
+  lea ESI, [val1]
+  mov ECX, 0x2
+  call string_to_int
+  add [soma], EAX
+
+  cmp EAX, 0
+  je fecharArquivo
+\end{lstlisting}
+
+A lógica funciona da seguinte maneira, primeiro colocamos 0 em soma, lemos o valor da linha, convertemos este para inteiro e colocamos o resultado em soma, caso esse valor seja 0 chamamos o marcador \textbf{fecharArquivo}.
+\begin{lstlisting}[]
+lerLinha2:
+  mov EAX, READ_FILE
+  mov EBX, [fd]
+  mov ECX, val2
+  mov EDX, tam   
+  int SYS_CALL
+
+  lea ESI, [val2]
+  mov ECX, 0x2
+  call string_to_int
+  add [soma], EAX
+\end{lstlisting}
+
+Lemos a próxima linha, convertemos para inteiro e adicionamos o valor a soma (por esse motivo devemos ter sempre linhas pares, pois lemos de 2 em 2).
+\begin{lstlisting}[]
+dividePor2:
+  mov EDX, 0
+  mov EAX, [soma]
+  mov EBX, 2
+  div EBX
+  mov [soma], EAX
+\end{lstlisting}
+
+Agora vem o processo de dividir, simplesmente queremos a média do aluno então dividimos por 2, note que esse processo pode ser ampliado para 3, 4 ou mais notas se desejar.
+\begin{lstlisting}[]
+resultado:
+  mov EAX, SYS_WRITE
+  mov EBX, STD_OUT
+  mov ECX, dispMsg
+  mov EDX, tamDispMsg
+  int SYS_CALL
+
+  mov EAX, [soma]
+  call int_to_string
+  mov ECX, EAX
+  call tamStr
+
+  mov EAX, SYS_WRITE
+  mov EBX, STD_OUT
+  int SYS_CALL
+    
+  mov EAX, SYS_WRITE
+  mov EBX, STD_OUT
+  mov ECX, salto
+  mov EDX, 0x2
+  int SYS_CALL
+
+  jmp lerLinha1
+\end{lstlisting}
+
+Devemos nesse momento mostrar o resultado, uma simples saída no terminal resolve esse problema, mas primeiro devemos converter "soma" para uma String (lembre-se sempre que saídas e entradas são sempre nesse tipo de valor), porém temos um problema aqui precisamos adicionar ainda um salto de linha, senão toda a informação será exposta numa única linha, para isso basta dar saída no ponteiro "salto", criado na seção ".data" (e que se desejar pode adicioná-lo a biblioteca). E retornamos para ler a próxima linha e recomeçar o processo.
+
+\begin{lstlisting}[]
+fecharArquivo:
+  mov EAX, CLOSE_FILE
+  mov EBX, [fd]
+  int SYS_CALL
+
+final:
+  mov EAX, SYS_EXIT
+  mov EBX, EXIT_SUCESS
+  int SYS_CALL
+\end{lstlisting}
+
+Fechamos o arquivo e encerramos o programa. Aqui está o exemplo de um arquivo com as notas do aluno para testarmos nosso programa:
+\begin{lstlisting}[]
+10
+05
+08
+04
+04
+06
+05
+03
+08
+05
+07
+07
+10
+10
+00
+\end{lstlisting}
+
+Que deve produzir a seguinte saída:
+\begin{lstlisting}[]
+Resultado:7
+Resultado:6
+Resultado:5
+Resultado:4
+Resultado:6
+Resultado:7
+Resultado:10
+\end{lstlisting}
+
+Antes de terminarmos recomendo as seguintes sugestões e alterações para que possa praticar:
+\begin{itemize}[nolistsep]
+	\item Se a nota for menor que 5 mostre para palavra "Reprovado", caso contrário "Aprovado".
+	\item Como dito anteriormente altere para 3, 4 ou mais notas por aluno (ao invés de apenas 2).
+	\item Ao invés de sair o resultado no terminal gravar um arquivo.
+\end{itemize}
+
+E assim chegamos ao final dos registradores de 32 bits, o próximo capítulo será dedicado a programação com os registradores de 64 bits. Até lá.
 % Final do Capítulo
 \clearpage
