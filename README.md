@@ -21,6 +21,15 @@ Todas foram criadas com o LaTex e estão em constante modificação. Porquê o L
 * Sails.js - Framework JavaScript para a construção de Dashboards.
 * Weka - Escrito em Java permite a execução de vários modelos de Machine Learning.
 * Dash Plotly - Mais um framework, só que dessa vez em Python para a construção de Dashboards.
+* Cassandra com Java e Python - Como acessar esse NoSQL através das duas linguagens mais usadas no mundo.
+* DevOps - Ferramentas para DevOps.
+* Hive - Ferramenta para o Hadoop.
+* Kafka - Ferramenta para o Hadoop.
+* Neo4J com Java e Python - Como acessar esse NoSQL através das duas linguagens mais usadas no mundo.
+* Pig - Ferramenta para o Hadoop.
+* Redis com Java e Python - Como acessar esse NoSQL através das duas linguagens mais usadas no mundo.
+* Sqoop - Ferramenta para o Hadoop.
+* HP12c - Como usar essa calculadora programada.
 
 ## Livros Disponíveis
 
