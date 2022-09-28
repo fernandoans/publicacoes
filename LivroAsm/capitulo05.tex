@@ -1,0 +1,66 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 4
+%------------------------------------------------------------------------------------
+\chapterimage{headerCap.jpeg}
+\chapter{Registradores de 64 Bits}
+
+\begin{remark}
+	Dê o poder ao homem, e descobrirá quem realmente ele é. (Maquiavel - Diplomata, Autor e Historiador Italiano) 
+\end{remark}
+
+\section{Retornamos ao Hello World}\index{Registradores de 64 Bits}
+Podemos pensar o seguinte, até o momento para compilar nossos programas usamos 64 Bits, na instrução "nasm -f elf64", e isso é uma grande verdade, porém nossos registradores são todos de 32 bits, e isso causa um problema, pois não vimos nada de, por exemplo PILHAS, pois só funcionam em registradores de 64 bits. Assim devemos aprender a usá-los e a usufruir de seus benefícios.
+
+Vamos lembrar da nossa tabela exposta no primeiro capítulo desse livro:
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | c | l }
+		\textbf{64 bits} & \textbf{32 bits} & \textbf{Utilização} \\ \hline
+		rax & eax & Valores que são retornados dos comandos em um registrador \\
+		rbx & ebx & Registrador preservado. Cuidado ao utilizá-lo \\
+		rcx & ecx & Uso livre como por exemplo contador \\
+		rdx & edx & Uso livre em alguns comandos \\
+		rsp & esp & Ponteiro de uma pilha \\
+		rbp & ebp & Registrador preservado. Algumas vezes armazena ponteiros de pilhas \\
+		rdi & edi & Na passagem de argumentos, contém a quantidade desses \\
+		rsi & esi & Na passagem de argumentos, contém os argumentos em si \\
+	\end{tabular}
+\end{table}
+
+A primeira coluna contém os registradores que veremos neste capítulo, a mudança básica é simples trocamos a letra "E" pela letra "R". No arquivo \textbf{makefile} já visto não precisaremos trocar uma única linha e por enquanto não usaremos nenhuma biblioteca, vamos começar limpos e entender quais são as mudanças necessárias. Começamos por criar um arquivo chamado \textbf{lerarquivo.asm} com a seguinte codificação:
+\begin{lstlisting}[]
+section .data
+  mensagem: db "Hello World 64 bits!!!", 0xA
+  tam: equ $- mensagem
+
+section .text
+
+global _start:
+
+_start:
+\end{lstlisting}	
+
+Até o presente momento nenhuma mudança no nosso código (os dois pontos é um mero preciosismo da minha parte), porém:
+\begin{lstlisting}[]
+  mov rax, 0x1
+  mov rdi, 0x1
+  mov rsi, mensagem
+  mov rdx, 0x17
+  syscall
+\end{lstlisting}
+
+Agora começamos a verdadeira mudança, se bem lembramos a sequencia seria EAX, EBX, ECX e EDX, porém dois registradores são trocados, EAX muda realmente para RAX mas se reparou bem seu valor agora não é "0x4" como era, EBX agora vai mudar para RDI (e não RBX) e ECX para RSI (e não RCX como seria de se esperar) e finalmente RDX para RDX (como seria de se esperar). Além disso tudo, aparece a instrução "syscall" que procede a chamada do antigo "int 0x80".
+
+Agora vamos as diferenças para encerrar o programa:
+\begin{lstlisting}[]
+  mov rax, 0x3C
+  xor rdi, rdi
+  syscall
+\end{lstlisting}	
+
+A primeira instrução uma simples mudança no endereçamento no qual ao invés de "0x1" agora usamos o "0x3C", zeramos o segundo registrador mas dessa vez utilizamos o comando XOR e finalmente uma chamada a "syscall" que fará o serviço de entregar o bloco de instruções ao computador.
+
+E ao compilar e executar teremos corretamente a mensagem aparecendo no terminal: \\
+{\ttfamily Hello World 64 bits!!!}
+
+Com esse pequeno programa vemos que não se trata então de uma simples mudança de registradores mas quase reaprender novamente os comandos, mas não se preocupe apenas mantenha a mente afiada que veremos muito mais nesse capítulo.
