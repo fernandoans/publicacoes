@@ -78,6 +78,7 @@ Mover o pasta descompactada para o endereço local (aonde estão os outros produ
 \codigo{\# mv sqoop-1.99.7-bin-hadoop200 /usr/local/.}
 
 Criar um link simbólico para facilitar o acesso: \\
+\codigo{\# cd /usr/local/} \\
 \codigo{\# ln -s /usr/local/sqoop-1.99.7-bin-hadoop200 sqoop}
 
 No arquivo core-site.xml do Hadoop habilitar os acessos, editar o arquivo: \\
@@ -129,7 +130,6 @@ Verificar se o Sqoop está correto: \\
 Se aparecer a mensagem "\textit{Verification was successful.}" está tudo bem, porém caso mostrar "\textit{Verification has failed, please check Server logs for further details.}" devemos verificar o arquivo de Log que se encontra nas pasta @LOGDIR@.
 
 \subsection{Executar o Sqoop}
-
 Com tudo OK, executamos o servidor do Sqoop: \\
 \codigo{\# sqoop2-server start}
 
