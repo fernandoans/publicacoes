@@ -63,4 +63,98 @@ A primeira instrução uma simples mudança no endereçamento no qual ao invés 
 E ao compilar e executar teremos corretamente a mensagem aparecendo no terminal: \\
 {\ttfamily Hello World 64 bits!!!}
 
-Com esse pequeno programa vemos que não se trata então de uma simples mudança de registradores mas quase reaprender novamente os comandos, mas não se preocupe apenas mantenha a mente afiada que veremos muito mais nesse capítulo.
+Nosso makefile agora terá a seguinte codificação:
+\begin{lstlisting}[]
+NOME = mostrar
+
+all: $(NOME).o
+	ld -s -o $(NOME) $(NOME).o
+	rm -rf *.o
+
+%.o: %.asm
+	nasm -f elf64 $<
+\end{lstlisting}	
+
+Esse exemplo conhecemos que não se trata então de uma simples mudança de registradores mas quase reaprender novamente os comandos, mas não se preocupe apenas mantenha a mente afiada que veremos muito mais nesse capítulo.
+
+\section{Pilhas}\index{Registradores de 64 Bits}
+Se o capítulo passado trouxe a sensação que agora vamos repetir todos os programas já vistos anteriormente, sinto em lhe dizer que está é totalmente errônea, porém sinta-se a vontade para refazê-los em 64 bits para treinar os novos registradores. Neste capítulo veremos do que são capazes, uma dessas mudanças é o conceito de \textbf{Pilhas}.
+
+Não consigo compreender a confusão que faz com o iniciante a respeito desse assunto. Imaginemos uma pilha de caixas (uma sobre a outra), pensemos em umas 10, agora precisamos de uma para colocar algumas coisas, é óbvio que vamos pegar a última que colocamos (ou seja a que está em cima da pilha e não a primeira lá embaixo ou qualquer uma do meio nos arriscando a derrubar toda pilha), por isso mesmo \textbf{Pilhas} são conhecidas como LIFO (\textit{Last in First Out}), ou seja, a última que entrou na pilha será primeira a ser retirada.
+
+Vamos começar nosso programa com a definição dos registradores:
+\begin{lstlisting}[]
+section .data
+  LF            equ 10  ; Line Feed
+  NULL          equ 0   ; Final da String
+  EXIT_SUCESS   equ 0   ; Operação com Sucesso
+  SYS_EXIT      equ 60  ; Codigo de chamada para finalizar
+
+  STDIN         equ 0   ; System.in
+  STDOUT        equ 1   ; System.out
+  STDERR        equ 2   ; System.err
+
+  SYS_READ      equ 0   ; read
+  SYS_WRITE     equ 1   ; print
+
+  liv1          db '1. Moby Dick', LF, NULL
+  liv2          db '2. Tom Swayer', LF, NULL  
+  liv3          db '3. Duna', LF, NULL
+\end{lstlisting}
+
+Apenas definimos os valores para nossos registradores e devemos observar os marcadores: liv1, liv2 e liv3 são eles que colocaremos na nossa pilha. O escopo principal do nosso programa:
+\begin{lstlisting}[]
+section .text
+
+global _start
+
+_start:
+  ; Colocar os livros na pilha
+  push      liv1
+  push      liv2
+  push      liv3
+  ; Pegar um livro da pilha
+  pop       rdi
+  call      _imprimir
+  pop       rdi
+  call      _imprimir
+  pop       rdi
+  call      _imprimir
+  ; Finalizar
+  mov       rax, SYS_EXIT
+  mov       rbx, EXIT_SUCESS
+  syscall
+\end{lstlisting}
+
+Temos dois comandos novos: \textbf{PUSH} e \textbf{POP}, o primeiro deles insere um dado na pilha enquanto que o segundo obtém esse dado, sempre através do registrador \textbf{RDI}, ou seja o dado entra na pilha e saí pelo registrador \textbf{RDI}. Vamos para a função de impressão do dado:
+\begin{lstlisting}[]
+_imprimir:
+  call  _ctCaracteres
+  mov   rax, SYS_WRITE
+  mov   rsi, rdi
+  mov   rdi, STDOUT
+  syscall
+  ret
+\end{lstlisting}
+
+Devemos lembrar que para mostrar algo na saída precisamos ter conhecimento de seu tamanho, isso será realizado pela próxima função, aqui apenas fazemos o mesmo do programa anterior, movendo os registradores RAX (0x1), RSI (primeiro pois RDI contém o elemento da pilha) e RDI com seu valor de saída (0x1). E verificamos quantos caracteres temos no elemento de saída:
+\begin{lstlisting}[]
+_ctCaracteres:
+  mov   rbx, rdi
+  mov   rdx, 0
+fazLoop:
+  cmp   byte[rbx], NULL
+  je    termina
+  inc   rdx
+  inc   rbx
+  jmp   fazLoop
+termina:
+  ret 
+\end{lstlisting}
+
+Já vimos isso no passado, para contarmos os caracteres simplesmente a cada carácter não nulo incrementamos o valor de um registrador (neste caso RDX). E está tudo pronto e teremos como resposta ao executar este programa os livros colocados na pilha porém em ordem inversa: \\
+{\ttfamily 3. Duna} \\
+{\ttfamily 2. Tom Swayer} \\
+{\ttfamily 1. Moby Dick}
+
+Este é um conceito extremamente importante na programação, pois podemos organizar melhor a nossa informação.
