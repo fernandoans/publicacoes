@@ -122,7 +122,7 @@ _start:
   call      _imprimir
   ; Finalizar
   mov       rax, SYS_EXIT
-  mov       rbx, EXIT_SUCESS
+  xor 		rdi, rdi ; Zerar
   syscall
 \end{lstlisting}
 
@@ -158,3 +158,90 @@ Já vimos isso no passado, para contarmos os caracteres simplesmente a cada car�
 {\ttfamily 1. Moby Dick}
 
 Este é um conceito extremamente importante na programação, pois podemos organizar melhor a nossa informação.
+
+\section{Ler Arquivos}\index{Registradores de 64 Bits}
+A leitura de arquivos com registradores de 64 bits é feito de forma semelhante aos de 32 bits, a diferença são os valores que passamos aos registradores. 
+
+\begin{lstlisting}[]
+section .data
+  LF          equ 10 ; Line Feed
+  NULL        equ 0  ; Final de uma string
+  EXIT_SUCESS equ 0  ; Operação com Sucesso
+  SYS_EXIT    equ 60 ; Código de chamada para finalizar
+
+  STDIN       equ 0  ; System.in
+  STDOUT      equ 1  ; System.out
+  STDERR      equ 2  ; System.err
+
+  SYS_READ    equ 0  ; leitura
+  SYS_WRITE   equ 1  ; escrita / saída
+
+  OPEN_READ   equ 0  ; abrir arquivo em modo leitura
+
+  READ_FILE   equ 0  ; leitura do arquivo
+  OPEN_FILE   equ 2  ; abrir arquivo
+  CLOSE_FILE  equ 3  ; fechar arquivo
+
+  file    db  'arquivo.txt', NULL
+  tam_arq: equ 1024   ; 1 Kb Leitura
+
+section .bss
+  fd: resb    4 ; File Descriptor
+  buffer: resb 4096    
+
+section .text
+
+global _start
+
+_start:
+\end{lstlisting}
+
+Vamos começar com a criação das nossas constantes na seção Data, vou apenas repetir todas as que foram criadas e ampliar para as novas necessárias, que são:
+\begin{itemize}
+\item OPEN\_READ: colocar o arquivo em modo de obter os dados
+\item READ\_FILE: ler os dados do arquivo
+\item OPEN\_FILE: para realizar a abertura em modo leitura do arquivo
+\item CLOSE\_FILE: fechar e encerrar o arquivo
+\end{itemize}
+
+Além dessas mais uma indicando o nome do arquivo e o tamanho de leitura desse. Já na seção BSS criamos uma variável para armazenar a posição de leitura do arquivo (\textit{File Descriptor}) e o buffer de leitura para o arquivo. Para abrir o arquivo:
+\begin{lstlisting}[]
+  mov rax, OPEN_FILE
+  mov rdi, file
+  mov rsi, OPEN_READ
+  syscall
+\end{lstlisting}
+
+Abrimos o arquivo para leitura, indicamos qual arquivo será lido e colocamos este em modo de obtenção de dados. Bem semelhante ao que vimos para 32 bits. Para ler o conteúdo do arquivo:
+\begin{lstlisting}[]
+  mov [fd], rax ; armazenar o valor do File Descriptor
+  mov rax, READ_FILE;
+  mov rdi, [fd]
+  mov rsi, buffer
+  mov rdx, tam_arq
+  syscall
+\end{lstlisting}
+
+Antes de qualquer ação armazenamos o conteúdo do \textit{File Descriptor} (obtido por RAX na abertura do arquivo), indicamos que o processo será leitura do arquivo, qual endereço do arquivo (\textit{File Descriptor}), aonde deve ser armazenada as informações e a quantidade de bytes buscada. Próximo passo é colocar o conteúdo em tela:
+\begin{lstlisting}[]
+  mov rax, SYS_WRITE
+  mov rdi, STDOUT
+  mov rsi, buffer
+  mov rdx, tam_arq
+  syscall
+\end{lstlisting}
+
+Indicamos que o processo será escrita, o local que deverá escrever (em tela), o quê deve escrever e a quantidade de bytes a serem escritos. E agora processamos o fechamento:
+\begin{lstlisting}[]
+  mov rax, CLOSE_FILE
+  mov rdi, [fd]
+  syscall
+
+  mov rax, SYS_EXIT
+  xor rdi, rdi ; Zerar
+  syscall
+\end{lstlisting}
+
+Temos basicamente 2 passos para realizar em cada ação, no primeiro indicamos a ação de fechamento do arquivo e passamos o \textit{File Descriptor} e no segundo enviamos a ação de encerrar o programa e zeramos o registrador RDI.
+
+Para testar o programa, certifique-se que na mesma pasta existe um arquivo em formato texto com o nome "Arquivo.txt".
