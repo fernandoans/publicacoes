@@ -8,7 +8,7 @@
 	Dê o poder ao homem, e descobrirá quem realmente ele é. (Maquiavel - Diplomata, Autor e Historiador Italiano) 
 \end{remark}
 
-\section{Retornamos ao Hello World}\index{Registradores de 64 Bits}
+\section{Programa 5.1 - Retornamos ao Hello World}\index{Registradores de 64 Bits}
 Podemos pensar o seguinte, até o momento para compilar nossos programas usamos 64 Bits, na instrução "nasm -f elf64", e isso é uma grande verdade, porém nossos registradores são todos de 32 bits, e isso causa um problema, pois não vimos nada de, por exemplo PILHAS, pois só funcionam em registradores de 64 bits. Assim devemos aprender a usá-los e a usufruir de seus benefícios.
 
 Vamos lembrar da nossa tabela exposta no primeiro capítulo desse livro:
@@ -77,7 +77,7 @@ all: $(NOME).o
 
 Esse exemplo conhecemos que não se trata então de uma simples mudança de registradores mas quase reaprender novamente os comandos, mas não se preocupe apenas mantenha a mente afiada que veremos muito mais nesse capítulo.
 
-\section{Pilhas}\index{Registradores de 64 Bits}
+\section{Programa 5.2 - Pilhas}\index{Registradores de 64 Bits}
 Se o capítulo passado trouxe a sensação que agora vamos repetir todos os programas já vistos anteriormente, sinto em lhe dizer que está é totalmente errônea, porém sinta-se a vontade para refazê-los em 64 bits para treinar os novos registradores. Neste capítulo veremos do que são capazes, uma dessas mudanças é o conceito de \textbf{Pilhas}.
 
 Não consigo compreender a confusão que faz com o iniciante a respeito desse assunto. Imaginemos uma pilha de caixas (uma sobre a outra), pensemos em umas 10, agora precisamos de uma para colocar algumas coisas, é óbvio que vamos pegar a última que colocamos (ou seja a que está em cima da pilha e não a primeira lá embaixo ou qualquer uma do meio nos arriscando a derrubar toda pilha), por isso mesmo \textbf{Pilhas} são conhecidas como LIFO (\textit{Last in First Out}), ou seja, a última que entrou na pilha será primeira a ser retirada.
@@ -159,7 +159,7 @@ Já vimos isso no passado, para contarmos os caracteres simplesmente a cada car�
 
 Este é um conceito extremamente importante na programação, pois podemos organizar melhor a nossa informação.
 
-\section{Ler Arquivos}\index{Registradores de 64 Bits}
+\section{Programa 5.3 - Ler Arquivos}\index{Registradores de 64 Bits}
 A leitura de arquivos com registradores de 64 bits é feito de forma semelhante aos de 32 bits, a diferença são os valores que passamos aos registradores. 
 
 \begin{lstlisting}[]
@@ -245,3 +245,97 @@ Indicamos que o processo será escrita, o local que deverá escrever (em tela), 
 Temos basicamente 2 passos para realizar em cada ação, no primeiro indicamos a ação de fechamento do arquivo e passamos o \textit{File Descriptor} e no segundo enviamos a ação de encerrar o programa e zeramos o registrador RDI.
 
 Para testar o programa, certifique-se que na mesma pasta existe um arquivo em formato texto com o nome "Arquivo.txt".
+
+\section{Programa 5.4 - Gravar Arquivos}\index{Registradores de 64 Bits}
+A gravação de arquivos em 64 bits é uma operação que exige alguns conhecimentos específicos. Primeiramente, é necessário definir os valores adequados para a criação do arquivo, bem como para a sua abertura para gravação. É importante destacar que esses são dois processos distintos, e que é preciso ter cuidado ao executá-los.
+
+Uma abordagem comum para lidar com essa questão é tentar realizar a criação do arquivo e, caso ocorra algum erro, executar o processo de abertura para gravação. Dessa forma, é possível contornar possíveis problemas e garantir que o arquivo seja criado e gravado corretamente.
+
+É importante ressaltar que a gravação de arquivos em 64 bits pode ser uma tarefa complexa e que requer atenção aos detalhes. Portanto, é recomendável que se tenha um bom entendimento das especificações técnicas envolvidas antes de realizar essa operação. Que pode ser descrito conforme o seguinte fluxograma:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{Pictures/cap05/programa54}
+	\caption{Fluxograma do Programa \textbf{Gravação de Arquivos}}
+\end{figure}
+
+Vamos começar com a definição das variáveis necessárias e tentar abrir o arquivo:
+\begin{lstlisting}[]
+section .data
+    nomArquivo db 'arquivo.txt', 0x0
+    conteudo db 'Hello World 2!', 0xA
+    mens_erro db 'Erro ao abrir o arquivo!', 0x0
+
+section .text
+    global _start
+
+_start:
+    ; Abrir o arquivo
+    mov rax, 0x2  
+    mov rdi, nomArquivo
+    mov rsi, 0x2 | 0x40 | 0x80 
+    mov rdx, 0o666
+    syscall
+\end{lstlisting}
+
+Vamos começar nosso programa e tentar criar o arquivo, que pode já existir, os códigos do registrador RSI são: 0x2 que corresponde a Leitura e Gravação; 0x40 para criação do arquivo e 0x80 que informa um erro caso a operação não seja efetuada. Para capturar o erro:
+\begin{lstlisting}[]
+    cmp rax, 0x0
+    jl erroExiste
+\end{lstlisting}
+
+Comparamos se o retorno do registrador RAX for menor que zero saltamos para um ponto que tentará realizar outra forma. Caso contrário continuamos:
+\begin{lstlisting}[]
+continuar:
+    mov rdi, rax
+    mov rax, 0x1
+    mov rsi, conteudo
+    mov rdx, 15
+    syscall
+\end{lstlisting}
+
+Apenas procedemos a gravação do conteúdo. Por fim fechamos este:
+\begin{lstlisting}[]
+    mov rax, 0x3
+    mov rdi, [rsp]
+    syscall
+    jmp finalizar
+\end{lstlisting}
+
+Como estamos trabalhando com 64 bits não precisamos nos preocupar em guardar o File Descriptor pois o código do arquivo está guardado no topo da pilha, assim simplesmente o fechamos. Próximo passo é criar o ponto que será executado caso der erro no procedimento de gravação:
+\begin{lstlisting}[]
+erroExiste:
+    mov rax, 0x2  
+    mov rdi, nomArquivo
+    mov rsi, 0x2 | 0x8 | 0x80 
+    mov rdx, 0o666
+    syscall    
+\end{lstlisting}
+
+Neste caso tentamos apenas abrir o arquivo para gravação, usando os códigos: 0x2 para abrir o arquivo em modo leitura/gravação; 0x8 para adicionar informação no arquivo e 0x80 que informa um erro caso a operação não seja efetuada.
+\begin{lstlisting}[]
+    cmp rax, 0x0
+    jl erro
+    jmp continuar
+\end{lstlisting}
+
+Novamente comparamos o registrador RAX com um valor menor que 0, se isso ocorre aconteceu algum problema que não é possível gerar o arquivo, caso contrário retornamos para a marcação \textbf{continuar} que procede a gravação e o fechamento do arquivo.
+\begin{lstlisting}[]
+erro:
+    mov rax, 0x1
+    mov rdi, 0x1
+    mov rsi, mens_erro
+    mov rdx, 25
+    syscall
+\end{lstlisting}
+
+Caso ocorra a "pior" situação mostramos uma mensagem de erro, e por fim:
+\begin{lstlisting}[]
+finalizar:
+    mov rax, 0x3C
+    xor rdi, rdi
+    syscall
+\end{lstlisting}
+
+Por fim finalizamos nosso programa. Ao executá-lo se o arquivo não existir será criado, e caso já exista a mensagem será colocada nele.
+% Final do Capítulo
+\clearpage

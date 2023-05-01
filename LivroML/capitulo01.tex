@@ -193,7 +193,7 @@ Obviamente que "fernandoanselmo/docker-data-science" pode ser alterado para o no
 \end{note}
 
 Agora o comando: \\
-{\ttfamily\$ docker run -d -t -i -v ---privileged /dev/ttyACM0:/dev/ttyACM0 -v \\ $\sim$/Aplicativos/ipynb:/root/GitProjects ---network=host \\
+{\ttfamily\$ docker run -d -t -i ---privileged -v /dev/ttyACM0:/dev/ttyACM0 -v \\ $\sim$/Aplicativos/ipynb:/root/GitProjects ---network=host \\
 	 ---name meu-jupyter fernandoanselmo/docker-data-science}
  
 Realiza a criação de um contêiner. Vejamos os detalhes: após a opção -v aparece a expressão "$\sim$/Aplicativos/ipynb", essa se refere a uma determinada pasta no sistema operacional onde serão armazenados os Notebooks produzidos. Abrir o navegador no endereço \url{http://localhost:8888} e obtemos o seguinte resultado:
