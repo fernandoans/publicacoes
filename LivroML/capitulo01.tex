@@ -102,85 +102,54 @@ Essa segunda alternativa é bem mais próxima a realidade de qualquer um que des
 	Não se desespere, baixe um paper sobre o Docker gratuitamente na minha página no Academia.edu (\url{https://iesbpreve.academia.edu/FernandoAnselmo}).
 \end{note}
 
-Minha primeira personalização de Imagem\footnote{O objetivo não é termos uma imagem pequena, mas uma PERSONALIZÁVEL, se não deseja isso recomendo que acesse o tutorial disponível em \url{https://jcrist.github.io/conda-docker-tips.html}.} surgiu quando descobri que as versões \textbf{Jupyter} não me atendiam por completo e \textbf{Anaconda} era grande demais. Iremos então trabalhar em uma imagem que possa conter um Jupyter mais adequado e uma Anaconda mas controlada. Com o seguinte resultado do arquivo \textbf{Dockerfile} (que obrigatoriamente deve ter esse nome):
+Minha primeira personalização de Imagem\footnote{O objetivo não é termos uma imagem pequena, mas PERSONALIZÁVEL, se não deseja isso recomendo que acesse o tutorial disponível em \url{https://jcrist.github.io/conda-docker-tips.html}.} surgiu quando descobri que as versões \textbf{Jupyter} não me atendiam por completo e \textbf{Anaconda} era grande demais. Iremos então trabalhar em uma imagem que possa conter um JupyterLab mais adequado e controlado (resultando em uma imagem de 1,54Gb). Com o seguinte resultado do arquivo \textbf{Dockerfile} (que obrigatoriamente deve ter esse nome):
 \begin{lstlisting}[]
 # Base da Imagem
-FROM ubuntu:19.10
+FROM openjdk:8-jre-slim
 
-# Adiciona o metadata para a imagem com o par: chave,valor
+# Adicionar o metadata para a imagem com o par: chave,valor
 LABEL maintainer="Fernando Anselmo <fernando.anselmo74@gmail.com>"
-LABEL version="1.2"
+LABEL version="2.0"
 
 # Variaveis de Ambiente
 ENV LANG=C.UTF-8 LC_ALL=C.UTF-8 PATH=/opt/conda/bin:$PATH
 
 # Execucoes iniciais:
-# Cria a pasta de ligacao
-RUN mkdir ~/GitProjects && \
-# instala os pacotes necessarios
-apt-get update && apt-get install --no-install-recommends --yes python3 && \
-apt-get install -y wget ca-certificates git-core pkg-config tree freetds-dev apt-utils && \
-# Limpeza basica
-apt-get autoclean -y && \
-rm -rf /var/lib/apt/lists/* && \
-# Configuracao do Jupyter
-mkdir ~/.ssh && touch ~/.ssh/known_hosts && \
-ssh-keygen -F github.com || ssh-keyscan github.com >> ~/.ssh/known_hosts && \
-git clone https://github.com/bobbywlindsey/dotfiles.git && \
-mkdir ~/.jupyter && \
-mkdir -p ~/.jupyter/custom && \
-mkdir -p ~/.jupyter/nbconfig && \
-cp /dotfiles/jupyter/jupyter_notebook_config.py ~/.jupyter/ && \
-cp /dotfiles/jupyter/custom/custom.js ~/.jupyter/custom/ && \
-cp /dotfiles/jupyter/nbconfig/notebook.json ~/.jupyter/nbconfig/ && \
-rm -rf /dotfiles && \
-# Instalar o Anaconda
-echo 'export PATH=/opt/conda/bin:$PATH' > /etc/profile.d/conda.sh && \
-wget --quiet https://repo.anaconda.com/archive/Anaconda3-2020.02-Linux-x86_64.sh -O ~/anaconda.sh && \
-/bin/bash ~/anaconda.sh -b -p /opt/conda && \
-rm ~/anaconda.sh && \
-conda uninstall anaconda-navigator && \
-conda update conda && \
-conda update anaconda && \
-conda install nodejs && \
-conda update --all && \
-# Limpeza basica no Anaconda
-find /opt/conda/ -follow -type f -name '*.a' -delete && \
-find /opt/conda/ -follow -type f -name '*.pyc' -delete && \
-find /opt/conda/ -follow -type f -name '*.js.map' -delete && \
-find /opt/conda/lib/python*/site-packages/bokeh/server/static -follow -type f -name '*.js' ! -name '*.min.js' -delete &&  \
-# Instalar os temas para o Jupyter
-pip install msgpack jupyterthemes && \
-jt -t grade3 && \
-# Instalar os pacotes
-conda install scipy && \
-conda install pymssql mkl=2018 && \
-pip install SQLAlchemy missingno json_tricks \
-gensim elasticsearch psycopg2-binary \
-jupyter_contrib_nbextensions mysql-connector-python \
-jupyter_nbextensions_configurator pymc3 apyori && \
-# Habilitar as extensoes do Jupyter Notebook
-jupyter contrib nbextension install --user && \
-jupyter nbextensions_configurator enable --user && \
-jupyter nbextension enable codefolding/main && \
-jupyter nbextension enable collapsible_headings/main && \
-# Adicionar a extensao do vim-binding
-mkdir -p $(jupyter --data-dir)/nbextensions && \
-git clone https://github.com/lambdalisue/jupyter-vim-binding $(jupyter --data-dir)/nbextensions/vim_binding && \
-cd $(jupyter --data-dir)/nbextensions \
-chmod -R go-w vim_binding && \
-# Remover o que nao eh necessario
-conda clean -afy && \
-apt-get remove -y wget git-core pkg-config && \
-apt-get autoremove -y && apt-get autoclean -y && \
-# Adicionar o Git ao Jupyter Lab
-pip install --upgrade jupyterlab-git && \
-jupyter lab build
+    # 1. Adicionar a Zona Geografica correta
+RUN ln -fs /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+
+    # 3. Instalar os pacotes necessarios
+RUN mkdir -p /opt/workspace && \
+    apt-get update -y && \
+    apt-get install -y python3 && \
+    ln -s /usr/bin/python3 /usr/bin/python && \
+    rm -rf /var/lib/apt/lists/*
+
+    # 4. Instalar os pacotes
+RUN apt-get update -y && \
+    apt-get install -y python3-pip && \
+    pip3 install jupyterlab
+
+RUN pip install scipy SQLAlchemy missingno json_tricks \
+        gensim elasticsearch psycopg2-binary pymc3 apyori
+
+    # 5. Instalar os temas para o Jupyter
+RUN pip install msgpack jupyterthemes && \
+    jt -t grade3
+
+    # 6. Adicionar o Git ao Jupyter Lab
+RUN pip install --upgrade jupyterlab-git
+
+    # 7. Proceder limpeza final
+RUN apt autoremove -y && \
+    apt autoclean -y
 
 # Configurar o acesso ao Jupyter
-WORKDIR /root/GitProjects
+ENV SHARED_WORKSPACE=/opt/workspace
+
 EXPOSE 8888
-CMD jupyter lab --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='data-science'
+WORKDIR /root/GitProjects
+CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token='data-science'
 \end{lstlisting}
 
 Tento manter sempre o script o mais documentado possível deste modo posso remover ou adicionar propriedades sem me incomodar muito. Para criarmos a imagem é muito simples, supondo que a localização do script esteja em uma pasta chamada docker-data-science, então na pasta anterior digitar o comando: \\
@@ -196,7 +165,7 @@ Agora o comando: \\
 {\ttfamily\$ docker run -d -t -i ---privileged -v /dev/ttyACM0:/dev/ttyACM0 -v \\ $\sim$/Aplicativos/ipynb:/root/GitProjects ---network=host \\
 	 ---name meu-jupyter fernandoanselmo/docker-data-science}
  
-Realiza a criação de um contêiner. Vejamos os detalhes: após a opção -v aparece a expressão "$\sim$/Aplicativos/ipynb", essa se refere a uma determinada pasta no sistema operacional onde serão armazenados os Notebooks produzidos. Abrir o navegador no endereço \url{http://localhost:8888} e obtemos o seguinte resultado:
+Realiza a criação de um contêiner. Vejamos os detalhes: a primeira opção priveleged e ttyACM0 nos fornece permissão para acessar a porta no qual podemos utilzar projetos de robótica. A próxima opção -v a expressão "$\sim$/Aplicativos/ipynb", se refere a uma determinada pasta no sistema operacional onde serão armazenados os Notebooks produzidos. Abrir o navegador no endereço \url{http://localhost:8888} e obtemos o seguinte resultado:
 \begin{figure}[H]
 	\centering\includegraphics[scale=0.5]{cap01/paginaSenha.png}
 	\caption{Jupyter solicitando o Token}
@@ -215,8 +184,8 @@ A maior vantagem que agora possuímos um ambiente com o \textbf{Jupyter Lab} com
 Respectivamente para encerrar e iniciar o contêiner. Oh não! Agora estou preso, não posso mais fazer atualizações. Devemos entender que os contêineres são \textbf{dinâmicos}. Precisamos instalar o Keras/TensorFlow, acessar o contêiner (com ele já iniciado): \\
 {\ttfamily\$ docker exec -it meu-jupyter /bin/bash}
 
-E instalamos normalmente, como se estivesse em uma máquina com o Ubuntu (com os poderes de superusuário): \\
-{\ttfamily\# conda install -c conda-forge keras}
+E instalamos normalmente, como se estivesse em uma máquina com o Debian (com os poderes de superusuário): \\
+{\ttfamily\# python3 -pip install keras}
 
 Pronto uma vez testado podemos optar por manter só nesse contêiner, ou então modificar o Script para ao criarmos novos contêineres e estes serão criados com essa funcionalidade embutida.
 
@@ -225,6 +194,6 @@ Verificar qual a versão do Python que está a nossa disposição, em uma célul
 !python --version
 \end{lstlisting}
 
-Ao pressionarmos Ctrl+Enter será mostrada a versão 3.7.7. Agora podemos testar e executar qualquer ferramental sem nos preocuparmos em corromper a máquina. Talvez, no máximo, perdermos um contêiner.
+Ao pressionarmos Ctrl+Enter será mostrada a versão 3.x do Python. Agora podemos testar e executar qualquer ferramental sem nos preocuparmos em corromper a máquina. Talvez, no máximo, perdermos um contêiner.
 	
 \clearpage
