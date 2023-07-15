@@ -1,0 +1,157 @@
+%------------------------------------------------------------------------------------
+%	Pacotes e Outras Configurações
+%------------------------------------------------------------------------------------
+\documentclass[a4paper,11pt]{book} % Fonte do livro
+\input{structure} % Arquivo de Pacotes e comandos
+
+\begin{document}
+
+%------------------------------------------------------------------------------------
+%	TITLE PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{CpFrente}};
+\draw (current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Apache Spark na Prática\\[15pt] % Titulo
+{\Large Com PySpark, Docker Compose e JupyterLab}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%------------------------------------------------------------------------------------
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\noindent Copyright \copyright\ 2020 Fernando Anselmo - v1.0 % Copyright
+
+\noindent \textsc{Publicação Independente} % Publicado por
+
+\noindent \url{http:\\fernandoanselmo.orgfree.com} % URL
+
+\noindent \\ É permitido a total distribuição, cópia e compartilhamento deste arquivo, desde que se preserve os seguintes direitos, conforme a licença da \textit{Creative Commons 3.0}. Logos, ícones e outros itens inseridos nesta obra, são de responsabilidade de seus proprietários. Não possuo a menor intenção em me apropriar da autoria de nenhum artigo de terceiros. Caso não tenha citado a fonte correta de algum texto que coloquei em qualquer seção, basta me enviar um e-mail que farei as devidas retratações, algumas partes podem ter sido cópias (ou baseadas na ideia) de artigos que li na Internet e que me ajudaram a esclarecer muitas dúvidas, considere este como um documento de pesquisa que resolvi compartilhar para ajudar os outros usuários e não é minha intenção tomar crédito de terceiros. % License information
+
+%------------------------------------------------------------------------------------
+%	SUMARIO
+%------------------------------------------------------------------------------------
+
+% Para nao usar imagem nos capitulos
+% \usechapterimagefalse 
+
+\chapterimage{headMontagem.png} % Imagem
+\pagestyle{empty} % Sem Cabecalho
+\tableofcontents % Mostra a tabela de conteudo
+\cleardoublepage % Forca que a primeira pagina seja iniciada em um numero impar
+\pagestyle{fancy} % Volta a imprimir o Cabecalho
+\clearpage % Forca que a primeira pagina seja iniciada em um numero impar
+
+%------------------------------------------------------------------------------------
+%	PARTES
+%------------------------------------------------------------------------------------
+
+%\part{Parte Um - O Básico}
+% Entendimento Geral
+\input{capitulo01.tex}
+% Exemplos de Uso
+\input{capitulo02.tex}
+%\input{capitulo03.tex}
+%\input{capitulo04.tex}
+%\input{capitulo05.tex}
+
+\appendix
+\chapterimage{headSpark.png}
+\chapter{Considerações Finais}
+\begin{remark}
+"A paixão pela tecnologia é a faísca que impulsiona o desejo de aprender, experimentar e criar soluções inovadoras." (Satya Nadella - CEO (\textit{Chief Executive Officer}) da Microsoft Corporation)
+\end{remark}
+Os artigos deste livro foram selecionados das diversas publicações que fiz no Linkedin e encontradas em outros sites que foram nesta obra explicitamente citadas. Acredito que apenas com a prática podemos almejar o cargo de Cientista de Dados, então segue uma relação de boas bases que podemos encontrar na Internet:
+\begin{itemize}[noitemsep]
+	\item 20BN-SS-V2: \url{https://20bn.com/datasets/something-something}
+	\item Actualitix: \url{https://pt.actualitix.com/}
+	\item Banco Central do Brasil: \url{https://www3.bcb.gov.br}
+	\item Banco Mundial: \url{http://data.worldbank.org}
+	\item Censo dos EUA (População americana e mundial): \url{http://www.census.gov}
+	\item Cidades Americanas: \url{http://datasf.org}
+	\item Cidade de Chicago: \url{https://data.cityofchicago.org/}
+	\item CIFAR-10: \url{https://www.cs.toronto.edu/~kriz/cifar.html}
+	\item Cityscapes: \url{https://www.cityscapes-dataset.com/}
+	\item Criptomoedas: \url{https://pro.coinmarketcap.com/migrate/}
+	\item Dados da União Europeia: \url{http://open-data.europa.eu/en/data}
+	\item Data 360: \url{http://www.data360.org}
+	\item Datahub: \url{http://datahub.io/dataset}
+	\item DBpedia: \url{http://wiki.dbpedia.org/}
+	\item Diversas áreas de negócio e finanças: \url{https://www.quandl.com}
+	\item Diversos assuntos: \url{http://www.freebase.com}
+	\item Diversos países (incluindo o Brasil): \url{http://knoema.com}
+	\item Fashion-MNIST: \url{https://www.kaggle.com/zalando-research/fashionmnist}
+	\item Gapminder: \url{http://www.gapminder.org/data}
+	\item Google Finance: \url{https://www.google.com/finance}
+	\item Google Trends: \url{https://www.google.com/trends}
+	\item Governo do Brasil: \url{http://dados.gov.br}
+	\item Governo do Canadá (em inglês e francês): \url{http://open.canada.ca}
+	\item Governo dos EUA: \url{http://data.gov}
+	\item Governo do Reino Unido: \url{https://data.gov.uk}
+	\item ImageNET: \url{http://www.image-net.org/}
+	\item IPEA: \url{http://www.ipeadata.gov.br}
+	\item IMDB-Wiki: \url{https://data.vision.ee.ethz.ch/cvl/rrothe/imdb-wiki/}
+	\item Kinetics-700: \url{https://deepmind.com/research/open-source/kinetics}
+	\item Machine Learning Databases: \url{https://archive.ics.uci.edu/ml/machine-learning-databases/}
+	\item MEC Microdados INEP: \url{http://inep.gov.br/microdados}
+	\item MS coco: \url{http://cocodataset.org/#home}
+	\item MPII Human Pose: \url{http://human-pose.mpi-inf.mpg.de/}
+	\item Músicas: \url{https://aws.amazon.com/datasets/million-song-dataset}
+	\item NASA: \url{https://data.nasa.gov}
+	\item Open Data Monitor: \url{http://opendatamonitor.eu}
+	\item Open Data Network: \url{http://www.opendatanetwork.com}
+	\item Open Images: \url{https://github.com/openimages/dataset}
+	\item Portal de Estatística: \url{http://www.statista.com}
+	\item Públicos da Amazon: \url{http://aws.amazon.com/datasets}
+	\item R-Devel: \url{https://stat.ethz.ch/R-manual/R-devel/library/datasets/html/00Index.html}
+	\item Reconhecimento de Faces: \url{http://www.face-rec.org/databases}
+	\item Saúde: \url{http://www.healthdata.gov}
+	\item Statsci: \url{http://www.statsci.org/datasets.html}
+	\item Stats4stem: \url{http://www.stats4stem.org/data-sets.html}
+	\item Stanford Large Network Dataset Collection: \url{http://snap.stanford.edu/data}
+	\item Vincent Rdatasets: \url{https://vincentarelbundock.github.io/Rdatasets/datasets.html}
+	\item Vitivinicultura Embrapa: \url{http://vitibrasil.cnpuv.embrapa.br/}
+\end{itemize}
+
+Esse não é o fim de uma jornada acredito ser apenas seu começo. Espero que este livro possa lhe servir para criar algo maravilhoso e fantástico que de onde estiver estarei torcendo por você.
+
+\section{Sobre o Autor}
+Fortes conhecimentos em linguagens de programação Java e Python. Especialista formado em Gestão da Tecnologia da Informação com forte experiência em Bancos Relacionais e não Relacionais. Possui habilidades analíticas necessárias para encontrar a providencial agulha no palheiro dos dados recolhidos pela empresa. Responsável pelo desenvolvimento de dashboards com a capacidade para analise de dados e detectar tendências, autor de 15 livros e diversos artigos em revistas especializadas, palestrante em seminários sobre tecnologia. Focado em aprender e trazer mudanças para a organização com conhecimento profundo do negócio.
+\begin{itemize}
+ \item Perfil no Linkedin: \url{http://www.linkedin.com/pub/fernando-anselmo/23/236/bb4}
+ \item Endereço do Git: \url{https://github.com/fernandoans/machinelearning} 
+\end{itemize}
+
+\clearpage
+%------------------------------------------------------------------------------------
+%	FINAL PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{CpFundo}};
+\draw (current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Machine Learning na Prática\\[15pt] % Titulo
+{\Large ESTE LIVRO PODE E DEVE SER DISTRIBUÍDO LIVREMENTE}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	INDEX
+%------------------------------------------------------------------------------------
+% \cleardoublepage
+% \phantomsection
+% \setlength{\columnsep}{0.75cm}
+% \addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+% \printindex
+
+%------------------------------------------------------------------------------------
+\end{document}

@@ -1,0 +1,8 @@
+Apache Spark é um mecanismo de análise unificado para processamento de dados em grande escala. 
+Fornece APIs para linguagens de alto nível como Java, Scala, Python e R
+Permite um mecanismo otimizado para suporte a gráficos de execução geral. 
+Possui um excelente conjunto de ferramentas, tais como: 
+    Spark SQL para SQL e processamento de dados estruturados;
+    MLlib para aprendizado de máquina;
+    GraphX para processamento de gráfico; e
+    Streams estruturados para computação incremental e processamento de fluxo.
