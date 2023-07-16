@@ -47,7 +47,7 @@ Porquê vários contêineres? Pelo simples fato que precisamos de um editor (no 
 
 Graficamente seria essa imagem:
 \begin{figure}[H]
-	\centering\includegraphics[scale=0.4]{cap01/Arquitetura}
+	\centering\includegraphics[scale=0.45]{cap01/Arquitetura}
 	\caption{Arquitetura do Ambiente}
 \end{figure}
 
@@ -132,7 +132,7 @@ Para sua execução digite o seguinte comando: \\
 
 Após essa etapa, temos cinco imagens que possuem uma dependência interligada, representada graficamente da seguinte forma:
 \begin{figure}[H]
-	\centering\includegraphics[scale=0.4]{cap01/ImagensDocker}
+	\centering\includegraphics[scale=0.45]{cap01/ImagensDocker}
 	\caption{Dependência das imagens geradas}
 \end{figure}
 
@@ -226,16 +226,16 @@ Com os contêineres ativos, abrir o navegador no endereço \url{http://localhost
 
 A senha do token está definida no arquivo de criação da imagem do JupyterLab como "spark", após informá-la o JupyterLab pronto para trabalharmos:
 \begin{figure}[H]
-	\centering\includegraphics[scale=0.3]{cap01/JupyterLab}
+	\centering\includegraphics[scale=0.5]{cap01/JupyterLab}
 	\caption{Jupyter Lab pronto}
 \end{figure}
 
-Verificar qual a versão do Python que está a nossa disposição, crie um Notebook e em uma célula digite:
+Verificar qual a versão do Python que está a nossa disposição, crie um Notebook e na primeira célula digite:
 \begin{lstlisting}[]
 !python --version
 \end{lstlisting}
 
-Ao pressionarmos Ctrl+Enter será mostrada a versão 3.9.2. Agora em outra aba do navegador acesse o endereço \url{http://localhost:8080}, e temos:
+Ao executarmos esta, é mostrada a versão 3.9.2. Agora em outra aba do navegador acesse o endereço \url{http://localhost:8080}, e temos:
 \begin{figure}[H]
 	\centering\includegraphics[scale=0.6]{cap01/SparkMaster}
 	\caption{Spark Master pronto}

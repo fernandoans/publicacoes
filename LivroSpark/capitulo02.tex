@@ -188,4 +188,145 @@ spark.sparkContext.stop()
 \end{lstlisting}
 
 E notamos na página de status do \textbf{Spark Master} que os \textbf{Spark Workers} alocados foram para a seção \textbf{Completed Applications}.
+
+
+\section{Novas Bibliotecas e Arquivo PDF}\index{Primeiros Exemplos}
+Neste exemplo permita-me demonstrar a vantagem de estarmos em um contêineres, muitas pessoas pensam que estão presas, não podem atualizar ou fazer modificações no contêiner, isso é totalmente falso. Não estamos presos e podemos sim mudar a nossa vontade o conteúdo de um contêiner como se fosse uma pasta normal no nosso computador.
+
+Vamos aproveitar nosso exemplo de contar palavras e criar algo mais sofisticado, ao invés de ler de um arquivo texto qualquer vamos usar um arquivo PDF. Inicialmente criamos um novo notebook e iniciamos a seção do Spark neste:
+\begin{lstlisting}[]
+from pyspark.sql import SparkSession
+
+spark = SparkSession.\
+        builder.\
+        appName("pyspark-notebook").\
+        master("spark://spark-master:7077").\
+        config("spark.executor.memory", "512m").\
+        getOrCreate()
+        
+sc = spark.sparkContext        
+\end{lstlisting}
+
+Com a seção ativa podemos ler o arquivo PDF, só que o Spark não possui esse poder e isso deve ser realizado com a linguagem Python. Existem várias bibliotecas em Python para isso, uma das mais simples e úteis é a \textbf{textract}. Instalamos esta:
+\begin{lstlisting}[]
+!pip install textract
+\end{lstlisting}
+
+Exatamente isso, vamos instalar para dentro do nosso contêiner uma biblioteca que não existe neste, próximo passo é utilizar a biblioteca:
+\begin{lstlisting}[]
+import textract
+\end{lstlisting}
+
+\begin{note}[Onde está o PDF?] 
+	Todos os código e arquivos utilizados por este livro estão disponíveis no GitHub no seguinte endereço (\url{https://github.com/fernandoans/publicacoes/tree/master/LivroSpark}), inclusive os fontes deste em LaTex.
+\end{note}
+
+Vamos ler o arquivo PDF que nos fornecerá o texto:
+\begin{lstlisting}[]
+text = textract.process("arquivo.pdf", method='pdfminer')
+texto_corr = text.decode('utf-8')
+\end{lstlisting}
+
+E para gerarmos o nosso objeto RDD usamos a função \textbf{parallelize()}:
+\begin{lstlisting}[]
+file_in = sc.parallelize([texto_corr])
+\end{lstlisting}
+
+Para sabermos a quantidade de caracteres que temos no arquivo, podemos utilizar os métodos \textbf{map()} e \textbf{reduce()}, da seguinte forma:
+\begin{lstlisting}[]
+# Adicionar o operador add
+from operator import add
+
+# Contar quantos caracteres
+chars = file_in.map(lambda s: len(s)).reduce(add)
+print('Número de caracteres no arquivo: %s' % chars)
+\end{lstlisting}
+
+E temos como resposta que são 17.019 caracteres encontrados em nosso texto. Essa parte agora é bem parecida com o que vimos, mas vou pecar pelo excesso de informação neste:
+\begin{lstlisting}[]
+# importar o módulo regex
+import re
+
+# Definir a lista de palavras indesejadas
+palavras_indesejadas = ["404", "agosto", "julho", "aulapython", "minicursos", "count", "erad", "2021", "para", "como", "como", "possui", "uma", "que", "com", "são", "quando", "linha", "pode", "ser", "ERAD-CO"]
+
+# Dividir cada linha em palavras e criar um RDD com todas as palavras
+palavras = file_in.flatMap(lambda linha: linha.split(" "))
+
+# Colocar todas as palavras em letras minúsculas
+palavras = palavras.flatMap(lambda line: re.split('\W+', line.lower().strip()))
+
+# Filtrar as palavras indesejadas
+palavras = palavras.filter(lambda palavra: palavra not in palavras_indesejadas)
+
+# Colocar todas as palavras em letras minúsculas
+palavras = palavras.flatMap(lambda line: re.split('\W+', line.lower().strip()))
+
+# Filtrar apenas as palavras que não possuam caracteres
+palavras = palavras.filter(lambda x: len(x) > 2)
+
+# Fazer com que cada palavra tenha o valor 1
+palavras = palavras.map(lambda w: (w,1))
+
+# Reduzir para o total
+palavras = palavras.reduceByKey(add)
+\end{lstlisting}
+
+Tudo o que fizemos foi arrumar a informação eliminando as palavras que não interessam, retirar espaços em branco, trocar todas as palavras para letras minúsculas (poderíamos também usar o método upper() para todas maiúsculas), remover as palavras menores que 3 caracteres, fazer com que cada palavra possua o valor 1 e reduzir para achar o total de palavras. E para acharmos nossa lista Top 10 de palavras mais comuns:
+\begin{lstlisting}[]
+# Criar uma tupla (count, word) e ordenar de forma ascendente
+tpalavras = palavras.map(lambda x:(x[1],x[0])).sortByKey(False)
+
+# Pegar o Top 10
+tpalavras.take(10)
+\end{lstlisting}
+
+Criamos uma tupla de palavras e ordenamos de forma ascendente e mostramos as 10 primeiras palavras. Se observarmos o tipo desse objeto veremos que temos como resultado do método \textbf{take()} uma lista, em cada elemento temos uma tupla contendo a quantidade e sua palavra respectiva. 
+
+Creio que falta algo quando mostramos a informação dessa maneira. Para isso precisamos instalar a biblioteca MatPlotLib:
+\begin{lstlisting}[]
+!pip3 install matplotlib
+\end{lstlisting}
+
+Agora ficou fácil, basta importarmos a biblioteca e marcar que o gráfico deve aparecer como uma célula corrente:
+\begin{lstlisting}[]
+import matplotlib.pyplot as plt
+%matplotlib inline
+\end{lstlisting}
+
+E plotar o gráfico:
+\begin{lstlisting}[]
+# Obter os dados
+dados = tpalavras.take(10)
+
+# Inverter a ordem dos dados
+dados = list(reversed(dados))
+
+# Extrair os valores e rótulos da lista
+values = [item[0] for item in dados]
+labels = [item[1] for item in dados]
+
+# Criar um gráfico de barras horizontais
+plt.barh(range(len(dados)), values, align='center')
+plt.yticks(range(len(dados)), labels)
+
+# Definir os rótulos dos eixos
+plt.xlabel('Contagem')
+plt.ylabel('Palavra')
+
+# Exibir o gráfico
+plt.show()
+\end{lstlisting}
+
+Obtemos a lista das Top 10 palavras, invertemos a ordem dos dados, isso é importante pois um gráfico assim deve aparecer na ordem da palavra que aparece mais para a menor, obtemos os \textit{values} e \textit{labels} para montamos o gráfico final que tem como resultado:
+\begin{figure}[H]
+	\centering\includegraphics[scale=0.45]{cap02/GraficoPalavras}
+	\caption{Top 10 das Palavras do Texto}
+\end{figure}
+
+É interessante saber que nem precisamos abrir o PDF e ler todo o texto para sabermos qual o assunto tratado neste, indo um pouco além, imaginemos isso para classificar a informação de todos os PDF de uma coleção com os assuntos tratados por cada um deles. Por fim não esquecer de encerrar a seção:
+\begin{lstlisting}[]
+spark.sparkContext.stop()
+\end{lstlisting}
+
 \clearpage
