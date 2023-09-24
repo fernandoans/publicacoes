@@ -30,6 +30,21 @@ Damos um nome para esta seção: \textbf{pyspark-notebook}, indicamos aonde est�
 	\caption{Seção Running Applications do Spark Master}
 \end{figure}
 
+Voltemos para o Notebook e em uma nova célula digite:
+\begin{lstlisting}[]
+spark
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
+SparkSession - in-memory
+SparkContext
+Spark UI
+Version            v3.4.1
+Master             spark://spark-master:7077
+AppName            pyspark-notebook
+\end{verbatim}
+
 Por fim criamos um contexto de conversação:
 \begin{lstlisting}[]
 sc = spark.sparkContext
@@ -137,8 +152,8 @@ Definimos uma lista de palavras que desejamos remover da contagem. Em seguida, a
 
 Contamos as ocorrências das palavras filtradas e imprimimos as palavras únicas encontradas e suas respectivas contagens.
 
-\section{PipelinedRDD e DataFrame}\index{Primeiros Exemplos}
-Quando falamos de \textbf{Pipeline} rapidamente associamos ao \textbf{Jenkins} e \textbf{DataFrame} ao \textbf{Pandas}, porém devemos esquecer essa associação aqui, o \textbf{PipelinedRDD} e uma subcoleção de um \textbf{RDD} e o \textbf{DataFrame} é o modo como Spark realiza uma associação de linhas e colunas.
+\section{PipelinedRDD e Dataframe}\index{Primeiros Exemplos}
+Quando falamos de \textbf{Pipeline} rapidamente associamos ao \textbf{Jenkins} e \textbf{Dataframe} ao \textbf{Pandas}, porém devemos esquecer essa associação aqui, o \textbf{PipelinedRDD} e uma subcoleção de um \textbf{RDD} e o \textbf{Dataframe} é o modo como Spark realiza uma associação de linhas e colunas.
 
 Vamos imaginar que temos uma lista de 1.000 pacientes no qual colhemos os dados de Pressão Arterial, tanto a sistólica (PAS) quanto a diastólica (PAD). Para simularmos esses dados vamos importar a classe Random:
 \begin{lstlisting}[]
@@ -168,14 +183,14 @@ Podemos visualizar os 10 primeiros registros com:
 rdd_pipe.take(10)
 \end{lstlisting}
 
-E transformá-lo em um DataFrame com:
+E transformá-lo em um Dataframe com:
 \begin{lstlisting}[]
 df = rdd_pipe.toDF(("Id", "PAS", "PAD"))
 type(df)
 \end{lstlisting}
 
 E como resposta temos: \\
-{\ttfamily pyspark.sql.dataframe.DataFrame}
+{\ttfamily pyspark.sql.Dataframe.Dataframe}
 
 E visualizarmos os registros com:
 \begin{lstlisting}[]
@@ -188,7 +203,6 @@ spark.sparkContext.stop()
 \end{lstlisting}
 
 E notamos na página de status do \textbf{Spark Master} que os \textbf{Spark Workers} alocados foram para a seção \textbf{Completed Applications}.
-
 
 \section{Novas Bibliotecas e Arquivo PDF}\index{Primeiros Exemplos}
 Neste exemplo permita-me demonstrar a vantagem de estarmos em um contêineres, muitas pessoas pensam que estão presas, não podem atualizar ou fazer modificações no contêiner, isso é totalmente falso. Não estamos presos e podemos sim mudar a nossa vontade o conteúdo de um contêiner como se fosse uma pasta normal no nosso computador.
@@ -232,7 +246,7 @@ E para gerarmos o nosso objeto RDD usamos a função \textbf{parallelize()}:
 file_in = sc.parallelize([texto_corr])
 \end{lstlisting}
 
-Para sabermos a quantidade de caracteres que temos no arquivo, podemos utilizar os métodos \textbf{map()} e \textbf{reduce()}, da seguinte forma:
+RDD representa uma coleção de elementos particionados que podem ser operados em paralelo. É o mecanismo primário ds abstração de dados no Spark. É definido como uma classe abstrata na biblioteca Spark. Para sabermos a quantidade de caracteres, podemos utilizar os métodos \textbf{map()} e \textbf{reduce()}, da seguinte forma:
 \begin{lstlisting}[]
 # Adicionar o operador add
 from operator import add
@@ -281,6 +295,17 @@ tpalavras = palavras.map(lambda x:(x[1],x[0])).sortByKey(False)
 tpalavras.take(10)
 \end{lstlisting}
 
+Também podemos utilizar o método \textit{top()}:
+\begin{lstlisting}[]
+# Criar uma tupla (count, word)
+tpalavras = palavras.map(lambda x:(x[1],x[0]))
+
+# Pegar o Top 10
+tpalavras.top(10)
+\end{lstlisting}
+
+A diferença é que o método \textit{take()} obtém as 10 primeiras palavras da lista, enquanto que o segundo obtém as 10 primeiras com o maior valor da lista (utiliza o key da tupla para definir qual o maior), deste modo não precisamos do método \textit{sortByKey()}.
+
 Criamos uma tupla de palavras e ordenamos de forma ascendente e mostramos as 10 primeiras palavras. Se observarmos o tipo desse objeto veremos que temos como resultado do método \textbf{take()} uma lista, em cada elemento temos uma tupla contendo a quantidade e sua palavra respectiva. 
 
 Creio que falta algo quando mostramos a informação dessa maneira. Para isso precisamos instalar a biblioteca MatPlotLib:
@@ -297,7 +322,7 @@ import matplotlib.pyplot as plt
 E plotar o gráfico:
 \begin{lstlisting}[]
 # Obter os dados
-dados = tpalavras.take(10)
+dados = tpalavras.top(10)
 
 # Inverter a ordem dos dados
 dados = list(reversed(dados))
@@ -328,5 +353,354 @@ Obtemos a lista das Top 10 palavras, invertemos a ordem dos dados, isso é impor
 \begin{lstlisting}[]
 spark.sparkContext.stop()
 \end{lstlisting}
+
+\section{Arquivos CSV e mais sobre Dataframes}\index{Primeiros Exemplos}
+Neste exemplo, aprenderemos mais sobre \textit{Dataframes} e suas manipulações. Provavelmente poderíamos realizar associações com os \textit{Dataframes} da biblioteca Pandas, mas não se confunda, \textit{Dataframes} em Spark são outros elementos completamente diferentes, apesar de seguirem o mesmo conceito de linhas e colunas.
+
+Neste exemplo, veremos como criar e manipular \textit{Dataframes} usando o \textbf{PySpark}. Além disso, exploraremos como modificar suas colunas, obter seus dados e também aprenderemos a adicionar e remover colunas. 
+
+Começemos iniciando a seção e criamos o objeto de seção:
+\begin{lstlisting}[]
+from pyspark.sql import SparkSession
+
+spark = SparkSession.\
+        builder.\
+        appName("pyspark-notebook").\
+        master("spark://spark-master:7077").\
+        config("spark.executor.memory", "512m").\
+        getOrCreate()
+\end{lstlisting}
+
+Como vamos utilizar exclusivamente um \textit{Dataframe} não precisamos usar o contexto e usaremos diretamente o objeto de seção. Nosso próximo passo é criar o \textit{Dataframe}:
+\begin{lstlisting}[]
+df_pyspark = spark.read.csv('dados.csv')
+print(type(df_pyspark))
+\end{lstlisting}
+
+Como resposta temos: \\
+{\ttfamily pyspark.sql.dataframe.DataFrame}
+
+Verificamos que foi criado corretamente o \textit{Dataframe}, o arquivo "dados.csv" possui a seguinte codificação:
+\begin{lstlisting}[]
+Nome,Idade,Experiencia
+Maria,50,360
+Fernando,56,444
+Salvia,28,264
+Joana,47,240
+Souza,73,144
+\end{lstlisting}
+
+Vamos agora visualizar esse \textit{DataFrame}:
+\begin{lstlisting}[]
+df_pyspark.show()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
++--------+-----+-----------+
+|     _c0|  _c1|        _c2|
++--------+-----+-----------+
+|    Nome|Idade|Experiencia|
+|   Maria|   50|        360|
+|Fernando|   56|        444|
+|  Salvia|   28|        264|
+|   Joana|   47|        240|
+|   Souza|   73|        144|
++--------+-----+-----------+
+\end{verbatim}
+
+Conseguimos criar porém está bem estranho, pois cabeçalho agora faz parte da linha, para corrigirmos isso utilizamos a seguinte sintaxe:
+\begin{lstlisting}[]
+df_pyspark = spark.read.option('header', 'true').csv('dados.csv')
+df_pyspark.show()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
++--------+-----+-----------+
+|    Nome|Idade|Experiencia|
++--------+-----+-----------+
+|Fernando|   56|        444|
+|   Joana|   47|         20|
+|   Maria|   50|         30|
+|   Souza|   73|         12|
+|  Salvia|   28|         22|
++--------+-----+-----------+
+\end{verbatim}
+
+Podemos verificar o esquema criado com o seguinte comando:
+\begin{lstlisting}[]
+df_pyspark.printSchema()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
+root
+ |-- Nome: string (nullable = true)
+ |-- Idade: string (nullable = true)
+ |-- Experiencia: string (nullable = true)
+\end{verbatim}
+
+Observamos que temos dois tipos errados, "idade" e "Experiencia", para corrigi-los podemos usar a seguinte sintaxe:
+\begin{lstlisting}[]
+df_pyspark = spark.read.option('header', 'true').csv('dados.csv', inferSchema=True)
+df_pyspark.printSchema()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
+root
+ |-- Nome: string (nullable = true)
+ |-- Idade: integer (nullable = true)
+ |-- Experiencia: integer (nullable = true)
+\end{verbatim}
+
+Corrigindo nossos tipos, podemos também carregar o Dataframe com a seguinte sintaxe, mais usual:
+\begin{lstlisting}[]
+df_pyspark = spark.read.csv('dados.csv', header=True, inferSchema=True)
+\end{lstlisting}
+
+Outro modo de verificar os tipos de dados é através da sintaxe:
+\begin{lstlisting}[]
+df_pyspark.dtypes
+\end{lstlisting}
+
+A diferença é que o resultado será em formato de uma lista de tuplas: \vspace{-1.5em}
+\begin{verbatim}
+[('Nome', 'string'),
+ ('Idade', 'int'),
+ ('Experiencia', 'int')]
+\end{verbatim}
+
+Um comando bem conhecido do Pandas é para mostrar dados estatísticos conseguido pelo método \textbf{describe()} porém no PySpark é feito uma pequena mudança:
+\begin{lstlisting}[]
+df_pyspark.describe().show()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
++-------+--------+-----------------+------------------+
+|summary|    Nome|            Idade|       Experiencia|
++-------+--------+-----------------+------------------+
+|  count|       5|                5|                 5|
+|   mean|    null|             50.8|             290.4|
+| stddev|    null|16.23884232326923|115.22499728791492|
+|    min|Fernando|               28|               144|
+|    max|   Souza|               73|               444|
++-------+--------+-----------------+------------------+
+\end{verbatim}
+
+No resultado, podemos observar que as colunas não numéricas também são mostradas, porém com alguns dos valores matemáticos nulos. Porém comparando com o comando do Pandas isso é pobre de informações. Resolveremos este problema no próximo capítulo.
+
+\subsection{Trabalhar com Colunas}\index{Primeiros Exemplos}
+Para abordarmos as colunas, podemos pegar o título dessas como uma lista:
+\begin{lstlisting}[]
+df_pyspark.columns
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
+['Nome', 'Idade', 'Experiencia']
+\end{verbatim}
+
+Outro comando parecido com o Pandas é:
+\begin{lstlisting}[]
+df_pyspark.head(3)
+\end{lstlisting}
+
+Que retorna os três primeiros elementos, porém com um resultando bem diferente: \vspace{-1.5em}
+\begin{verbatim}
+[Row(Nome='Maria', Idade=50, Experiencia=360),
+ Row(Nome='Fernando', Idade=56, Experiencia=444),
+ Row(Nome='Salvia', Idade=28, Experiencia=264)]
+\end{verbatim}
+
+O método select(), nos permite selecionar uma determinada coluna:
+\begin{lstlisting}[]
+df_pyspark.select('Idade').show()
+\end{lstlisting}
+
+Ou selecionar várias colunas:
+\begin{lstlisting}[]
+df_pyspark.select(['Nome', 'Idade']).show()
+\end{lstlisting}
+
+Ao importarmos a biblioteca de funções (\textit{functions}) podemos realizar um select() mais elaborado, como:
+\begin{lstlisting}[]
+from pyspark.sql import functions as F
+df_pyspark.select(F.col("Idade").cast('float').alias("Idade em Float")).show()
+\end{lstlisting}
+
+Que nos retorna o resultado em ponto flutuante. Falando nisso, podemos criar uma nova coluna com a Experiência em ano ao invés de meses como está descrita:
+\begin{lstlisting}[]
+df_pyspark = df_pyspark.withColumn('Experiencia_Anos', df_pyspark['Experiencia']/12)
+df_pyspark.show()
+\end{lstlisting}
+
+Porém observamos que o resultado: \vspace{-1.5em}
+\begin{verbatim}
++--------+-----+-----------+----------------+
+|    Nome|Idade|Experiencia|Experiencia_Anos|
++--------+-----+-----------+----------------+
+|   Maria|   50|        360|            30.0|
+|Fernando|   56|        444|            37.0|
+|  Salvia|   28|        264|            22.0|
+|   Joana|   47|        240|            20.0|
+|   Souza|   73|        144|            12.0|
++--------+-----+-----------+----------------+
+\end{verbatim}
+
+É do tipo ponto flutuante, podemos mudar isto com:
+\begin{lstlisting}[]
+df_pyspark = df_pyspark.withColumn("Experiencia_Anos", df_pyspark.Experiencia_Anos.cast('int'))
+df_pyspark.show()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
++--------+-----+-----------+----------------+
+|    Nome|Idade|Experiencia|Experiencia_Anos|
++--------+-----+-----------+----------------+
+|   Maria|   50|        360|              30|
+|Fernando|   56|        444|              37|
+|  Salvia|   28|        264|              22|
+|   Joana|   47|        240|              20|
+|   Souza|   73|        144|              12|
++--------+-----+-----------+----------------+
+\end{verbatim}
+
+Como não precisamos mais da experiência em meses, podemos eliminar essa coluna:
+\begin{lstlisting}[]
+df_pyspark = df_pyspark.drop('Experiencia')
+df_pyspark.show()
+\end{lstlisting}
+
+E renomear a coluna Idade para refletir o tempo correto e não causar mais futuras confusões temporais:
+\begin{lstlisting}[]
+df_pyspark = df_pyspark.withColumnRenamed('Idade', 'Idade_Anos')
+df_pyspark.show()
+\end{lstlisting}
+
+E temos como resultado final: \vspace{-1.5em}
+\begin{verbatim}
++--------+---------------+---------------------+
+|    Nome|Idade (em Anos)|Experiencia (em Anos)|
++--------+---------------+---------------------+
+|   Maria|             50|                   30|
+|Fernando|             56|                   37|
+|  Salvia|             28|                   22|
+|   Joana|             47|                   20|
+|   Souza|             73|                   12|
++--------+---------------+---------------------+
+\end{verbatim}
+
+Podemos gerar novas colunas através da concatenação (junção) de duas outras, por exemplo, o login das pessoas é definico como seu nome e idade:
+\begin{lstlisting}[]
+df_pyspark = df_pyspark.withColumn('Login',F.concat('Nome','Idade_Anos'))
+df_pyspark.show()
+\end{lstlisting}
+
+E temos como resultado final: \vspace{-1.5em}
+\begin{verbatim}
++--------+----------+----------------+----------+
+|    Nome|Idade_Anos|Experiencia_Anos|     Login|
++--------+----------+----------------+----------+
+|   Maria|        50|              30|   Maria50|
+|Fernando|        56|              37|Fernando56|
+|  Salvia|        28|              22|  Salvia28|
+|   Joana|        47|              20|   Joana47|
+|   Souza|        73|              12|   Souza73|
++--------+----------+----------------+----------+
+\end{verbatim}
+
+\subsection{Criação Dinâmica}\index{Primeiros Exemplos}
+Também podemos criar um \textit{Dataframe} a partir de dados dinâmicos (gerados pelo nosso programa), para isso apenas precisamos de uma lista, sendo que cada elemento é uma tupla:
+\begin{lstlisting}[]
+simpleData = [
+    ("Fernando",34,"2006-01-03","True","M",3000.60),
+    ("Soraia",33,"1980-01-10","True","F",3300.80),
+    ("João",37,"1992-06-01","False","M",5000.50)
+  ]
+
+# Nome das colunas
+columns = ["Nome","Idade","Inicio","Graduacao","Genero","Salario"]
+
+# Criar o DataFrame
+df = spark.createDataFrame(data = simpleData, schema = columns)
+df.show(truncate=False)
+\end{lstlisting}
+
+E temos como resultado final: \vspace{-1.5em}
+\begin{verbatim}
++--------+-----+----------+---------+------+-------+
+|Nome    |Idade|Inicio    |Graduacao|Genero|Salario|
++--------+-----+----------+---------+------+-------+
+|Fernando|34   |2006-01-03|True     |M     |3000.6 |
+|Soraia  |33   |1980-01-10|True     |F     |3300.8 |
+|João    |37   |1992-06-01|False    |M     |5000.5 |
++--------+-----+----------+---------+------+-------+
+\end{verbatim}
+
+Porém ao verificarmos o esquema do nosso Dataframe:
+\begin{lstlisting}[]
+df.printSchema()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
+root
+ |-- Nome: string (nullable = true)
+ |-- Idade: long (nullable = true)
+ |-- Inicio: string (nullable = true)
+ |-- Graduacao: string (nullable = true)
+ |-- Genero: string (nullable = true)
+ |-- Salario: double (nullable = true)
+\end{verbatim}
+
+Reparamos que as colunas: Idade (valor long), Inicio (valor string) e Graduacao (valor string) estão com os tipos errados, devemos então corrigi-los:
+\begin{lstlisting}[]
+df = df.withColumn("Idade", df.Idade.cast('int'))
+df = df.withColumn("Inicio", df.Inicio.cast('date'))
+df = df.withColumn("Graduacao", df.Graduacao.cast('boolean'))
+\end{lstlisting}
+
+E ao verificarmos novamente:
+\begin{lstlisting}[]
+df.printSchema()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
+root
+ |-- Nome: string (nullable = true)
+ |-- Idade: integer (nullable = true)
+ |-- Inicio: date (nullable = true)
+ |-- Graduacao: boolean (nullable = true)
+ |-- Genero: string (nullable = true)
+ |-- Salario: double (nullable = true)
+\end{verbatim}
+
+E observamos um detalhe curioso, ao mostrarmos novamente o \textit{Dataframe} repare na coluna Graduacao do tipo lógico:
+\begin{lstlisting}[]
+df.show()
+\end{lstlisting}
+
+E temos o seguinte resultado: \vspace{-1.5em}
+\begin{verbatim}
++--------+-----+----------+---------+------+-------+
+|    Nome|Idade|    Inicio|Graduacao|Genero|Salario|
++--------+-----+----------+---------+------+-------+
+|Fernando|   34|2006-01-03|     true|     M| 3000.6|
+|  Soraia|   33|1980-01-10|     true|     F| 3300.8|
+|    João|   37|1992-06-01|    false|     M| 5000.5|
++--------+-----+----------+---------+------+-------+
+\end{verbatim}
+
+Em Python os lógicos são em letras maiúsculas (\textit{True} e \textit{False}), porém em Spark eles são escritos em minúsculas (\textit{true} e \textit{false}) seguindo o padrão correto das linguagens derivas do C. Por fim não esquecer de encerrar a seção:
+\begin{lstlisting}[]
+spark.sparkContext.stop()
+\end{lstlisting}
+
+No próximo capítulo trataremos mais sobre meios estatísticos com o Spark.
 
 \clearpage
