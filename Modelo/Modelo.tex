@@ -188,11 +188,25 @@ Sem espaçamento na lista:
 
 \input{sty/final.tex}
 
+Referência pelo nome:
+\begin{lstlisting}[]
+sudo apt-get install texlive-full
+sudo tlmgr install abntex2cite
+
+\usepackage[alf]{abntex2cite} % Padrão bibliográfico
+\end{lstlisting}
+
+Isso foi com base no livro \cite{knuth}.  Consulte \citeonline{publicacao} para mais informações.
 %--------------------------------------------------------------------------
 % REFERÊNCIAS
 %--------------------------------------------------------------------------
-\begin{thebibliography}{3}
+\begin{thebibliography}{4}
 	\input{sty/referencias.tex}
+	
+	\bibitem{knuth}
+	Donald E. Knuth.
+	\textit{The \TeX{} Book}.
+	Addison-Wesley, 15th edition, 1984.
 \end{thebibliography}
 
 
