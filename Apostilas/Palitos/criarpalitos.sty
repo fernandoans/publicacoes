@@ -1,0 +1,243 @@
+%-----------------------------------------------------------------------------
+% Pacotes Necessários
+%-----------------------------------------------------------------------------
+\usepackage[brazil]{babel} % padronizar a linguagem
+\usepackage[utf8]{inputenc} % permitir a acentuação
+\usepackage[protrusion=true,expansion=true]{microtype} % obter melhor tipografia
+\usepackage[svgnames]{xcolor} % habitar cores para 'svgnames'
+\usepackage[hang, small,labelfont=bf,up,textfont=it,up]{caption} % customizar captions acima/abaixo de tabelas ou figuras
+\usepackage{color}    % definir cores
+\usepackage{graphicx} % adicionar imagens
+\usepackage{fix-cm}   % customizar o tamanho das fontes
+\usepackage{sectsty}  % habilitar a customização dos títulos das seções
+\usepackage{fancyhdr} % definir cabeçalhos e rodapés
+\usepackage[ddmmyyyy]{datetime} % mostrar a data
+\usepackage{titling} % Permite a configuração do título
+\usepackage{url} % codigo para as URLs
+\usepackage[a4paper, inner=1.5cm, outer=2cm, top=2cm, bottom=3cm, bindingoffset=1cm]{geometry} %
+
+\usepackage{tikz}     % figuras geométricas
+\usetikzlibrary{shapes.geometric,shadows,calc}
+
+%-----------------------------------------------------------------------------
+% Definições Iniciais
+%-----------------------------------------------------------------------------
+% modificar toda a fonte de todas as seções
+\allsectionsfont{\usefont{OT1}{phv}{b}{n}}
+\pagestyle{fancy} 
+
+% Espaçamento dos Parágrafos
+\setlength{\parindent}{0em}
+\setlength{\parskip}{1em}
+
+% Cabeçalhos - limpar tudo
+\lhead{}
+\chead{}
+\rhead{}
+
+% Rodapés
+\lfoot{\tiny \pbtitulo}
+\cfoot{\tiny \pbversao}
+\rfoot{\tiny Folha \thepage\ }
+
+\renewcommand{\headrulewidth}{0.0pt} % No header rule
+\renewcommand{\footrulewidth}{0.4pt} % Thin footer rule
+
+%-----------------------------------------------------------------------------
+% TÍTULO DO DOCUMENTO
+%-----------------------------------------------------------------------------
+% comando para as barras
+\newcommand{\HorRule}{\color{DarkGoldenrod} \rule{\linewidth}{1pt}} 
+
+% barra horizontal superior
+\pretitle{\vspace{-90pt} \begin{flushleft} \HorRule \fontsize{50}{50} 
+		\usefont{OT1}{phv}{b}{n} \color{DarkRed} \selectfont}
+	
+	% título do documento
+	\title{\pbtitulo}
+	\posttitle{\par\end{flushleft}\vskip 0.1em} % espaço abaixo do título
+
+% autor do documento
+\preauthor{\begin{flushleft}\large \lineskip 0.1em \usefont{OT1}{phv}{b}{sl} 
+		\color{DarkRed}} % fonte do autor
+	\vspace{-20pt} \author{Fernando Anselmo}
+	\postauthor{\footnotesize \usefont{OT1}{phv}{m}{sl} \color{Black} \\
+		\url{http://fernandoanselmo.orgfree.com/wordpress/} % endereço
+		\vspace{-20pt} \par\end{flushleft}\HorRule} % barra horizontal inferior
+
+\date{Versão \pbversao\ em \today} % mostrar a data do artigo 
+
+%-----------------------------------------------------------------------------
+% CRIAR PALITOS
+%-----------------------------------------------------------------------------
+% parameters
+\def\Length{0.8}
+\def\Width{0}
+\def\Space{0.1}
+
+\tikzset{
+  match/.style = {
+    cylinder,
+    shape aspect = 1.2,
+    cylinder uses custom fill,
+    cylinder body fill=yellow,
+    cylinder end fill = red,
+    inner sep = 0pt,
+    minimum width = 0mm,
+    draw = black!20!yellow,
+    sloped, midway,
+    drop shadow={
+     shadow yshift=-.7mm, shadow xshift=.5mm, opacity=.4},
+   }
+}
+
+\def\match#1#2{
+\path let
+    \p1=(#2),
+    \n1={0.65*veclen(\p1)}
+    in (#1) -- +(#2)
+    node[match,minimum height=\n1] {\phantom{x}};
+}
+
+\def\sumsign#1#2#3{
+  \begin{scope}[shift={(#1)}]
+    \node[match,minimum height=0.8*#3,rotate=#2] {};
+  \end{scope}
+}
+
+\newcommand{\stick}[2]{
+  \begin{scope}[shift={(#1)}]
+    \filldraw[fill=yellow, draw=black!20!yellow] (0,0) rectangle (0.15,#2);
+  \end{scope}
+}
+
+%-----------------------------------------------------------------------------
+% DIGITOS
+%-----------------------------------------------------------------------------
+\newcommand*\digitZero{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,0}{90:2.0} % V - Esq - Baixo
+    \match{0,2.2}{90:2.0} % V - Esq - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitOne{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitTwo{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{0,0}{90:2.0} % V - Esq - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitThree{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitFour{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{0,2.2}{90:2.0} % V - Esq - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitFive{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{0,2.2}{90:2.0} % V - Esq - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+  \end{tikzpicture}
+}
+\newcommand*\digitSix{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{0,0}{90:2.0} % V - Esq - Baixo
+    \match{0,2.2}{90:2.0} % V - Esq - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+  \end{tikzpicture}
+}
+\newcommand*\digitSeven{%
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitEight{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{0,0}{90:2.0} % V - Esq - Baixo
+    \match{0,2.2}{90:2.0} % V - Esq - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+\newcommand*\digitNine{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+	\match{0,4.5}{0:2.0} % H - Cima
+    \match{0,0}{0:2.0} % H - Baixo
+    \match{0,2.2}{0:2.0} % H - Centro
+    \match{0,2.2}{90:2.0} % V - Esq - Cima
+    \match{2.2,0}{90:2.0} % V - Dir - Baixo
+    \match{2.2,2.2}{90:2.0} % V - Dir - Cima
+  \end{tikzpicture}
+}
+
+%-----------------------------------------------------------------------------
+% SINAIS
+%-----------------------------------------------------------------------------
+\newcommand*\plus{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+    \match{0,3.0,3}{0:2.0} % H - Centro
+    \match{0,0.8}{90:2.0} % V - Esq - Baixo
+    \stick{0,0}{0}
+  \end{tikzpicture}
+}
+
+\newcommand*\minus{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+    \match{0,3.4,3}{0:2.0} % H - Centro
+    \stick{0,0}{0}
+  \end{tikzpicture}
+}
+
+\newcommand*\equal{%
+  \hspace{0.2cm}
+  \begin{tikzpicture}[scale=0.65]
+    \match{0,3,3}{0:2.0} % H - Centro
+    \match{0,4,3}{0:2.0} % H - Centro
+    \stick{0,0}{0}
+  \end{tikzpicture}
+}
