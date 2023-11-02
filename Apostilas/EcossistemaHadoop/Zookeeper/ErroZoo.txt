@@ -1,0 +1,53 @@
+E inclusive vemos um erro acontecendo no qual o autor, provavelmente por motivos de economia criou somente um servidor, porém o Zookeeper exige um mínimo de 3 e devemos corrigir isso. \vspace{-1em}
+\begin{verbatim}
+ERROR [main:QuorumPeerConfig@706] - Invalid configuration, only one server 
+ specified (ignoring)
+\end{verbatim}
+
+Entrar no contêiner do Zookeeper: \\
+\codigo{\$ docker exec -it meu-zookeeper bash}
+
+\subsection{No contêiner do Zookeeper}
+Ao entrar no contêiner estamos na pasta principal do Zookeeper, retornamos para a raiz: \\
+\codigo{\# cd ..}
+
+E entramos na pasta de configuração: \\
+\codigo{\# cd conf/}
+
+Nesta vemos o arquivo \textbf{zoo.cfg}: \\
+\codigo{\# cat zoo.cfg}
+
+Observamos que o servidor deste está na porta 2181, que foi compartilhada com nosso sistema quando criamos o contêiner, assim podemos usar os benefícios deste para outros contêineres, como por exemplo, o \textbf{Apache Kafka}. Na última linha se encontra nosso erro a definição de um único servidor, precisamos de mais 2, porém como fazemos isso pois não existe um editor instalado nessa imagem (nem mesmo o VI).
+
+Primeiro precisamos copiar essa informação do cat, selecionar o código com mouse \textbf{menos a última linha}, pressionar o botão direito do mouse e selecionar copiar. Para não acontecer problemas, vamos renomear este arquivo de configuração: \\
+\codigo{\# mv zoo.cfg zoo.old}
+
+E recriar o arquivo: \\
+\codigo{\# cat > zoo.cfg}
+
+Pressionar novamente o botão direito do mouse e selecionar a opção colar para trazer o texto copiado para o arquivo, agora adicionar mais três linhas finais que correspondem ao servidor:
+\begin{lstlisting}[]
+dataDir=/data
+dataLogDir=/datalog
+tickTime=2000
+initLimit=5
+syncLimit=2
+autopurge.snapRetainCount=3
+autopurge.purgeInterval=0
+maxClientCnxns=60
+standaloneEnabled=true
+admin.enableServer=true
+server.1=127.0.0.1:2888:3888;2181
+\end{lstlisting}
+
+E ao término, dar um Enter para se posicionar em uma linha vazia e gravar o arquivo com o comando Ctrl+D. Esse método é excelente quando não temos um editor no Linux, porém é impossível retornar ou corrigir linhas durante o processo de adição.
+
+Saímos do contêiner: \\
+\codigo{\# exit}
+
+Paramos este contêiner: \\
+\codigo{\# docker stop meu-zookeeper}
+
+Reiniciamos novamente e vemos que o erro desapareceu com a verificação do Log. Entramos no contêiner e na pasta do Zookeeper, entramos na pasta bin: \\
+\codigo{\# cd bin}
+

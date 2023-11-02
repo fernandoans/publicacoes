@@ -1,0 +1,96 @@
+CockroachDB é um sistema de gerenciamento de banco de dados SQL distribuído, projetado para a nuvem e construído para ser resistente a falhas. Open-source, o que significa que qualquer pessoa pode usar, copiar, modificar e distribuir o software sem pagar taxas de licença.
+
+Aqui estão algumas características notáveis do CockroachDB:
+ 
+ Distribuído: O CockroachDB foi projetado desde o início para funcionar como um cluster distribuído, o que significa que ele pode aproveitar o poder de muitos servidores para processar consultas e transações de forma mais eficiente.
+ Resiliente: O CockroachDB é projetado para sobreviver a falhas de hardware e software. Ele faz isso replicando automaticamente os dados em vários nós, para que se um nó falhar, os outros possam continuar a servir os dados sem interrupção.
+ Consistente: O CockroachDB usa um protocolo de consenso chamado Raft para garantir que todas as réplicas de um dado estejam em um estado consistente.
+ Compatível com SQL: O CockroachDB suporta a maioria das características do SQL padrão, o que significa que você pode usar a mesma linguagem de consulta que você já conhece para interagir com seus dados.
+ Escalável: O CockroachDB pode escalar automaticamente para lidar com mais tráfego, simplesmente adicionando mais nós ao seu cluster.
+ Georreplicação: O CockroachDB permite que você controle a localização geográfica de seus dados em um nível muito granular. Isso é útil para garantir a conformidade com as regulamentações de privacidade de dados e para otimizar a latência das consultas.
+
+Em resumo, o CockroachDB é uma opção poderosa para qualquer pessoa que precise de um banco de dados SQL distribuído, resiliente e escalável.
+
+Embora o CockroachDB tenha muitos benefícios, como qualquer tecnologia, ele também tem suas desvantagens. Aqui estão algumas delas:
+ 
+ Complexidade: Devido à sua natureza distribuída, o CockroachDB pode ser mais complexo de configurar e gerenciar do que um banco de dados tradicional. Isso pode exigir mais tempo e conhecimento técnico.
+ Desempenho: Embora o CockroachDB seja altamente escalável, ele pode não ser capaz de atingir o mesmo nível de desempenho de leitura e gravação que alguns bancos de dados não distribuídos em certos cenários.
+ Compatibilidade SQL: Embora o CockroachDB suporte a maioria das características do SQL padrão, ele não suporta todas. Isso pode ser um problema se você estiver migrando de um sistema que usa características SQL não suportadas pelo CockroachDB.
+ Recursos de gerenciamento de banco de dados: Alguns usuários relataram que as ferramentas de gerenciamento de banco de dados do CockroachDB não são tão maduras ou ricas em recursos quanto as de alguns outros sistemas de banco de dados.
+ Custo: Embora o CockroachDB seja open-source e gratuito para usar, a versão empresarial, que inclui recursos adicionais e suporte, pode ser cara.
+
+CockroachDB e Apache Cassandra são ambos sistemas de gerenciamento de banco de dados distribuídos, mas eles têm diferenças significativas em termos de arquitetura, modelo de dados, consistência de dados, e outras características. Aqui está uma comparação entre os dois:
+
+ Modelo de Dados: Cassandra é um banco de dados NoSQL baseado em colunas, enquanto CockroachDB é um banco de dados relacional que suporta SQL. Isso significa que se você precisa de um modelo de dados relacional e quer usar SQL, CockroachDB pode ser uma escolha melhor. Por outro lado, se você precisa de um banco de dados baseado em colunas para lidar com grandes volumes de dados, Cassandra pode ser mais adequado.
+ Consistência de Dados: CockroachDB oferece consistência forte, o que significa que uma vez que uma transação é confirmada, todos os futuros leitores verão o resultado dessa transação. Cassandra, por outro lado, oferece consistência eventual, o que significa que pode haver um atraso antes que todas as cópias de um dado sejam atualizadas.
+ Resiliência: Ambos os bancos de dados são projetados para serem altamente resilientes e disponíveis. Eles fazem isso replicando dados em vários nós. No entanto, a maneira como eles lidam com falhas de nó é um pouco diferente. Cassandra usa um modelo de replicação baseado em anel, enquanto CockroachDB usa um modelo de replicação baseado em Raft.
+ Escalabilidade: Ambos os bancos de dados são altamente escaláveis e podem lidar com grandes volumes de dados. No entanto, a maneira como eles escalam é um pouco diferente. Cassandra é conhecida por sua capacidade de escalar linearmente com a adição de mais nós, enquanto CockroachDB também oferece a capacidade de escalar geograficamente, permitindo que você distribua seus dados em diferentes regiões geográficas.
+ Suporte e Comunidade: Cassandra, sendo um projeto Apache, tem uma grande comunidade e muitos recursos disponíveis online. CockroachDB, embora tenha uma comunidade crescente, é um projeto mais novo e pode não ter tantos recursos disponíveis.
+
+-----------------------------
+Criar no Docker
+-----------------------------
+
+1. Criar uma rede
+docker network create -d bridge roachnet
+
+2. Criar um volume para cada banco
+docker volume create roach1
+docker volume create roach2
+docker volume create roach3
+
+3. Baixar a imagem
+docker pull cockroachdb/cockroach
+
+4. Criar o primeiro conteiner
+docker run -d \
+--name=roach1 \
+--hostname=roach1 \
+--net=roachnet \
+-p 26257:26257 -p 8080:8080  \
+-v "roach1:/cockroach/cockroach-data"  \
+cockroachdb/cockroach start \
+--insecure \
+--join=roach1,roach2,roach3
+
+5. Criar o segundo e terceiro Nós:
+docker run -d \
+--name=roach2 \
+--hostname=roach2 \
+--net=roachnet \
+-v "roach2:/cockroach/cockroach-data" \
+cockroachdb/cockroach:v20.2.8 start \
+--insecure \
+--join=roach1,roach2,roach3
+
+docker run -d \
+--name=roach3 \
+--hostname=roach3 \
+--net=roachnet \
+-v "roach3:/cockroach/cockroach-data" \
+cockroachdb/cockroach:v20.2.8 start \
+--insecure \
+--join=roach1,roach2,roach3
+
+6. Inicializar o Cluster
+docker exec -it roach1 ./cockroach init --insecure
+
+7. Checar os parâmetros de inicialização
+docker exec -it roach1 grep 'node starting' cockroach-data/logs/cockroach.log -A 11
+
+-----------------------------
+NA MÁQUINA
+-----------------------------
+
+cockroach version
+
+./cockroach sql --insecure
+
+NO SQL
+
+> create database banco;
+> show databases;
+> use banco;
+> create table conta (id serial PRIMARY KEY, balanco DECIMAL);
+> show columns from conta;
+> show tables;

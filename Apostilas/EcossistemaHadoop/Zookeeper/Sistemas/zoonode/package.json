@@ -1,0 +1,15 @@
+{
+  "name": "zoonode",
+  "version": "1.0.0",
+  "description": "",
+  "main": "listarnode.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-zookeeper-client": "^1.1.3"
+  }
+}
