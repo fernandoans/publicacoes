@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Flume}
-\newcommand{\pbversao}{1.0}
+\newcommand{\pbversao}{1.1}
 
 \usepackage{../../sty/tutorial}
 
@@ -85,15 +85,15 @@ Exemplos de soluções com o Flume: \vspace{-1em}
 
 \input{../../sty/hadoopDocker.tex}
 
-E podemos verificar a versão do Hadoop está instalado: \\
+Verificamos a versão do Hadoop está instalado: \\
 \codigo{\$ hadoop version}
 
 \subsection{Instalar o Flume}
-Se leu corretamente essa imagem NÃO POSSUI o \textbf{Flume} e agora realmente começa nossa instalação, optei por utilizar essa imagem por já possuir todos os componentes necessários para posterior tratamento dos dados. Desta forma ao invés de realizar um trabalho de obter uma imagem somente com o Flume (que existem várias por aí e ter que instalar todos os outros componentes), vamos utilizar uma imagem que estamos acostumados e que já possui todas as outras ferramentas necessárias e nos preocuparmos apenas com o \textbf{Flume}.
+Se leu corretamente o nome nessa imagem ela NÃO POSSUI o \textbf{Flume} deste modo devemos proceder essa instalação. Vamos utilizar essa imagem por possuir todos os componentes necessários para posterior tratamento dos dados. Desta forma ao invés de obter uma imagem somente com o Flume (que existem várias por aí e ter que instalar todos os outros componentes), vamos utilizar uma imagem que estamos acostumados e que já possui todas as outras ferramentas necessárias e nos preocuparmos apenas com o \textbf{Flume}.
 
-Outros ganhos adicionais desse método, é ser excelente para aprendermos como adicionar uma ferramenta ao ecossistema do \textbf{Hadoop}, além de não ficarmos presos a uma determinada versão. E agora podemos "brincar" melhor com as outras ferramentas como o \textbf{Spark}, \textbf{Hive} e \textbf{Pig} que já estão nessa imagem (e se já utilizou o tutorial sobre \textbf{Sqoop} verá que este também já se encontra instalado).
+Outros ganhos adicionais desse método, é ser excelente para aprendermos como adicionar uma ferramenta ao ecossistema do \textbf{Hadoop}, e não ficarmos presos a uma determinada versão ou imagem, devemos tratar o contêiner como um ambiente "vivo". E agora podemos utilizar melhor com as outras ferramentas como o \textbf{Spark}, \textbf{Hive} e \textbf{Pig} que já estão nessa imagem (e se já utilizou o tutorial sobre \textbf{Sqoop} verá que este também já se encontra instalado).
 
-No endereço oficial \cite{flumeoficial} existe o link para \textit{download}, e ao acessar este temos as versões disponíveis do \textbf{Flume}. Utilizaremos a última até o momento, clicar no link "1.9.0" e baixar o arquivo \textbf{apache-flume-1.9.0-bin.tar.gz} e colocá-lo na pasta associativa da imagem.
+No endereço oficial \cite{flumeoficial} existe o link para \textit{download}, e ao acessar este temos as versões disponíveis do \textbf{Flume}. Utilizaremos a última até o momento, clicar no link "1.11.0" e baixar o arquivo \textbf{apache-flume-1.11.0-bin.tar.gz} e colocá-lo na pasta associativa da imagem.
 
 Retornar a pasta raiz do root: \\
 \codigo{\# cd root/}
@@ -108,85 +108,110 @@ Criar um link simbólico para facilitar o acesso: \\
 \codigo{\# cd /usr/local/} \\
 \codigo{\# ln -s /usr/local/apache-flume-1.11.0-bin flume}
 
-Modificar o arquivo "etc/bootstrap.sh":
+Modificar o arquivo "etc/bootstrap.sh": \\
 \codigo{\# vim /etc/bootstrap.sh}
 
-E adicionar as seguintes linhas abaixo dos comandos EXPORT:
+E adicionar asi seguintes linhas abaixo dos comandos EXPORT:
 \begin{lstlisting}[]
 export FLUME_HOME="/usr/local/flume"
 export PATH=$PATH:/usr/local/sqoop/bin:/usr/local/flume/bin
 \end{lstlisting}
 
-Aproveitamos e inserimos o caminha do path para a pasta do Flume (considerando que já existe a do Sqoop). Pressionar "ESC" para sair do modo de edição e salvar o arquivo com ”:wq”. Sair da imagem, parar e iniciar o contêiner, entrar no bash novamente. Acessar a pasta associativa: \\
-\codigo{\# cd /home/tsthadoop}
+Aproveitamos e inserimos o caminha do path para a pasta do Flume (considerando que já existe a do Sqoop). Pressionar "ESC" para sair do modo de edição e salvar o arquivo com ”:wq”. 
+
+Executar o comando: \\
+\codigo{\# /etc/bootstrap.sh}
 
 Verificar se o Flume está correto: \\
 \codigo{\# flume-ng version}
 
 \subsection{Trazer os dados}
-Toda a brincadeira com o Flume se resume a um simples arquivo contendo os dados que ele irá levar diretamente para o HDFS, consideremos para este exemplo um simples arquivo texto contido na pasta associativa chamado "familia.txt", com o seguinte conteúdo:
+Todo o trabalho com o Flume se resume a um obter arquivo com os dados que ele levará diretamente para o HDFS, consideremos para este exemplo um simples arquivo texto contido na pasta associativa chamado "familia.txt", com o seguinte conteúdo:
 \begin{lstlisting}[]
 Fernando,Anselmo
-Jessica,Rabbit
-Robin,Batman
 Hugo,Anselmo
+Camila,Anselmo
 Roger,Rabbit
+Jessica,Rabbit
 Fox,Rabbit
 Bruce,Batman
 \end{lstlisting}
 
-Nosso primeiro passo é criar um agente de configuração que observe esses dados, para tanto, na pasta "/usr/local/flume/conf" criamos um arquivo chamado "familia.conf":
+Nosso primeiro passo é criar um agente de configuração que observe esses dados, para tanto, na pasta: \\
+\codigo{\# cd /usr/local/flume/conf}
+
+Criar um arquivo chamado "familia.conf": \\
 \codigo{\# vim familia.conf}
 
 E definimos as seguintes características:
 \begin{lstlisting}[]
-agent1.sources = tail
-agent1.channels = Channel-2
-agent1.sinks = sink-1
+# Componentes
+agent1.sources = source1
+agent1.channels = channel1
+agent1.sinks = sink1
 
-agent1.sources.tail.type = exec
-agent1.sources.tail.command = cat /home/tsthadoop/familia.txt
-agent1.sources.tail.channels = Channel-2
+# Descrever a fonte
+agent1.sources.source1.type = exec
+agent1.sources.source1.command = tail -F /home/tsthadoop/familia.txt
 
-agent1.channels.Channel-2.type = memory
+# Usar o canal com evento de buffers em memoria
+agent1.channels.channel1.type = memory
+agent1.channels.channel1.capacity = 1000
 
-agent1.sinks.sink-1.channel = Channel-2
-agent1.sinks.sink-1.type = hdfs
-agent1.sinks.sink-1.hdfs.path = hdfs://localhost:9000/flume01
-agent1.sinks.sink-1.hdfs.fileType = DataStream
-agent1.sinks.sink-1.hdfs.useLocalTimeStamp = false
-agent1.sinks.sink-1.hdfs.rollInterval = 60
-agent1.sinks.sink-1.hdfs.round = true
-agent1.sinks.sink-1.hdfs.roundValue = 10
-agent1.sinks.sink-1.hdfs.roundUnit = second
+# Descrever o sink
+agent1.sinks.sink1.type = hdfs
+agent1.sinks.sink1.hdfs.path = /flume01
+agent1.sinks.sink1.hdfs.fileType = DataStream
+agent1.sinks.sink1.hdfs.useLocalTimeStamp = true
+agent1.sinks.sink1.hdfs.round = true
+agent1.sinks.sink1.hdfs.roundValue = 1
+agent1.sinks.sink1.hdfs.roundUnit = minute
+
+# Associar fonte e o sink para o canal
+agent1.sources.source1.channels = channel1
+agent1.sinks.sink1.channel = channel1
 \end{lstlisting}
 
 Pressionar "ESC" para sair do modo de edição e salvar o arquivo com ”:wq”. Executamos o agente com o comando: \\
-\codigo{\# flume-ng agent –conf /usr/local/flume/conf/ -f /usr/local/flume/conf/familia.conf -n agent1 -Dflume.root.logger=DEBUG,console}
+\codigo{\# flume-ng agent -n agent1 -c conf -f familia.conf}
 
-Esse comando executa o Flume para verificar o arquivo e trazer os dados contidos nele, ao recebermos uma mensagem tal como:
-\codigo{2022-12-19T19:44:05,631 INFO [hdfs-sink-1-call-runner-3] org.apache.flume.sink.hdfs.BucketWriter - Renaming hdfs://localhost:9000/flume01/FlumeData.1671475952091.tmp to hdfs://localhost:9000/flume01/FlumeData.1671475952091}
+Esse comando executa o Flume para verificar o arquivo e trazer os dados contidos nele, ao recebermos uma mensagem tal como: \vspace{-1em}
+\begin{verbatim}
+2022-12-19T19:44:05,631 INFO [hdfs-sink-1-call-runner-3]
+ org.apache.flume.sink.hdfs.BucketWriter - Renaming
+ hdfs://localhost:9000/flume01/FlumeData.1671475952091.tmp to
+ hdfs://localhost:9000/flume01/FlumeData.1671475952091}
+\end{verbatim} \vspace{-1em}
 
-Significa que os dados já foram importados, damos um CTRL+C para interromper. Agora vamos ver se está tudo correto com o seguinte comando para verificar as pastas do HDFS: \\
+Significa que os dados já foram importados, damos um CTRL+C para interromper o agente. Agora vamos verificar se está tudo correto. Para analisar as pastas do HDFS: \\
 \codigo{\# hdfs dfs -ls /}
 
-Que mostra algo como: \\
-\codigo{Found 3 items \\
-drwxr-xr-x   - root supergroup          0 2022-12-19 18:53 /flume01 \\
-drwx-wx-wx   - root supergroup          0 2022-12-19 17:59 /tmp \\
-drwxr-xr-x   - root supergroup          0 2019-07-21 16:09 /user}
+Que mostra algo como: \vspace{-1em}
+\begin{verbatim}
+Found 3 items
+drwxr-xr-x   - root supergroup          0 2022-12-19 18:53 /flume01
+drwx-wx-wx   - root supergroup          0 2022-12-19 17:59 /tmp
+drwxr-xr-x   - root supergroup          0 2019-07-21 16:09 /user
+\end{verbatim}
 
-Se verificarmos a pasta criada pelo Flume: \\
+Na pasta criada pelo Flume: \\
 \codigo{\# hdfs dfs -ls /flume01}
 
-Teremos como resposta (obviamente o número final no arquivo pode variar): \\
-\codigo{Found 1 items \\
--rw-r--r--   1 root supergroup         95 2022-12-19 18:53 /flume01/FlumeData.1671475952091}
+Teremos como resposta (obviamente o número final no arquivo pode variar): \vspace{-1em}
+\begin{verbatim}
+Found 1 items
+-rw-r--r-- 1 root supergroup 95 2022-12-19 18:53 /flume01/FlumeData.1671475952091
+\end{verbatim}
 
-E podemos verificar seu conteúdo: \\
+E olhamos seu conteúdo com: \\
 \codigo{\# hdfs dfs -cat /flume01/FlumeData.1671475952091}
 
-Que é exatamente igual aos dados que temos no arquivo original. Mais detalhes sobre as configurações dos canais podem ser acessadas aqui: \url{	https://flume.apache.org/releases/content/1.6.0/FlumeUserGuide.html}
+Que é exatamente igual aos dados que temos no arquivo original. Mais detalhes sobre as configurações dos canais podem ser acessadas aqui: \url{	https://flume.apache.org/releases/content/1.11.0/FlumeUserGuide.html}. 
+
+Detalhe interessante, caso deixamos o agente funcionando, qualquer modificação que realizarmos no arquivo este será reprocessado (após 1 minuto) gerando um novo arquivo no HDFS dos dados.
+
+Para eliminar todos os arquivos gerados: \\
+\codigo{\# hdfs dfs -rm rf /flume01/*}
 
 Mais fontes de informação podem ser obtidas em diversos sites que apresenta tutoriais completos sobre o Apache Flume como a Tutorials Point\cite{tutorialspoint}.
 	
