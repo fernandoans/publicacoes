@@ -1,0 +1,107 @@
+Exemplo
+https://hub.docker.com/r/prasanthj/docker-hive-on-tez
+https://github.com/apache/tez/blob/master/build-tools/docker/Dockerfile
+https://www.linkedin.com/pulse/engenhando-dados-provisionando-camada-anal%C3%ADtica-com-tiago-costa/?originalSubdomain=pt
+
+-------------------------------------
+Dockerfile
+-------------------------------------
+
+####################################
+#   Multi-stage build
+#       1. build tez
+#       2. build hive
+#       3. config hive base
+####################################
+
+# Stage 1 - Build Tez
+
+FROM maven:3-jdk-8 as tez-builder
+
+ARG TEZ_VERSION=0.9.2
+ARG HADOOP_VERSION=3.1.4
+ARG PROTOBUF_VERSION=2.5.0
+
+RUN apt-get update && apt-get install -y autoconf automake libtool curl make g++ unzip
+
+RUN curl -fSL "https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protobuf-${PROTOBUF_VERSION}.tar.gz" --output protobuf-${PROTOBUF_VERSION}.tar.gz
+
+# from https://github.com/protocolbuffers/protobuf/tree/v2.5.0
+RUN tar -xvf protobuf-${PROTOBUF_VERSION}.tar.gz \
+    && cd protobuf-${PROTOBUF_VERSION} \
+    && ./configure --prefix=/usr \
+    && make \
+    && make install \
+    && ldconfig
+
+# the tez-ui code relies on very old versions of node, bower, yarn, etc.  i could never get it to build succesfully in docker therefore i skip it during build
+RUN git clone https://github.com/apache/tez.git --branch rel/release-${TEZ_VERSION} --single-branch --depth 1 /opt/tez \
+    && cd /opt/tez \
+    && mvn clean package -Phadoop28 -Dhadoop.version=${HADOOP_VERSION} -Dprotobuf.version=${PROTOBUF_VERSION} -DskipTests=true -Dmaven.javadoc.skip=true --projects "!tez-ui" \
+    && mkdir -pv /tmp/tez \
+    && tar -xvf /opt/tez/tez-dist/target/tez-${TEZ_VERSION}-minimal.tar.gz -C /tmp/tez
+
+# Stage 2 - build hive
+
+FROM maven:3-jdk-8-slim as hive-builder
+
+ARG HIVE_BRANCH=release-3.1.2
+
+RUN apt-get update && apt-get install -y apt-utils git
+
+RUN git clone https://github.com/timveil/hive.git --branch $HIVE_BRANCH --single-branch --depth 1 /tmp/hive \
+    && cd /tmp/hive \
+    && mvn clean package -DskipTests -Dmaven.javadoc.skip=true -Pdist
+
+# Stage 3 - config Hive base
+
+FROM timveil/docker-hadoop-core:3.1.x
+
+LABEL maintainer="tjveil@gmail.com"
+
+ENV HIVE_HOME=/opt/hive
+ENV PATH=$HIVE_HOME/bin:$PATH
+ENV HIVE_CONF_DIR=$HIVE_HOME/conf
+ENV TEZ_CONF_DIR=/etc/tez/conf
+ENV TEZ_LIB_DIR=/opt/tez
+
+ARG HIVE_DOWNLOAD_DIR=/tmp/hive
+
+COPY --from=hive-builder /tmp/hive/packaging/target/*-bin.tar.gz /tmp/hive.tar.gz
+
+# Install Hive
+RUN mkdir -pv $HIVE_DOWNLOAD_DIR \
+    && mkdir -pv $TEZ_CONF_DIR \
+    && mkdir -pv $TEZ_LIB_DIR \
+    && tar -xvf /tmp/hive.tar.gz -C $HIVE_DOWNLOAD_DIR --strip-components=1 \
+    && mv -v $HIVE_DOWNLOAD_DIR /opt \
+    && rm -rfv /tmp/hive.tar.gz \
+    && rm -rfv $HIVE_HOME/lib/postgresql-*.jre*.jar
+
+COPY --from=tez-builder /tmp/tez/*.jar $TEZ_LIB_DIR/
+
+# Custom configuration goes here
+ADD conf/hive-site.xml $HIVE_CONF_DIR
+ADD conf/metastore-site.xml $HIVE_CONF_DIR
+ADD conf/metastore-log4j2.properties $HIVE_CONF_DIR
+ADD conf/beeline-log4j2.properties $HIVE_CONF_DIR
+ADD conf/hive-exec-log4j2.properties $HIVE_CONF_DIR
+ADD conf/hive-log4j2.properties $HIVE_CONF_DIR
+ADD conf/llap-daemon-log4j2.properties $HIVE_CONF_DIR
+ADD conf/llap-cli-log4j2.properties $HIVE_CONF_DIR
+ADD conf/tez-site.xml $TEZ_CONF_DIR
+
+EXPOSE 10000
+
+# hive ui
+EXPOSE 10002
+
+-------------------------------------
+HiveQL
+
+  show tables;
+  create table hive_example(a string, b int) partitioned by(c int);
+  alter table hive_example add partition(c=1);
+  insert into hive_example partition(c=1) values('a', 1), ('a', 2),('b',3);
+  select count(distinct a) from hive_example;
+  select sum(b) from hive_example;

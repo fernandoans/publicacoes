@@ -1,0 +1,101 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Apache Tez}
+\newcommand{\pbversao}{0.01}
+
+\usepackage{../../sty/tutorial}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+	\maketitle % mostrar o título
+	\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+	
+%--------------------------------------------------------------------------
+% RESUMO DO ARTIGO
+%--------------------------------------------------------------------------
+\begin{abstract}
+	% O primeiro caractere deve vir com \initial{}
+	\initial{T}ez\cite{tezoficial} ou "Apache Tez" (aqui chamarei apenas de Tez) é parte do Ecosistema Hadoop criado como um framework de processamento de dados de código aberto. Foi projetado para lidar com cargas de trabalho de processamento de dados complexas e intensivas que envolvem a execução de consultas ad-hoc e interativas em grandes conjuntos de dados.
+\end{abstract}
+
+%--------------------------------------------------------------------------
+% CONTEÚDO DO ARTIGO
+%--------------------------------------------------------------------------
+\section{Parte inicial}
+Tez melhora a velocidade e a capacidade de resposta do Hadoop, permitindo que os trabalhos sejam concluídos em menos etapas e com menos recursos. Ele faz isso através de uma arquitetura mais flexível que permite que os trabalhos sejam modelados como um gráfico de tarefas complexas, em vez de uma série de etapas sequenciais.
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.5\textwidth]{imagem/logo}
+	\caption{Logo do Apache Tez}
+\end{figure}
+
+Além disso, Tez também suporta uma variedade de APIs de alto nível, incluindo MapReduce, Apache Hive e Apache Pig, tornando-o uma ferramenta versátil para processamento de dados em larga escala. Por fim, é importante notar que o Apache Tez é um projeto da Apache Software Foundation, o que significa que é mantido e atualizado por uma comunidade de desenvolvedores voluntários de todo o mundo.
+
+Funcionalidades principais do Tez: \vspace{-1em}
+\begin{enumerate}
+ \item Capacitar os usuários finais:
+  \begin{itemize}
+   \item APIs expressivas de definição de fluxo de dados
+   \item Modelo flexível de tempo de execução de entrada-processador-saída
+   \item Independente de tipo de dados
+   \item Simplificando a implantação
+  \end{itemize}
+ \item 2. Desempenho de execução
+  \begin{itemize}
+   \item Ganhos de desempenho em relação ao Map Reduce
+   \item Gerenciamento ideal de recursos
+   \item Planeje a reconfiguração em tempo de execução
+   \item Decisões dinâmicas de fluxo de dados físicos
+  \end{itemize}
+\end{enumerate}
+
+\subsection{Vantagens e Desvantagens}
+O Apache Tez oferece várias vantagens para o processamento de dados em larga escala, incluindo:
+\begin{itemize}
+ \item \textbf{Desempenho aprimorado}: projetado para lidar com cargas de trabalho de processamento de dados complexas e intensivas. Ele melhora a velocidade e a capacidade de resposta do Hadoop, permitindo que os trabalhos sejam concluídos em menos etapas e com menos recursos.
+ \item \textbf{Flexibilidade}: permite que os trabalhos sejam modelados como um gráfico de tarefas complexas, em vez de uma série de etapas sequenciais. Isso oferece uma flexibilidade significativa na forma como os trabalhos são estruturados e executados.
+ \item \textbf{Compatibilidade}: suporta uma variedade de APIs de alto nível, incluindo MapReduce, Apache Hive e Apache Pig. Isso significa que os desenvolvedores que já estão familiarizados com essas ferramentas podem começar a usar o Tez com relativa facilidade.
+ \item \textbf{Escalabilidade}: Como parte do ecossistema Hadoop, o Tez é capaz de lidar com conjuntos de dados extremamente grandes, tornando-o uma ferramenta ideal para empresas que precisam processar grandes volumes de dados.
+ \item \textbf{Código aberto}: projeto de código aberto, o que significa que é livre para usar e modificar. Além disso, ele é mantido por uma comunidade ativa de desenvolvedores, o que garante que o software continue a ser atualizado e melhorado ao longo do tempo.
+\end{itemize}
+
+Embora o Apache Tez ofereça várias vantagens, também existem algumas desvantagens que devem ser consideradas:
+\begin{itemize}
+ \item \textbf{Complexidade}: Embora a flexibilidade seja uma vantagem, também pode adicionar complexidade. Modelar trabalhos como um gráfico de tarefas complexas pode ser mais difícil do que usar uma série de etapas sequenciais, especialmente para desenvolvedores menos experientes.
+ \item \textbf{Curva de aprendizado}: Embora seja compatível com várias APIs de alto nível, ainda pode haver uma curva de aprendizado para desenvolvedores que não estão familiarizados com essas ferramentas.
+ \item \textbf{Dependência do ecossistema Hadoop}: O Tez é projetado para funcionar com o Hadoop e pode não ser a melhor escolha para empresas que não estão usando o Hadoop.
+ \item \textbf{Recursos}: Como é projetado para processar grandes volumes de dados, ele pode exigir uma quantidade significativa de recursos computacionais. Isso pode ser um problema para empresas com recursos limitados.
+ \item \textbf{Suporte}: Como um projeto de código aberto, o suporte pode ser limitado em comparação com soluções comerciais. Embora exista uma comunidade ativa de desenvolvedores, não há garantia de suporte dedicado.
+\end{itemize}
+
+Exemplo de caso de uso para o Apache Tez:
+
+Vamos supor que trabalhe em uma empresa de comércio eletrônico e necessite analisar o comportamento dos clientes do site da empresa. Possui um grande volume de dados de log do servidor web que precisa ser processado para extrair informações úteis. Nesse caso, usamos o Apache Tez para processar esses dados de log. Primeiro, o Apache Hive (que é compatível com o Tez) para escrever consultas SQL-like que extraem informações dos dados de log, como o número de visitas a diferentes páginas ou o tempo médio gasto em cada página.
+
+Em seguida, usar o Tez para executar essas consultas em paralelo no cluster Hadoop. Divide o trabalho em várias tarefas menores que podem ser executadas simultaneamente, o que pode acelerar significativamente o processamento. Finalmente, usar os resultados dessas consultas para obter insights sobre o comportamento do cliente, como quais páginas são mais populares ou quais produtos estão sendo mais visualizados. Essas informações podem ser usadas para melhorar o design do site ou recomendar produtos.
+
+\input{../../sty/hadoopDocker.tex}
+
+\section{Conclusão}
+Projetado para melhorar a eficiência do processamento de dados no Hadoop, permitindo que os trabalhos sejam concluídos mais rapidamente e com menos recursos. Ele faz isso ao permitir que os trabalhos sejam modelados como um gráfico de tarefas complexas, em vez de uma série de etapas sequenciais, como é o caso com o modelo MapReduce padrão do Hadoop.
+
+Além disso, o Tez é compatível com várias APIs de alto nível que são comumente usadas no ecossistema Hadoop, incluindo MapReduce, Hive e Pig. Isso significa que os desenvolvedores que já estão familiarizados com essas ferramentas podem começar a usar o Tez com relativa facilidade.
+
+\input{../../sty/final.tex}
+
+%--------------------------------------------------------------------------
+% REFERÊNCIAS
+%--------------------------------------------------------------------------
+\begin{thebibliography}{4}
+	\bibitem{tezoficial} 
+	Página do Apache Tez \\
+	\url{https://tez.apache.org/}
+
+	\input{../../sty/referencias.tex}
+\end{thebibliography}
+
+\end{document}
