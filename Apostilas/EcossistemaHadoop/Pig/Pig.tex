@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Pig}
-\newcommand{\pbversao}{1.01}
+\newcommand{\pbversao}{1.02}
 
 \usepackage{../../sty/tutorial}
 
@@ -236,13 +236,9 @@ grunt> CAT saidaNotas;}
 E teremos com resultado do processo:
 \begin{lstlisting}[]
 nome***
-
 Joana*5.0*6.0*7
-
 Carlos*7.0*3.0*8
-
 Marla*6.5*4.2*7
-
 \end{lstlisting}
 
 Ficou separado por '*' pois foi esse caractere que definimos na função "PigStore(char)".
@@ -443,6 +439,116 @@ E temos como saída as famílias unidas:
 (Fox,Rabbit)
 (Robin,Batman)
 (Bruce,Batman)
+\end{lstlisting}
+
+\section{Diversas Atividades}
+Esses são alguns problemas que podemos resolver utilizando roteiros do Pig.
+
+\textbf{Problema 1}: Com base no seguinte arquivo denominado \textit{notas.csv}:
+\begin{lstlisting}[]
+Nome,Nota1,Nota2
+Ana,85,92
+Pedro,78,90
+Mariana,93,88
+Luiz,89,76
+Rafael,88,95
+\end{lstlisting}
+
+Trazer somente  aluna com o nome "Mariana".
+\begin{lstlisting}[]
+alunos = LOAD 'notas.csv' USING PigStorage(',') AS (Nome:chararray,Nota1:int,Nota2:int);
+resultado = FILTER alunos BY Nome=='Mariana';
+DUMP resultado;
+\end{lstlisting}
+
+\textbf{Problema 2}: Com base no seguinte arquivo denominado \textit{vendedores.csv}:
+\begin{lstlisting}[]
+id,email,gender,cidade,name
+1,raronsohn0@qq.com,Female,Mojo,Reeta Aronsohn
+2,jbyles1@delicious.com,Male,Eusébio,Jonathon Byles
+3,jbeyne2@icio.us,Male,Stockholm,Jone Beyne
+4,ngeroldini3@senate.gov,Female,Yambol,Nyssa Geroldini
+\end{lstlisting}
+
+Obter a lista dos vendedores agrupados por Cidade e Gênero, contando os registros e concatenando nomes e emails de cada grupo.
+\begin{lstlisting}[]
+data = LOAD 'vendedores.csv' USING PigStorage(',') AS (id:int, email:chararray, gender:chararray, cidade:chararray, name:chararray);
+grouped_data = GROUP data BY (cidade, gender);
+result = FOREACH grouped_data GENERATE
+    group.cidade AS cidade,
+    group.gender AS gender,
+    COUNT(data) AS record_count,
+    data.name AS names,
+    data.email AS emails;
+STORE result INTO 'dados';
+\end{lstlisting}
+
+\textbf{Problema 3}: Com base no seguinte arquivo denominado \textit{populacao.csv}:
+\begin{lstlisting}[]
+Pais,Qtde,Sexo
+Portugal,1111129,Feminino
+Eslováquia,5904332,Feminino
+Itália,8505041,Feminino
+Finlândia,3259521,Feminino
+Espanha,6814912,Masculino
+Eslováquia,4729838,Masculino
+França,7780761,Feminino
+Espanha,4830073,Masculino
+Espanha,472902,Masculino
+Portugal,8320889,Masculino
+França,5697275,Masculino
+\end{lstlisting}
+
+Encontrar a quantidade de pessoas na Espanha.
+\begin{lstlisting}[]
+base = LOAD 'base_europa.csv' USING PigStorage(',') AS (pais:chararray, qtde:int, sexo:chararray);
+resultado = FILTER base by pais=='Espanha';
+STORE resultado INTO 'dadEspanha' USING PigStorage('\t');
+\end{lstlisting}
+
+\textbf{Problema 4}: Com base no seguinte arquivo denominado \textit{clientes.csv}:
+\begin{lstlisting}[]
+Id,Genre,Age,Score
+0001,Male,19,39
+0002,Male,51,81
+0003,Female,20,6
+0004,Female,23,77
+0005,Female,51,40
+0006,Female,22,76
+0007,Female,55,6
+0008,Female,23,94
+0009,Male,64,3
+0010,Female,30,72
+\end{lstlisting}
+
+Encontrar quem entre os clientes possuem um resultado maior que 50 unidades.
+\begin{lstlisting}[]
+mallCustomers = LOAD 'clientes.csv' USING PigStorage(',') AS (Id:chararray, Genre:chararray, Age:int, Score:int);
+filtroRenda = FILTER mallCustomers BY Score >= 50;
+groupRenda = GROUP filtroRenda BY Genre;
+somarRenda = FOREACH groupRenda GENERATE group AS Genre;
+ordenado = ORDER somarRenda BY $1 DESC;
+STORE ordenado INTO 'dados' USING PigStorage('\t');
+\end{lstlisting}
+
+Problema 5:  Com base no seguinte arquivo denominado \textit{pessoas.csv}:
+\begin{lstlisting}[]
+Nome,Idade,Cidade
+João,25,São Paulo
+Maria,30,Rio de Janeiro
+Carlos,22,Belo Horizonte
+Ana,28,Porto Alegre
+Pedro,35,Brasília
+Mariana,27,Salvador
+Rafael,32,Curitiba
+Juliana,29,Recife
+\end{lstlisting}
+
+\begin{lstlisting}[]
+listTable = LOAD 'pessoas.csv' USING PigStorage(',') AS(Nome:chararray,Idade:int,Cidade:chararray);
+GroupByCity = GROUP listTable BY Cidade;
+CountByCity = FOREACH GroupByCity GENERATE CONCAT((chararray)$0,CONCAT(':',(chararray)COUNT($1)));
+STORE CountByCity INTO 'dados' USING PigStorage('\t');
 \end{lstlisting}
 
 \section{Resumão Geral}

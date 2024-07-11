@@ -2,7 +2,7 @@
 
 % Identificação
 \newcommand{\pbtitulo}{Sqoop}
-\newcommand{\pbversao}{1.00}
+\newcommand{\pbversao}{1.01}
 
 \usepackage{../../sty/tutorial}
 
@@ -87,6 +87,14 @@ No arquivo core-site.xml do Hadoop habilitar os acessos, editar o arquivo: \\
 Pressionar "i" para entrar em modo de edição e adicionar as seguintes propriedades:
 \begin{lstlisting}[]
 <property>
+  <name>hadoop.proxyuser.root.hosts</name>
+  <value>*</value>
+</property>
+<property>
+  <name>hadoop.proxyuser.root.groups</name>
+  <value>*</value>
+</property>
+<property>
   <name>hadoop.proxyuser.sqoop2.hosts</name>
   <value>*</value>
 </property>
@@ -121,8 +129,8 @@ export SQOOP_SERVER_EXTRA_LIB=/var/lib/sqoop2/
 
 Aproveitamos e inserimos o caminha do path para a pasta do Sqoop. Pressionar "ESC" para sair do modo de edição e salvar o arquivo pressionando ":wq".  Sair da imagem, parar e iniciar o contêiner, entrar no bash novamente.
 
-Acessar a pasta associativa: \\
-\codigo{\# cd /home/tsthadoop}
+Acessar a pasta das bibliotecas do servidor do Sqoop: \\
+\codigo{\# cd /usr/local/sqoop/server/lib}
 
 Verificar se o Sqoop está correto: \\
 \codigo{\# sqoop2-tool verify}
@@ -181,7 +189,7 @@ Sair do cliente: \\
 Encerrar o servidor do Sqoop: \\
 \codigo{\# sqoop2-server stop}
 
-\section{Criar uma conexão}
+\section{Criar uma conexão com o Banco de Dados}
 Para realizar uma conexão com qualquer RDBMS precisamos de conectores registrados, um deles cria uma conexão JBDC e é esse que utilizaremos, porém precisamos ter o banco de dados a nossa disposição, já que estamos usando o Docker podemos sair do contêiner e criar um novo com o banco que desejamos testar, aqui utilizaremos o MySQL e que este sirva como ponto de partida e entendimento para qualquer outro pois a conexão é basicamente a mesma.
 
 Baixar a imagem oficial: \\
@@ -236,13 +244,11 @@ Acessar a pasta das bibliotecas JDBC do Sqoop: \\
 Copiar o arquivo JDBC: \\
 \codigo{\# mv /home/tsthadoop/mysql-connector-java-8.0.27.jar .}
 
-Acessar a pasta associativa: \\
-\codigo{\# cd /home/tsthadoop}
+\section{Preparar a importação dos Dados para o HDFS}
+Acessar a pasta das bibliotecas do servidor do Sqoop: \\
+\codigo{\# cd /usr/local/sqoop/server/lib}
 
-Copiar os dois arquivos conectores que realizam a conexão nesta pasta: \\
-\codigo{\# cp /usr/local/sqoop-1.99.7-bin-hadoop200/server/lib/ \\ sqoop-connector-generic-jdbc-1.99.7.jar . \\
-\# cp /usr/local/sqoop-1.99.7-bin-hadoop200/server/lib/ \\
-sqoop-connector-hdfs-1.99.7.jar .}
+\textbf{IMPORTANTE}: Sempre que iniciar os trabalhos de Importação/Exportação dos dados, precisamos estar nesta pasta, pois contém as bibliotecas para este trabalho.
 
 Iniciar o servidor: \\
 \codigo{\# sqoop2-server start}
@@ -253,22 +259,26 @@ Com a resposta: "\textit{Sqoop2 server started.}" acessar o cliente: \\
 Verificar se o servidor está conectado: \\
 \codigo{sqoop:000> show server -a}
 
-Caso não esteja conectar o cliente ao servidor. Criar um link de conexão com o banco: \\
+\subsection{Links para o trabalho de Importação}
+Criar um link de conexão com o banco: \\
 \codigo{sqoop:000> create link -connector generic-jdbc-connector}
 
 Os parâmetros são:
 \begin{lstlisting}[]
 Name: Link com MySQL
 Driver Class: com.mysql.cj.jdbc.Driver
-JDBC Connection String: jdbc:mysql://[IP da Máquina]/tstsqoop
+JDBC Connection String: jdbc:mysql://[* IP da Máquina Local]/tstsqoop
 Username: root
 Password: root
 Fetch Size:
 entry# protocol = tcp
 entry# useSSL = false
-entry# 
-Identifier enclose: [colocar um espaço aqui]
+entry#
+Identifier enclose: [** Colocar um espaço aqui]
 \end{lstlisting}
+
+* Este IP é obtido da máquina que está hospedando o Docker do MySQL (não do Docker do MySQL).
+** Este espaço existe pois caso contrário no SQL montado conterá aspas duplas em todos com campos e entidades, isso é contra a sintaxe do MySQL (para os bancos que aceitam deixe vazio).
 
 Ao término mostra que foi estabelecido uma Conexão com o banco MySQL. A beleza é que ao criar um contêiner do MySQL é como se esse tivesse instalado na nossa máquina local pois existe uma associação com a porta 3606, por isso informamos o IP da Máquina local ao invés do IP do Contêiner. Os parâmetros que estão em brancos basta pressionar a tecla ENTER.
 
@@ -291,19 +301,19 @@ Verificar os links criados: \\
 Mudar qualquer opção utilizar o comando: \\
 \codigo{sqoop:000> update link -name $"$[nome link]$"$}
 
-Eliminar um link:
+Eliminar um link: \\
 \codigo{sqoop:000> delete link -name $"$[nome link]$"$}
 
-\section{Importar Dados}
+\subsection{Job para o trabalho de Importação}
 Este é o processo no qual as tabelas individuais são importadas do RDBMS para o HDFS. Para fins de transferência, a linha em uma tabela é considerada um registro no HDFS. Os dados gravados são armazenados na forma de dados de texto em arquivos de texto ou são armazenados em arquivos Sequence e Avro como dados binários.
 
 Importação (ou mesmo a Exportação) de dados é o movimento de um link para outro, isso é realizado através de um Job, para criarmos o Job de Importação usamos: \\
 \codigo{sqoop:000> create job -f $"$Link com MySQL$"$ -t $"$Link com Hadoop$"$ }
 
-Os parâmetros são:
+As opções \textbf{-f} correspodem a origem (\textit{from}) e \textbf{-t} ao destino (\textit{to}). Os parâmetros são:
 \begin{lstlisting}[]
 Name: Recebimento
-Schema name:
+Schema name: [Deixar vazio]
 Table name: recebimento
 SQL statement:
 Column names:
@@ -320,8 +330,8 @@ Null value:
 File format: 0
 Compression codec: 0
 Custom codec:
-Output directory: hdfs://localhost:9000/user/root/tstsqoop
-Append mode:
+Output directory: hdfs://localhost:9000/user/sqoop/tstsqoop
+Append mode: true
 Extractors: 1
 Loaders: 1
 Extra mapper jars:
@@ -333,29 +343,33 @@ Como resposta temos: \textit{New job was successfully created with validation st
 \codigo{sqoop:000> show job}
 
 Para executar o Job: \\
-\codigo{sqoop:000> start job -name Recebimento}
+\codigo{sqoop:000> start job -name Recebimento -s}
+
+A opção \textbf{-s} é para observar o Job executando. Verificamos o status de execução com: \\
+\codigo{sqoop:000> status job -name Recebimento}
 
 Os dados foram colocados no HDFS e aplicado um Map/Reduce, saímos do shell do Sqoop: \\
 \codigo{sqoop:000> :x}
 
-Verificamos a pasta destino do HDFS: \\
-\codigo{\# hdfs dfs -ls /user/root/tstsqoop}
+\textbf{E se não foram?} aqui realmente começam os problemas, o principal é que o nível de erro do Sqoop é muito genérico então precisamos aumentá-lo: \\
+\codigo{sqoop:000> set option --name verbose --value true}
 
-E encontraremos o arquivo (ATENÇÃO os números podem variar pois são gerados automaticamente com base em um HASH) importado, no MEU caso o arquivo é:
+Deste modo mostra o que aconteceu de modo mais completo e é possível ir da solução de modo mais efetivo. Quando atingimos o caminho feliz verificamos a pasta destino do HDFS: \\
+\codigo{\# hdfs dfs -ls ../sqoop/tstsqoop}
+
+E encontraremos o arquivo (ATENÇÃO os números podem variar pois são gerados automaticamente com base em um HASH) importado, o arquivo é:
 \begin{lstlisting}[]
 Found 1 items
--rw-r--r--   1 root supergroup         20 2022-04-03 17:42 /user/root/tstsqoop/60ce7fbc-1d59-4da1-ae2a-86591beae4d8.txt
+-rw-r--r--  1 root supergroup   53 2023-11-19 17:42 ../sqoop/tstsqoop/[Nums].txt
 \end{lstlisting}
 
 Verificamos seu conteúdo com: \\
-\codigo{\# hdfs dfs -cat /user/root/tstsqoop/60ce7fbc-1d59-4da1-ae2a-86591beae4d8.txt}
+\codigo{\# hdfs dfs -cat ../sqoop/tstsqoop/[Nums].txt}
 
-E veremos os dados do banco MySQL conforme solicitado. Que podemos utilizar para realizar um Map/Reduce ou qualquer outra ação.
-
-Mais fontes de informação podem ser obtidas em diversos sites que apresenta tutoriais completos sobre o Sqoop como a Tutorials Point\cite{tutorialspoint}.
+E veremos os dados do banco MySQL conforme solicitado. Que podemos utilizar para realizar um Map/Reduce ou qualquer outra ação. Mais fontes de informação podem ser obtidas em diversos sites que apresenta tutoriais completos sobre o Sqoop como a Tutorials Point\cite{tutorialspoint}.
 
 \section{Conclusão}
-É inegável que para quem utiliza Hadoop, o trabalho interessante começa depois que os dados são carregados no HDFS. Os desenvolvedores podem "brincar" com os dados para encontrar os \textit{insights} mágicos ocultos nesse Big Data. Para isso, os dados que residem nos sistemas de RDBS precisam ser transferidos ao HDFS, trabalhar com os dados e serem enviados de volta aos RDBS. A realidade do mundo \textbf{Big Data}, os desenvolvedores sentem que a transferência de dados entre sistemas RDBS e HDFS não é tão interessante, tediosa, mas necessária. Os desenvolvedores sempre podem escrever scripts personalizados para transferir dados para dentro e para fora do Hadoop (que como já visto é um processo mais lento), assim o Sqoop oferece uma alternativa excelente para resolver esse problema.
+É inegável que para quem utiliza Hadoop, o trabalho interessante começa depois que os dados são carregados no HDFS. Os desenvolvedores podem "brincar" com os dados para encontrar os \textit{insights} mágicos ocultos nesse Big Data. Para isso, os dados que residem nos sistemas de RDBS precisam ser transferidos ao HDFS, trabalhar com os dados e serem enviados de volta aos RDBS. A realidade do mundo \textbf{Big Data}, os desenvolvedores sentem que a transferência de dados entre sistemas RDBS e HDFS não é tão interessante, tediosa, mas necessária. Os desenvolvedores sempre podem escrever scripts personalizados e transferir os dados para dentro e fora do Hadoop (que como já visto é um processo mais lento), assim o Sqoop oferece uma alternativa excelente para resolver esse problema.
 
 Sqoop automatiza a maior parte do processo, depende do banco de dados para descrever o esquema dos dados a serem importados. Utiliza a estrutura MapReduce para importar e exportar os dados, que fornece mecanismo paralelo e tolerância a falhas. Facilita a vida dos administradores ao fornecer uma interface de linha de comando. Necessitamos apenas inserir informações básicas como detalhes de autenticação de origem, destino e banco de dados no comando Sqoop que cuida da parte restante. 
 

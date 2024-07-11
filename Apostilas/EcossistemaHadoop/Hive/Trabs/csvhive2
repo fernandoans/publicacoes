@@ -1,0 +1,11 @@
+root@44aa03971e0d:/home/tsthadoop# hadoop fs -put base.csv (importei a base csv)
+root@44aa03971e0d:/home/tsthadoop# hadoop fs -ls (verifiquei se a base já estava adicionada)
+root@44aa03971e0d:/home/tsthadoop# hive (abri o hive)
+hive> use amostra; (usei o banco que já estava salvo)
+hive> show tables; (mostrei as tableas)
+hive> create table amostra2009 (Nome string, Nota1 int, Nota2 int) ROW FORMAT DELIMITED FIELDS TERMINATED BY ','; (criei a tabela amostra2009 com o tipo de cada campo)
+hive> select * from amostra2009; (mostrei a tabela)
+hive> LOAD DATA INPATH 'base.csv' into table amostra2009; (carreguei o csv na tabela)
+hive> select * from amostra2009; (mostrei a tabela)
+hive> select * from amostra2009 where Nota2 > 20; (fiz uma pesquisa com os valores maiores que 20)
+

@@ -1,0 +1,16 @@
+Adicionar os arquivos no HDFS:
+
+# hadoop fs -put dataset/mock_27out.csv
+Retornamos ao hive:
+# hive
+E entre novamente no database que criamos:
+hive> use amostra;
+
+#criando a tabela
+hive> create table teste (id string, email string, gender string, cidade string, name string) ROW FORMAT
+DELIMITED FIELDS TERMINATED BY ";";
+
+
+hive> LOAD DATA INPATH "dataset/mock_27out.csv" into table teste;
+Podemos verificar os dados com:
+hive> select * from teste limit 10;
