@@ -1,0 +1,175 @@
+%%
+%% This is file `upmath.sty'
+%%
+%% Copyright (1996) Cambridge University Press
+%%
+%% by Mark A. Reed
+%%
+%% This package provides 'upright' math (lower-case Greek, A-Z, a-z,
+%% punctuation, < >, \ell, \partial) from the AMS Euler fonts EURM/B.
+%% When used internaly at CUP, this package substitutes the correct
+%% Monotype Times MTMR/B math fonts.
+%%
+%% Requires the amsbsy.sty and amsgen.sty packages.
+%%
+%% Bugs (in the case of unchanged files) should be reported to
+%% texline@cup.cam.ac.uk
+%%
+%% This software may only be used in the preparation of journal articles
+%% or books or parts of books to be published by Cambridge University Press.
+%% Any other use constitutes an infringement of copyright.
+%%
+%% This file is distributed in the hope that it will be useful,
+%% but WITHOUT ANY WARRANTY; without even the implied warranty of
+%% MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+%%
+%% Updated by Lav kush 
+%% Dated 20/10/2010
+%% V.1.1 Removed clashing  amsbsy.sty with hyperref.sty in XML.
+%%
+\ProvidesPackage{upmath}[2010/10/20 v1.1 CUP LaTeX2e package]
+
+\RequirePackage{amsbsy}[1995/01/20] % also includes amsgen.sty
+
+\def\binrel@#1{%v1.1
+ \begingroup
+  \setboxz@h{\thinmuskip0mu
+    \medmuskip\m@ne mu\thickmuskip\@ne mu
+    \setbox\tw@\hbox{$#1\m@th$}\kern-\wd\tw@
+    ${}#1{}\m@th$}%
+  \edef\@@tempa{\endgroup\let\noexpand\binrel@@
+    \ifdim\wdz@<\z@ \mathbin
+    \else\ifdim\wdz@>\z@ \mathrel
+    \else \relax\fi\fi}%
+  \@@tempa}
+
+
+% Macro for changing \mathversion's
+\providecommand{\mathch}[2]{% Derived from AMSBSY.STY
+  \begingroup
+  \let\@nomath\@gobble \mathversion{#1}%
+\math@atom{#2}{%
+  \mathchoice%
+    {\hbox{$\m@th\displaystyle#2$}}%
+    {\hbox{$\m@th\textstyle#2$}}%
+    {\hbox{$\m@th\scriptstyle#2$}}%
+    {\hbox{$\m@th\scriptscriptstyle#2$}}}%
+  \endgroup}
+
+\ifCUPmtlplainloaded \else
+%
+% The following is from Ueur.fd: changed encoding from U to OML.
+% This allows to use eurm/b as (more or less) a math italic font.
+%
+\DeclareFontFamily{OML}{eur}{\skewchar\font'177}
+\DeclareFontShape{OML}{eur}{m}{n}{
+  <5> <6> <7> <8> <9> gen * eurm
+  <10> <10.95> <12> <14.4> <17.28> <20.74> <24.88> eurm10
+  }{}
+\DeclareFontShape{OML}{eur}{b}{n}{
+  <5> <6> <7> <8> <9> gen * eurb
+  <10> <10.95> <12> <14.4> <17.28> <20.74> <24.88> eurb10
+  }{}
+%
+\fi
+
+\DeclareMathVersion{upright}
+\DeclareMathVersion{boldupright}
+\ifCUPmtlplainloaded
+  \SetSymbolFont{letters}{upright}    {OML}{mtm}{m}{n}
+  \SetSymbolFont{letters}{boldupright}{OML}{mtm}{b}{n}
+\else
+  \SetSymbolFont{letters}{upright}    {OML}{eur}{m}{n}
+  \SetSymbolFont{letters}{boldupright}{OML}{eur}{b}{n}
+\fi
+
+\ifCUPmtlplainloaded
+% we want mtr(bx)/mt(b)sy in \mathversion upright/boldupright
+  \SetSymbolFont{operators}{upright}{OT1}{mtr}{m}{n}
+  \SetSymbolFont{symbols}{upright}{OMS}{mtsy}{m}{n}
+  \SetSymbolFont{operators}{boldupright}{OT1}{mtr}{bx}{n}
+  \SetSymbolFont{symbols}{boldupright}{OMS}{mtsy}{b}{n}
+\fi
+
+\DeclareRobustCommand{\mathup}[1]{\mathch{upright}{#1}}
+\DeclareRobustCommand{\mathbup}[1]{\mathch{boldupright}{#1}}
+
+% lower-case Greek
+\DeclareRobustCommand{\ualpha}{\mathup{\alpha}}
+\DeclareRobustCommand{\ubeta}{\mathup{\beta}}
+\DeclareRobustCommand{\ugamma}{\mathup{\gamma}}
+\newcommand\udelta{\mathup{\delta}}
+\newcommand\uepsilon{\mathup{\epsilon}}
+\newcommand\uzeta{\mathup{\zeta}}
+\newcommand\ueta{\mathup{\eta}}
+\newcommand\utheta{\mathup{\theta}}
+\newcommand\uiota{\mathup{\iota}}
+\newcommand\ukappa{\mathup{\kappa}}
+\newcommand\ulambda{\mathup{\lambda}}
+\newcommand\umu{\mathup{\mu}}
+\newcommand\unu{\mathup{\nu}}
+\newcommand\uxi{\mathup{\xi}}
+\newcommand\upi{\mathup{\pi}}
+\newcommand\urho{\mathup{\rho}}
+\newcommand\usigma{\mathup{\sigma}}
+\newcommand\utau{\mathup{\tau}}
+\newcommand\uupsilon{\mathup{\upsilon}}
+\newcommand\uphi{\mathup{\phi}}
+\newcommand\uchi{\mathup{\chi}}
+\newcommand\upsi{\mathup{\psi}}
+\newcommand\uomega{\mathup{\omega}}
+\newcommand\uvarepsilon{\mathup{\varepsilon}}
+\newcommand\uvartheta{\mathup{\vartheta}}
+\newcommand\uvarpi{\mathup{\varpi}}
+\ifCUPmtlplainloaded
+  \newcommand\uvarrho{\mathup{\varrho}}
+  \newcommand\uvarsigma{\mathup{\varsigma}}
+\else
+  \let\uvarrho\varrho % don't exist in eurm.
+  \let\uvarsigma\varsigma
+\fi
+\newcommand\uvarphi{\mathup{\varphi}}
+
+\newcommand\ubalpha{\mathbup{\alpha}}
+\newcommand\ubbeta{\mathbup{\beta}}
+\newcommand\ubgamma{\mathbup{\gamma}}
+\newcommand\ubdelta{\mathbup{\delta}}
+\newcommand\ubepsilon{\mathbup{\epsilon}}
+\newcommand\ubzeta{\mathbup{\zeta}}
+\newcommand\uboldeta{\mathbup{\eta}}
+\newcommand\ubtheta{\mathbup{\theta}}
+\newcommand\ubiota{\mathbup{\iota}}
+\newcommand\ubkappa{\mathbup{\kappa}}
+\newcommand\ublambda{\mathbup{\lambda}}
+\newcommand\ubmu{\mathbup{\mu}}
+\newcommand\ubnu{\mathbup{\nu}}
+\newcommand\ubxi{\mathbup{\xi}}
+\newcommand\ubpi{\mathbup{\pi}}
+\newcommand\ubrho{\mathbup{\rho}}
+\newcommand\ubsigma{\mathbup{\sigma}}
+\newcommand\ubtau{\mathbup{\tau}}
+\newcommand\ubupsilon{\mathbup{\upsilon}}
+\newcommand\ubphi{\mathbup{\phi}}
+\newcommand\ubchi{\mathbup{\chi}}
+\newcommand\ubpsi{\mathbup{\psi}}
+\newcommand\ubomega{\mathbup{\omega}}
+\newcommand\ubvarepsilon{\mathbup{\varepsilon}}
+\newcommand\ubvartheta{\mathbup{\vartheta}}
+\newcommand\ubvarpi{\mathbup{\varpi}}
+\ifCUPmtlplainloaded
+  \newcommand\ubvarrho{\mathbup{\varrho}}
+  \newcommand\ubvarsigma{\mathbup{\varsigma}}
+\else
+  \newcommand\ubvarrho{\boldsymbol{\varrho}} % don't exist in eurb.
+  \newcommand\ubvarsigma{\boldsymbol{\varsigma}}
+\fi
+\newcommand\ubvarphi{\mathbup{\varphi}}
+
+% A few other upright symbols
+\newcommand\upartial {\mathup{\partial}}
+\newcommand\ubpartial{\mathbup{\partial}}
+
+\endinput
+
+% End of file `upmath.sty'
+

@@ -53,7 +53,7 @@ Resumidamente: \vspace{-1em}
 \end{itemize}
 
 \subsection{O que é um Contêiner?}
-Docker usa o termo ``Contêiner'' para representar um ambiente em execução e que pode executar quase qualquer software; Seja este uma aplicação Web ou um serviço. O contêiner é tratado como o artefato, ou seja, o ambiente pode ser versionado e distribuído da mesma forma como é realizado com o código fonte de uma aplicação. 
+Docker usa o termo ``Contêiner'' para representar um ambiente que pode executar quase qualquer software; Seja este uma aplicação Web ou um serviço. O contêiner é tratado como o artefato, ou seja, o ambiente pode ser versionado e distribuído da mesma forma como é realizado com o código fonte de uma aplicação. 
 
 Os contêineres são compostos de namespaces e grupos de controle do Linux que fornecem isolamento de outros contêineres e do host. LXC é um tipo de virtualização, em nível de sistema operacional, que proporciona a execução de múltiplas instâncias isoladas de um determinado SO dentro de um único host. O conceito é simples e antigo, o comando ``chroot'' seu precursor mais famoso. Com o chroot é possível segregar os acessos de diretórios e evitar que o usuário tenha acesso à estrutura raiz (“/” ou root).
 
@@ -78,8 +78,7 @@ de configuração, que são passados ao iniciar um contêiner, ou durante sua
 execução.
 \end{itemize}
 
-O contêiner é construído através de namepspaces, cgroups, chroot entre outras 
-funcionalidades do Kernel para construir uma área isolada para a aplicação.
+O contêiner é construído através de namepspaces, cgroups, chroot entre outras funcionalidades do Kernel para construir uma área isolada para a aplicação.
 
 Os contêineres podem ser utilizados através de seguintes redes: \vspace{-1em}
 \begin{itemize}
@@ -89,13 +88,46 @@ Os contêineres podem ser utilizados através de seguintes redes: \vspace{-1em}
 \end{itemize}
 
 \section{Instalação do Docker no Ubuntu}
-Nesta seção será instalado e configurado o Docker para o sistema operacional Ubuntu 18.04. A instalação pode ser realizada da seguinte forma: \vspace{-1em}
+Nesta seção será instalado e configurado o Docker para o sistema operacional Ubuntu 18.04. Seguimos os seguintes passos:
+
+1, Instalar os pacotes necessários: \\
+\codigo{\$ sudo apt install curl apt-transport-https ca-certificates software-properties-common}
+
+Os pacotes acima são: \vspace{-1em}
 \begin{enumerate}
-  \item Instalar: \codigo{\$ sudo apt install docker docker.io}
-  \item Adicionar seu usuário ao grupo docker: \codigo{\$ sudo usermod -aG docker [seu usuário]}
-  \item Reiniciar o computador: \codigo{\$ sudo reboot}
-  \item Verificar a versão: \codigo{\$ docker -v}
+	\item apt-transport-https – permite que o gerenciador de pacotes transfira os tiles e os dados através de https
+	\item ca-certificates – permite que o navegador da web e o sistema verifiquem certificados de segurança
+	\item curl – transfere dados
+	\item software-properties-common – adiciona scripts para gerenciar o software
 \end{enumerate}
+
+2. Adicionar os Repositórios do Docker: \\
+Agora temos que adicionar os repositórios do Docker. Isso fará que o processo de instalação seja muito mais fácil. Habilita a usar o método oficial suportado de instalação.
+
+Adicionar uma chave GPG: \\
+\codigo{\$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -}
+
+Agora, adicionar o repositório executando este comando:
+\begin{lstlisting}[]
+$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+\end{lstlisting}
+
+Atualizar a informação do repositório: \\
+\codigo{\$ sudo apt update}
+
+Garantimos que instalamos a partir do repositório do Docker, ao invés do repositório padrão do Ubuntu ao usar este comando: \\
+\codigo{\$ apt-cache policy docker-ce}
+
+A saída correta vai ficar como um texto com diferentes números de versões.
+ 
+3. Adicionar seu usuário ao grupo docker: \\
+\codigo{\$ sudo usermod -aG docker [seu usuário]}
+
+4. E muito importante reiniciar o computador: 
+\codigo{\$ sudo reboot}
+
+5. Quando o computar estiver reiniciado, verificar a versão: 
+\codigo{\$ docker -v}
 
 \subsection{Testar a instalação com um Hello World}
 Com um simples comando é possível testar todo o ambiente: \\
@@ -104,7 +136,7 @@ Com um simples comando é possível testar todo o ambiente: \\
 Se tudo estiver correto a imagem será baixada, um contêiner criado e visualizaremos a seguinte a mensagem:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagem/hello.png}
+	\includegraphics[width=0.5\textwidth]{imagem/hello.png}
 	\caption{Tela do Terminal com a execução do Contêiner}
 \end{figure}
 
@@ -315,7 +347,7 @@ Acessar o administrador do MongoDB: \\
 \end{lstlisting}
 
 \subsection{TensorFlow}
-É uma biblioteca de código aberto para aprendizado de máquina aplicável a uma ampla variedade de tarefas. Contempla um sistema para criação e treinamento de redes neurais para detectar, decifrar e correlações entre padrões, análogo à forma como humanos aprendem e raciocinam. 
+É uma biblioteca de código aberto para aprendizado de máquina, aplicável a uma ampla variedade de tarefas. Contempla um sistema para criação e treinamento de redes neurais para detectar, decifrar e correlações entre padrões, análogo à forma como humanos aprendem e raciocinam. 
 
 Baixar a imagem oficial: \\
 \codigo{\$ docker pull tensorflow/tensorflow}

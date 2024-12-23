@@ -1,0 +1,97 @@
+%------------------------------------------------------------------------------------
+%	Pacotes e Outras Configurações
+%------------------------------------------------------------------------------------
+\documentclass[a4paper,11pt]{book} % Fonte do livro
+\input{structure} % Arquivo de Pacotes e comandos
+
+\begin{document}
+	
+%------------------------------------------------------------------------------------
+%	TITLE PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+	\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{folder}};
+	\draw (8,-2) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Gráficos com PHP\\[15pt] % Titulo
+			{\Large Modelo produzidos }\\[20pt] % Subtitulo
+			{\huge Alunos do Curso Web}}}; % Nome
+\end{tikzpicture}
+
+\vfill
+\endgroup
+
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\section{COPYRIGHT AND CLEARANCE}
+
+All CS Magazine authors must obtain clearance from IEEE Computer Society before submitting the final manuscript. The ``\href{https://apps.na.collabserv.com/wikis/home?lang=en-us#!/wiki/W18e544042a85_4b63_915a_1d1ed2cf8338/page/Publication\%20clearance}{Publication Clearance}'' wiki provides details about the procedure. Computer Society employees must use the \href{https://mc.manuscriptcentral.com/cs-ieee}{ScholarOne  Manuscripts Clearance} System to obtain publication approval.
+
+\section{SECTIONS}
+
+Sections following the introduction should present your results and findings. The body of the paper should be approximately 6,000 words. The manuscript should evolve so that each sentence, equation, figure, and table flow smoothly and logically from whatever precedes it. Relevant work by others, as well as relevant products from other companies, should be adequately and accurately cited. Sufficient support should be provided (or cited) for the assertions made and conclusions drawn.
+
+Headings may be numbered or unnumbered (``1 Introduction'' and ``1.2 Numbered level 2 head''), with no ending punctuation. As demonstrated in this document, the initial paragraph after a headingis not indented.
+
+\section{JOURNAL STYLE}
+
+Use American English when writing your paper. The serial comma should be used (``a, b, and c'' not ``a, b and c''). In American English, periods and commas are within quotation marks, like ``this period.'' Other punctuation is ``outside''! The use of technical jargon, slang, and vague or informal English should be avoided. Generic technical terms should instead be used.
+
+\subsection{Acronyms and abbreviations}
+
+All acronyms should be defined at first mention in the abstract and in the main text. Define in figures, tables, and footnotes only if not defined in the discussion of the figure/table. Acronyms consist of capital letters (except where salted with lowercase), but the terms they represent need not be given initial caps unless a proper name is involved (``central processing unit'' [CPU] but ``Fourier transform'' [FT]). Use of ``e.g.'' and ``i.e.'' okay, but refrain from using ``etc.'' It is preferable to use these abbreviations only in parentheses (e.g., like this).
+
+\subsection{Numbers}
+
+Spell out numerals that have no unit of measure or time (one, two, $\ldots$ ten), but always use numerals with units of time and measure. Some examples are as follows: 11 through 999; 1,000; 10,000; twentieth century; twofold, tenfold, 20-fold; 2 times; 0.2 cm; $p = .001$; 25\%; 10\% to 25\%.
+
+\section{MATH AND EQUATIONS}
+
+Scalar {\it variables} and {\it physical constants} should be italicized, and a bold (non-italics) font should be used for {\bf vectors} and {\bf matrices}. Do not italicize subscripts unless they are variables.
+
+Equations should be either display (with a number in parentheses) or inline.   
+
+
+Display equations should be flush left and numbered consecutively, with equation numbers in parentheses and flush right.
+
+Be sure the symbols in your equation have been defined before the equation appears or immediately following. Please refer to ``Equation (1),'' not ``Eq. (1)'' or ``equation (1).''
+
+Punctuate display equations when they are part of the sentence preceding it, as in
+\begin{equation}
+A=\pi r^2.
+\end{equation}
+In addition, if the text following the equation flows logically as a part of the display equation, 
+\begin{equation}
+A=\pi r^2,
+\end{equation}
+use ending punctuation (comma) after the display equation.
+
+\section{LISTS}
+
+Avoid using lists. Instead, use full sentences and flowing paragraphs. If you absolutely must use a list, use them rarely and keep them short:
+\begin{itemize}
+\item {\it Style for bulleted lists}---This is the style that should be used for bulleted lists.
+	
+\item {\it Punctuation in lists}---Each item in the list should end with a period, regardless of whether full sentences are used.
+\end{itemize}
+
+\section{GRAPHICAL ABSTRACTS}
+
+This journal accepts graphical abstracts, and they must be peer reviewed, which means the graphical abstract must be submitted with the full paper. graphical abstracts and their specifications. Please read the additional information provided by \href{http://www.ieee.org/publications_standards/publications/graphical_abstract.pdf}{\underline{IEEE about graphical abstracts}}.
+
+
+\begin{figure}
+\centerline{\includegraphics[width=18.5pc]{fig1.png}}
+\caption{Note that ``Figure'' is spelled out. There is a period after the figure number, followed by one space. It is good practice to briefly explain the significance of the figure in the caption. (Used, with permission, from [4].)}
+\end{figure}
+
+\begin{figure*}
+\centerline{\includegraphics[width=26pc]{fig1.png}}
+\caption{Note that ``Figure'' is spelled out. There is a period after the figure number, followed by one space. It is good practice to briefly explain the significance of the figure in the caption. (Used, with permission, from [4].)}
+\end{figure*}
+
+
+\end{document}
+

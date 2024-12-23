@@ -1,0 +1,72 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 2
+%------------------------------------------------------------------------------------
+\chapterimage{headMontagem.png}
+\chapter{Primeiros Programas}
+
+\begin{remark}
+	"Sistemas antigos não são um fardo; são a base do progresso — refatorá-los é um ato de respeito pelo passado e compromisso com o futuro." (\textit{Sandi Metz}, especialista em design de software.) 
+\end{remark}
+
+\section{Hello World}\index{Entendimento Geral}
+Escrever um programa 'Hello World' é uma forma simples e prática de verificar se o ambiente de desenvolvimento está configurado corretamente, e garantir que possamos começar a programar sem obstáculos técnicos. Geralmente e tradicionalmente este é o primeiro passo no aprendizado de qualquer linguagem de programação, assim os iniciantes podem entender a estrutura básica do código e se familiarizar com sua sintaxe.
+
+Primeiramente devemos compreender que o Cobol é uma linguagem que fortemente segue determinados princípios de programação, e qualquer desvio desses resultará em erro.
+\begin{itemize}
+	\item As colunas de 1 a 6 do nosso programa é reservada para numeração das linhas.
+	\item A coluna 7 e reservada especialmente para continuação de linha ou início de comentário da linha.
+	\item Nossa codificação sempre deve ser iniciada a partir da coluna 8, e o deslocamento de código é realizado por um TAB.
+	\item TODA instrução deve terminar com um PONTO FINAL.
+\end{itemize}
+
+A estrutura do programa sempre deve conter 4 divisões (mesmo que não sejam utilizadas devem sempre aparecer):
+\begin{itemize}
+	\item \textbf{Identification Division} - É a primeira divisão do COBOL e contém informações básicas sobre o programa. Usada para identificá-lo, opcionalmente, o autor, a data de criação, e outros detalhes administrativos. O comando mais comum nessa divisão é o \textbf{PROGRAM-ID}, que nomeia o programa. É essencial para documentar o propósito do código, especialmente em sistemas onde múltiplos programas podem interagir.
+	\item \textbf{Environment Division} - Define o ambiente em que o programa será executado, incluindo as especificações do hardware e software. Subdividida em duas seções principais:
+	\begin{itemize}
+		\item \textbf{Configuration Section}: Especifica detalhes sobre o sistema, como a máquina onde o programa será executado.
+		\item \textbf{Input-Output Section}: Define os dispositivos de entrada e saída utilizados pelo programa, como arquivos, impressoras ou terminais. Essencial para garantir que o programa funcione corretamente no ambiente de produção.
+	\end{itemize}	
+	\item \textbf{Data Division} - Responsável pela definição de todas as variáveis e estruturas de dados usadas no programa. Além disso, permite que os dados sejam organizados de forma lógica, facilitando o acesso e a manipulação. Subdividida em várias seções:
+	\begin{itemize}
+		\item \textbf{File Section}: Descreve os arquivos usados pelo programa, incluindo sua estrutura e organização.
+		\item \textbf{Working-Storage Section}: Declara variáveis que mantêm dados em memória durante a execução do programa.
+		\item \textbf{Local-Storage Section}: Contém variáveis que são alocadas apenas durante a execução de um procedimento específico.
+		\item \textbf{Linkage Section}: Define variáveis usadas para comunicar dados entre programas.
+	\end{itemize}
+	\item \textbf{Procedure Division} - É aqui onde a lógica do programa é implementada. Contém as instruções e os comandos que controlam o fluxo de execução. Os procedimentos são organizados em parágrafos e seções, o que permite modularizar o código para melhorar sua legibilidade e reutilização. É aqui que operações como leitura e escrita de arquivos, cálculos e controle de fluxo são realizadas. Essa divisão é o "coração" do programa, onde os objetivos específicos são alcançados.
+\end{itemize}
+
+E sem mais "delongas", aqui está o nosso programa completo:
+\begin{lstlisting}[]
+000001 IDENTIFICATION DIVISION.
+000002     PROGRAM-ID. HELLOWORLD.
+000003     AUTHOR. Fernando Anselmo.
+000004
+000005 ENVIRONMENT DIVISION.
+000006       
+000007 DATA DIVISION.
+000008*Aqui inicia as ações do programa    
+000009 PROCEDURE DIVISION.
+000010 PRINCIPAL.
+000011     DISPLAY "Hello World".
+000012
+000013 STOP RUN.
+000014 END PROGRAM HELLOWORLD.
+\end{lstlisting}
+
+Necessariamente não precisamos inserir os números nas colunas de 1 a 6 para que o programa funcione, porém devemos iniciar sempre na coluna 8, observe que na linha 8 temos um comentário, este é sinalizado com um "*" na coluna 7.
+
+As linhas de 1 a 3 são referentes a identificação do programa, este ao mínimo deve ter \textbf{PROGRAM-ID} que identifica o nome do programa e \textbf{AUTHOR} com o autor do programa. As linhas 5 e 6 são correspondentes as duas próximas divisões, não é necessário nenhuma informação, porém essas divisões devem estar contidas no programa. E por fim a partir da linha 9 inicia o programa propriamente dito.
+
+Um programa sempre inicia com um "label", que pode ser qualquer um a escolha, colocamos \textbf{PRINCIPAL} aqui, do mesmo modo que poderíamos colocar \textbf{INICIAL} ou qualquer outro nome. Após esse temos as ações que queremos executar, no caso o comando DISPLAY que mostra uma determinada informação na \textit{console}. Para terminar nossas execuções temos o comando \textbf{STOP RUN} (linha 13) e para finalizar o programa a instrução \textbf{END PROGRAM} com o nome do programa que foi definido pela \textbf{PROGRAM-ID}.
+
+Podemos salvar este programa com o nome \textit{HelloWorld.cbl} (outra extensão que poderia ser usada é "cob"), e em seguida devemos compilar com o comando: \\
+\codigo{\$ cobc -x HelloWorld.cbl}
+
+Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do linux e basta apenas o comando: \\
+\codigo{\$ ./HelloWorld}
+
+E teremos nossa mensagem mostrada.
+
+\clearpage

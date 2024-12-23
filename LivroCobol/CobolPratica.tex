@@ -1,0 +1,109 @@
+%------------------------------------------------------------------------------------
+%	Pacotes e Outras Configurações
+%------------------------------------------------------------------------------------
+\documentclass[a4paper,11pt]{book} % Fonte do livro
+\input{structure} % Arquivo de Pacotes e comandos
+
+\begin{document}
+
+%------------------------------------------------------------------------------------
+%	TITLE PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{CpFrente}};
+\draw ([yshift=10cm]current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Cobol na Prática\\[15pt] % Titulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	COPYRIGHT PAGE
+%------------------------------------------------------------------------------------
+\newpage
+~\vfill
+\thispagestyle{empty}
+
+\noindent Copyright \copyright\ 2023 Fernando Anselmo - v1.0 % Copyright
+
+\noindent \textsc{Publicação Independente} % Publicado por
+
+\noindent \url{http:\\fernandoanselmo.orgfree.com} % URL
+
+\noindent \\ É permitido a total distribuição, cópia e compartilhamento deste arquivo, desde que se preserve os seguintes direitos, conforme a licença da \textit{Creative Commons 3.0}. Logos, ícones e outros itens inseridos nesta obra, são de responsabilidade de seus proprietários. Não possuo a menor intenção em me apropriar da autoria de nenhum artigo de terceiros. Caso não tenha citado a fonte correta de algum texto que coloquei em qualquer seção, basta me enviar um e-mail que farei as devidas retratações, algumas partes podem ter sido cópias (ou baseadas na ideia) de artigos que li na Internet e que me ajudaram a esclarecer muitas dúvidas, considere este como um documento de pesquisa que resolvi compartilhar para ajudar os outros usuários e não é minha intenção tomar crédito de terceiros. % License information
+
+%------------------------------------------------------------------------------------
+%	SUMARIO
+%------------------------------------------------------------------------------------
+
+% Para nao usar imagem nos capitulos
+% \usechapterimagefalse 
+
+\chapterimage{headMontagem.png} % Imagem
+\pagestyle{empty} % Sem Cabecalho
+\tableofcontents % Mostra a tabela de conteudo
+\cleardoublepage % Forca que a primeira pagina seja iniciada em um numero impar
+\pagestyle{fancy} % Volta a imprimir o Cabecalho
+\clearpage % Forca que a primeira pagina seja iniciada em um numero impar
+
+%------------------------------------------------------------------------------------
+%	PARTES
+%------------------------------------------------------------------------------------
+
+%\part{Parte Um - O Básico}
+% Entendimento Geral
+\input{capitulo01.tex}
+% Exemplos de Uso
+\input{capitulo02.tex}
+%\input{capitulo03.tex}
+%\input{capitulo04.tex}
+%\input{capitulo05.tex}
+
+\appendix
+\chapterimage{headCobol.png}
+\chapter{Considerações Finais}
+\begin{remark}
+"Manter sistemas antigos não é apenas preservar o passado, mas garantir que as bases do presente continuem sustentando o futuro." (\textit{Gene Kim}, especialista em DevOps e autor de The Phoenix Project.)
+\end{remark}
+
+Não se trata apenas de aprender uma antiga linguagem, se trata de descobrir um novo universo, estou viajando? Provavelmente sim, atualmente vejo os novos programadores e falta neles algo chamado paixão. Programadores da minha época (iniciei nessa área em 1976) não tinha todas as ferramentas que temos atualmente, não tínhamos nem o computador para auxiliar nosso trabalho, como fazíamos? Simples, escrevíamos o código com todo o cuidado e passávamos este para o \textbf{digitador}, que por sua vez inseria em um terminal, em seguida solicitávamos ao \textbf{operador} para executar o \textit{Job} (trabalho) e recebíamos a listagem de resultado, e todo esse processo era repetido até o programa rodar corretamente. Então todo o trabalho era feito com calma e paciência, e observe que desses três personagens, atualmente, só resta um.
+
+Não sinto saudades daquela época, pois o tempo passa e todo programador deve aprender a se adaptar e não ficar preso a saudosismos, mas o Cobol e existe ainda mercado para esta linguagem, então não conheço por ser um saudosista, e sim por saber que posso ter um chance de entrar nesse concorrido mercado.
+
+Esse não é o fim de uma jornada acredito ser apenas seu começo. Espero que este livro possa lhe servir para criar algo maravilhoso e fantástico que de onde estiver estarei torcendo por você.
+
+\section{Sobre o Autor}
+Sou especialista formado em Gestão da Tecnologia da Informação com conhecimentos de programação Java e Python e experiência em Banco de Dados Oracle, PostgreSQL, MS SQL Server além de bancos NoSQL como Hadoop e MongoDB. Realizo desenvolvimento de sistemas com capacidade para analise de dados e detectar tendências, sou autor de 18 livros e diversos artigos em revistas especializadas, palestrante em diversos seminários sobre tecnologia. Focado em aprender e trazer mudanças para a organização com conhecimento profundo do negócio. Atualmente é Professor Universitário em Ciências de Dados e Informática  e Desenvolvedor Sênior Java  na SEA Tecnologia.
+\begin{itemize}
+ \item Perfil no Linkedin: \url{https://www.linkedin.com/in/fernando-anselmo-bb423623/}
+ \item Endereço do Git: \url{https://github.com/fernandoans} 
+\end{itemize}
+
+\clearpage
+%------------------------------------------------------------------------------------
+%	FINAL PAGE
+%------------------------------------------------------------------------------------
+\begingroup
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\node[inner sep=0pt] (background) at (current page.center) {\includegraphics[width=\paperwidth]{CpFundo}};
+\draw (current page.center) node [fill=ocre!30!white,fill opacity=0.6,text opacity=1,inner sep=1cm]{\Huge\centering\bfseries\sffamily\parbox[c][][t]{\paperwidth}{\centering Cobol na Prática\\[15pt] % Titulo
+{\Large ESTE LIVRO PODE E DEVE SER DISTRIBUÍDO LIVREMENTE}\\[20pt] % Subtitulo
+{\huge Fernando Anselmo}}}; % Nome
+\end{tikzpicture}
+\vfill
+\endgroup
+
+%------------------------------------------------------------------------------------
+%	INDEX
+%------------------------------------------------------------------------------------
+% \cleardoublepage
+% \phantomsection
+% \setlength{\columnsep}{0.75cm}
+% \addcontentsline{toc}{chapter}{\textcolor{ocre}{Index}}
+% \printindex
+
+%------------------------------------------------------------------------------------
+\end{document}

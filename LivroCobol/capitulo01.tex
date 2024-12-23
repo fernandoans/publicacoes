@@ -1,0 +1,59 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 1
+%------------------------------------------------------------------------------------
+\chapterimage{headMontagem.png}
+\chapter{Entendimento Geral}
+
+\begin{remark}
+"Não há nada de errado com código legado. Ele te trouxe até onde você está hoje." (\textit{Michael Feathers}, autor de Trabalhando Eficazmente com Código Legado.) 
+\end{remark}
+
+\section{Do que trata esse livro?}\index{Entendimento Geral}
+\textbf{GNU Cobol} é uma implementação de código aberto da linguagem \textbf{COBOL} (\textit{Common Business-Oriented Language}), uma das linguagens de programação mais antigas, desenvolvida inicialmente na década de 1950. Seu principal objetivo é fornecer uma alternativa gratuita e acessível para os desenvolvedores que trabalham com sistemas legados que dependem do COBOL. É mantido pelo projeto GNU, que visa garantir que softwares essenciais sejam distribuídos de forma aberta e sem custos. Permite que os programadores ainda utilizem o COBOL em sistemas modernos, mantendo a compatibilidade com o código COBOL tradicional e ao mesmo tempo incorporando tecnologias mais recentes.
+
+A linguagem COBOL, historicamente usada em sistemas bancários, governamentais e financeiros, tem uma sintaxe que foca em ser legível e descritiva, facilitando a manutenção de sistemas complexos. O GNU Cobol preserva esses princípios, garante que programas escritos na linguagem permaneçam claros e fáceis de entender. Suporta a maior parte dos recursos do COBOL, isso inclui operações de arquivo, manipulação de dados e estrutura de controle de fluxo, permite que sistemas legados sejam mantidos com pouca ou nenhuma modificação.
+
+Uma das principais vantagens do GNU Cobol é sua integração com outros sistemas e linguagens de programação. Pode ser utilizado para compilar código COBOL e integrá-lo com bibliotecas escritas em outras linguagens, como C e Java, permite que se amplie as opções de interação com sistemas modernos. Isso é especialmente importante em empresas que possuem grandes volumes de código COBOL que precisam ser compatíveis com novas tecnologias ou que desejam melhorar o desempenho sem refazer sistemas inteiros.
+
+O GNU Cobol é amplamente utilizado em ambientes corporativos, onde sistemas legados são críticos para as operações diárias. Embora o COBOL tenha sido considerada uma linguagem em declínio, muitos sistemas ainda dependem de seu uso devido à sua estabilidade e robustez. O GNU Cobol, com sua natureza de código aberto, não só oferece uma forma de preservar esses sistemas, mas também possibilita sua evolução para o futuro, mantendo a compatibilidade com as versões anteriores e ao mesmo tempo permitindo melhorias contínuas.
+
+\section{Quais são as vantagens de se aprender Cobol atualmente?}\index{Entendimento Geral}
+Aprender COBOL atualmente pode parecer uma escolha surpreendente, mas oferece várias vantagens, especialmente considerando o contexto de sistemas legados e o mercado de trabalho especializado. Aqui estão algumas razões para estudar COBOL:
+\begin{itemize}
+	\item \textbf{Demanda por profissionais qualificados}: Embora o COBOL seja uma linguagem antiga, muitos sistemas legados ainda dependem dela, especialmente em setores como bancário, financeiro e governamental. Muitas dessas empresas estão com uma escassez de profissionais qualificados para manter e atualizar esses sistemas. Isso cria uma demanda constante por programadores COBOL, com salários competitivos e uma forte necessidade de manutenção e modernização desses sistemas.
+	\item \textbf{Estabilidade e segurança}: O COBOL é amplamente utilizado em sistemas críticos, como os que gerenciam transações bancárias e registros financeiros. A linguagem foi projetada para ser altamente confiável e estável, o que a torna uma escolha popular para ambientes que exigem altos níveis de segurança e precisão. Aprender COBOL pode colocar um profissional em contato com projetos que lidam com grandes volumes de dados de maneira segura e eficiente.
+	\item \textbf{Oportunidades de carreira em nichos específicos}: Muitas grandes organizações ainda possuem grandes bases de código COBOL, e estas empresas precisam de especialistas para garantir a continuidade de seus serviços. Como o número de profissionais COBOL diminui ao longo do tempo, aqueles que mantêm o conhecimento da linguagem encontram oportunidades em nichos específicos de mercado, frequentemente com menos concorrência e mais visibilidade.
+	\item \textbf{Interação com tecnologias modernas}: Embora o COBOL seja uma linguagem antiga, muitas empresas estão trabalhando para integrar seus sistemas legados com novas tecnologias. Aprender COBOL não significa trabalhar apenas com sistemas desatualizados; muitas vezes, é necessário combinar COBOL com tecnologias mais recentes, como APIs RESTful, sistemas em nuvem, e integrações com linguagens modernas como Java. Esse ambiente híbrido proporciona uma boa oportunidade de desenvolver um conjunto diversificado de habilidades técnicas.
+\end{itemize}
+Essas vantagens tornam o COBOL uma escolha interessante para quem deseja trabalhar em áreas que envolvem sistemas legados e infraestrutura crítica, permite abrir portas para um conjunto especializado de habilidades que ainda tem grande valor no mercado de trabalho.
+
+\section{Montagem do Ambiente}\index{Entendimento Geral}
+Podemos montar nosso ambiente de desenvolvimento sobre diversos sistemas operacionais, oferecendo flexibilidade na escolha da plataforma ideal para o projeto. Neste livro, é utilizado o Ubuntu 24.10, uma das distribuições Linux mais populares e acessíveis, conhecida por sua estabilidade, segurança e suporte a uma vasta gama de ferramentas de desenvolvimento.
+
+O uso de software livre é uma das principais vantagens deste ambiente, pois todos os programas e bibliotecas necessárias para o desenvolvimento estarão disponíveis gratuitamente, sem custos adicionais. Isso inclui editores de código, ferramentas de automação e depuração, que são perfeitamente adequados para projetos profissionais. Além disso, o hardware necessário é simples: um computador (que provavelmente já possui), sem a necessidade de investimentos adicionais em equipamentos especializados. Com isso, podemos configurar um ambiente de desenvolvimento poderoso e eficiente, aproveitando ao máximo os recursos do Ubuntu e dos softwares livres, sem comprometer o orçamento.
+
+Obviamente, vamos começar com o GNU Cobol, assim na tela de terminal usamos o seguinte comando: \\
+\codigo{\$ sudo apt install gnucobol}
+
+Agora necessitamos de um editor de códigos, recomendo o Visual Studio Code, não apenas pela leveza pois, dentre todos os editores é o que melhor se adapta a linguagem Cobol através dos plugins. \\
+\codigo{\$ snap install code}
+
+Criamos uma pasta para manter nossos códigos arrumados: \\
+\codigo{\$ mkdir cobolProjects}
+
+Entramos nessa pasta: \\
+\codigo{\$ cd cobolProjects}
+
+E no editor: \\
+\codigo{\$ code .}
+
+Na seção \textbf{Extensões}, instalamos os seguintes plugins:
+\begin{itemize}
+	\item COBOL - Fornecedor: Bitlang
+	\item COBOL Language Support - Fornecedor: Broadcom
+	\item COBOL Themes - Fornecedor: BitLang
+	\item COBOL-Lang-Syntax - Fornecedor: Shashi Ranjan
+\end{itemize}
+
+E agora estamos prontos para criarmos e executarmos nosso primeiro programa em máquinas atuais com uma linguagem que nasceu em 1950.
+\clearpage

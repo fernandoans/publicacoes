@@ -1,0 +1,14 @@
+*.aux
+*.bbl
+*.blg
+*.log
+*.out
+latex.pdf
+*.synctex.gz
+*.toc
+.idea/
+.ide/
+.gradle/
+*.kate-swp
+CsMag_template.pdf
+build/
