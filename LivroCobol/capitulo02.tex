@@ -51,8 +51,9 @@ E sem mais "delongas", aqui está o nosso programa completo:
 000010 PRINCIPAL.
 000011     DISPLAY "Hello World".
 000012
-000013 STOP RUN.
+000013     STOP RUN.
 000014 END PROGRAM HELLOWORLD.
+
 \end{lstlisting}
 
 Necessariamente não precisamos inserir os números nas colunas de 1 a 6 para que o programa funcione, porém devemos iniciar sempre na coluna 8, observe que na linha 8 temos um comentário, este é sinalizado com um "*" na coluna 7.
@@ -61,12 +62,75 @@ As linhas de 1 a 3 são referentes a identificação do programa, este ao mínim
 
 Um programa sempre inicia com um "label", que pode ser qualquer um a escolha, colocamos \textbf{PRINCIPAL} aqui, do mesmo modo que poderíamos colocar \textbf{INICIAL} ou qualquer outro nome. Após esse temos as ações que queremos executar, no caso o comando DISPLAY que mostra uma determinada informação na \textit{console}. Para terminar nossas execuções temos o comando \textbf{STOP RUN} (linha 13) e para finalizar o programa a instrução \textbf{END PROGRAM} com o nome do programa que foi definido pela \textbf{PROGRAM-ID}.
 
-Podemos salvar este programa com o nome \textit{HelloWorld.cbl} (outra extensão que poderia ser usada é "cob"), e em seguida devemos compilar com o comando: \\
+\textbf{IMPORTANTE}: Lembre-se de ao final sempre deixar uma linha em BRANCO.
+
+Salvamos este programa com o nome \textit{HelloWorld.cbl} (outra extensão que poderia ser usada é "cob"), e em seguida devemos compilar com o comando: \\
 \codigo{\$ cobc -x HelloWorld.cbl}
 
-Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do linux e basta apenas o comando: \\
+Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do Linux e basta apenas o comando: \\
 \codigo{\$ ./HelloWorld}
 
 E teremos nossa mensagem mostrada.
 
+\section{Entrada de Dados}\index{Entendimento Geral}
+Em qualquer linguagem de programação iniciamos com os processos de Entrada/Saída de dados, começamos pela saída, que em Cobol é obtida através do comando \textbf{DISPLAY} e agora vamos partir para a entrada, que em Cobol é obtida através do comando \textbf{ACCEPT}. Mas não é tão simples assim pois precisamos definir uma variável que receberá a informação do que vamos digitar.
+
+A criação de variáveis em Cobol é realizada na \textbf{DATA DIVISION}, mais especificamente na seção \textbf{WORKING-STORAGE SECTION} que descreve os dados internos, nesse ponto podemos criar quaisquer variáveis que desejarmos, porém existem regras para isso, a partir da coluna 8 devemos iniciar um "\textit{level number}", esse número sempre inicia com "01", em seguida colocamos o nome da nossa variável, que será utilizada pelo programa, e o tipo de dado que será armazenado, como estamos tratando de variável, usamos a cláusula \textbf{PIC} (abreviatura de \textit{PICTURE}) e em seguida o tipo, que podem ser, por padrão:
+
+\begin{table}[H]
+	\centering 
+	\begin{tabular}{c | l }
+		\textbf{Símbolo} & \textbf{Significado} \\ \hline
+		x & Campo alfanumérico \\
+		9 & Campo numérico \\
+		A & Campo alfabético \\
+		V & Campo decimal assumido; usado apenas em campos numéricos \\
+		S & Sinal operacional; usado apenas em campos numéricos \\
+	\end{tabular}
+\end{table}
+
+E finalmente colocamos o tamanho do campo, mas vamos com calma e mostrar um exemplo na prática como isso funciona, por exemplo, ao invés de termos um programa estático "Hello World", desejamos que o usuário tenha a possibilidade de colocar seu nome e a data de seu nascimento, como fazemos isso:
+\begin{lstlisting}[]
+000001 IDENTIFICATION DIVISION.
+000002     PROGRAM-ID. COMOVAI.
+000003     AUTHOR. Fernando Anselmo.
+000004
+000005 ENVIRONMENT DIVISION.
+000006       
+000007 DATA DIVISION.
+000008 WORKING-STORAGE SECTION.
+000009
+000010 01 NOME        PIC A(020).
+000011
+000012 01 DATA-ATUAL.
+000013    05 ANO-ATUAL PIC 9(004).
+000014    05 MES-ATUAL PIC 9(002).
+000015    05 DIA-ATUAL PIC 9(002).
+000016
+000017 PROCEDURE DIVISION.
+000018 PRINCIPAL.
+000019     DISPLAY "Entre com seu Nome: ".
+000020     ACCEPT NOME.
+000021     ACCEPT DATA-ATUAL FROM DATE YYYYMMDD.
+000022
+000023     DISPLAY "Bem vindo " NOME.
+000024     DISPLAY "Sabia que hoje é " DIA-ATUAL "/" MES-ATUAL "/" 
+            ANO-ATUAL.
+000025
+000026     STOP RUN.
+000027 END PROGRAM COMOVAI.
+
+\end{lstlisting}
+
+O programa é bem similar ao visto anteriormente e como  não pretendo ficar me repetindo, assim vamos nos ater aos detalhes modificados, na seção \textbf{WORKING-STORAGE SECTION} criamos uma variável (linha 10) chamada NOME que será alfabética e permite de 0 a 20 posições. Em seguida outra variável denominada DATA-ATUAL que contém uma subestrutura (assim o nível deve ser um número menor, por padrão usamos de 5 em 5).
+
+No nosso programa propriamente dito (PROCEDURE DIVISION), na linha 20 existe a espera pelo usuário digitar o NOME, e assim que acontecer na linha 21 é obtida a data atual automaticamente (parâmetro FROM DATE), na linha 23 esse NOME digitado é mostrado e na linha 24 a data atual, como essa linha ultrapassa a coluna 73 devemos continuar a informação na linha abaixo, note que não usamos o caracter de continuação na coluna 7, esse é utilizado apenas quando for um texto que queremos dar continuidade.
+
+Salvamos este programa com o nome \textit{ComoVai.cbl} (outra extensão que poderia ser usada é "cob"), e em seguida devemos compilar com o comando: \\
+\codigo{\$ cobc -x ComoVai.cbl}
+
+Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do Linux e basta apenas o comando: \\
+\codigo{\$ ./ComoVai}
+
+Será solicitado para digitarmos nosso nome e em seguida mostra a mensagem com a data atual.
 \clearpage
