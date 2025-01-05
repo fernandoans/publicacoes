@@ -248,7 +248,7 @@
 \newtheorem{algorithmT}{}
 
 \theoremstyle{blacknumbox}
-\newtheorem{noteT}{Dica}[chapter]
+\newtheorem{noteT}{Dica}
 %----------------------------------------------------------------------------------------
 %	DEFINITION OF COLORED BOXES
 %----------------------------------------------------------------------------------------
@@ -295,9 +295,27 @@ linewidth=4pt,
 innerbottommargin=5pt
 ]{noteBox}
 
+% Caixa de Dica
+\newmdenv[skipabove=0pt,
+skipbelow=7pt,
+rightline=false,
+leftline=true,
+topline=false,
+bottomline=false,
+linecolor=gray,
+backgroundcolor=black!5,
+innerleftmargin=5pt,
+innerrightmargin=5pt,
+innertopmargin=18pt,
+leftmargin=0cm,
+rightmargin=0cm,
+linewidth=4pt,
+innerbottommargin=5pt]{cBox}
+
 % Creates an environment for each type of theorem and assigns it a theorem text style from the "Theorem Styles" section above and a colored box from above
 \newenvironment{note}{\begin{noteBox}\begin{noteT}}{\end{noteT}\end{noteBox}}
 \newenvironment{celula}{\begin{celulaBox}\begin{algorithmT}}{\end{algorithmT}\end{celulaBox}}
+\newenvironment{dica}{\begin{cBox}\begin{dicaT}}{\end{dicaT}\end{cBox}}
 %------------------------------------------------------------------------------------
 %	REMARK ENVIRONMENT
 %------------------------------------------------------------------------------------

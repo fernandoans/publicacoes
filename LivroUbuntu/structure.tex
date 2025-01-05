@@ -244,7 +244,6 @@
 \theoremstyle{blacknumbox}
 \newtheorem{vocabulary}{Vocabulário}[chapter]
 \newtheorem{definitionT}{Definição}[section]
-\newtheorem{dicaT}{Dica}
 \theoremstyle{ocrenum}
 \newtheorem{proposition}[dummy]{Proposition}
 %------------------------------------------------------------------------------------
@@ -293,29 +292,14 @@
     rightmargin=0cm,
     linewidth=4pt,
     innerbottommargin=0pt]{dBox}	
-% Caixa de Dica
-\newmdenv[skipabove=0pt,
-    skipbelow=7pt,
-    rightline=false,
-    leftline=true,
-    topline=false,
-    bottomline=false,
-    linecolor=gray,
-    backgroundcolor=black!5,
-    innerleftmargin=5pt,
-    innerrightmargin=5pt,
-    innertopmargin=18pt,
-    leftmargin=0cm,
-    rightmargin=0cm,
-    linewidth=4pt,
-    innerbottommargin=5pt]{cBox}
+
 % Creates an environment for each type of theorem and assigns it a theorem text style 
 % from the Theorem Styles section above and a colored box from above
 \newenvironment{theorem}{\begin{tBox}\begin{theoremeT}}{\end{theoremeT}\end{tBox}}
 \newenvironment{exercise}{\begin{eBox}\begin{exerciseT}}{\hfill{\color{ocre}\tiny\ensuremath{\blacksquare}}\end{exerciseT}\end{eBox}}
 \newenvironment{definition}{\begin{dBox}\begin{definitionT}}{\end{definitionT}\end{dBox}}	
 \newenvironment{example}{\begin{exampleT}}{\hfill{\tiny\ensuremath{\blacksquare}}\end{exampleT}}
-\newenvironment{dica}{\begin{cBox}\begin{dicaT}}{\end{dicaT}\end{cBox}}
+
 %------------------------------------------------------------------------------------
 %	REMARK ENVIRONMENT
 %------------------------------------------------------------------------------------

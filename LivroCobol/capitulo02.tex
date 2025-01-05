@@ -60,9 +60,11 @@ Necessariamente não precisamos inserir os números nas colunas de 1 a 6 para qu
 
 As linhas de 1 a 3 são referentes a identificação do programa, este ao mínimo deve ter \textbf{PROGRAM-ID} que identifica o nome do programa e \textbf{AUTHOR} com o autor do programa. As linhas 5 e 6 são correspondentes as duas próximas divisões, não é necessário nenhuma informação, porém essas divisões devem estar contidas no programa. E por fim a partir da linha 9 inicia o programa propriamente dito.
 
-Um programa sempre inicia com um "label", que pode ser qualquer um a escolha, colocamos \textbf{PRINCIPAL} aqui, do mesmo modo que poderíamos colocar \textbf{INICIAL} ou qualquer outro nome. Após esse temos as ações que queremos executar, no caso o comando DISPLAY que mostra uma determinada informação na \textit{console}. Para terminar nossas execuções temos o comando \textbf{STOP RUN} (linha 13) e para finalizar o programa a instrução \textbf{END PROGRAM} com o nome do programa que foi definido pela \textbf{PROGRAM-ID}.
+Um programa sempre inicia com um "label", que pode ser qualquer um a escolha, colocamos \textbf{PRINCIPAL} aqui, do mesmo modo que poderíamos colocar \textbf{INICIAL} ou qualquer outro nome. Após esse, temos as ações que queremos executar, no caso o comando DISPLAY que mostra uma determinada informação na \textit{console}. Para terminar nossas execuções temos o comando \textbf{STOP RUN} (linha 13) e para finalizar o programa a instrução \textbf{END PROGRAM} com o nome do programa que foi definido pela \textbf{PROGRAM-ID} que marca explicitamente o fim do código.
 
-\textbf{IMPORTANTE}: Lembre-se de ao final sempre deixar uma linha em BRANCO.
+\begin{note}[Linha em Branco]
+	Por padrão o GNU Cobol, exige que ao final do programa SEMPRE exista uma linha em final em branco. Sendo assim lembre-se de ao final sempre deixar uma linha em BRANCO.
+\end{note}
 
 Salvamos este programa com o nome \textit{HelloWorld.cbl} (outra extensão que poderia ser usada é "cob"), e em seguida devemos compilar com o comando: \\
 \codigo{\$ cobc -x HelloWorld.cbl}
@@ -133,4 +135,77 @@ Nesse momento aconteceu a magia pois o nosso programa foi transformado em um exe
 \codigo{\$ ./ComoVai}
 
 Será solicitado para digitarmos nosso nome e em seguida mostra a mensagem com a data atual.
+
+\section{Cálculos em Cobol}\index{Entendimento Geral}
+O comando \textbf{COMPUTE} é utilizado para realizar operações aritméticas de forma direta e simplificada, permite cálculos matemáticos como soma, subtração, multiplicação, divisão, e até expressões mais complexas. Combina a funcionalidade dos operadores matemáticos (+, -, *, /, **) para calcular o valor de uma expressão e armazenar o resultado em uma variável destino. 
+
+\textbf{COMPUTE} é especialmente útil por sua clareza pois elimina a necessidade de comandos adicionais, como \textbf{ADD}, \textbf{SUBTRACT}, ou \textbf{MULTIPLY}, em situações simples. O resultado da expressão é automaticamente ajustado para o formato definido na variável de destino, incluindo arredondamento quando necessário, de acordo com as especificações da cláusula PICTURE.
+
+Vejamos um caso prático com esse comando através do cálculo do IMC, que mostra o Índice de Massa Corporal, através da seguinte fórmula: \\
+\[
+\text{IMC} = \frac{\text{PESO}}{\text{ALTURA}^2}
+\]
+
+Sendo que este PESO é fornecido em quilos enquanto que a ALTURA em metros. Então temos um problema aqui, pois o usuário deve digitar um valor decimal, para conseguirmos isso vamos utilizar o formato: \textbf{PIC ZZ9V99}. Que representa um número com 3 dígitos inteiros e 2 casas decimais (exemplo: 51.75) o carácter \textbf{Z} elimina os zeros a esquerda. E o \textbf{V} é o ponto decimal virtual, que não aparece no armazenamento, mas é considerado no cálculo.
+
+\begin{note}[Ponto ou Vírgula decimal?]
+	A maioria das linguagens derivam dos padrões da Língua Inglesa. Cobol não é nenhuma exceção, sendo assim todas as entradas e saídas são mostradas com o uso do ponto (e não vírgula) decimal. Não esqueça disso na hora de digitar a informação.
+\end{note}
+
+Acredito que agora estamos prontos para codificar nosso programa:
+\begin{lstlisting}[]
+000001 IDENTIFICATION DIVISION.
+000002     PROGRAM-ID. IMC.
+000003     AUTHOR. Fernando Anselmo.
+000004
+000005 ENVIRONMENT DIVISION.
+000006
+000007 DATA DIVISION.
+000008 WORKING-STORAGE SECTION. 
+000009 
+000010 01 ALTURA    PIC 9V99.
+000011 01 PESO      PIC 999.
+000012 01 IMC_TOTAL PIC ZZ9.99.
+000013
+000014 PROCEDURE DIVISION.
+000015 PRINCIPAL.
+000016     DISPLAY "Entre com sua altura (em Mt): ".
+000017     ACCEPT ALTURA.
+000018     DISPLAY "Entre com seu peso (em Kg): ".
+000019     ACCEPT PESO.
+000020
+000021     COMPUTE IMC_TOTAL = PESO / (ALTURA ** 2).
+000022     DISPLAY "Seu IMC é " IMC_TOTAL.
+000023
+000024 STOP RUN.
+000025 END PROGRAM IMC.
+
+\end{lstlisting}
+
+Vamos para os detalhes, na seção WORKING-STORAGE SECTION que declara as variáveis utilizadas durante a execução do programa. Temos:
+\begin{itemize}
+	\item \textbf{ALTURA}: com formato PIC 9V99 que representa um número com 1 dígito inteiro e 2 casas decimais (exemplo: 1.65).
+	\item \textbf{PESO}: com formato PIC 999 que representa um número inteiro de até 3 dígitos (exemplo: 75).
+	\item \textbf{IMC\_TOTAL}: com formato PIC ZZ9.99 que representa o resultado do IMC com até 3 dígitos antes do ponto decimal e 2 após. Lembrando que carácter \textbf{Z} suprime zeros à esquerda, então, ao invés de apresentarmos 030.32 será exibido como 30.32.
+\end{itemize}
+
+Agora vamos na divisão que representa nosso programa, adoto por um simples padrão pessoal o rótulo \textbf{PRINCIPAL} que é o ponto de entrada do programa (semelhante a \textit{main} em outras linguagens).
+
+Temos a entrada de duas variáveis a altura em metros e o peso em quilogramas. O comando \textbf{ACCEPT} captura os valores fornecidos pelo usuário e armazena nas variáveis correspondentes (ALTURA e PESO).
+
+Em seguida o comando \textbf{COMPUTE} realiza o cálculo do IMC, o símbolo \textbf{**} representa a operação de exponenciação (potenciação). Utilizada para calcular o valor de uma base elevada a uma potência (ou expoente).
+
+\begin{note}[Ordem de precedência]
+	Os parênteses adicionados no comando são usados somente para facilitar a clareza do código pois não são necessários, a exponenciação tem maior precedência do que multiplicação (*) e divisão (/). Mas a utilização de parênteses facilita a clareza e leitura de fórmulas, e não prejudica a performance do programa, assim é recomendável sua utilização.
+\end{note}
+ 
+E por fim, o comando \textbf{DISPLAY} mostra a mensagem com o valor do IMC calculado (formatado pela cláusula de edição ZZ9.99).
+
+Salvamos este programa com o nome \textit{IMC.cbl}, e em seguida devemos compilar com o comando: \\
+\codigo{\$ cobc -x IMC.cbl}
+
+Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do Linux e basta apenas o comando: \\
+\codigo{\$ ./IMC}
+
+Será solicitado para digitarmos a altura (por exemplo, 1.6) e em seguida o peso (por exemplo, 70) e mostra a mensagem com o IMC calculado (que pelo exemplo deve ser 27.34).
 \clearpage
