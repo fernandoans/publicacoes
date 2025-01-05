@@ -1,0 +1,245 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 2
+%------------------------------------------------------------------------------------
+\chapterimage{headMontagem.png}
+\chapter{Cobol como Banco de Dados}
+
+\begin{remark}
+	"A coisa mais perigosa que você pode dizer é: 'Sempre fizemos assim.'" (\textit{Grace Hopper}, pioneira da computação.) 
+\end{remark}
+
+\section{Trabalhar com Dados}\index{Cobol como Banco de Dados}
+Obviamente todos sabem que o forte do Cobol é sua capacidade de processar dados, e são a razão da existência do Cobol até os dias atuais. Nenhum outro banco de dados (seja SQL ou NoSQL) possui a capacidade de um sistema em Cobol, pergunte a qualquer instituição financeira se eles trocariam o Cobol por outro sistema (mesmo nos dias atuais com a dificuldade em se encontrar quem forneça manutenção para tais sistemas).
+
+Vamos começar com leitura de dados simples através de um arquivo sequencial, o detalhe mais importante aqui é que o Cobol faz isso através das leituras das POSIÇÕES dos dados, por exemplo o seguinte arquivo:
+
+\begin{lstlisting}[]
+12321Joao                Silva               M
+13434Maria               Silva               F
+43543Luiza               Albuquerque         F
+53453Mario               Oliveira            M
+43454Samara              Correia             F
+87978Alberico            Soares              M
+87886Carlos              Souza               M
+76535Joao                Ramalho             M
+54543Roberta             Martins             F
+\end{lstlisting}
+
+Observamos que as colunas de 1 a 5 contém a matrícula do funcionários, as 20 próximas colunas (6 a 25) seu nome, as próximas 20 (26 a 35) seu último nome e o carácter 46 contém o gênero. E é dessa forma que devemos informar ao Cobol de modo que a leitura seja informada corretamente.
+
+\begin{note}[Notação dos códigos]
+	Apenas para facilitar a leitura a partir desse programa iremos suprimir os números das linhas e o espaçamento inicial, considere que o código do programa SEMPRE deve começar a partir da coluna 7.
+\end{note}
+
+Dessa vez vamos por partes no programa que leia os valores contidos neste arquivo e mostre na saída cada um deles, ao término quantos homens (último campo como "M") e quantas mulheres (último campo como "F") existem na empresa. Vamos ver este programa divisão a divisão.
+
+Na \textbf{IDENTIFICATION} não existe muitas modificações:
+\begin{lstlisting}[]
+IDENTIFICATION DIVISION.
+    PROGRAM-ID. ContagemFuncionarios.
+    AUTHOR. Fernando Anselmo.	
+\end{lstlisting}
+
+Como sempre colocamos o nome do programa na \textbf{PROGRAM-ID} e o autor deste na \textbf{AUTHOR}. O nome do programa é o único parâmetro obrigatório os outros totalmente opcionais (tanto que até o momento além do \textbf{AUTHOR} não foram usados), para conhecimento, são eles:
+\begin{itemize}
+	\item \textbf{INSTALLATION}: Indica o nome da instalação ou organização onde o programa será executado.
+	\item \textbf{DATE-WRITTEN}: Especifica a data em que o programa foi escrito.
+	\item \textbf{DATE-COMPILED}: Indica a data em que o programa foi compilado.
+	\item \textbf{SECURITY}: Fornece informações de segurança relacionadas ao programa.
+	\item \textbf{REMARKS}: Permite adicionar comentários ou notas livres sobre o programa.
+\end{itemize}
+
+São meramente descritivos e não possuem qualquer impacto na execução do programa, sendo apenas informativos. Por exemplo, aqui está uma \textbf{IDENTIFICATION DIVISION} completa:
+\begin{lstlisting}[]
+IDENTIFICATION DIVISION.
+    PROGRAM-ID. ContagemFuncionarios.
+    AUTHOR. Fernando Anselmo.
+    INSTALLATION. Empresa Decus in Labore.
+    DATE-WRITTEN. 12-JAN-2025.
+    DATE-COMPILED. 16-JAN-2025.
+    SECURITY. Apenas para uso interno.
+    REMARKS. Programa para contagem da equipe de instrutores.
+\end{lstlisting}
+
+A \textbf{ENVIRONMENT} começa a mudar um pouco, pois precisamos indicar o arquivo:
+\begin{lstlisting}[]
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+FILE-CONTROL.
+    SELECT FUNCIONARIOS ASSIGN TO "FUNCIONARIOS.DATA"
+        ORGANIZATION IS LINE SEQUENTIAL.	
+\end{lstlisting}
+
+Esta divisão descreve o ambiente de execução do programa, incluindo os dispositivos de entrada e saída, como arquivos, impressoras e terminais. Assim, criamos a \textbf{INPUT-OUTPUT SECTION} que especifica os arquivos que serão manipulados pelo programa. Nessa temos a \textbf{FILE-CONTROL} para informar como associar os arquivos lógicos do COBOL (usados no código) aos arquivos físicos (armazenados no sistema de arquivos).
+
+\textbf{SELECT} no Cobol é diferente do SQL, aqui associa o nome lógico do arquivo no programa (FUNCIONARIOS) ao nome físico no sistema de arquivos. E a cláusula \textbf{ASSIGN TO} define o nome físico do arquivo, ou seja, seu nome real no sistema operacional.
+
+\textbf{ORGANIZATION} mostra como os dados no arquivo estão organizados. E finalmente \textbf{LINE SEQUENTIAL} significa que o arquivo é baseado em linhas, como um arquivo de texto comum. Cada registro no arquivo termina com um caractere de nova linha (\\n) ou sequência equivalente no sistema.
+
+\begin{lstlisting}[]
+DATA DIVISION.
+FILE SECTION.
+FD FUNCIONARIOS.
+01 DETALHEFUNCIONARIO.
+   88 FINALREGISTRO VALUE HIGH-VALUES.
+   05 MATRICULA-FUNCIONARIO   PIC 9(5).
+   05 NOME-FUNCIONARIO.
+       10 PRIMEIRO-NOME       PIC X(20).
+       10 ULTIMO-NOME         PIC X(20).
+   05 GENERO                  PIC X(1).
+
+WORKING-STORAGE SECTION.
+01 CONTADORES.
+   05 TOTAL-HOMENS            PIC 9(3) VALUE 0.
+   05 TOTAL-MULHERES          PIC 9(3) VALUE 0.
+
+01 LEITURA-FINALIZADA          PIC X VALUE "N".	
+\end{lstlisting}
+
+Agora temos a \textbf{FILE SECTION} que define a estrutura do arquivo que será lido, o nome desse deve ser exatamente o descrito na cláusula \textbf{SELECT}. O detalhe que vale atenção é a existencia do registro 88 que é definido para indicar o fim dos registros no arquivo ou quando não há mais dados válidos. Utiliza o valor especial \textbf{HIGH-VALUES}, que representa o valor mais alto possível para o conjunto de caracteres em uma tabela de códigos, como \textbf{EBCDIC} ou \textbf{ASCII}.
+
+Em seguida montamos a estrutura completa como o Cobol armazena cada linha que será lida. A \textbf{WORKING-STORAGE SECTION} contém a definição dos contadores que usaremos para definir o total de homens e mulheres. E uma chave que usamos para indicar que terminamos a leitura do programa.
+
+E por fim a \textbf{PROCEDURE}:
+\begin{lstlisting}[]
+PROCEDURE DIVISION.
+INICIO.
+    DISPLAY "===============================".
+    DISPLAY " Contagem de Funcionários".
+    DISPLAY "===============================".
+
+    OPEN INPUT FUNCIONARIOS.
+
+    PERFORM UNTIL LEITURA-FINALIZADA = "S"
+        READ FUNCIONARIOS INTO DETALHEFUNCIONARIO
+            AT END
+                MOVE "S" TO LEITURA-FINALIZADA
+            NOT AT END
+                INSPECT PRIMEIRO-NOME REPLACING ALL " " 
+                    BY LOW-VALUES
+                INSPECT ULTIMO-NOME REPLACING ALL " " 
+                    BY LOW-VALUES
+                DISPLAY MATRICULA-FUNCIONARIO " " GENERO " "
+                   PRIMEIRO-NOME " " ULTIMO-NOME
+                IF GENERO = "M"
+                    ADD 1 TO TOTAL-HOMENS
+                ELSE
+                    IF GENERO = "F"
+                        ADD 1 TO TOTAL-MULHERES
+                    END-IF
+                END-IF
+        END-READ
+    END-PERFORM. 
+
+    CLOSE FUNCIONARIOS.
+
+    DISPLAY "=============================".
+    DISPLAY "Resumo:".
+    DISPLAY " Total de Homens..: " TOTAL-HOMENS.
+    DISPLAY " Total de Mulheres: " TOTAL-MULHERES.
+    DISPLAY "=============================".
+
+    STOP RUN.	
+\end{lstlisting}
+
+Pode parecer bem estranha essa estrutura mas vamos simplificar um pouco, o comando \textbf{OPEN INPUT} abre o arquivo para leitura e em seguida temos um laço \textbf{PERFORM UNTIL}, que possui a seguinte estrutura simplificada:
+\begin{lstlisting}[]
+READ FUNCIONARIOS INTO DETALHEFUNCIONARIO
+   AT END
+       MOVE "S" TO LEITURA-FINALIZADA
+   NOT AT END
+       DISPLAY "Registro válido."
+END-READ
+\end{lstlisting}
+
+Quando o arquivo alcança o fim ou quando um registro vazio (sem dados válidos) é lido, o COBOL pode preencher aquele campo do registro \textbf{HIGH-VALUES}. Temos dois comandos básicos \textbf{AT END} quando o fim for atingido e \textbf{NOT AT END} enquanto não for.
+
+O detalhe mais importante aqui é a falta do "." (ponto final) nas instruções, toda vez que estamos dentro de um comando NÃO usamos mais o ponto final para indicar o fim do comando, sendo assim esse só será usado no \textbf{END-PERFORM}.
+
+A instrução \textbf{INSPECT [VARIÁVEL] REPLACING ALL " " BY LOW-VALUES} retira qualquer espaço em branco, assim temos que ter todo cuidado ao usá-lo, pois se tivéssemos um valor "  Meu Nome é Fernando", o resultado seria: "MeuNomeéFernando", ou seja, não pense nisso como um equivalente ao método \textbf{TRIM()} de outras linguagens. Esse é um dos motivos de até nos dias atuais em bancos modernos acostumarmos com a separação dos nomes em primeiro e último sem o uso de outros nomes intermediários, mesmo com as linguagens mais modernas.
+
+O comando \textbf{IF} do Cobol, possui a cláusula opcional \textbf{ELSE} e deve ser terminado com \textbf{END-IF}, e no nosso caso é utilizado para totalizar o total de homens e mulheres, é óbvio que poderíamos simplificá-lo para:
+\begin{lstlisting}[]
+IF GENERO = "M"
+    ADD 1 TO TOTAL-HOMENS
+ELSE
+    ADD 1 TO TOTAL-MULHERES
+END-IF
+\end{lstlisting}
+
+Mas estaríamos arriscando que se houvesse um erro no registro e não contivesse o valor "M" ou "F" seria totalizado como uma mulher, e apenas para garantirmos a totalização correta adicionamos mais um \textbf{IF} para verificarmos se realmente o gênero contém o carácter "F".
+
+Ao término da leitura dos dados fechamos o arquivo \textbf{CLOSE FUNCIONARIOS} e mostramos a totalização dos dados.
+
+\section{Separação em \textit{Labels}}\index{Cobol como Banco de Dados}
+O programa visto anteriormente realiza sua função corretamente, porém está estruturado de forma incorreta o ideal é sempre deixá-lo mais claro e organizado. Em COBOL, pode ser feito com a utilização de parágrafos (chamados de \textit{labels}).
+
+Descrição dos parágrafos:
+\begin{enumerate}
+	\item \textbf{PROCESSAR-REGISTROS}: que controla o loop principal e chama as funções para leitura do arquivo, exibição dos dados e contagem de gênero.
+	\item \textbf{LER-REGISTRO}: responsável por ler um registro do arquivo e determina se é o fim do arquivo (\textbf{AT END}).
+	\item \textbf{EXIBIR-FUNCIONARIO}: para mostrar os dados do funcionário no console.
+	\item \textbf{CONTAR-GENERO}: que incrementa os contadores de homens e mulheres com base no campo GENERO.
+	\item \textbf{EXIBIR-RESUMO}: para mostrar o total de homens e mulheres ao final.
+\end{enumerate}
+
+Essa reestruturação sempre deve ser aplicada se pensarmos na \textbf{clareza} onde cada funcionalidade é separada em parágrafos específicos, para facilitar a leitura, ou \textbf{reutilização} onde os parágrafos podem ser chamados em diferentes partes do programa se necessário. Mas devemos sempre aplicar quando pensamos principalmente na \textbf{manutenção} do código, pois alterações em uma parte específica não afetam outras funcionalidades e são muito mais fáceis de serem manejadas.
+
+O comando \textbf{PERFORM} é o responsável para a chamada de cada um desses \textit{labels}, o que acontece, o \textbf{label} é chamado e ao seu término retorna a execução para o ponto de chamada. Assim a \textbf{PROCEDURE DIVISION} vista no programa anterior seria assim redefinida:
+
+\begin{lstlisting}[]
+PROCEDURE DIVISION.
+INICIO.
+    DISPLAY "===============================".
+    DISPLAY " Contagem de Funcionários".
+    DISPLAY "===============================".
+
+    OPEN INPUT FUNCIONARIOS.
+    PERFORM PROCESSAR-REGISTROS.
+    CLOSE FUNCIONARIOS.
+    PERFORM EXIBIR-RESUMO.
+    STOP RUN.
+
+PROCESSAR-REGISTROS.
+    PERFORM UNTIL LEITURA-FINALIZADA = "S"
+       PERFORM LER-REGISTRO
+       IF LEITURA-FINALIZADA NOT = "S"
+          PERFORM EXIBIR-FUNCIONARIO
+          PERFORM CONTAR-GENERO
+       END-IF
+    END-PERFORM.    
+
+LER-REGISTRO. 
+    READ FUNCIONARIOS INTO DETALHEFUNCIONARIO
+        AT END
+            MOVE "S" TO LEITURA-FINALIZADA
+        NOT AT END
+            CONTINUE
+    END-READ.
+
+EXIBIR-FUNCIONARIO.
+    INSPECT PRIMEIRO-NOME REPLACING ALL " " 
+        BY LOW-VALUES
+    INSPECT ULTIMO-NOME REPLACING ALL " " 
+        BY LOW-VALUES
+    DISPLAY MATRICULA-FUNCIONARIO " " GENERO " "
+       PRIMEIRO-NOME " " ULTIMO-NOME. 
+
+CONTAR-GENERO.
+    IF GENERO = "M"
+        ADD 1 TO TOTAL-HOMENS
+    ELSE
+        IF GENERO = "F"
+            ADD 1 TO TOTAL-MULHERES
+        END-IF
+    END-IF.
+
+EXIBIR-RESUMO.
+    DISPLAY "=============================".
+    DISPLAY "Resumo:".
+    DISPLAY " Total de Homens..: " TOTAL-HOMENS.
+    DISPLAY " Total de Mulheres: " TOTAL-MULHERES.
+    DISPLAY "=============================".
+\end{lstlisting}
+
+O resultado da execução é similar ao visto anteriormente, com a grande vantagem que se tivermos que modificar qualquer detalhe do programa saberemos exatamente aonde realizá-lo.
