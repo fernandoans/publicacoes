@@ -1,0 +1,61 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 2
+%------------------------------------------------------------------------------------
+\chapterimage{headMontagem.png}
+\chapter{Passos Iniciais}
+
+\begin{remark}
+	"Aprender uma linguagem como Pascal é mais do que aprender a programar; é aprender a pensar logicamente." (\textit{Donald Knuth}, cientista da computação.) 
+\end{remark}
+
+\section{Hello World}\index{Passos Iniciais}
+É tradição no mundo da programação que devemos começar com o programa "Hello World" quando estamos iniciando o estudo de uma nova linguagem, e quem sou eu para quebrar essa tradição, assim, aqui está o famoso "Hello World" em Pascal:
+\begin{lstlisting}[]
+program hello;
+
+begin
+  WriteLn('Hello World!');
+end.
+\end{lstlisting}
+
+Chega a ser extremamente simples comparando com outras linguagens, o programa sempre inicia com a palavra reservada \textbf{program} e seguida o nome deste, finalizamos a instrução com um ";" (ponto e vírgula). O corpo principal do programa está entre na palavra reservada \textbf{begin} e seu término \textbf{end} que dessa vez deve ser finalizado com um "." (ponto final). E agora temos o comando, ou função se preferir, \textbf{WriteLn} que mostra algo na tela, neste caso o literal 'Hello World!', e uma observação muito importante, não utilizamos ASPAS DUPLAS (como os acostumados das linguagens derivadas de \textbf{C}) mas ASPAS SIMPLES para indicar as literais.
+
+Salvamos este programa com o nome \textit{Hello.pas} (o nome não precisa ser o mesmo da cláusula \textbf{program}), e em seguida devemos compilar com o comando: \\
+\codigo{\$ fpc Hello.pas}
+
+Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do Linux e basta apenas o comando: \\
+\codigo{\$ ./Hello}
+
+\section{Obtendo valores}\index{Passos Iniciais}
+Agora que já agradamos aos deuses da programação, vamos tentar algo mais elaborado, como obter a entrada de duas variáveis numéricas e proceder cálculos aritméticos.
+
+\begin{lstlisting}[]
+program calculadora;
+var 
+  a,b: integer;
+
+begin
+  write('Informe o valor de a: ');
+  read(a);
+  write('Informe o valor de b: ');
+  read(b);
+  writeln('A soma é: ', a+b);
+  writeln('A subtração é: ', a-b);
+  writeln('A divisão é: ', a/b);
+  writeln('A multiplicação é: ', a*b);
+end.
+\end{lstlisting}
+
+Na linguagem Pascal não se importa se escrevemos as funções em letras maiúsculas ou minúsculas (desde que escritas corretamente), assim use a forma que preferir para estas.
+
+Após a definição do programa, temos a palavra chave \textbf{var} que define duas variáveis inteiras \textbf{a} e \textbf{b}. Primeiro solicitamos o valor da primeira, a diferença entre as funções \textbf{write()} e \textbf{writeln()} e que a primeira escreve o valor e para o cursos no mesmo lugar enquanto que a segunda salta para a próxima linha. A função \textbf{read()} aguarda até que o usuário informe um valor e pressione a tecla ENTER e coloca o valor na variável selecionada.
+
+Neste ponto podemos ter um erro no programa, note que nossa variável foi definida com um valor inteiro, caso o usuário informe algo diferente recebemos um \textbf{Runtime error}.
+
+Considerando que dois valores foram informados corretamente, mostramos a soma (+), subtração (-), divisão (/) e multiplicação (*) desses, utilizamos a "," (virgula) para separar o literal do resultado.
+
+Salvamos este programa com o nome \textit{Hello.pas} (o nome não precisa ser o mesmo da cláusula \textbf{program}), e em seguida devemos compilar com o comando: \\
+\codigo{\$ fpc Calculadora.pas}
+
+Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do Linux e basta apenas o comando: \\
+\codigo{\$ ./Calculadora}
