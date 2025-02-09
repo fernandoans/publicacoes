@@ -243,3 +243,244 @@ EXIBIR-RESUMO.
 \end{lstlisting}
 
 O resultado da execução é similar ao visto anteriormente, com a grande vantagem que se tivermos que modificar qualquer detalhe do programa saberemos exatamente aonde realizá-lo.
+
+\section{Ler arquivos CSV}\index{Cobol como Banco de Dados}
+Nativamente no Cobol não existe quaisquer referências a formatos de arquivos usados atualmente de transporte como \textbf{CSV}, \textbf{XML} ou \textbf{JSon}. Mas e se (\textit{what if?}) desejássemos ler tais arquivos? Como fazer? Seria possível criar um programa em Cobol para que obter dados de um arquivo \textbf{CSV} (por exemplo)?
+
+A resposta para isso seria que devemos utilizar de nosso raciocínio lógico e pensar em uma solução, sabemos que em arquivos CSV os valores são separados por algum caractere (geralmente vírgulas), porém não é assim que o Cobol lê arquivos, usa elementos posicionais. Sendo assim podemos ler uma linha inteira e manipulá-la.
+
+Por exemplo, considerando o seguinte arquivo CSV:
+\begin{lstlisting}[]
+Nome,Data Nascimento,Gênero
+Maria Silva,1987,Feminino
+João Silva,1845,Masculino
+Carlos Silva,1956,Masculino
+\end{lstlisting}
+
+Devemos nos ater a alguns detalhes, primeiro o maior tamanho de uma linha (não ultrapassa o tamanho de 100 caracteres) e segundo quantos elementos possui esse arquivo (3 elementos). Agora podemos criar nosso programa:
+\begin{lstlisting}[]
+IDENTIFICATION DIVISION.
+  PROGRAM-ID. LerCsv.
+  AUTHOR. Fernando Anselmo.
+
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+FILE-CONTROL.
+  SELECT ARQ-CSV ASSIGN TO "entrada.csv"
+    ORGANIZATION IS LINE SEQUENTIAL
+    ACCESS IS SEQUENTIAL.
+
+DATA DIVISION.
+FILE SECTION.
+FD ARQ-CSV.
+01 REGISTRO-CSV         PIC X(100).
+
+WORKING-STORAGE SECTION.
+01 WS-FIM-DO-ARQUIVO    PIC X(01) VALUE 'N'.
+01 WS-CONTADOR          PIC 9(05) VALUE ZEROS.
+01 WS-REGISTRO          PIC 9(05) VALUE ZEROS.
+
+01 WS-DETALHE.
+  05 WS-DADO          PIC X(50) OCCURS 3 TIMES.
+
+PROCEDURE DIVISION.
+MAIN-PROCEDURE.
+  OPEN INPUT ARQ-CSV
+  PERFORM LER-CABECALHO
+  PERFORM PROCESSAR-REGISTROS UNTIL WS-FIM-DO-ARQUIVO = 'S'
+  CLOSE ARQ-CSV
+  STOP RUN.
+
+LER-CABECALHO.
+  READ ARQ-CSV INTO REGISTRO-CSV
+    NOT AT END
+      PERFORM SEPARAR-CAMPOS THRU FIM-SEPARAR-CAMPOS
+      DISPLAY "Cabeçalho:"
+      PERFORM EXIBIR THRU FIM-EXIBIR
+  END-READ.
+
+SEPARAR-CAMPOS.
+  MOVE SPACES TO WS-DETALHE
+  UNSTRING REGISTRO-CSV DELIMITED BY ','
+    INTO WS-DADO(1) WS-DADO(2) WS-DADO(3)
+  END-UNSTRING.
+FIM-SEPARAR-CAMPOS.
+  EXIT.
+
+PROCESSAR-REGISTROS.
+  READ ARQ-CSV INTO REGISTRO-CSV
+    AT END
+      MOVE 'S' TO WS-FIM-DO-ARQUIVO
+    NOT AT END
+      ADD 1 TO WS-REGISTRO
+      PERFORM SEPARAR-CAMPOS THRU FIM-SEPARAR-CAMPOS
+      DISPLAY "Registro #" WS-REGISTRO ":"
+      PERFORM EXIBIR THRU FIM-EXIBIR
+  END-READ.
+
+EXIBIR.
+  PERFORM VARYING WS-CONTADOR FROM 1 BY 1 UNTIL WS-CONTADOR > 3
+    DISPLAY "Dado " WS-CONTADOR ": " WS-DADO(WS-CONTADOR)
+  END-PERFORM.
+FIM-EXIBIR.
+  EXIT.	
+\end{lstlisting}
+
+Ler o arquivo será exatamente o mesmo visto anteriormente, com a diferença que leremos uma linha completa, na variável \textbf{REGISTRO-CSV} com 100 caracteres, outro detalhe está em outra variável \textbf{WS-DADO} que ocorre 3 vezes (essa é uma definição de Cobol que indica um \textit{Array} - ou uma \textit{Lista}).
+
+A função principal aqui é \textbf{SEPARAR-CAMPOS} que faz o trabalho com o comando \textbf{UNSTRING} de separar uma linha delimitado por um determinado caractere e colocar cada "pedaço" em um elemento de \textbf{WS-DADO}.
+
+Outro ponto de interesse nesse programa está no método \textbf{EXIBIR} que temos novamente o comando \textbf{PERFORM} utilizado de um modo diferente do que já conhecemos, o formato é similar a um laço de repetição das linguagens atuais, como uma mescla entre comandos \textbf{WHILE} e \textbf{FOR}. Esse comando em GNU Cobol é um laço que percorre um intervalo de valores e executa um bloco de código repetidamente.
+
+\codigo{PERFORM VARYING WS-CONTADOR FROM 1 BY 1 UNTIL WS-CONTADOR > 3}
+
+Esse comando inicializa a variável \textbf{WS-CONTADOR} com o valor 1 (\textbf{FROM 1}). A cada passada, incrementa essa variável de 1 em 1 (\textbf{BY 1}). E continua o laço enquanto o valor for menor ou igual a 3 (\textbf{UNTIL WS-CONTADOR > 3}).
+
+\section{Arquivos Relativos e Indexados}\index{Cobol como Banco de Dados}
+Já sabemos e conhecemos como funciona o formato de arquivos sequenciais que são usados para ler textos e seus registros são lidos em ordem:
+\begin{lstlisting}[]
+SELECT ARQUIVO-TXT ASSIGN TO "clientes.txt"
+  ORGANIZATION IS LINE SEQUENTIAL
+  ACCESS MODE IS SEQUENTIAL.	
+\end{lstlisting}
+
+Mas existem outros formatos conhecidos como \textbf{Arquivos Relativos} (\textit{RELATIVE}), que permitem o acesso direto a um registro específico, com base em seu número relativo:
+\begin{lstlisting}[]
+SELECT ARQUIVO-RELATIVO ASSIGN TO "dados.dat"
+  ORGANIZATION IS RELATIVE
+  ACCESS MODE IS DYNAMIC
+  RELATIVE KEY IS WS-CHAVE-RELATIVA.	
+\end{lstlisting}
+
+Neste caso \textbf{WS-CHAVE} representa a posição do registro no arquivo.
+
+\textbf{Arquivos Indexados} (\textit{INDEXED}), que suportam acesso direto ou sequencial e são úteis para bancos de dados indexados:
+\begin{lstlisting}[]
+SELECT ARQUIVO-INDEXADO ASSIGN TO "dados.idx"
+  ORGANIZATION IS INDEXED
+  ACCESS MODE IS DYNAMIC
+  RECORD KEY IS WS-ID-CLIENTE
+  ALTERNATE RECORD KEY IS WS-NOME-CLIENTE WITH DUPLICATES.	
+\end{lstlisting}
+
+Neste caso, permite pesquisar registros pelo ID (WS-ID-CLIENTE) ou pelo nome (WS-NOME-CLIENTE), sendo que nomes podem se repetir (WITH DUPLICATES).
+
+\section{Gravar e Ler em Arquivos Relativos}\index{Cobol como Banco de Dados}
+Vamos começar com arquivos relativos, criaremos um programa para cadastrar e ler uma tabela contendo dados básicos de alunos, tais como, matrícula, nome e idade.
+
+As duas primeiras divisões são assim construídas:
+\begin{lstlisting}[]
+IDENTIFICATION DIVISION.
+  PROGRAM-ID. ALUNO-RELATIVO.
+
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+FILE-CONTROL.
+  SELECT ARQUIVO-ALUNO ASSIGN TO "alunos.dat"
+    ORGANIZATION IS RELATIVE
+    ACCESS MODE IS DYNAMIC
+    RELATIVE KEY IS WS-CHAVE-RELATIVA.	
+\end{lstlisting}
+
+Este arquivo \textbf{alunos.dat} deve estar anteriormente criado, apenas um simples arquivo vazio (podemos usar um editor qualquer para realizar esse procedimento). No Linux com o comando: \\
+\codigo{\$ touch alunos.dat}
+
+Quando este arquivo é aberto, o GNU Cobol irá transformá-lo para um formato binário que não deve mais ser lido por um editor comum.
+
+\begin{lstlisting}[]
+DATA DIVISION.
+FILE SECTION.
+FD ARQUIVO-ALUNO.
+01 REGISTRO-ALUNO.
+  05 WS-MATRICULA      PIC 9(3).  
+  05 WS-NOME           PIC X(30). 
+  05 WS-IDADE          PIC 9(2).  
+
+WORKING-STORAGE SECTION.
+01 OPCAO                PIC 9.
+01 WS-CHAVE-RELATIVA    PIC 9(3).
+01 WS-CHAVE-BUSCA       PIC 9(3).	
+\end{lstlisting}
+
+Próximo passo e estruturarmos o arquivo e definir as variáveis que iremos utilizar, \textbf{WS-CHAVE-RELATIVA} é uma associação da chave do arquivo.
+
+Agora na \textbf{PROCEDURE DIVISION}, inicialmente temos:
+\begin{lstlisting}[]
+PROCEDURE DIVISION.
+  INICIO.
+  DISPLAY "--------------------".
+  DISPLAY "Sistema de Alunos".
+  DISPLAY "--------------------".
+  DISPLAY "1 - Inserir Aluno".
+  DISPLAY "2 - Buscar Aluno".
+  DISPLAY "3 - Sair".
+  ACCEPT OPCAO.
+
+  EVALUATE OPCAO
+    WHEN 1
+      PERFORM INSERIR-ALUNO
+    WHEN 2
+      PERFORM BUSCAR-ALUNO
+    WHEN 3
+      STOP RUN
+    WHEN OTHER
+      DISPLAY "Opção Inválida!" 
+      PERFORM INICIO
+  END-EVALUATE.	
+\end{lstlisting}
+
+Neste ponto construímos o Menu de Opções no qual podemos escolher uma criar um novo aluno ou buscar um determinado aluno. O comando \textbf{EVALUATE} é similar a um comando ESCOLHA (\textit{switch}) atual.
+
+\begin{lstlisting}[]
+INSERIR-ALUNO.
+  DISPLAY "--------------------".
+  DISPLAY "Cadastrar Aluno".
+  DISPLAY "--------------------".
+  DISPLAY "Matrícula do Aluno: ".
+  ACCEPT WS-CHAVE-RELATIVA.
+  MOVE WS-CHAVE-RELATIVA TO WS-MATRICULA.
+  DISPLAY "Nome do Aluno: ".
+  ACCEPT WS-NOME.
+  DISPLAY "Idade do Aluno: ".
+  ACCEPT WS-IDADE.
+
+  OPEN I-O ARQUIVO-ALUNO.
+  WRITE REGISTRO-ALUNO INVALID KEY
+  DISPLAY "Erro ao gravar o registro!".
+  CLOSE ARQUIVO-ALUNO.
+
+  DISPLAY "Aluno gravado com sucesso!".
+  PERFORM INICIO.	
+\end{lstlisting}
+
+Na fase de incluir um aluno solicitamos os dados deste, observa-se que temos que realizar um movimento entre a \textbf{WS-CHAVE-RELATIVA} para \textbf{WS-MATRICULA} de modo que o registro seja preenchido corretamente.
+
+Outro detalhe interessante, que é adotado atualmente em sistemas modernos é: Abrir o arquivo, realizar uma operação e fechá-lo. Isso garante que o arquivo não permaneça aberto que pode gerar problemas de performance, ou mesmo excesso de usuários.
+
+\begin{lstlisting}[]
+BUSCAR-ALUNO.
+  DISPLAY "--------------------".
+  DISPLAY "Buscar Aluno".
+  DISPLAY "--------------------".
+  DISPLAY "Qual matrícula deseja obter? ".
+  ACCEPT WS-CHAVE-BUSCA.
+
+  OPEN INPUT ARQUIVO-ALUNO.
+  MOVE WS-CHAVE-BUSCA TO WS-CHAVE-RELATIVA.
+  READ ARQUIVO-ALUNO INVALID KEY
+    DISPLAY "Registro não encontrado!"
+  NOT INVALID KEY
+    DISPLAY "--------------------"
+    DISPLAY "Aluno Encontrado:"
+    DISPLAY "Matrícula: " WS-MATRICULA
+    DISPLAY "Nome: " WS-NOME
+    DISPLAY "Idade: " WS-IDADE
+  END-READ.
+  CLOSE ARQUIVO-ALUNO.
+
+  PERFORM INICIO.	
+\end{lstlisting}
+
+Para trazer o aluno, basta abrir o arquivo, obter o registro através da chave digitada, mostrar os dados e fechar o arquivo.
+
+\clearpage

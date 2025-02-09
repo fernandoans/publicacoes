@@ -59,3 +59,150 @@ Salvamos este programa com o nome \textit{Hello.pas} (o nome não precisa ser o 
 
 Nesse momento aconteceu a magia pois o nosso programa foi transformado em um executável do Linux e basta apenas o comando: \\
 \codigo{\$ ./Calculadora}
+
+\section{Fórmula de Bháskara}\index{Passos Iniciais}
+Esse programa resolve uma equação do segundo grau com a utilização da \textbf{Fórmula de Bhaskara}.
+\begin{lstlisting}[]
+program bhaskara;
+var
+  a, b, c: integer;
+var
+  delta, tstDelta: real;
+
+begin
+  write('Informe o valor da raiz a: ');
+  read(a);
+  write('Informe o valor da raiz b: ');
+  read(b);
+  write('Informe o valor da raiz c: ');
+  read(c);
+
+  tstDelta := (b*b) - (4*a*c);
+
+  writeln('Para a função ', a, 'x^2 + ', b, 'x + ', c, ' temos:');
+  if tstDelta < 0 then
+    writeln('Não existem raízes reais.')
+  else if tstDelta = 0 then
+    writeln('Existe apenas uma raiz real: ', -b / (2*a) :5:2)
+  else
+    begin
+      delta := sqrt(tstDelta);
+      writeln('Delta: ', delta:5:2);
+      writeln('x' : ', (-b + delta) / (2*a) :5:2);
+      writeln('x'' : ', (-b - delta) / (2*a) :5:2);
+    end;
+end.	
+\end{lstlisting}
+
+Começamos o programa com a definição de dois grupos de variáveis:  \vspace{-1em}
+\begin{itemize}
+	\item a, b, c: São os coeficientes da equação do segundo grau $ax^2 + bx + c = 0$. Foram declarados como inteiros (integer).
+	\item delta e tstDelta: São valores decimais (real). O delta é a parte da fórmula de Bháskara que determina se há raízes reais.
+\end{itemize}
+
+A primeira parte, do programa propriamente dito, obtém os valores de \textbf{a}, \textbf{b} e \textbf{c}. E calculamos o valor de Delta, com base na seguinte fórmula:
+\[
+\Delta = b^2 - 4ac
+\]
+O valor de \textbf{tstDelta} (uma variável auxiliar) armazena esse cálculo. Uma vez que temos esse valor, podemos julgá-lo para verificar se a equação tem soluções reais: \vspace{-1em}
+\begin{itemize}
+	\item Se $\Delta < 0$, não existem raízes reais (não há solução no conjunto dos números reais).
+	\item Se $\Delta = 0$, há uma única raiz real, pois a fórmula se reduz $a - b / 2a$.
+\end{itemize}
+
+Agora se $\Delta > 0$, devemos calcular a raiz quadrada de $\Delta$ usando sqrt(tstDelta). As raízes são calculadas com a fórmula:
+\[
+  x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+\]
+Salvamos este programa com o nome \textit{Equacao.pas}, e em seguida devemos compilar com o comando: \\
+\codigo{\$ fpc Equacao.pas}
+
+E executamos com o comando: \\
+\codigo{\$ ./Equacao}
+
+O programa funciona perfeitamente porém não é assim que normalmente usamos uma linguagem estruturada, pois dessa forma não estaremos facilitando a manutenção. Vamos utilizar 2 componentes em Pascal. \vspace{-2em}
+\begin{enumerate}
+	\item \textbf{Função (function)} - Uma função retorna um valor. Ou seja, calcula algo e retorna um determinado resultado.
+	\item \textbf{Procedimento (procedure)} - Um procedimento não retorna valores diretamente. Utilizado para executar ações, como exibir mensagens ou modificar variáveis.
+\end{enumerate}
+
+Estrutura de uma função:
+\begin{lstlisting}[]
+function NomeDaFuncao(parametros): TipoDeRetorno;
+begin
+  NomeDaFuncao := valor;  { Retorna um valor }
+end;
+\end{lstlisting}
+
+Estrutura de um procedimento:
+\begin{lstlisting}[]
+procedure NomeDoProcedimento(parametros);
+begin
+  { Faz algo, mas não retorna nada }
+end;	
+\end{lstlisting}
+
+Sabendo disso, agora podemos reescrever o mesmo programa para:
+\begin{lstlisting}[]
+program bhaskara;
+
+uses math;  { Para usar a função sqrt() }
+
+{ Função para ler um número inteiro com uma mensagem personalizada }
+function lerNumero(msg: string): integer;
+var
+  num: integer;
+begin
+  write(msg);
+  readln(num);
+  lerNumero := num;  { Retorna o número digitado }
+end;
+
+{ Função para calcular Delta }
+function calcularDelta(a, b, c: integer): real;
+begin
+  calcularDelta := (b * b) - (4 * a * c);
+end;
+
+{ Procedimento para calcular e exibir as raízes, se existirem }
+procedure calcularRaizes(a, b: integer; delta: real);
+var
+  raiz1, raiz2: real;
+begin
+  if delta < 0 then
+    writeln('Não existem raízes reais.')
+  else if delta = 0 then
+    writeln('Existe apenas uma raiz real: ', -b / (2 * a) :5:2)
+  else
+    begin
+      raiz1 := (-b + sqrt(delta)) / (2 * a);
+      raiz2 := (-b - sqrt(delta)) / (2 * a);
+      writeln('Delta: ', delta:5:2);
+      writeln('x' : ', raiz1:5:2);
+      writeln('x'' : ', raiz2:5:2);
+    end;
+end;
+
+{ Procedimento para ler os coeficientes da equação }
+procedure lerCoeficientes(var a, b, c: integer);
+begin
+  a := lerNumero('Informe o valor de a: ');
+  b := lerNumero('Informe o valor de b: ');
+  c := lerNumero('Informe o valor de c: ');
+end;
+
+{ Programa principal }
+var
+  a, b, c: integer;
+  delta: real;
+begin
+  lerCoeficientes(a, b, c);
+  delta := calcularDelta(a, b, c);
+  writeln('Para a função ', a, 'x^2 + ', b, 'x + ', c, ' temos:');
+  calcularRaizes(a, b, delta);
+end.
+\end{lstlisting}
+
+Com isso posto, apesar do programa ter crescido muito, observamos uma melhor legibilidade pois o código principal ficou menor e mais fácil de entender. Além disso podemos reusar várias funções ou procedimentos em diversos outros programas.
+
+\clearpage
