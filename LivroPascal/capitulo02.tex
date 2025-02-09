@@ -67,7 +67,7 @@ program bhaskara;
 var
   a, b, c: integer;
 var
-  delta, tstDelta: real;
+  delta: real;
 
 begin
   write('Informe o valor da raiz a: ');
@@ -77,19 +77,18 @@ begin
   write('Informe o valor da raiz c: ');
   read(c);
 
-  tstDelta := (b*b) - (4*a*c);
+  delta := (b*b) - (4*a*c);
 
   writeln('Para a função ', a, 'x^2 + ', b, 'x + ', c, ' temos:');
-  if tstDelta < 0 then
+  if delta < 0 then
     writeln('Não existem raízes reais.')
-  else if tstDelta = 0 then
-    writeln('Existe apenas uma raiz real: ', -b / (2*a) :5:2)
+  else if delta = 0 then
+    writeln('Existe apenas uma raiz real: ', -b / (2 * a) :5:2)
   else
     begin
-      delta := sqrt(tstDelta);
       writeln('Delta: ', delta:5:2);
-      writeln('x' : ', (-b + delta) / (2*a) :5:2);
-      writeln('x'' : ', (-b - delta) / (2*a) :5:2);
+      writeln('x' : ', (-b + sqrt(delta)) / (2*a) :5:2);
+      writeln('x'' : ', (-b - sqrt(delta)) / (2*a) :5:2);
     end;
 end.	
 \end{lstlisting}
@@ -97,22 +96,22 @@ end.
 Começamos o programa com a definição de dois grupos de variáveis:  \vspace{-1em}
 \begin{itemize}
 	\item a, b, c: São os coeficientes da equação do segundo grau $ax^2 + bx + c = 0$. Foram declarados como inteiros (integer).
-	\item delta e tstDelta: São valores decimais (real). O delta é a parte da fórmula de Bháskara que determina se há raízes reais.
+	\item delta: É valor decimal (real). O delta é a parte da fórmula de Bháskara que determina se existem raízes reais.
 \end{itemize}
 
-A primeira parte, do programa propriamente dito, obtém os valores de \textbf{a}, \textbf{b} e \textbf{c}. E calculamos o valor de Delta, com base na seguinte fórmula:
+A primeira parte, do programa propriamente dito, obtém os valores de \textbf{a}, \textbf{b} e \textbf{c}. Calculamos o valor de Delta, com base na seguinte fórmula:
 \[
 \Delta = b^2 - 4ac
 \]
-O valor de \textbf{tstDelta} (uma variável auxiliar) armazena esse cálculo. Uma vez que temos esse valor, podemos julgá-lo para verificar se a equação tem soluções reais: \vspace{-1em}
+A variável \textbf{delta} (uma variável auxiliar) armazena esse cálculo. Uma vez que temos esse valor, podemos julgá-lo para verificar se a equação tem soluções reais: \vspace{-1em}
 \begin{itemize}
-	\item Se $\Delta < 0$, não existem raízes reais (não há solução no conjunto dos números reais).
-	\item Se $\Delta = 0$, há uma única raiz real, pois a fórmula se reduz $a - b / 2a$.
+	\item Se $\delta < 0$, não existem raízes reais (não há solução no conjunto dos números reais).
+	\item Se $\delta = 0$, há uma única raiz real, pois a fórmula se reduz $a - b / 2a$.
 \end{itemize}
 
-Agora se $\Delta > 0$, devemos calcular a raiz quadrada de $\Delta$ usando sqrt(tstDelta). As raízes são calculadas com a fórmula:
+As raízes são calculadas com a fórmula:
 \[
-  x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}
+  x = \frac{-b \pm \sqrt{\Delta}}{2a}
 \]
 Salvamos este programa com o nome \textit{Equacao.pas}, e em seguida devemos compilar com o comando: \\
 \codigo{\$ fpc Equacao.pas}
@@ -150,12 +149,9 @@ uses math;  { Para usar a função sqrt() }
 
 { Função para ler um número inteiro com uma mensagem personalizada }
 function lerNumero(msg: string): integer;
-var
-  num: integer;
 begin
   write(msg);
-  readln(num);
-  lerNumero := num;  { Retorna o número digitado }
+  readln(lerNumero);
 end;
 
 { Função para calcular Delta }

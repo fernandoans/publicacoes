@@ -2,7 +2,7 @@ program bhaskara;
 var
   a, b, c: integer;
 var
-  delta, tstDelta: real;
+  delta: real;
 
 begin
   write('Informe o valor da raiz a: ');
@@ -12,18 +12,17 @@ begin
   write('Informe o valor da raiz c: ');
   read(c);
 
-  tstDelta := (b*b) - (4*a*c);
+  delta := (b*b) - (4*a*c);
 
   writeln('Para a função ', a, 'x² + ', b, 'x + ', c, ' temos:');
-  if tstDelta < 0 then
+  if delta < 0 then
     writeln('Não existem raízes reais.')
-  else if tstDelta = 0 then
-    writeln('Raízes iguais a Zero.')
+  else if delta = 0 then
+    writeln('Existe apenas uma raiz real: ', -b / (2 * a) :5:2)
   else
     begin
-      delta := sqrt(tstDelta);
       writeln('Delta: ', delta:5:2);
-      writeln('x´ : ', (-b + delta) / (2*a) :5:2);
-      writeln('x´´ : ', (-b - delta) / (2*a) :5:2);
+      writeln('x´ : ', (-b + sqrt(delta)) / (2*a) :5:2);
+      writeln('x´´ : ', (-b - sqrt(delta)) / (2*a) :5:2);
     end;
 end.
