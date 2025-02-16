@@ -397,7 +397,7 @@ FD ARQUIVO-ALUNO.
   05 WS-IDADE          PIC 9(2).  
 
 WORKING-STORAGE SECTION.
-01 OPCAO                PIC 9.
+01 WS-OPCAO             PIC 9.
 01 WS-CHAVE-RELATIVA    PIC 9(3).
 01 WS-CHAVE-BUSCA       PIC 9(3).	
 \end{lstlisting}
@@ -407,16 +407,16 @@ Próximo passo e estruturarmos o arquivo e definir as variáveis que iremos util
 Agora na \textbf{PROCEDURE DIVISION}, inicialmente temos:
 \begin{lstlisting}[]
 PROCEDURE DIVISION.
-  INICIO.
+INICIO.
   DISPLAY "--------------------".
   DISPLAY "Sistema de Alunos".
   DISPLAY "--------------------".
   DISPLAY "1 - Inserir Aluno".
   DISPLAY "2 - Buscar Aluno".
   DISPLAY "3 - Sair".
-  ACCEPT OPCAO.
+  ACCEPT WS-OPCAO.
 
-  EVALUATE OPCAO
+  EVALUATE WS-OPCAO
     WHEN 1
       PERFORM INSERIR-ALUNO
     WHEN 2
@@ -482,5 +482,272 @@ BUSCAR-ALUNO.
 \end{lstlisting}
 
 Para trazer o aluno, basta abrir o arquivo, obter o registro através da chave digitada, mostrar os dados e fechar o arquivo.
+
+\section{Arquivos Indexados}\index{Cobol como Banco de Dados}
+
+Agora vamos criar um \textbf{CRUD} \footnote{CRUD é um acrônimo para as quatro operações básicas que podem ser realizadas em um banco de dados ou arquivo: \textbf{C}reate (Criar), adicionar novos registros; \textbf{R}ead (Ler), Consultar ou visualizar registros existentes; \textbf{U}pdate (Atualizar), modificar um registro já existente; \textbf{D}elete (Excluir), remover um registro do sistema.} completo com a utilização desse modo.
+
+As duas primeiras divisões são assim construídas:
+\begin{lstlisting}[]
+IDENTIFICATION DIVISION.
+ PROGRAM-ID. GerenciadorProfessor.
+ AUTHOR. Fernando Anselmo.
+
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+FILE-CONTROL.
+ SELECT ARQ-PROFESSOR ASSIGN TO "professores.idx"
+  ORGANIZATION IS INDEXED
+  ACCESS MODE IS DYNAMIC
+  RECORD KEY IS PRO-MATRICULA
+  FILE STATUS IS WS-STATUS.
+\end{lstlisting}
+
+Este arquivo \textbf{professores.idx} será criado automaticamente quando iniciarmos e não é necessário criá-lo. o parâmetro \textbf{RECORD KEY} é relativo a chave primária da tabela e \textbf{FILE STATUS} os possíveis status do arquivo que são:
+
+\begin{itemize}
+	\item \textbf{"00"} - Operação bem-sucedida: Indica que tudo foi realizado com sucesso (como uma leitura ou gravação bem-sucedida).
+	\item \textbf{"10"} - Final do arquivo (\textit{EOF}): Quando o programa tenta ler além do último registro ou a posição no arquivo está além do ponto final, esse código de status é retornado.
+	\item \textbf{"20"} - Chave não encontrada (\textit{Key Not Found}): O comando START não conseguiu encontrar um registro correspondente à chave fornecida. Esse código é comumente retornado ao tentar posicionar-se em um arquivo com uma chave que não existe.
+	\item \textbf{"21"} - Chave duplicada (\textit{Duplicate Key}): Tentativa de inserir um registro com uma chave que já existe no arquivo indexado. Esse erro é retornado ao tentar inserir uma chave duplicada.
+	\item \textbf{"22"} - Chave inválida (\textit{Invalid Key}): A chave fornecida não é válida ou não pode ser usada no arquivo (isso pode ocorrer quando a chave não é compatível com o tipo ou tamanho da chave primária definida no arquivo).
+	\item \textbf{"30"} - Erro interno: Um erro no sistema de arquivos ocorreu.
+\end{itemize}
+
+Vamos para a próxima divisão:
+\begin{lstlisting}[]
+DATA DIVISION.
+FILE SECTION.
+FD ARQ-PROFESSOR.
+01 REG-PROFESSOR.
+ 05 PRO-MATRICULA  PIC X(8).
+ 05 PRO-NOME       PIC X(30).
+
+WORKING-STORAGE SECTION.
+01 WS-OPCAO        PIC 9.
+01 WS-STATUS       PIC X(2).
+
+01 WS-PROFESSOR.
+ 05 WS-MATRICULA   PIC X(8).
+ 05 WS-NOME        PIC X(30).
+\end{lstlisting}
+
+Estruturamos nosso arquivo, associando-o ao visto na \textbf{ENVIRONMENT}, criamos a chave \textbf{WS-STATUS} para analizarmos os status devolvidos e \textbf{WS-OPCAO} para controlar o menu. Por fim a mesma definição do arquivo para manipulação.
+
+Agora na \textbf{PROCEDURE DIVISION}, inicialmente temos:
+\begin{lstlisting}[]
+\end{lstlisting}
+
+Neste ponto construímos o Menu de Opções no qual podemos escolher uma criar um novo aluno ou buscar um determinado aluno. O comando \textbf{EVALUATE} é similar a um comando ESCOLHA (\textit{switch}) atual.
+
+\begin{lstlisting}[]
+PROCEDURE DIVISION.
+INICIO.
+ DISPLAY "--------------------------------".
+ DISPLAY "Menu de Professor".
+ DISPLAY "--------------------------------".
+ DISPLAY " 1 - Cadastrar Professor".
+ DISPLAY " 2 - Mostrar Professores".
+ DISPLAY " 3 - Modificar Professor".
+ DISPLAY " 4 - Excluir Professor".
+ DISPLAY " 5 - Sair".
+ DISPLAY "--------------------------------".
+ DISPLAY "Escolha uma opção: ".
+ ACCEPT WS-OPCAO.
+
+ EVALUATE WS-OPCAO
+  WHEN 1 
+   PERFORM CADASTRAR
+  WHEN 2 
+   PERFORM MOSTRAR
+  WHEN 3 
+   PERFORM MODIFICAR
+  WHEN 4 
+   PERFORM EXCLUIR
+  WHEN 5
+   STOP RUN
+  WHEN OTHER
+   DISPLAY "Opção inválida!"
+   PERFORM INICIO
+ END-EVALUATE. 
+\end{lstlisting}
+
+Conforme visto no programa da seção anterior, criamos nosso menu para realizar as ações, porém agora precisamos de dois \textit{labels} para realizarmos abrir e fechar o arquivo:
+\begin{lstlisting}[]
+ABRIR-ARQUIVO.
+ OPEN I-O ARQ-PROFESSOR.
+ IF WS-STATUS = "35"
+  OPEN OUTPUT ARQ-PROFESSOR
+  CLOSE ARQ-PROFESSOR
+  OPEN I-O ARQ-PROFESSOR.
+
+FECHAR-ARQUIVO.
+ CLOSE ARQ-PROFESSOR.	
+\end{lstlisting}
+
+Como dito anteriormente, para cada ação do nosso \textbf{CRUD} abriremos o arquivo, realizamos as ações necessárias e o fechamos.
+
+Vamos para a primeira ação C:
+\begin{lstlisting}[]
+CADASTRAR.
+ DISPLAY "--------------------------------".
+ DISPLAY "Criar Professor".
+ DISPLAY "--------------------------------".
+ DISPLAY "Matrícula: ".
+ ACCEPT WS-MATRICULA.
+ DISPLAY "Nome: ".
+ ACCEPT WS-NOME.
+
+ MOVE WS-MATRICULA TO PRO-MATRICULA.
+ MOVE WS-NOME TO PRO-NOME.
+
+ PERFORM ABRIR-ARQUIVO.
+ WRITE REG-PROFESSOR
+  INVALID KEY DISPLAY "Erro: Matrícula já existe!".
+ PERFORM FECHAR-ARQUIVO.
+ PERFORM INICIO.	
+\end{lstlisting}
+
+Para inserir um professor, obtemos os dados deste, abrimos o arquivo, gravamos o registro, fechamos o arquivo e retornamos para o \textbf{INICIO}.
+
+Vamos para a ação R:
+\begin{lstlisting}[]
+MOSTRAR.
+ DISPLAY "--------------------------------".
+ DISPLAY "Listar Professor".
+ DISPLAY "--------------------------------".
+
+ PERFORM ABRIR-ARQUIVO.
+ MOVE "0" TO WS-STATUS.
+
+ PERFORM UNTIL WS-STATUS = "10"
+  READ ARQ-PROFESSOR NEXT RECORD
+   AT END 
+    MOVE "10" TO WS-STATUS
+   NOT AT END
+    DISPLAY "Matrícula: " PRO-MATRICULA
+    DISPLAY "Nome: " PRO-NOME
+    DISPLAY "--------------------------------"
+  END-READ
+ END-PERFORM.
+
+ PERFORM FECHAR-ARQUIVO.
+ PERFORM INICIO.	
+\end{lstlisting}
+
+Pode-se dizer que aqui estão as ações mais complexas desse programa, acertamos o \textbf{WS-STATUS} para "0" e enquanto este não chegar ao valor "10", lemos o próximo registro e o mostramos na tela.
+
+Vamos para a ação U:
+\begin{lstlisting}[]
+MODIFICAR.
+ DISPLAY "--------------------------------".
+ DISPLAY "Modificar Professor".
+ DISPLAY "--------------------------------".
+ DISPLAY "Informe a matrícula do professor: ".
+ ACCEPT WS-MATRICULA.
+
+ PERFORM ABRIR-ARQUIVO.
+ MOVE WS-MATRICULA TO PRO-MATRICULA.
+ READ ARQ-PROFESSOR KEY IS PRO-MATRICULA
+  INVALID KEY 
+   DISPLAY "Matrícula não encontrada!"
+  NOT INVALID KEY
+   DISPLAY "Novo Nome: "
+   ACCEPT WS-NOME
+   MOVE WS-NOME TO PRO-NOME
+   REWRITE REG-PROFESSOR
+    DISPLAY "Registro atualizado!".
+ PERFORM FECHAR-ARQUIVO.
+ PERFORM INICIO.	
+\end{lstlisting}
+
+A modificação depende primeiro de encontrar o registro correto na tabela, uma vez encontrado modificamos os campos que não são chaves (uma chave primária NUNCA deve ser modificada) e reescrevemos o registro na tabela.
+
+E por fim a ação D:
+\begin{lstlisting}[]
+EXCLUIR.
+ DISPLAY "--------------------------------".
+ DISPLAY "Eliminar Professor".
+ DISPLAY "--------------------------------".
+ DISPLAY "Informe a matrícula do professor: ".
+ ACCEPT WS-MATRICULA.
+
+ PERFORM ABRIR-ARQUIVO.
+ MOVE WS-MATRICULA TO PRO-MATRICULA.
+ READ ARQ-PROFESSOR KEY IS PRO-MATRICULA
+  INVALID KEY 
+   DISPLAY "Matrícula não encontrada!"
+  NOT INVALID KEY
+   DELETE ARQ-PROFESSOR
+   DISPLAY "Professor removido!".
+ PERFORM FECHAR-ARQUIVO.
+ PERFORM INICIO.
+\end{lstlisting}
+
+Assim como na modificação, localizamos o registro pela chave e uma vez encontrado eliminamos na tabela.
+
+\section{Diferenças entre Arquivos Relativos e Indexados}\index{Cobol como Banco de Dados}
+Mas como podemos escolher entre arquivos relativos e indexados no COBOL, basicamente está na forma como os registros são acessados e organizados.
+
+\subsection{Arquivos Relativos}
+\begin{itemize}
+	\item \textbf{Organização}: registros são armazenados em posições fixas, numeradas sequencialmente, como se fosse um vetor.
+	\item \textbf{Acesso}: pode ser sequencial ou direto (usando um número relativo como chave).
+	\item \textbf{Chave}: posição do registro no arquivo funciona como chave (chave relativa).
+	\item \textbf{Uso típico}: quando você precisa acessar registros rapidamente por número de posição, como em tabelas que não mudam muito de tamanho.
+\end{itemize}
+São as seguintes vantagens: \vspace{-1em}
+\begin{itemize}
+	\item Acesso direto rápido se a chave relativa for conhecida.
+	\item Mais simples de implementar que arquivos indexados.
+\end{itemize}
+Com as seguintes desvantagens: \vspace{-1em}
+\begin{itemize}
+	\item Não permite chaves alfanuméricas, apenas números.
+	\item Pode ter fragmentação se registros forem apagados.
+\end{itemize}
+
+\subsection{Arquivos Indexados}
+\begin{itemize}
+	\item \textbf{Organização}: registros são organizados em uma estrutura que mantém um índice associado.
+	\item \textbf{Acesso}: pode ser sequencial, aleatório (direto) ou dinâmico.
+	\item \textbf{Chave}: permite chaves primárias e secundárias (alfa ou numéricas), como em um banco de dados.
+	\item \textbf{Uso típico}: ideal para arquivos onde registros são frequentemente buscados por valores de chave (ex: CPF, matrícula, código de produto).
+\end{itemize}
+São as seguintes vantagens: \vspace{-1em}
+\begin{itemize}
+	\item Permite chaves alfanuméricas.
+	\item Mais eficiente quando há muitas buscas não sequenciais.
+	\item Permite chaves secundárias para buscas alternativas.
+\end{itemize}
+Com as seguintes desvantagens: \vspace{-1em}
+\begin{itemize}
+	\item Pode ser mais lento para inserção do que arquivos relativos.
+	\item Requer mais espaço devido aos índices armazenados.
+\end{itemize}
+
+\subsection{Resumidamente}
+Deste modo, podemos tomar uma decisão de qual forma usar:
+\begin{table}[h]
+	\centering
+	\renewcommand{\arraystretch}{1.3} % Ajusta o espaçamento entre linhas
+	\begin{tabular}{|l|l|l|}
+		\hline
+		\textbf{Característica} & \textbf{Arquivo Relativo} & \textbf{Arquivo Indexado} \\
+		\hline
+		Organização & Registros numerados sequencialmente & Registros com índice \\
+		\hline
+		Acesso & Sequencial ou direto (via número relativo) & Sequencial, direto ou dinâmico \\
+		\hline
+		Tipo de Chave & Apenas número relativo & Qualquer campo (alfa ou numérico) \\
+		\hline
+		Flexibilidade & Menos flexível (depende da posição) & Mais flexível (busca por diferentes chaves) \\
+		\hline
+		Uso Típico & Arquivos fixos, tabelas pequenas & Arquivos grandes com muitas pesquisas \\
+		\hline
+	\end{tabular}
+	\caption{Comparação entre Arquivos Relativos e Indexados no COBOL}
+	\label{tab:comparacao-arquivos}
+\end{table}
 
 \clearpage
