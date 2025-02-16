@@ -201,4 +201,53 @@ end.
 
 Com isso posto, apesar do programa ter crescido muito, observamos uma melhor legibilidade pois o código principal ficou menor e mais fácil de entender. Além disso podemos reusar várias funções ou procedimentos em diversos outros programas.
 
+\section{Menu de um Sistema}\index{Passos Iniciais}
+Antigamente os sistemas eram projetados para serem sequenciais, isso é ficávamos presos dentro de uma estrutura escolhida não existia o conceito de Menus \textit{PullDown} ou \textit{PopUps} conhecidos em sistemas gráficos atuais (a vida do programador era bem mais simples).
+\begin{lstlisting}[]
+program meu_menu;
+var
+ opc: integer;
+begin
+ repeat
+  writeln('------ MENU ------');
+  writeln('1. Cadastro');
+  writeln('2. Busca');
+  writeln('3. Ajuda');
+  writeln('4. Sair');
+
+  write('Sua opção é: ');
+  read(opc);
+
+  if (opc = 1) then
+   writeln('Opção cadastro....')
+  else if (opc = 2) then
+   writeln('Opção busca....')
+  else if (opc = 3) then
+   writeln('Mostrar ajuda....')
+  else if (opc = 4) then
+   writeln('Até a próxima....')
+  else
+   writeln('Opção inválida!');
+
+ until (opc = 4);
+end.	
+\end{lstlisting}
+
+O comando \textbf{REPEAT-UNTIL} gera um laço de repetição até que alguma coisa aconteça, em linguagem modernas pode ser comparado ao comando \textbf{DO-WHILE} (Faça determinada coisa enquanto tal valor lógico for verdadeira), porém a diferença é que no comando REPEAT-UNTIL as ações se repetem \textbf{até} tal valor lógico seja verdadeiro. Mas não é a mesma coisa? Vamos escrever o comando \textbf{DO-WHILE}, no caso em linguagem \textbf{Java}, para entendermos essa diferença:
+\begin{lstlisting}[]
+do {
+	ações a repetir
+} while (opc != 4);
+\end{lstlisting}
+
+Observe que no comando \textbf{DO-WHILE} a lógica proposta é a negativa do valor, enquanto o valor de OPC \textbf{não for} 4; já para o comando REPEAT:
+\begin{lstlisting}[]
+	repeat
+		ações a repetir
+	until (opc = 4);
+\end{lstlisting}
+
+E agora partimos da positividade do valor, \textbf{até} o valor de OPC ser 4. Isso permite, em termos lógicos, mais fácil entendimento da situação.
+
+Outro detalhe que devemos observar é a estrutura dos comando \textbf{IF-ELSE}. Neste caso a ausência de pontos e vírgulas ao final das linhas. Isso se deve ao fato de o comando não ter terminado e só usamos ponto e vírgula, ao término do comando.
 \clearpage
