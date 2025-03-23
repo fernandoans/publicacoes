@@ -1,0 +1,118 @@
+%------------------------------------------------------------------------------------
+%	CHAPTER 4
+%------------------------------------------------------------------------------------
+\chapterimage{headMontagem.png}
+\chapter{Projetos Práticos}
+
+\begin{remark}
+	"COBOL é a linguagem que nunca morre." (\textit{Jean Sammet}, uma das desenvolvedoras do COBOL) 
+\end{remark}
+
+Podemos dizer que todos os conceitos já foram passados (assim recomendo a releitura e fixação - principalmente com prática - dos capítulos anteriores) e a partir de agora veremos programa práticos que podem ser utilizados no seu dia a dia como desenvolvedor com a resolução de muitos problemas.
+
+\section{Importar Arquivo CSV para Base Indexada}\index{Projetos Práticos}
+Recebemos arquivos em formato CSV (com campos separados por ";") de alunos que realizaram matrículas para os cursos oferecidos pela instituição das diversas unidades, devemos unificar estes arquivos para uma base única e indexada em Cobol.
+
+Exemplo do formato do arquivo CSV:
+\begin{lstlisting}[]
+20230001;João Silva;Engenharia;15/02/2023
+20230002;Maria Souza;Medicina;10/03/2022
+20230003;Carlos Oliveira;Direito;05/08/2021
+20230004;Ana Santos;Arquitetura;12/09/2020
+20230005;Ricardo Lima;Matemática;02/06/2023
+20230006;Fernanda Costa;Física;20/04/2019
+20230007;Lucas Martins;Química;28/07/2018
+20230008;Patrícia Mendes;Biologia;31/05/2022
+20230009;Rafael Almeida;História;01/12/2020
+20230010;Juliana Barbosa;Computação;18/10/2021
+\end{lstlisting}
+
+Quanto ao programa que realiza este serviço, dividiremos este em partes:
+\begin{lstlisting}[]
+IDENTIFICATION DIVISION.
+  PROGRAM-ID. ImportarAlunos.
+  AUTHOR. Fernando Anselmo.
+
+ENVIRONMENT DIVISION.
+INPUT-OUTPUT SECTION.
+FILE-CONTROL.
+  SELECT ARQ-TEXTO ASSIGN TO "alunos.csv"
+    ORGANIZATION IS LINE SEQUENTIAL.
+
+  SELECT ARQ-INDEXADO ASSIGN TO "alunos.idx"
+    ORGANIZATION IS INDEXED
+    ACCESS MODE IS DYNAMIC
+    RECORD KEY IS ALU-MATRICULA
+    FILE STATUS IS WS-STATUS.	
+\end{lstlisting}
+
+Na primeira parte, na FILE-CONTROL, selecionamos as duas bases, do arquivo de importação e do arquivo indexado. Define o arquivo de entrada (alunos.csv) como um sequencial (LINE SEQUENTIAL). E o arquivo indexado (alunos.idx) com a matrícula (ALU-MATRICULA) como chave primária.
+\begin{lstlisting}[]
+DATA DIVISION.
+FILE SECTION.
+
+FD  ARQ-TEXTO.
+01  REGISTRO-TEXTO PIC X(100).
+
+FD  ARQ-INDEXADO.
+01  REGISTRO-INDEXADO.
+  05 ALU-MATRICULA  PIC X(8).
+  05 ALU-NOME       PIC X(30).
+  05 ALU-CURSO      PIC X(20).
+  05 ALU-DATA-INICIO PIC X(10).
+
+WORKING-STORAGE SECTION.
+01 WS-STATUS  PIC X(2) VALUE "00".
+01 WS-FIM-ARQ PIC X(1) VALUE "N".
+
+01 WS-DELIMITADOR   PIC X VALUE ";".
+01 WS-POS           PIC 9(2).
+
+01 WS-MATRICULA  PIC X(8).
+01 WS-NOME       PIC X(30).
+01 WS-CURSO      PIC X(20).
+01 WS-DATA-INICIO PIC X(10).	
+\end{lstlisting}
+
+Na DATA DIVISION procedemos as estruturas dos arquivos, note que devemos ter no máximo 100 caracteres por linha do arquivo CSV, e do arquivo indexado. Além disso, criamos algumas variáveis que nos auxiliarão quanto ao nosso programa.
+\begin{lstlisting}[]
+PROCEDURE DIVISION.
+INICIO.
+  OPEN INPUT ARQ-TEXTO
+  OPEN OUTPUT ARQ-INDEXADO.
+
+  PERFORM UNTIL WS-FIM-ARQ = "S"
+    READ ARQ-TEXTO INTO REGISTRO-TEXTO
+      AT END MOVE "S" TO WS-FIM-ARQ
+      NOT AT END
+        PERFORM PROCESSAR-REGISTRO
+    END-READ
+  END-PERFORM.
+
+  CLOSE ARQ-TEXTO.
+  CLOSE ARQ-INDEXADO.
+
+  DISPLAY "Importação concluída com sucesso!".
+  STOP RUN.	
+\end{lstlisting}
+
+No método INICIO abrimos tanto o arquivo de entrada como de saída e lemos os registros, para cada registro lido, executamos o método PROCESSAR-REGISTRO, ao término da leitura do arquivo de entrada fechamos ambos os arquivos e mostramos a mensagem de sucesso.
+\begin{lstlisting}[]
+PROCESSAR-REGISTRO.
+  MOVE FUNCTION TRIM(REGISTRO-TEXTO) TO REGISTRO-TEXTO.
+
+  UNSTRING REGISTRO-TEXTO DELIMITED BY WS-DELIMITADOR
+    INTO WS-MATRICULA, WS-NOME, WS-CURSO, WS-DATA-INICIO.
+
+  MOVE WS-MATRICULA  TO ALU-MATRICULA.
+  MOVE WS-NOME       TO ALU-NOME.
+  MOVE WS-CURSO      TO ALU-CURSO.
+  MOVE WS-DATA-INICIO TO ALU-DATA-INICIO.
+
+  WRITE REGISTRO-INDEXADO
+    INVALID KEY DISPLAY "Erro ao gravar aluno: " WS-MATRICULA.	
+\end{lstlisting}
+
+Por fim, no método PROCESSAR-REGISTRO, recortamos a informação de linha do arquivo de entrada através de seu delimitador com o comando \textbf{UNSTRING}, e atribuímos a cada uma das variáveis criadas, após isso movemos cada uma dessas para seus respectivos campos no arquivo de saída e gravamos os dados no arquivo indexado com o comando \textbf{WRITE}, verificando chave duplicada.
+
+\clearpage

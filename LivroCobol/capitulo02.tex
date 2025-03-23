@@ -8,7 +8,7 @@
 	"Sistemas antigos não são um fardo; são a base do progresso — refatorá-los é um ato de respeito pelo passado e compromisso com o futuro." (\textit{Sandi Metz}, especialista em design de software.) 
 \end{remark}
 
-\section{Hello World}\index{Entendimento Geral}
+\section{Hello World}\index{Primeiros Programas}
 Escrever um programa 'Hello World' é uma forma simples e prática de verificar se o ambiente de desenvolvimento está configurado corretamente, e garantir que possamos começar a programar sem obstáculos técnicos. Geralmente e tradicionalmente este é o primeiro passo no aprendizado de qualquer linguagem de programação, assim os iniciantes podem entender a estrutura básica do código e se familiarizar com sua sintaxe.
 
 Primeiramente devemos compreender que o Cobol é uma linguagem que fortemente segue determinados princípios de programação, e qualquer desvio desses resultará em erro.
@@ -74,7 +74,7 @@ Nesse momento aconteceu a magia pois o nosso programa foi transformado em um exe
 
 E teremos nossa mensagem mostrada.
 
-\section{Entrada de Dados}\index{Entendimento Geral}
+\section{Entrada de Dados}\index{Primeiros Programas}
 Em qualquer linguagem de programação iniciamos com os processos de Entrada/Saída de dados, começamos pela saída, que em Cobol é obtida através do comando \textbf{DISPLAY} e agora vamos partir para a entrada, que em Cobol é obtida através do comando \textbf{ACCEPT}. Mas não é tão simples assim pois precisamos definir uma variável que receberá a informação do que vamos digitar.
 
 A criação de variáveis em Cobol é realizada na \textbf{DATA DIVISION}, mais especificamente na seção \textbf{WORKING-STORAGE SECTION} que descreve os dados internos, nesse ponto podemos criar quaisquer variáveis que desejarmos, porém existem regras para isso, a partir da coluna 8 devemos iniciar um "\textit{level number}", esse número sempre inicia com "01", em seguida colocamos o nome da nossa variável, que será utilizada pelo programa, e o tipo de dado que será armazenado, como estamos tratando de variável, usamos a cláusula \textbf{PIC} (abreviatura de \textit{PICTURE}) e em seguida o tipo, que podem ser, por padrão:
@@ -136,7 +136,7 @@ Nesse momento aconteceu a magia pois o nosso programa foi transformado em um exe
 
 Será solicitado para digitarmos nosso nome e em seguida mostra a mensagem com a data atual.
 
-\section{Cálculos em Cobol}\index{Entendimento Geral}
+\section{Cálculos em Cobol}\index{Primeiros Programas}
 O comando \textbf{COMPUTE} é utilizado para realizar operações aritméticas de forma direta e simplificada, permite cálculos matemáticos como soma, subtração, multiplicação, divisão, e até expressões mais complexas. Combina a funcionalidade dos operadores matemáticos (+, -, *, /, **) para calcular o valor de uma expressão e armazenar o resultado em uma variável destino. 
 
 \textbf{COMPUTE} é especialmente útil por sua clareza pois elimina a necessidade de comandos adicionais, como \textbf{ADD}, \textbf{SUBTRACT}, ou \textbf{MULTIPLY}, em situações simples. O resultado da expressão é automaticamente ajustado para o formato definido na variável de destino, incluindo arredondamento quando necessário, de acordo com as especificações da cláusula PICTURE.
