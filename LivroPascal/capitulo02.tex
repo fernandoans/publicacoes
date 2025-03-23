@@ -250,4 +250,53 @@ Observe que no comando \textbf{DO-WHILE} a lógica proposta é a negativa do val
 E agora partimos da positividade do valor, \textbf{até} o valor de OPC ser 4. Isso permite, em termos lógicos, mais fácil entendimento da situação.
 
 Outro detalhe que devemos observar é a estrutura dos comando \textbf{IF-ELSE}. Neste caso a ausência de pontos e vírgulas ao final das linhas. Isso se deve ao fato de o comando não ter terminado e só usamos ponto e vírgula, ao término do comando.
+
+\section{Gravar Arquivos}\index{Passos Iniciais}
+Pascal era muito utilizado para gerar arquivos textos, esse era um modo simples e prático, principalmente relativo ao seu entendimento.
+
+Vamos supor um simples arquivo de clientes contendo ID, Nome e Idade, iniciamos o programa com a definição desse arquivo:
+\begin{lstlisting}[]
+program GravarRegistros;
+
+{$mode objfpc}
+
+type
+  TCliente = record
+    ID: Integer;
+    Nome: String[50];
+    Idade: Integer;
+  end;	
+
+var
+  arquivo: Text;
+  cliente: TCliente;
+\end{lstlisting}
+
+O comando \textbf{mode objfpc} no garante que estamos trabalhando no modo adequado. Definimos nosso arquivo através do comando \textbf{type} e em seguida informamos a estrutura do registro do arquivo. Na seção das variáveis criamos as respectivas que serão utilizadas pelo programa.
+
+\begin{lstlisting}[]
+begin
+  Assign(arquivo, 'clientes.txt');
+  Rewrite(arquivo);
+  while True do
+  begin
+    Write('Digite o ID do cliente (ou -1 para sair): ');
+    ReadLn(cliente.ID);
+    if cliente.ID = -1 then
+      break;
+    Write('Digite o nome do cliente');
+    ReadLn(cliente.Nome);
+    Write('Digite a idade do cliente: ');
+    ReadLn(cliente.Idade);
+    WriteLn(arquivo, cliente.ID, ';', cliente.Nome, ';', cliente.Idade);
+  end;
+  Close(arquivo);
+  WriteLn('Registros gravados com sucesso!".');
+end.	
+\end{lstlisting}
+
+No programa iniciamos associando o nome do arquivo externo a nossa variável tipo \textbf{Text}, em seguida abrimos o arquivo para escrita (que cria ou sobrescreve caso já exista). Em um laço "eterno" (isso só é possível pois ocorrerá uma interrupção deste em determinada condição), solicitamos as informações ao usuário, caso o ID seja -1 saímos do laço (usamos o comando \textbf{break} para interrompê-lo). A função \textbf{WriteLn} grava uma linha do arquivo.
+
+Ao término fechamos o arquivo e mostramos uma mensagem para o usuário.
+
 \clearpage
