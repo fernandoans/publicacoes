@@ -1,0 +1,222 @@
+\documentclass[a4paper,11pt]{article}
+
+% Identificação
+\newcommand{\pbtitulo}{Apache Hop}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{../sty/tutorial}
+\usepackage{tabularx}
+\usepackage{longtable}
+\usepackage{booktabs}
+\usepackage{caption}
+
+%----------------------------------------------------------------------
+% Início do Documento
+%----------------------------------------------------------------------
+\begin{document}
+	
+\maketitle % mostrar o título
+\thispagestyle{fancy} % habilitar o cabeçalho/rodapé das páginas
+
+%----------------------------------------------------------------------
+% RESUMO DO ARTIGO
+%----------------------------------------------------------------------
+
+\begin{abstract}	
+	\initial{A}pache Hop (\textit{Hop Orchestration Platform}) é uma plataforma moderna de código aberto para engenharia e orquestração de dados, projetada para tornar os processos de integração de dados mais acessíveis, flexíveis e reutilizáveis. Desenvolvido com foco em produtividade e usabilidade, o \textbf{Apache Hop} permite criar pipelines e \textit{workflows} de dados de forma visual e intuitiva, sem depender necessariamente de programação.
+\end{abstract}
+
+%----------------------------------------------------------------------
+% CONTEÚDO DO ARTIGO
+%----------------------------------------------------------------------
+\section{Introdução}
+Ao contrário de outras ferramentas de ETL (\textit{Extract, Transform, Load}), o \textbf{Apache Hop} adota uma arquitetura orientada a metadados, isso significa que toda a lógica de transformação e orquestração dos dados é descrita por meio de definições reutilizáveis e portáveis. Isso permite que você defina como deseja que os dados sejam processados, enquanto a plataforma cuida do trabalho pesado da execução.
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.4\textwidth]{imagens/Logo}
+	\caption{Logo do Apache Hop}
+\end{figure}
+
+Uma das grandes vantagens do \textbf{Apache Hop} é sua capacidade de projetar \textit{pipelines} uma única vez e executá-los em diferentes ambientes — locais, em nuvem, ou em frameworks como \textbf{Apache Spark}, \textbf{Apache Flink} ou \textbf{Google Dataflow} - por meio das chamadas configurações de tempo de execução, um tipo especial de metadado que abstrai o ambiente de execução.
+
+Além disso, o \textbf{Apache Hop} centraliza os processos em uma plataforma única e gerenciável, oferece recursos avançados de controle de qualidade, persistência e rastreabilidade dos dados, contribuí para a confiabilidade e a governança da informação.
+
+A plataforma é desenvolvida por uma comunidade aberta, colaborativa e acolhedora, sob a governança da \textbf{Apache Software Foundation}. Todos são convidados a participar: seja tirar dúvidas, relatar problemas, propor novos recursos, contribuir com código ou documentação, auxiliar nos testes de versões ou melhorar o site oficial.
+
+\textbf{Apache Hop} é uma solução robusta, extensível e preparada para os desafios modernos da engenharia de dados, ideal para organizações que buscam eficiência, automação e escalabilidade em seus fluxos de dados.
+
+\section{Apache Hop e Pentaho}
+\textbf{Apache Hop} é uma poderosa ferramenta de integração e orquestração de dados de código aberto, criada como um fork evoluído do \textbf{Pentaho Data Integration (PDI)}, também conhecido como Kettle. Embora compartilhe raízes com o PDI, \textbf{Apache Hop} foi totalmente reestruturado e modernizado para atender às necessidades atuais de engenharia de dados com mais desempenho, modularidade e escalabilidade.
+
+\begin{figure}[!htb]
+	\centering
+	\includegraphics[width=0.8\textwidth]{imagens/Pipeline}
+	\caption{Exemplo de uma Pipeline no Apache Hop}
+\end{figure}
+
+Com uma interface de desenvolvimento visual, \textbf{Apache Hop} permite que Engenheiros e Arquitetos de Dados construam \textit{pipelines} e \textit{workflows} complexos de forma intuitiva, sem a necessidade de escrever código, embora isso continue sendo uma opção para os usuários mais avançados. Essa abordagem visual acelera o desenvolvimento, reduz erros e facilita a colaboração entre equipes técnicas e de negócio.
+
+Além disso, \textbf{Apache Hop} introduz conceitos modernos, como metadados reutilizáveis, configurações de tempo de execução e suporte a múltiplos motores, tornando-se uma solução versátil para projetos locais, em nuvem ou em ambientes distribuídos.
+
+{
+\captionsetup{labelformat=empty}
+\captionof{table}{\textbf{Comparativo: Apache Hop vs Pentaho Data Integration (PDI)}}
+\begin{longtable}{@{}p{3.5cm}p{5cm}p{5cm}@{}}
+	\toprule
+	\textbf{Característica} & \textbf{Apache Hop} & \textbf{Pentaho Data Integration (PDI)} \\
+	\midrule
+	Origem & Fork moderno e reescrito do PDI/Kettle & Projeto original, mantido pela Hitachi Vantara \\
+	Licença & Apache License 2.0 (open source completo) & Community Edition: LGPL \newline Enterprise Edition: Proprietária \\
+	Governo do Projeto & Apache Software Foundation (comunidade aberta) & Hitachi Vantara (foco comercial) \\
+	Interface de Desenvolvimento & Visual (Hop GUI) & Visual (Spoon) \\
+	Modularidade & Altamente modular, orientado a plugins & Arquitetura mais monolítica \\
+	Abordagem Baseada em Metadados & Sim – pipelines, workflows, variáveis, ambientes & Parcialmente, com menos flexibilidade \\
+	Configurações de Execução & Suporte a múltiplos ambientes com "run configurations" & Limitado, dependente de configurações locais \\
+	Execução Distribuída & Suporte nativo a Spark, Flink, Beam via plugins & Requer customizações adicionais \\
+	Linha de Comando & Ferramentas modernas: \texttt{hop-run}, \texttt{hop-gui}, \texttt{hop-server} & Ferramentas legadas: \texttt{pan}, \texttt{kitchen} \\
+	Comunidade & Ativa, aberta, com crescimento contínuo & Reduzida na versão open source \\
+	Atualizações e Roadmap & Frequentes e transparentes & Lentamente atualizada na versão gratuita \\
+	Documentação & Completa e mantida pela comunidade & Limitada na versão open source \\
+	\bottomrule
+\end{longtable}
+}
+
+As principais vantagens do \textbf{Apache Hop} são:
+
+\textbf{Integração nativa com GIT} - Não é necessário usar clientes GIT de terceiros para tornar o ambiente DevOps e DataOps mais amigável e produtivo. Existe uma interface visual no \textbf{Aoache Hop} que permite ver tudo que foi alterado, inclusive mostrando graficamente o \textit{pipeline} ou \textit{workflow} editado. Com certeza este é um grande avanço se comparado a todos os tipos de repositórios de artefatos (transformations e jobs) do \textit{Pentaho Community Edition}.
+
+\textbf{Velocidade quanto a atualizações} - \textbf{Pentaho} e \textbf{Apache Hop} atualmente tomam rumos diferentes, possuem objetivos diferentes e portanto têm suas atualizações seguindo por caminhos diferentes. quando há uma necessidade da comunidade sobre a atualização de uma \textit{transform} do \textbf{Apache Hop} (equivalente ao \textit{step} do \textbf{Pentaho}), isso acontece em uma maior velocidade.
+
+\textbf{Projeto Top Level da Apache Software Foundation} - \textit{Apache Software Foundation} é uma organização sem fins lucrativos criada para suportar os projetos de código aberto. Ser um projeto da Apache requer que o Software preencha uma séries de requisitos, o que dá grande credibilidade e robustez ao projeto.
+
+\section{Componentes do Apache Hop}
+\textbf{Apache Hop} possui três componentes principais, são eles:
+
+\textbf{Hop GUI} é a interface gráfica principal do \textbf{Apache Hop}, projetada para facilitar o desenvolvimento de pipelines (antigas transformações no PDI) e \textit{workflows} (antigos jobs). Com uma abordagem visual e intuitiva. Elimina a necessidade de codificação ao permitir que criemos fluxos complexos de ETL (Extração, Transformação e Carga) por meio de elementos de arrastar e soltar (\textit{drag-and-drop}). Cada \textit{pipeline} representa uma sequência lógica de transformações de dados, enquanto \textit{workflows} permitem orquestrar múltiplas tarefas e \textit{pipelines} em uma ordem específica, com controle de fluxo, paralelismo e dependências. O ambiente também oferece recursos de debug, execução local, parametrização, controle de versão, validação e reutilização de metadados, o que torna o desenvolvimento altamente produtivo e sustentável.
+
+\textbf{Hop Run} é uma ferramenta de linha de comando (CLI) autônoma usada para executar pipelines e \textit{workflows} fora do ambiente gráfico. Ideal para integrações com \textit{scripts}, automações de DevOps, servidores CI/CD ou agendamentos via \textbf{cron} (agendamento). Permite a execução headless (sem interface gráfica) com suporte completo a parâmetros, ambientes e variáveis definidos no projeto. Garante que pipelines criados visualmente possam ser facilmente executados em produção, ambientes de teste ou \textit{containers}, promovendo flexibilidade e consistência no ciclo de vida das soluções de dados.
+
+\textbf{Hop Server} é um servidor leve baseado em web, capaz de executar remotamente \textit{pipelines} e \textit{workflows} em ambientes distribuídos. Pode ser implantado em um ou mais nós, permite a execução paralela, balanceamento de carga e alta disponibilidade. Expõe uma API RESTful completa, possibilitando que outros sistemas ou aplicações interajam com os \textit{pipelines} de forma programática — ideal para automações, integrações com plataformas externas e arquiteturas orientadas a eventos. Através dele, é possível orquestrar fluxos de dados complexos a partir de múltiplos servidores, promover escalabilidade horizontal e melhorar o gerenciamento das cargas de trabalho.
+
+
+\section{E isso tudo em contêineres do Docker}
+Docker, como plataforma de contêineres, oferece uma maneira rápida e flexível de empacotar, distribuir e executar aplicações em ambientes isolados. Ao utilizar Docker para orquestrar a integração entre Liferay DXP e Alfresco, as empresas podem garantir uma configuração mais ágil, consistência nos ambientes de desenvolvimento, testes e produção, além de facilitar o escalonamento das aplicações conforme necessário.
+
+Uma das principais vantagens de usar Docker nessa integração é a simplificação do processo de deployment. Com o Docker, tanto o Liferay DXP quanto o Alfresco podem ser configurados e executados em contêineres isolados, o que facilita o gerenciamento de dependências e versões. Isso elimina conflitos de ambiente que poderiam ocorrer ao rodar as aplicações em servidores tradicionais. Além disso, a utilização de contêineres permite que cada ferramenta seja executada com a sua própria configuração e requisitos de infraestrutura, enquanto ainda mantém a comunicação entre elas de forma eficaz e segura. Isso reduz o risco de erros e aumenta a previsibilidade no desenvolvimento.
+
+Outro benefício é a flexibilidade de escalabilidade. Quando uma das ferramentas, como o Alfresco, precisar de mais recursos de processamento ou armazenamento, a solução pode ser escalada facilmente sem impactar o funcionamento do Liferay DXP, graças à natureza isolada dos contêineres. Docker também facilita o gerenciamento de clusters e a replicação de ambientes em diferentes servidores ou nuvens, permite uma melhor utilização dos recursos e garante a tão sonhada "alta disponibilidade".
+
+\subsection{Instalar o Liferay no Docker}
+Instalar o Liferay a partir do Docker e um dos trabalhos mais fáceis que podem ser realizados por um desenvolvedor, talvez trocar a lâmpada seja mais fácil. Com o simples comando: \\
+\codigo{\$ docker run -it -d -m 4g -p 8081:8080 --name=meu-liferay -e JAVA\_VERSION=zulu21 -v /home/[usuario]/liferaymnt:/mnt/liferay liferay/portal:latest}
+
+Basicamente, definimos um contêiner que utiliza 4 gigabytes de memória, que será executado na porta \textbf{8081} (pois a porta 8080 será do Alfresco), que executará o Java 21 e se chamará meu-liferay.
+
+Para interromper o contêiner: \\
+\codigo{\$ docker stop meu-liferay}
+
+Para reiniciar o contêiner: \\
+\codigo{\$ docker start meu-liferay}
+
+Testemos para ver se funciona corretamente, no navegador acessar o endereço: \url{http://localhost:8081}, o usuário padrão é \textbf{test@liferay.com}, e a senha: \textbf{test}.
+
+\textbf{ATENÇÃO}: Na primeira vez que se logar será forçado para mudar a senha, troque-a para \textbf{admin} (toda em minúsculas), uma vez que entrou corretamente com a nova senha, no perfil em \textit{User Profile} devemos modificar o Screen Name de \textbf{test} para \textbf{admin} (também toda em minúsculas), salvar e confirmar a mudança com a senha.
+
+\subsection{Instalar o Alfresco no Docker}
+Subir um Alfresco não é tão simples como o Liferay pois são diversos componentes incluindo o Banco Postgres, Apache Solr e o servidor de mensagens ActiveMQ. Assim o melhor modo e colocá-lo sobre o Docker Compose de modo a gerenciar toda essa informação e trabalhar de modo unido.
+
+Faça um clone do repositório oficial da comunidade no Git: \\
+\codigo{\$ git clone https://github.com/Alfresco/acs-deployment.git}
+
+Entre no diretório do Docker Compose: \\
+\codigo{\$ cd acs-deployment/docker-compose}
+
+Crie e suba os contêineres necessários: \\
+\codigo{\$ docker compose -f community-docker-compose.yaml up}
+
+Para interromper os contêineres: \\
+\codigo{\$ docker compose -f community-docker-compose.yaml stop}
+
+Para reiniciá-los: \\
+\codigo{\$ docker compose -f community-docker-compose.yaml start}
+
+Testemos para ver se funciona corretamente, no navegador acessar o endereço: \url{http://localhost:8080/alfresco}, o usuário padrão é \textbf{admin}, e a senha: \textbf{admin}.
+
+Outros endereços úteis são: \vspace{-1em}
+\begin{itemize}
+	\item Control Center \url{http://localhost:8080/admin}
+	\item Share \url{http://localhost:8080/share}
+	\item Alfresco Content App \url{http://localhost:8080/content-app}
+	\item Search Services administration \url{http://localhost:8083/solr}
+\end{itemize}
+
+Lembre-se sempre de estar, obrigatoriamente, neste diretório para realizar essas operações.
+
+Outro passo extremamente importante é colocar o Liferay na mesma rede que o Alfresco. Primeiro vamos verificar as redes: \\
+\codigo{\$ docker network ls}
+
+Provavelmente deve existir uma rede chamada docker-compose\_default, vamos associar o contêiner do Liferay a esta: \\
+\codigo{\$ docker network docker-compose\_default meu-liferay}
+
+\section{Configurar a autenticação do Liferay}
+O primeiro passo que devemos proceder para que tudo funcione corretamente é que o usuário administrador do \textbf{Liferay} deve ser o mesmo do \textbf{Alfresco}, pois dessa forma não realizamos autenticações separadamente, por isso ao término da instalação do \textbf{Liferay} garantimos que o usuário e sua senha são \textbf{admin} (que corresponde ao padrão contidos no \textbf{Alfresco}). Agora devemos mudar a forma como o usuário do \textbf{Liferay} se autentica que é por \textbf{e-mail}, enquanto que o \textbf{Alfresco} realiza esse processo por \textbf{nome de usuário}.
+
+Aqui temos um "pulo do gato", o contêiner tanto do \textbf{Liferay} quanto do \textbf{Alfresco} não possuem nenhum editor instalado, ou mesmo, a possibilidade em se instalar um, então os arquivos devem ser criados na máquina local e em seguida copiados para o contêiner nos locais indicados.
+
+Devemos criar um arquivo local com o seguinte conteúdo:
+\begin{lstlisting}
+layout.show.portlet.access.denied=true
+session.store.password=true
+company.security.auth.type=screenName
+web.server.host=<IP-DA-MAQUINA>
+\end{lstlisting}
+
+Na propriedade \textbf{web.server.host} devemos colocar o endereço IP da máquina onde o contêiner do \textbf{Liferay} está executando.
+
+Este arquivo deve ser salvo com o nome \textbf{portal-ext.properties}. Próximo passo é copiá-lo para o contêiner do Liferay: \\
+\codigo{\$ docker cp portal-ext.properties meu-liferay:/opt/liferay/tomcat/webapps/ROOT\\/WEB-INF/classes}
+
+Este comando deve retornar a mensagem: \\
+\codigo{Successfully copied 2.05kB to meu-liferay:/opt/liferay/tomcat/webapps/ROOT\\/WEB-INF/classes}
+
+Por fim, devemos reiniciar o contêiner do Liferay: \\
+\codigo{\$ docker restart meu-liferay}
+
+E uma vez ativo, devemos conseguir logar com o \textit{UserName} \textbf{admin} e mesma senha. E se tudo está funcionando corretamente o Liferay deve ser acessível tanto pelo endereço \url{http://localhost:8081} quanto por \url{http://[IP-MAQUINA]:8081}, isso é importante quando desejamos usar duas máquinas na mesma rede.
+
+\section{Preparar o Alfresco}
+A comunicação pode ser realizada de duas formas, a primeira é por \textbf{Web Scripts} isso significa escrevê-los e disponibilizá-los como funcionalidades, por exemplo, desejamos ter uma simples listagem dos documentos disponíveis, ou uma pesquisa personalizada, veremos essa forma em breve. A segunda é por meio de um repositório de interligação através da comunicação \textbf{CMIS}.
+
+Podemos dizer que esse é um modelo de integração total, onde o usuário do \textbf{Liferay} teria permissão de realizar qualquer processo dentro do \textbf{Alfresco}.
+
+Devemos criar um arquivo com o seguinte conteúdo:
+\begin{lstlisting}
+cmis.enabled=true
+\end{lstlisting}
+
+Este arquivo deve ser salvo com o nome \textbf{alfresco-global.properties}. Próximo passo é copiá-lo para o contêiner do \textbf{Alfresco}: \\
+\codigo{\$ docker cp alfresco-global docker-compose-alfresco-1:/usr/local/tomcat/shared\\/classes}
+
+\section{Conclusão}
+Em diferentes cenários, \textit{Digital Experience Platforms} como o \textbf{Liferay DXP} (algum tempo atrás conhecido como \textit{Enterprise Portals}), e um \textit{Content Services Platforms} como o \textbf{Alfresco} convivendo juntos e gerenciando partes do ciclo da vida de documentos. A integração via portlet providencia uma solução para o publicador de conteúdo via \textbf{CMIS API}.
+
+Ao utilizar \textbf{Docker} para integrar \textbf{Liferay} e \textbf{Alfresco}, as organizações podem não apenas melhorar a eficiência operacional, mas também garantir uma arquitetura mais resiliente, fácil de manter e expandir à medida que as necessidades do negócio evoluem. 
+
+\input{../sty/final.tex}
+
+%-----------------------------------------------------------------------------
+% REFERÊNCIAS
+%-----------------------------------------------------------------------------
+\begin{thebibliography}{7}
+  \bibitem{liferay} 
+  Site oficial do Liferay \\
+  \url{https://www.liferay.com/}
+
+  \bibitem{alfresco} 
+  Site oficial do Alfresco Community Edition \\
+  \url{https://docs.alfresco.com/content-services/community/}
+  
+  \input{../sty/referencias.tex}
+\end{thebibliography}
+
+\end{document}
