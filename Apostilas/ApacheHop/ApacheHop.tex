@@ -98,109 +98,11 @@ As principais vantagens do \textbf{Apache Hop} são:
 
 \textbf{Hop Server} é um servidor leve baseado em web, capaz de executar remotamente \textit{pipelines} e \textit{workflows} em ambientes distribuídos. Pode ser implantado em um ou mais nós, permite a execução paralela, balanceamento de carga e alta disponibilidade. Expõe uma API RESTful completa, possibilitando que outros sistemas ou aplicações interajam com os \textit{pipelines} de forma programática — ideal para automações, integrações com plataformas externas e arquiteturas orientadas a eventos. Através dele, é possível orquestrar fluxos de dados complexos a partir de múltiplos servidores, promover escalabilidade horizontal e melhorar o gerenciamento das cargas de trabalho.
 
-
 \section{E isso tudo em contêineres do Docker}
-Docker, como plataforma de contêineres, oferece uma maneira rápida e flexível de empacotar, distribuir e executar aplicações em ambientes isolados. Ao utilizar Docker para orquestrar a integração entre Liferay DXP e Alfresco, as empresas podem garantir uma configuração mais ágil, consistência nos ambientes de desenvolvimento, testes e produção, além de facilitar o escalonamento das aplicações conforme necessário.
-
-Uma das principais vantagens de usar Docker nessa integração é a simplificação do processo de deployment. Com o Docker, tanto o Liferay DXP quanto o Alfresco podem ser configurados e executados em contêineres isolados, o que facilita o gerenciamento de dependências e versões. Isso elimina conflitos de ambiente que poderiam ocorrer ao rodar as aplicações em servidores tradicionais. Além disso, a utilização de contêineres permite que cada ferramenta seja executada com a sua própria configuração e requisitos de infraestrutura, enquanto ainda mantém a comunicação entre elas de forma eficaz e segura. Isso reduz o risco de erros e aumenta a previsibilidade no desenvolvimento.
-
-Outro benefício é a flexibilidade de escalabilidade. Quando uma das ferramentas, como o Alfresco, precisar de mais recursos de processamento ou armazenamento, a solução pode ser escalada facilmente sem impactar o funcionamento do Liferay DXP, graças à natureza isolada dos contêineres. Docker também facilita o gerenciamento de clusters e a replicação de ambientes em diferentes servidores ou nuvens, permite uma melhor utilização dos recursos e garante a tão sonhada "alta disponibilidade".
-
-\subsection{Instalar o Liferay no Docker}
-Instalar o Liferay a partir do Docker e um dos trabalhos mais fáceis que podem ser realizados por um desenvolvedor, talvez trocar a lâmpada seja mais fácil. Com o simples comando: \\
-\codigo{\$ docker run -it -d -m 4g -p 8081:8080 --name=meu-liferay -e JAVA\_VERSION=zulu21 -v /home/[usuario]/liferaymnt:/mnt/liferay liferay/portal:latest}
-
-Basicamente, definimos um contêiner que utiliza 4 gigabytes de memória, que será executado na porta \textbf{8081} (pois a porta 8080 será do Alfresco), que executará o Java 21 e se chamará meu-liferay.
-
-Para interromper o contêiner: \\
-\codigo{\$ docker stop meu-liferay}
-
-Para reiniciar o contêiner: \\
-\codigo{\$ docker start meu-liferay}
-
-Testemos para ver se funciona corretamente, no navegador acessar o endereço: \url{http://localhost:8081}, o usuário padrão é \textbf{test@liferay.com}, e a senha: \textbf{test}.
-
-\textbf{ATENÇÃO}: Na primeira vez que se logar será forçado para mudar a senha, troque-a para \textbf{admin} (toda em minúsculas), uma vez que entrou corretamente com a nova senha, no perfil em \textit{User Profile} devemos modificar o Screen Name de \textbf{test} para \textbf{admin} (também toda em minúsculas), salvar e confirmar a mudança com a senha.
-
-\subsection{Instalar o Alfresco no Docker}
-Subir um Alfresco não é tão simples como o Liferay pois são diversos componentes incluindo o Banco Postgres, Apache Solr e o servidor de mensagens ActiveMQ. Assim o melhor modo e colocá-lo sobre o Docker Compose de modo a gerenciar toda essa informação e trabalhar de modo unido.
-
-Faça um clone do repositório oficial da comunidade no Git: \\
-\codigo{\$ git clone https://github.com/Alfresco/acs-deployment.git}
-
-Entre no diretório do Docker Compose: \\
-\codigo{\$ cd acs-deployment/docker-compose}
-
-Crie e suba os contêineres necessários: \\
-\codigo{\$ docker compose -f community-docker-compose.yaml up}
-
-Para interromper os contêineres: \\
-\codigo{\$ docker compose -f community-docker-compose.yaml stop}
-
-Para reiniciá-los: \\
-\codigo{\$ docker compose -f community-docker-compose.yaml start}
-
-Testemos para ver se funciona corretamente, no navegador acessar o endereço: \url{http://localhost:8080/alfresco}, o usuário padrão é \textbf{admin}, e a senha: \textbf{admin}.
-
-Outros endereços úteis são: \vspace{-1em}
-\begin{itemize}
-	\item Control Center \url{http://localhost:8080/admin}
-	\item Share \url{http://localhost:8080/share}
-	\item Alfresco Content App \url{http://localhost:8080/content-app}
-	\item Search Services administration \url{http://localhost:8083/solr}
-\end{itemize}
-
-Lembre-se sempre de estar, obrigatoriamente, neste diretório para realizar essas operações.
-
-Outro passo extremamente importante é colocar o Liferay na mesma rede que o Alfresco. Primeiro vamos verificar as redes: \\
-\codigo{\$ docker network ls}
-
-Provavelmente deve existir uma rede chamada docker-compose\_default, vamos associar o contêiner do Liferay a esta: \\
-\codigo{\$ docker network docker-compose\_default meu-liferay}
-
-\section{Configurar a autenticação do Liferay}
-O primeiro passo que devemos proceder para que tudo funcione corretamente é que o usuário administrador do \textbf{Liferay} deve ser o mesmo do \textbf{Alfresco}, pois dessa forma não realizamos autenticações separadamente, por isso ao término da instalação do \textbf{Liferay} garantimos que o usuário e sua senha são \textbf{admin} (que corresponde ao padrão contidos no \textbf{Alfresco}). Agora devemos mudar a forma como o usuário do \textbf{Liferay} se autentica que é por \textbf{e-mail}, enquanto que o \textbf{Alfresco} realiza esse processo por \textbf{nome de usuário}.
-
-Aqui temos um "pulo do gato", o contêiner tanto do \textbf{Liferay} quanto do \textbf{Alfresco} não possuem nenhum editor instalado, ou mesmo, a possibilidade em se instalar um, então os arquivos devem ser criados na máquina local e em seguida copiados para o contêiner nos locais indicados.
-
-Devemos criar um arquivo local com o seguinte conteúdo:
-\begin{lstlisting}
-layout.show.portlet.access.denied=true
-session.store.password=true
-company.security.auth.type=screenName
-web.server.host=<IP-DA-MAQUINA>
-\end{lstlisting}
-
-Na propriedade \textbf{web.server.host} devemos colocar o endereço IP da máquina onde o contêiner do \textbf{Liferay} está executando.
-
-Este arquivo deve ser salvo com o nome \textbf{portal-ext.properties}. Próximo passo é copiá-lo para o contêiner do Liferay: \\
-\codigo{\$ docker cp portal-ext.properties meu-liferay:/opt/liferay/tomcat/webapps/ROOT\\/WEB-INF/classes}
-
-Este comando deve retornar a mensagem: \\
-\codigo{Successfully copied 2.05kB to meu-liferay:/opt/liferay/tomcat/webapps/ROOT\\/WEB-INF/classes}
-
-Por fim, devemos reiniciar o contêiner do Liferay: \\
-\codigo{\$ docker restart meu-liferay}
-
-E uma vez ativo, devemos conseguir logar com o \textit{UserName} \textbf{admin} e mesma senha. E se tudo está funcionando corretamente o Liferay deve ser acessível tanto pelo endereço \url{http://localhost:8081} quanto por \url{http://[IP-MAQUINA]:8081}, isso é importante quando desejamos usar duas máquinas na mesma rede.
-
-\section{Preparar o Alfresco}
-A comunicação pode ser realizada de duas formas, a primeira é por \textbf{Web Scripts} isso significa escrevê-los e disponibilizá-los como funcionalidades, por exemplo, desejamos ter uma simples listagem dos documentos disponíveis, ou uma pesquisa personalizada, veremos essa forma em breve. A segunda é por meio de um repositório de interligação através da comunicação \textbf{CMIS}.
-
-Podemos dizer que esse é um modelo de integração total, onde o usuário do \textbf{Liferay} teria permissão de realizar qualquer processo dentro do \textbf{Alfresco}.
-
-Devemos criar um arquivo com o seguinte conteúdo:
-\begin{lstlisting}
-cmis.enabled=true
-\end{lstlisting}
-
-Este arquivo deve ser salvo com o nome \textbf{alfresco-global.properties}. Próximo passo é copiá-lo para o contêiner do \textbf{Alfresco}: \\
-\codigo{\$ docker cp alfresco-global docker-compose-alfresco-1:/usr/local/tomcat/shared\\/classes}
+Ainda sem texto
 
 \section{Conclusão}
-Em diferentes cenários, \textit{Digital Experience Platforms} como o \textbf{Liferay DXP} (algum tempo atrás conhecido como \textit{Enterprise Portals}), e um \textit{Content Services Platforms} como o \textbf{Alfresco} convivendo juntos e gerenciando partes do ciclo da vida de documentos. A integração via portlet providencia uma solução para o publicador de conteúdo via \textbf{CMIS API}.
-
-Ao utilizar \textbf{Docker} para integrar \textbf{Liferay} e \textbf{Alfresco}, as organizações podem não apenas melhorar a eficiência operacional, mas também garantir uma arquitetura mais resiliente, fácil de manter e expandir à medida que as necessidades do negócio evoluem. 
+Ainda sem texto
 
 \input{../sty/final.tex}
 
@@ -208,13 +110,9 @@ Ao utilizar \textbf{Docker} para integrar \textbf{Liferay} e \textbf{Alfresco}, 
 % REFERÊNCIAS
 %-----------------------------------------------------------------------------
 \begin{thebibliography}{7}
-  \bibitem{liferay} 
-  Site oficial do Liferay \\
-  \url{https://www.liferay.com/}
-
-  \bibitem{alfresco} 
-  Site oficial do Alfresco Community Edition \\
-  \url{https://docs.alfresco.com/content-services/community/}
+  \bibitem{hop} 
+  Site oficial do Apache Hop \\
+  \url{https://hop.apache.org/}
   
   \input{../sty/referencias.tex}
 \end{thebibliography}
