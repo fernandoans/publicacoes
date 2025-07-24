@@ -2,14 +2,18 @@
 %	CHAPTER 3
 %------------------------------------------------------------------------------------
 \chapterimage{headConceito.png}
-\chapter{EDA}
+\chapter{EDA e ADS}
 
 \begin{remark}
 Nós torturamos os dados até eles confessarem. (Ricado Cappra - Cientista de Dados) 
 \end{remark}
 
-\section{Passos da EDA}\index{EDA}
-EDA é fundamental para entender qualquer conjunto de observações. É aqui podemos obter informações e fazer descobertas. Aqui colocamos o conhecimento para trabalhar. Acrônimo para \textit{Exploratory Data Analysis} (Análise Exploratória de Dados), desempenha um papel crítico na compreensão do quê? por que? e como? na declaração do problema. 
+A \textbf{Análise e Ciência de Dados} (ADS) é uma área que integra estatística, programação e conhecimento de domínio para transformar grandes volumes de dados em informações úteis e estratégicas. Seu principal objetivo é extrair padrões, tendências e previsões a partir de dados estruturados ou não estruturados, possibilitando a tomada de decisões embasadas. Utilizando técnicas como análise exploratória, aprendizado de máquina e visualização de dados, a \textbf{ADS} atua como ponte entre dados brutos e ações inteligentes.
+
+Mas antes de falarmos dessa prefiro iniciar o assunto com outro acrônimo conhecido como \textbf{EDA}.
+
+\section{Passos da EDA}\index{EDA e ADS}
+Acrônimo para \textit{Exploratory Data Analysis} (Análise Exploratória de Dados), desempenha um papel crítico na compreensão do quê? por que? e como? na declaração do problema. \textbf{EDA} é fundamental para entender qualquer conjunto de observações. É aqui podemos obter informações e fazer descobertas. Aqui colocamos o conhecimento para trabalhar.
 
 É a primeira ação realizada na ordem das operações que um Cientista de Dados deve executar ao receber uma nova fonte de observações e a declaração de problema. Tratamos EDA como uma série de técnicas utilizadas como forma de entendermos os diversos aspectos que temos para trabalhar.
 \begin{figure}[H]
@@ -22,7 +26,7 @@ A preparação dos dados para análise é inevitável, e a maneira como fazemos 
 
 Normalmente as observações se dividem em atributos \textbf{Preditores} (Entradas) e \textbf{Alvo} (saída). Uma vez que os localizemos, devemos identificar seu tipo e categoria.
 
-\section{Passo 1 - Entender os Dados}\index{EDA}
+\section{Passo 1 - Entender os Dados}\index{EDA e ADS}
 Nesta fase precisamos compreender o que temos a nossa disposição. Começamos o processo com a importação das bibliotecas:
 \begin{lstlisting}[]
 import pandas as pd
@@ -107,7 +111,7 @@ Resumidamente é formado da seguinte maneira:
 
 Esses pontos "discrepantes" podem ocorrer acima ou abaixo dos limites, são chamados de \textit{Outliers}. Não é necessariamente um erro, podemos classificá-lo como uma anomalia curiosa e que merece nossa atenção.
 
-\subsection{Localizar os Outliers}\index{EDA}
+\subsection{Localizar os Outliers}\index{EDA e ADS}
 Para achar esses \textit{Outliers} isolamos os três atributos numéricos:
 \begin{lstlisting}[]
 X = df.iloc[:, 5:8].values
@@ -157,7 +161,7 @@ Obtemos como resultado:
 
 E assim verificamos como cada atributo numérico se comporta.
 
-\subsection{Tratar Atributos Categóricos}\index{EDA}
+\subsection{Tratar Atributos Categóricos}\index{EDA e ADS}
 Sabemos que os primeiros cinco atributos do \textit{Dataframe} são categóricos, porém conforme a função \textit{info()} o tipo delas estás \textit{object}. É interessante mudarmos para o tipo caractere para evitarmos quaisquer problemas futuros.
 \begin{lstlisting}[]
 df['gender'] = df['gender'].astype(pd.StringDtype())
@@ -181,7 +185,7 @@ print("Refeição: ", df['lunch'].unique())
 print("Realizou Preparatório: ", df['test preparation course'].unique())
 \end{lstlisting}
 
-\section{Passo 2 - Limpar os Dados}\index{EDA}
+\section{Passo 2 - Limpar os Dados}\index{EDA e ADS}
 A limpeza dos dados trata de muitos problemas como informação repetida, valores faltantes (que podem ser descobertos por associação) e inconsistentes. Para esse último tipo o pior caso são os nulos. (In)felizmente essa base está horrível para essa fase e assim pegamos um outro arquivo \textbf{titanic.csv}: 
 \begin{lstlisting}[]
 df = pd.read_csv('titanic.csv')
@@ -295,7 +299,7 @@ df = df.drop(['Cabin'], axis=1)
 	Conhece o \textbf{OpenRefine?} é uma ferramenta gratuita dedicada a limpeza e tratamento das observações, baixe uma apostila gratuitamente na minha página do Academia.edu (\url{https://iesbpreve.academia.edu/FernandoAnselmo}).
 \end{note}
 
-\section{Passo 3 - Relacionamento entre os Atributos}\index{EDA}
+\section{Passo 3 - Relacionamento entre os Atributos}\index{EDA e ADS}
 Vamos retomar nossa base de \textbf{Estudantes} e verificarmos como os atributos se relacionam:
 \begin{lstlisting}[]
 df = pd.read_csv('StudentsPerformance.csv')
@@ -374,10 +378,130 @@ Obtemos como resultado:
 
 Ou seja, podemos responder várias perguntas apenas com a verificação do relacionamento entre os atributos. Como forma de fixar o conhecimento procure realizar o mesmo teste com outros atributos categóricos e descobrir como se comportam em relação a nota, se existe ou não interferência.
 
-\section{Conclusão}\index{EDA}
-Mantemos em mente que EDA e um aspecto central da \textit{Data Science}, que às vezes é esquecido. O primeiro passo de qualquer ação que tomemos é conhecer as observações: entendê-las e familiarizar-se. Quais são as respostas que estamos tentando obter? Quais são os atributos e o que significam? Como é a aparência de uma perspectiva estatística? As observações estão formatadas corretamente? Possuem valores ausentes? duplicados? E quanto aos \textit{outliers}? Conhecemos eles? Ou seja, devemos responder a esses questionamentos.
+\section{ADS}\index{EDA e ADS}
+\textit{Analysis and Data Science} (Análise e Ciência de Dados) trata de uma área multidisciplinar que combina técnicas de estatística, matemática, programação e conhecimento do domínio para extrair \textit{insights} e gerar valor a partir de dados. Seu objetivo é transformar dados brutos em valor, tais como, previsões inteligentes e decisões orientadas por evidências.
+
+Com o crescimento exponencial da geração de dados por empresas, redes sociais, dispositivos móveis e sensores, tornou-se essencial utilizar abordagens analíticas para compreender padrões, detectar anomalias, prever comportamentos e otimizar processos.\textbf{}
+
+Na prática de ADS geralmente segue etapas conhecidas como pipeline de ciência de dados: \begin{itemize}[]
+	\item \textbf{Coleta de dados} - Captura de dados de fontes diversas (bancos de dados, APIs, arquivos, web scraping).
+	\item \textbf{Limpeza e pré-processamento} - Tratamento de dados ausentes, inconsistentes ou ruidosos.
+	\item \textbf{Análise exploratória (EDA)} - Visualizações e estatísticas para entender padrões, correlações e distribuições.
+	\item \textbf{Engenharia de atributos (\textit{feature engineering})} - Transformação de variáveis para melhor desempenho dos modelos.
+	\item \textbf{Modelagem estatística e de machine learning} - Criação de modelos preditivos ou descritivos.
+	\item \textbf{Validação e avaliação} - Medição do desempenho usando métricas como acurácia, precisão, recall ou RMSE.
+	\item \textbf{Deploy e monitoramento} - Aplicação do modelo em produção e acompanhamento de seu desempenho.
+\end{itemize}
+
+\section{PDP e ICE}\index{EDA e ADS}
+No contexto da \textbf{ADS}, os gráficos \textbf{PDP} (\textit{Partial Dependence Plot}) e \textbf{ICE} (\textbf{Individual Conditional Expectation}) são ferramentas úteis para interpretar modelos de Machine Learning, especialmente os mais complexos (como Árvores de Decisão, Random Forests ou Gradient Boosting). Ambos ajudam a entender como uma variável de entrada influencia a predição de um modelo.
+
+\textbf{PDP - Partial Dependence Plot (Gráfico de Dependência Parcial)} \\
+Mostra a média da predição do modelo ao variar uma variável de interesse (ou mais), mantendo as outras constantes. Responde à pergunta: Em média, como a predição muda quando alteramos o valor de uma variável específica?
+
+Como funciona? \vspace{-1em}
+\begin{enumerate}[]
+	\item Para cada valor da variável de interesse: \vspace{-1em}
+	\begin{itemize}[]
+		\item Substitui-se esse valor em todas as amostras do conjunto de dados.
+		\item O modelo faz a predição para cada uma dessas amostras modificadas.
+		\item Calcula-se a média das predições.
+	\end{itemize}
+	\item Isso é feito para vários valores da variável (ex: de 0 a 10), e o resultado é um gráfico com uma curva.
+\end{enumerate}
+
+\textbf{CE – Individual Conditional Expectation (Expectativa Condicional Individual)} \\
+É uma generalização do \textbf{PDP}. Ao invés de mostrar a média, mostra uma linha para cada observação individual. Ele responde à pergunta: Como a predição muda para um indivíduo específico quando mudamos uma variável?
+
+Como funciona? \vspace{-1em}
+\begin{enumerate}[]
+	\item Para cada amostra individual:
+	\begin{itemize}[]
+		\item Varia-se uma variável específica mantendo as outras constantes.
+		\item Registra-se a predição do modelo para cada valor variado.
+	\end{itemize}
+	\item Plota-se uma curva por observação → o resultado é um conjunto de curvas (um para cada indivíduo).
+\end{enumerate}
+
+Imaginemos um modelo que prediz o preço de uma casa com base em tamanho ($m^2$): \vspace{-1em}
+\begin{itemize}[]
+	\item \textbf{PDP}: Mostra que, em média, quanto maior a casa, maior o preço.
+	\item \textbf{ICE}: Mostra que, para algumas casas, o aumento de tamanho aumenta o preço rapidamente, para outras, quase não muda — indicando efeitos individuais distintos.
+\end{itemize}
+
+\begin{lstlisting}[]
+import matplotlib.pyplot as plt
+import pandas as pd
+from sklearn.datasets import fetch_california_housing
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.inspection import plot_partial_dependence, PartialDependenceDisplay
+from sklearn.inspection import partial_dependence
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+# 1. Carregar o dataset
+data = fetch_california_housing()
+X = pd.DataFrame(data.data, columns=data.feature_names)
+y = data.target
+
+# 2. Dividir em treino e teste
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=42)
+
+# 3. Treinar o modelo
+model = RandomForestRegressor(n_estimators=100, random_state=42)
+model.fit(X_train, y_train)
+
+# 4. Plotar PDP + ICE para uma variável
+features = ['MedInc']
+
+fig, ax = plt.subplots(figsize=(10, 6))
+
+display = PartialDependenceDisplay.from_estimator(
+ model,
+ X_train,
+ features,
+ kind="both",
+ subsample=50,
+ n_jobs=1,
+ grid_resolution=100,
+ ax=ax
+)
+
+plt.title("PDP + ICE para a variável MedInc")
+plt.grid(True)
+plt.tight_layout()
+plt.show()
+\end{lstlisting}
+
+Acabei de expor o grande segredo de um Modelo de \textbf{Machine Learning}, que nada mais é do que, obter os dados, separar em treino e teste, executar o modelo. Mas veremos isso mais a fundo nos próximos capítulos.
+
+Basicamente o que nos interessa é o \textbf{Passo 4} no qual, neste exemplo, usamos a variável \textbf{MedInc} (renda média da região), mas se desejar podemos trocar para \textbf{AveRooms}, \textbf{AveOccup} ou \textbf{HouseAge}. Já o método "\textit{from\_estimator}", o parâmetro \textbf{kind} pode ser usado com os valores: '\textit{average}' para \textbf{PDP}, '\textit{individual}' para \textbf{ICE} ou '\textit{both}' para os dois. O parâmetro \textit{subsample} permite limitar uma quantidade de indivíduos no ICE para visualização (neste caso estabelecido 50).\textbf{}
+
+Obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.55\textwidth]{cap03/PDPeICE.png}
+	\caption{PDP e ICE para variável MedInc}
+\end{figure}
+
+Na prática o \textbf{PDP} é usado para Modelos de \textbf{Classificação} enquanto que o \textbf{ICE} para Mdelos de \textbf{Regressão}.
+
+A curva azul escura (grossa) é a média das previsões (PDP). Já as muitas linhas finas e transparentes cada uma representa uma instância (ICE). O eixo X representa o valor da variável MedInc (renda média), enquanto que o eixo Y mostra como a predição (\textit{target}) muda conforme MedInc.
+	
+\section{Conclusão}\index{EDA e ADS}
+Um profissional de \textbf{ADS} desenvolve:
+\begin{itemize}[nolistsep]
+	\item Pensamento analítico e crítico
+	\item Capacidade de resolver problemas baseados em dados
+	\item Habilidade de comunicar insights com clareza (data storytelling)
+	\item Conhecimentos em estatística, probabilidade e algoritmos de aprendizado de máquina
+\end{itemize}
+
+Mantemos em mente que \textbf{EDA} e um aspecto central da \textit{Data Science}, que às vezes é esquecido. O primeiro passo de qualquer ação que tomemos é conhecer as observações: entendê-las e familiarizar-se. Quais são as respostas que estamos tentando obter? Quais são os atributos e o que significam? Como é a aparência de uma perspectiva estatística? As observações estão formatadas corretamente? Possuem valores ausentes? duplicados? E quanto aos \textit{outliers}? Conhecemos eles? Ou seja, devemos responder a esses questionamentos.
 
 É necessário muito trabalho de preparação, pois no mundo real dados raramente são limpos e homogêneos. Costumamos dizer que 80\% do tempo valioso em um Cientista de Dados é utilizado com a localização, limpeza e organização das observações. Os 20\% restantes são destinados a realizar as análises.
+
+O campo de \textbf{ADS} é essencial em um mundo cada vez mais orientado por dados, sendo aplicado em setores como saúde, finanças, varejo, indústria e governo. Com o avanço da tecnologia e o crescimento massivo na geração de dados, a demanda por profissionais capazes de analisar e interpretar essas informações tem aumentado exponencialmente. A ciência de dados não apenas responde a “o que aconteceu”, mas também busca responder “por que aconteceu” e “o que pode acontecer”, contribuindo para a inovação, otimização de processos e ganho de vantagem competitiva.
 
 Agora estamos prontos para começarmos a explorar diversas observações com a utilização dos modelos.
 

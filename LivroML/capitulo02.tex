@@ -9,32 +9,96 @@ A melhor forma de prever o futuro é cria-lo. (Peter Drucker - Escritor e Pai da
 \end{remark}
 
 \section{Termos da Estatística}\index{Conceitos Introdutórios}
-Devemos sempre possuir um vocabulário comum, e mesmo que não se entenda absolutamente nada de estatística (e tenha um Estatístico a sua disposição), o Cientista de Dados deve conhecer os seguintes termos:
+Devemos sempre possuir um vocabulário comum, e mesmo que não se entenda absolutamente nada de estatística (e tenha um Estatístico a sua disposição), o Cientista de Dados deve conhecer algumas noções de estatística para iniciar seus estudos.
+
+Primeiro a essência da Estatística está na palavra chave \textbf{observação} e seu objetivo básico é a \textbf{inferência} (que significa deduzir ou concluir), basicamente tudo isso é dar importância algumas atividades simples como:
+\begin{itemize}
+	\item Avaliar o grau de dependência entre duas variáveis como o tempo médio de estarmos um determinado tempo sentados e as dores nas costas.
+	\item Avaliar o tempo médio de quanto tempo consegue ler este livro sem a mente divagar por outro assunto.
+	\item Previsão de qual time irá ganhar o campeonato local e quais suas chances no Brasileirão.
+	\item Controle da qualidade de produção na fabricação de componentes eletrônicos.
+\end{itemize}
+
+\subsection{Pequeno Dicionário Introdutório}\index{Conceitos Introdutórios}
+Estatística é um ramo da Matemática que trata de métodos de coleta, organização, resumo, apresentação e análise de dados que pode ser \textbf{Descritiva} (na coleta e organização dos dados) ou \textbf{Indutiva} (na avaliação e controle dos dados coletados).
+
+Sendo assim, necessitamos de um "pequeno" dicionário de termos que nos auxiliarão em tempos vindouros:
 \begin{itemize}
 	\item \textbf{População}: o conjunto constituído por todos os indivíduos que representam pelo menos uma característica comum, cujo comportamento interessa analisar (inferir). Por exemplo, se em uma empresa o diretor gostaria de saber se os funcionários estão satisfeitos com os benefícios oferecidos, a população de estudo são todos os funcionários dessa empresa. O conceito de população depende do objetivo de estudo.
 	\item \textbf{Amostra}: um subconjunto, uma parte selecionada da totalidade de observações abrangidas pela população, através da qual se faz inferência sobre as características da população. Por exemplo, uma rádio tem o interesse de saber como está sua audiência com os ouvintes no trânsito. Não é possível perguntar a todos os motoristas que ouvem rádio qual é aquela que eles preferem. Então buscamos uma parte representativa dessa população, isto significa, perguntar somente a alguns motoristas qual rádio preferem escutar enquanto dirigem. Uma amostra tem que ser representativa, sua coleta bem como seu manuseio requer cuidados especiais para que os resultados não sejam distorcidos. 
 	\item \textbf{Elemento ou Variável de Interesse}: característica a ser observada em cada indivíduo da amostra. Componentes sobre o qual serão observadas ou medidas as características. Onde cada característica corresponde a um tipo de variável. Por exemplo, se queremos estudar o índice de massa corporal (IMC) de alunos do ensino médio de uma cidade, tomaremos uma amostra dessa população, e mediremos a altura e o peso de cada aluno, já que o IMC é calculado como uma razão entre peso e o quadrado da altura do indivíduo. Nesse caso: peso e altura são as variáveis de interesse.
+	\item \textbf{Variável Qualitativa}: denomina-se "Nominal" quando não é possível sua ordenação (estado civil, religião, gênero, região) ou "Ordinal" quando é possível sua ordenação (nível de educação, classe social).
+	\item \textbf{Variável Quantitativa}: denomina-se "Discreta" composta de elementos contáveis (idade, capacidade de passageiros, nº de filhos) ou "Contínua" elementos não contáveis (peso, altura, largura, medida de capacidade).
+	\item \textbf{Dados Brutos}: são dados desorganizados.
+	\item \textbf{Rol}: são dados brutos organizados em ordem crescente ou decrescente. 
 \end{itemize}
 
 Tendo em vista as dificuldades de várias naturezas para se observar todos os elementos da população, tomaremos alguns deles para formar um grupo a ser estudado. Este subconjunto da população, em geral com dimensão menor, é denominado \textbf{amostra}.
 
 Outros termos de interessante são as "Medidas Resumo", são elas:
 \begin{itemize}
-	\item \textbf{Média}: É a soma das observações dividida pelo total. Este é o mais comum indicador de uma tendência central de uma variável.
-	\item \textbf{Mediana}: Em uma lista ordenada de dados (rol), a mediana é o termo central.
-	\item \textbf{Moda}: Refere-se ao termo que mais aparece em uma coleção. Sendo que: Amodal - rol que não tem nenhum valor que se repete; Bimodal - existem 2 valores que se repetem na mesma frequência, N-modal - existem n valores que se repetem na mesma frequência.
-	\item \textbf{Variância}: Medida de dispersão dos dados para uma média. Quanto maior for mais distantes da média estão, e quanto menor for mais próximos estão da média.
-	\item \textbf{Desvio Padrão (std)}: É o resultado positivo da raiz quadrada da variância. Indica como fechado estão os dados em torno da média.
-	\item \textbf{Amplitude}: Medida de dispersão da amostra, sendo uma simples diferença entre o menor e maior valor.
-	\item \textbf{Coeficiente de Variação} usado para analisar a dispersão em termos relativos a seu valor médio quando duas ou mais séries de valores apresentam unidades de medida diferentes. Dessa forma, podemos dizer que o coeficiente de variação é uma forma de expressar a variabilidade dos dados excluindo a influência da ordem de grandeza da variável.
+	\item \textbf{Média}: a soma das observações dividida pelo total. Este é o mais comum indicador de uma tendência central de uma variável.
+	\item \textbf{Mediana}: termo central em um \textbf{rol}.
+	\item \textbf{Moda}: refere-se ao termo que mais aparece em uma coleção. Sendo que: Amodal - rol que não tem nenhum valor que se repete; Bimodal - existem 2 valores que se repetem na mesma frequência, N-modal - existem n valores que se repetem na mesma frequência.
+	\item \textbf{Variância}: medida de dispersão dos dados para uma média. Quanto maior for mais distantes da média estão, e quanto menor for mais próximos estão da média.
+	\item \textbf{Desvio Padrão (std)}: resultado positivo da raiz quadrada da variância. Indica como fechado estão os dados em torno da média.
+	\item \textbf{Amplitude}: medida de dispersão da amostra, sendo uma simples diferença entre o menor e maior valor.
+	\item \textbf{Coeficiente de Variação}: usado para analisar a dispersão em termos relativos a seu valor médio quando duas ou mais séries de valores apresentam unidades de medida diferentes. Dessa forma, podemos dizer que o coeficiente de variação é uma forma de expressar a variabilidade dos dados excluindo a influência da ordem de grandeza da variável.
 \end{itemize}
 
-Probabilidade é uma medida que nos mostra qual o grau de um evento ocorrer novamente. Muita para da ciência de dados é baseada na tentativa de medir a probabilidade de eventos, desde as chances de um anúncio ser clicado até a falha de uma determinada peça em uma linha de montagem.
+\textbf{Separatrizes} são modo pelo qual organizamos os dados, que pode ser:
+\begin{itemize}
+	\item \textbf{Quartis}: dividem um conjunto de dados em 4 partes iguais: Q1 = 25\%; Q2 = 25\% a 50\%; Q3 = 50\% a 75\% e Q4 > 75\%.
+	\item \textbf{Decis}: dividem um conjunto de dados em 10 partes iguais.
+	\item \textbf{Percentis}: dividem um conjunto de dados em 100 partes iguais.
+\end{itemize}
+
+\subsection{Distribuição de Frequência e Probabilidade}\index{Conceitos Introdutórios}
+\textbf{Distribuição de Frequência} agrupa os dados por classes de ocorrência, resumindo a análise de conjunto de dados grandes. Pode ser.
+\begin{itemize}
+	\item $f_{i}$ - frequência absoluta - valores absolutos;
+	\item $f_{r}$ - frequência relativa - é a freq. absoluta da classe em termos percentuais;
+	\item $f_{a}$ - frequência acumulada - freq. total de todos os valores inferiores ao limite superior de um dado intervalo de classe;
+	\item $f_{ar}$ - frequência acumulada relativa - é a freq. acumulada em termos relativos ou percentuais.
+\end{itemize}
+
+Supondo que possuímos os seguintes dados qualitativos como resultado da venda de refrigerante em uma determinada máquina: Coca-cola, Sprite, Coca-cola, Pepsi, Coca-cola zero, Coca-cola, Coca-cola, Coca-cola, Pepsi, Sprite, Pepsi, Pepsi, Coca-cola, Pepsi, Coca-cola, Sprite, Coca-cola zero, Coca-cola, Sprite, Coca-cola zero. A distribuição de frequência da compra de refrigerante seria:
+\begin{center}
+	\begin{tabular}{ c|c|c|c|c } 
+		\hline
+		\textbf{Refrigerante} & \textbf{$f_{i}$} & \textbf{$f_{r}(\%)$} & \textbf{$f_{a}$} & \textbf{$f_{ar}(\%)$} \\ 
+		\hline
+		Coca-cola & 8 & 40 & 8 & 40 \\ 
+		Coca-cola zero & 3 & 15 & 11 & 55 \\ 
+		Pepsi & 5 & 25 & 16 & 80 \\ 
+		Sprite & 4 & 20 & 8 & 100 \\ 
+		\hline
+		\textbf{Total} & 20 & 100 & - & -\\ 
+		\hline
+	\end{tabular}
+\end{center}
+
+\textbf{Probabilidade} é uma medida que nos mostra qual o grau de um evento ocorrer novamente. Muito da ciência de dados é baseada na tentativa de medir a probabilidade de eventos, desde as chances de um anúncio ser clicado até a falha de uma determinada peça em uma linha de montagem.
+
+Resultados previsíveis são chamados de \textbf{determinísticos}. Por exemplo: tempo gasto para um objeto atingir o solo sendo lançado de uma determinada altura. Caso não saibamos o resultado final de um experimento com antecedência, chamamos de \textbf{aleatório}. Por exemplo: lançamento de uma moeda ou de um dado não viciados.
+
+Sendo assim, definimos \textbf{probabilidade} como o estudo de experimentos aleatórios que tenham a mesma chance de ocorrência. Neste estudo devemos entender que:
+\begin{itemize}
+	\item \textbf{Espaço Amostral (S)} é considerado o conjunto de todos os possíveis resultados de um determinado experimento. Por exemplo: O nascimento de 3 filhotes em um casal de gatos.
+	\item \textbf{Evento (E)} caracteriza-se por ser qualquer subconjunto de \textbf{S}. Por exemplo: Nascer exatamente 2 fêmeas.
+\end{itemize}
+
+Probabilidade é a chance de \textbf{E} ocorrer. A fórmula para isso é: $p(E) = \frac{nº(E)}{nº(S)}$; sendo assim, a probabilidade de nascer exatamente 2 fêmeas no nascimento de 3 filhotes em um casal de gatos é: $p(E) = \frac{3}{8}$
+
+Como chegamos a isso? \\
+$S = {(MMM), (MMF), (MFM), (FMM), (MFF), (FMF), (FFM), (FFF)} = $ 8 possibilidades \\
+$E = {(MFF), (FMF), (FFM)} = $ 3 possibilidades
+
 
 \begin{note}[Para saber mais] Quer entender mais sobre Estatística, recomendo este interessante livro online e em constante evolução \url{http://onlinestatbook.com/2/index.html}.
 \end{note}
 	
-\section{Termos que devemos saber}\index{Conceitos Introdutórios}
+\section{Mais termos que devemos saber}\index{Conceitos Introdutórios}
 Como toda ciência, existe um vocabulário comum que os cientistas falam e que devemos conhecer, palavras como: treinar um modelo, MSE, \textit{Overfitting} ou bisbilhotagem fazem parte desse vocabulário. Então mesmo sendo este um livro prático, precisamos saber do que se tratam.
 
 \textit{feature} (atributo) pode ser considerado como \textbf{preditor} (ou explicativo) e \textbf{alvo} (ou dependente). Atributos preditores são valores de entrada para um algoritmo enquanto que os dependentes de saída (resultado). Um problema que pode ser trabalhado com técnicas de ML é quando existe um padrão e não é fácil defini-lo. Fazendo uma analogia com estatística, é preciso usar um conjunto de observações (amostra) para descobrir um processo subjacente (probabilidade). Os dados são selecionados é aplicado ao modelo que possui um grau de aprendizado (acurácia). Descobrir um padrão não é memorizar \textit{Overfitting}, pois ao injetar novos dados o modelo deve ser capaz de prever o resultado. 
@@ -246,7 +310,7 @@ plt.show()
 Obtemos como resultado:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.4\textwidth]{cap02/distNormalPoisson.png}
+	\includegraphics[width=0.45\textwidth]{cap02/distNormalPoisson.png}
 	\caption{Distribuição Normal e de Poisson}
 \end{figure}
 
@@ -276,7 +340,7 @@ plt.show()
 Obtemos como resultado:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.45\textwidth]{cap02/distBinomial.png}
+	\includegraphics[width=0.4\textwidth]{cap02/distBinomial.png}
 	\caption{Distribuição Binomial}
 \end{figure}
 
@@ -292,7 +356,7 @@ plt.show()
 Obtemos como resultado:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.45\textwidth]{cap02/distCompara.png}
+	\includegraphics[width=0.4\textwidth]{cap02/distCompara.png}
 	\caption{Mesmo gráfico 3 Distribuições}
 \end{figure}
 
@@ -330,7 +394,7 @@ sns.distplot(np.random.binomial(n=48, p=0.9, size=400), label='Binomial')
 Obtemos como resultado:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.45\textwidth]{cap02/overbooking.png}
+	\includegraphics[width=0.4\textwidth]{cap02/overbooking.png}
 	\caption{Gráfico do Overbooking}
 \end{figure}
 
@@ -402,7 +466,9 @@ df.iloc[:,cols]
 
 Indica que número de gestações (\textit{gest}), concentração de glicose no plasma (\textit{glic}), índice de massa corporal (\textit{mass}) e \textit{idade} seriam os melhores candidatos.
 
-\subsection{Chi Squared}\index{Conceitos Introdutórios}
+\subsection{Chi-Square Test}\index{Conceitos Introdutórios}
+O teste retorna um valor de \textbf{p} (p-value) que indica a probabilidade de os dados observados ocorrerem caso as variáveis sejam independentes. Um p-valor menor que um determinado nível de significância (geralmente 0,05) sugere que existe uma relação estatística entre as variáveis. \textbf{Importante}: o teste do qui-quadrado não mede a força ou a direção da associação, apenas informa se é estatisticamente \textbf{significativa}. Requer que os dados sejam contagens (frequências) e que as categorias sejam mutuamente exclusivas e suficientemente numerosas (valores esperados maiores que 5, idealmente).
+
 Essa é uma outra forma de medir a dependência, "elimina" os atributos com a maior probabilidade de serem independentes da classe e, portanto, irrelevantes para a classificação:
 \begin{lstlisting}[]
 test2 = SelectKBest(chi2, k=4)
@@ -417,18 +483,20 @@ df.iloc[:,cols]
 
 Percebemos que aconteceu uma mudança nos atributos: \textit{glic}, \textit{mass} e \textit{idade} continuam, porém ao invés de \textit{gest} aparece a quantidade administrada de insulina (insul).
 
+Este é um teste estatístico utilizado para verificar se existe uma associação significativa entre variáveis categóricas. Compara os valores observados (obtidos a partir dos dados) com os valores esperados (assume que não há associação entre as variáveis). A ideia central é verificar se as diferenças entre o que foi observado e o que seria esperado ao acaso são grandes o suficiente para serem consideradas estatisticamente significativas. É muito usado em tabelas de contingência (como 2x2 ou nxm) para analisar relações entre variáveis como sexo, faixa etária ou preferência por um produto.
+
 \subsection{RFE}\index{Conceitos Introdutórios}
 \textit{Recursive Feature Elimination} é um método que remove o(s) recurso(s) mais fraco(s) até que o número especificado de recursos seja atingido. Sendo assim é necessário informar ao RFE o número de atributos caso contrário reduz pela metade esse valor de acordo com o número de atributos das observações:
 \begin{lstlisting}[]
-model = LogisticRegression(max_iter=2000, solver='lbfgs')
-rfe = RFE(model, n_features_to_select=4)
-fit3 = rfe.fit(X, y)
+	model = LogisticRegression(max_iter=2000, solver='lbfgs')
+	rfe = RFE(model, n_features_to_select=4)
+	fit3 = rfe.fit(X, y)
 \end{lstlisting}
 
 Visualizar as variáveis selecionadas:
 \begin{lstlisting}[]
-cols = fit3.get_support(indices=True)
-df.iloc[:,cols]
+	cols = fit3.get_support(indices=True)
+	df.iloc[:,cols]
 \end{lstlisting}
 
 Como resultado obtemos quase a mesma combinação anterior e aparece mais a variável \textit{familia } que indica se existem casos de diabetes na família.
@@ -438,33 +506,33 @@ Métodos de agrupamento\footnote{São métodos que utilizam vários algoritmos d
 
 Aplicar o algoritmo:
 \begin{lstlisting}[]
-model = RandomForestClassifier(n_estimators=10)
-model.fit(X, y)
-RandomForestClassifier(bootstrap=True, class_weight=None,
-  criterion='gini', max_depth=None, max_features='auto',
-  max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None,
-  min_samples_leaf=1, min_samples_split=2,
-  min_weight_fraction_leaf=0.0, n_estimators=10,
-  n_jobs=None, oob_score=False, random_state=None,
-  verbose=0, warm_start=False)
+	model = RandomForestClassifier(n_estimators=10)
+	model.fit(X, y)
+	RandomForestClassifier(bootstrap=True, class_weight=None,
+	criterion='gini', max_depth=None, max_features='auto',
+	max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None,
+	min_samples_leaf=1, min_samples_split=2,
+	min_weight_fraction_leaf=0.0, n_estimators=10,
+	n_jobs=None, oob_score=False, random_state=None,
+	verbose=0, warm_start=False)
 \end{lstlisting}
 
 E podemos gerar uma visualização:
 \begin{lstlisting}[]
-feature_importancia = pd.DataFrame(model.feature_importances_,
-  index = X.columns, columns=['importancia']).sort_values('importancia', ascending=False)
-feature_importancia
+	feature_importancia = pd.DataFrame(model.feature_importances_,
+	index = X.columns, columns=['importancia']).sort_values('importancia', ascending=False)
+	feature_importancia
 \end{lstlisting}
 
 Porém é preferível vê-las através de um gráfico:
 \begin{lstlisting}[]
-feature_importancia.plot(kind='bar')
+	feature_importancia.plot(kind='bar')
 \end{lstlisting}
 
 Obtemos como resultado:
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.5\textwidth]{cap02/acurVariavel.png}
+	\includegraphics[width=0.35\textwidth]{cap02/acurVariavel.png}
 	\caption{Grau de Importância dos Atributos}
 \end{figure}
 
@@ -475,6 +543,65 @@ E afinal de contas com tudo o que vimos. Qual Método utilizar?
 	\item Ao trabalhar com Regressão e os atributos forem numéricos, utilizar \textit{f\_regression} ou \textit{mutual\_info\_regression}.
 	\item Ao trabalhar com atributos categóricos utilizar \textit{Chi Squared}.
 \end{itemize}
+
+\subsection{Pearson e Spearman}\index{Conceitos Introdutórios}
+A correlação de \textbf{Pearson} é uma medida estatística que avalia o grau de relação linear entre duas variáveis quantitativas. Seu coeficiente varia de -1 a 1, onde valores próximos de 1 indicam uma forte correlação positiva (à medida que uma variável aumenta, a outra também aumenta), valores próximos de -1 indicam uma forte correlação negativa (uma variável aumenta enquanto a outra diminui), e valores próximos de 0 indicam ausência de relação linear. Essa correlação presume que os dados sejam numericamente contínuos, normalmente distribuídos e com relação linear.
+
+A correlação de \textbf{Spearman} mede a associação monotônica entre duas variáveis, com base na ordenação (ranking) dos valores, e não nos valores absolutos em si. Também varia de -1 a 1, mas é útil mesmo quando a relação entre as variáveis não é linear, desde que uma variável aumente de forma consistente (não necessariamente proporcional) com a outra. Isso a torna ideal para dados não paramétricos ou quando se suspeita que a relação entre as variáveis seja mais curvilínea ou ordinal.
+
+\begin{lstlisting}[]
+import pandas as pd
+import numpy as np
+from scipy.stats import pearsonr, spearmanr
+import matplotlib.pyplot as plt
+
+# Exemplo 1: Correlação linear
+np.random.seed(0)
+x = np.random.rand(100)
+y_linear = 2 * x + np.random.normal(0, 0.1, 100)
+
+# Exemplo 2: Correlação monotonica (não linear)
+y_mono = np.log(x + 1)
+
+# Criar DataFrame
+df = pd.DataFrame({
+	'x': x,
+	'y_linear': y_linear,
+	'y_mono': y_mono
+})
+
+# Correlação de Pearson
+pearson_corr, _ = pearsonr(df['x'], df['y_linear'])
+# Correlação de Spearman
+spearman_corr, _ = spearmanr(df['x'], df['y_mono'])
+
+print(f"Correlação de Pearson (linear): {pearson_corr:.2f}")
+print(f"Correlação de Spearman (monotonica): {spearman_corr:.2f}")
+
+# Gráfico
+fig, axes = plt.subplots(1, 2, figsize=(12, 4))
+axes[0].scatter(df['x'], df['y_linear'])
+axes[0].set_title("Correlação linear (Pearson)")
+
+axes[1].scatter(df['x'], df['y_mono'])
+axes[1].set_title("Correlação monotonica (Spearman)")
+
+plt.tight_layout()
+plt.show()	
+\end{lstlisting}
+
+Obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{cap02/PearsonSpearman.png}
+	\caption{Visões de Pearson e Spearman}
+\end{figure}
+
+Reparamos que com as saídas mostradas (0,99 para \textbf{Pearson} e 1,0 para \textbf{Spearman}), o primeiro caso mostra que x e y\_linear têm alta correlação linear. E o segundo mostra que x e y\_mono têm relação monotônica perfeita, mas não linear - por este motivo \textbf{Pearson} seria menor neste caso.
+
+Por ser sensível a \textit{outliers} e à normalidade dos dados, a correlação de \textbf{Pearson} pode não ser adequada quando os dados apresentam distorções, como valores extremos ou padrões não lineares. Apesar disso, é amplamente utilizada em análises estatísticas e na modelagem preditiva, especialmente quando se deseja verificar à existência de uma tendência proporcional direta entre duas variáveis. Por exemplo: altura e peso, consumo e faturamento, ou número de horas estudadas e nota em provas.
+
+Ao transformar os valores em postos, a correlação de \textbf{Spearman} se torna mais resistente a \textit{outliers} e é apropriada para variáveis que não seguem uma distribuição normal. Por exemplo, se analisamos a relação entre a classificação de satisfação de clientes (em uma escala de 1 a 5) e a ordem de compra de produtos, esta correlação pode revelar um padrão significativo, mesmo que os valores não cresçam de maneira linear. É muito utilizada em ciências sociais, economia e na análise exploratória de dados, especialmente quando a forma da relação é desconhecida ou não linear.
 
 \section{K Fold Cross Validation}\index{Conceitos Introdutórios}
 Vimos como encontrar os melhores atributos preditores para trabalhar, porém verificamos um pequeno problema: qual a forma em se escolher o modelo ideal\footnote{"Ideal" é apenas um conceito para designar qual terá uma melhor acurácia (não usemos como sinônimo para perfeito ou o melhor)} para nossa base de dados? O que fazemos é testar um modelo várias vezes obtendo pedaços diferentes de treino e teste a cada vez.
@@ -868,12 +995,342 @@ E obtemos como resultado:
 	\caption{Performance dos Modelos}
 \end{figure}
 
+\section{Cálculo Básico}
+Este livro não tem a menor pretensão de ensinar \textbf{Cálculo}, porém precisamos de alguns conceitos para prosseguirmos, tais como: Limites, Derivadas, Integrais e Otimização no contexto de \textbf{ML}.
+
+Vamos começar com uma simples ideia de somas infinitas, suponha a seguinte conta:
+\[
+T = 10 + 1 + \frac{1}{10} + \frac{1}{100} + \frac{1}{1000} + ...
+\]
+Qual seria o resultado? Como matematicamente descrevemos isso? Note que estamos nos aproximando de um valor, adicionando parcelas cada vez menores. Esse tipo de estrutura está diretamente relacionado a conceitos como séries geométricas e limites.
+
+Vejamos outro exemplo, envolvendo uma função racional:
+\[
+f(x) = \frac{x + x^3}{x}
+\]
+Sabemos que \( x \) nunca pode ser igual a zero, pois isso causaria uma indeterminação. Vamos um pouco mais além e criaremos um programa em \textbf{Python} para simular esse comportamento:
+\begin{lstlisting}[]
+import matplotlib.pyplot as plt
+import numpy as np
+
+def funcao(x):
+  return (x + (x**3))/x
+
+x_vals = np.linspace(-5, 5, 100)
+
+plt.plot(x_vals, funcao(x_vals), label="Função de Perda")
+plt.plot(0, funcao(0.000000001), 'ro-', label="Ponto 0 não existe")
+plt.xlabel("x")
+plt.ylabel("f(x) = (x + x3) / x")
+plt.legend()
+plt.grid()
+plt.title("Função")
+plt.show()	
+\end{lstlisting}
+	
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{cap02/limite.png}
+	\caption{Limites em função}
+\end{figure}
+
+Dizemos que, conforme \( x \) se aproxima de 0, o valor da função se aproxima de 1. Isso é representado matematicamente por:
+\[
+\lim_{x \to 0} \frac{x + x^3}{x} = 1
+\]
+
+Mais genericamente, o limite expressa a expectativa de como uma função se comporta quando sua variável se aproxima de um determinado valor \( a \):
+\[
+\lim_{x \to a} f(x)
+\]
+
+Esse conceito é fundamental no cálculo diferencial e integral, e também na análise do comportamento de algoritmos e funções em machine learning e física aplicada.
+
+\subsection{Derivadas}
+Matematicamente falando a derivada de uma função em um ponto mede a inclinação da reta tangente à curva dessa função nesse ponto. Essa inclinação representa a taxa de variação instantânea da função.
+
+De modo simples imaginemos estar olhando para a curva de uma função $f(x)$. Em um ponto $x = a$, podemos perguntar: "Com qual rapidez o valor de $f(x)$ está mudando naquele ponto?" e a resposta é: a derivada $f'(a)$.
+
+A taxa média de variação entre dois pontos xx e $x + hx + h$ é:
+\[
+\frac{f(x + h) - f(x)}{h}
+\]	
+E essa é a inclinação da reta secante, que liga dois pontos na curva. À medida que $h \longrightarrow 0$, essa reta secante se aproxima da reta tangente - e a taxa média de variação se torna a taxa instantânea de variação, isto é, a derivada:
+\begin{center}
+	$\displaystyle f'(x) = \lim_{h \to 0} \frac{f(x + h) - f(x)}{h}$
+    \hspace{0.5em} ou \hspace{0.5em}
+	$\displaystyle f'(x_0) = \lim_{x \to x_0} \frac{f(x) - f(x_0)}{x - x_0}$
+\end{center}
+
+Sendo assim, podemos entender que a derivada de uma função, em um ponto, nos diz o quão rápido e em que direção os valores da função estão mudando exatamente naquele ponto.
+
+Por exemplo, para: $f(x) = x^2$ \\
+Então: $f'(x) = 2x$ \\
+Ou seja: No ponto $x = 3$, a taxa de variação instantânea é: $f'(3) = 2.3 = 6$. Significa que a função está crescendo 6 unidades para cada 1 unidade de avanço em x naquele ponto.
+
+E na prática, para que serve isso? Vamos pensar em uma barreira eletrônica (\textbf{pardal}). Sabemos que é formado por duas faixas no chão (chamadas \textbf{laços indutivos}) e um carro passa por elas. Como estão muito próximas, o tempo que o carro leva para passar entre os laços pode ser usado para estimar a \textbf{velocidade média}, que se aproxima da \textbf{velocidade instantânea}.
+
+Sabendo que a distância entre os laços é conhecida (suponha 2{,}5m), podemos usar a fórmula da derivada para descrever o conceito de velocidade:
+\[
+v(t) = \lim_{\Delta t \to 0} \frac{s(t + \Delta t) - s(t)}{\Delta t}
+\]
+No entanto, como os sensores trabalham com intervalos finitos de tempo, o que obtemos na prática é uma aproximação:
+
+Se $\Delta t = 0{,}3s$, temos:
+\[
+v = \frac{2{,}5}{0{,}3} \approx 8{,}33 \, \text{m/s} \Rightarrow 30 \, \text{km/h}
+\]
+
+Se $\Delta t = 0{,}2s$, então:
+\[
+v = \frac{2{,}5}{0{,}2} = 12{,}5 \, \text{m/s} \Rightarrow 45 \, \text{km/h}
+\]
+
+Finalmente após desmistificar esse conceito tão importante de derivada (e aplicá-lo na realidade) que permite medir a taxa de variação instantânea de uma função. Em \textbf{ML}, é utilizada para entender como pequenas mudanças nos parâmetros afetam a função de custo. Aplicações em ML: \vspace{-1em}
+\begin{itemize}[]
+	\item \textbf{Gradiente}: Vetor de derivadas parciais. Usado para saber em qual direção ajustar os pesos de um modelo.
+	\item \textbf{Descida do Gradiente (Gradient Descent)}: Técnica iterativa que utiliza derivadas para minimizar a função de erro (loss function), ajustando os parâmetros (pesos) para encontrar o ponto ótimo.
+	\item \textbf{Backpropagation}: Algoritmo de aprendizado em redes neurais que usa derivadas para atualizar os pesos da rede via cadeia de regras de derivação.\textbf{}
+\end{itemize}
+
+Para uma função de perda $J(\theta)$, queremos minimizar: \vspace{-1em}
+\[
+\theta := \theta - \alpha \cdot \frac{\partial J(\theta)}{\partial \theta}
+\]
+Onde: \vspace{-1em}
+\begin{itemize}[]
+	\item $\theta$: parâmetro do modelo.
+	\item $\alpha$: taxa de aprendizado (\textit{learning rate}).
+	\item $\frac{\partial J}{\partial \theta}$: derivada da função de perda.
+\end{itemize}
+
+Aplicar a descida do gradiente para $f(x) = (x - 3)^2$:
+\begin{lstlisting}[]
+# Derivada de uma função de perda simples: f(x) = (x - 3)^2
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Função de perda
+def loss(x):
+   return (x - 3)**2
+
+# Derivada da função de perda
+def gradient(x):
+   return 2 * (x - 3)
+
+# Simulação de descida do gradiente
+x = 0  # ponto inicial
+alpha = 0.1
+history = [x]
+
+for i in range(20):
+   x = x - alpha * gradient(x)
+   history.append(x)
+
+# Plotando
+x_vals = np.linspace(-1, 6, 100)
+plt.plot(x_vals, loss(x_vals), label="Função de Perda")
+plt.plot(history, loss(np.array(history)), 'ro-', label="Gradient Descent Steps")
+plt.xlabel("x")
+plt.ylabel("Perda")
+plt.legend()
+plt.grid()
+plt.title("Descida do Gradiente - Derivadas")
+plt.show()
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.55\textwidth]{cap02/derivada.png}
+	\caption{Descida do Gradiente}
+\end{figure}
+
+\subsection{Integrais}
+Aparecem em distribuições de probabilidade contínuas, em inferência Bayesiana, e no cálculo de áreas sob curvas (ex: AUC - \textit{Area Under Curve}). As integrais acumulam áreas sob curvas, representando somatórios contínuos. Aplicações em ML: \vspace{-1em}
+\begin{itemize}[]
+	\item \textbf{Probabilidade e Estatística}: Integrais são usadas para calcular áreas sob distribuições de probabilidade (como a Normal), úteis em modelos probabilísticos (ex: Naive Bayes, GMM).
+	\item \textbf{Regularização Bayesiana}: O cálculo da verossimilhança marginal envolve integrais sobre todos os parâmetros do modelo.
+	\item \textbf{Inferência em Modelos Probabilísticos}: Em métodos como Bayesian Learning, as integrais aparecem ao tentar calcular a probabilidade posterior (posterior probability).
+\end{itemize}
+
+Para uma função densidade de probabilidade contínua $p(x)$, a integral: \vspace{-1em}
+\[
+\int_{-\infty}^{\infty} p(x)\,dx = 1
+\]
+E garante que a soma total das probabilidades seja 1. Vejamos um exemplo prático com a função densidade da distribuição normal: \vspace{-1em}
+\[
+P(a < X < b) = \int_a^b \frac{1}{\sqrt{2\pi\sigma^2}} \cdot \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)\,dx
+\]
+
+Aplicar a área sob curva normal com scipy.stats.norm:
+\begin{lstlisting}[]
+from scipy.stats import norm
+import matplotlib.pyplot as plt
+import numpy as np
+
+mu = 0
+sigma = 1
+
+x = np.linspace(-4, 4, 1000)
+pdf = norm.pdf(x, mu, sigma)
+
+# Área entre -1 e 1 (empíricamente ~68%)
+area = norm.cdf(1) - norm.cdf(-1)
+
+plt.plot(x, pdf, label="PDF")
+plt.fill_between(x, pdf, where=(x >= -1) & (x <= 1), color='skyblue', alpha=0.5, label="Área entre -1 e 1")
+plt.title(f"Distribuição Normal (Área = {area:.3f})")
+plt.legend()
+plt.grid()
+plt.show()
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{cap02/integral.png}
+	\caption{Distribuição Normal}
+\end{figure}
+
+\subsection{Otimização}
+Envolve encontrar os parâmetros ideais do valor mínimo ou máximo de uma função, geralmente a função de erro em ML.
+
+Aplicações em ML: \vspace{-1em}
+\begin{itemize}[]
+	\item \textbf{Treinamento de Modelos}: Ajustar os parâmetros para minimizar a função de perda (loss).
+	\item \textbf{Algoritmos de Otimização}: Gradient Descent, SGD (Stochastic Gradient Descent); Adam, RMSProp (versões mais sofisticadas)
+	\item \textbf{Regularização}: Técnicas como L1/L2 impõem restrições que envolvem otimização com penalidades.
+\end{itemize}
+
+Por exemplo, para regressão linear com MSE: \vspace{-1em}
+\begin{center}
+	$\displaystyle J(\theta) = \frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2$
+\end{center}
+
+\vspace{-1.5em} Onde: \vspace{-1em}
+\begin{itemize}[]
+    \item $\displaystyle \hat{y}_i = \theta_0 + \theta_1 x_i$
+	\item $\theta_0 := \theta_0 - \alpha \cdot \frac{\partial J}{\partial \theta_0}$	
+	\item $\theta_1 := \theta_1 - \alpha \cdot \frac{\partial J}{\partial \theta_1}$
+	\item $\frac{\partial J}{\partial \theta_0} = \frac{2}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i)$	
+	\item $\frac{\partial J}{\partial \theta_1} = \frac{2}{n} \sum_{i=1}^{n} (\hat{y}_i - y_i) x_i$
+\end{itemize}
+
+Aplicar a regressão linear com GD e visualização da perda:
+\begin{lstlisting}[]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Dados fictícios
+X = np.array([1, 2, 3, 4])
+y = np.array([2, 4, 6, 8])
+
+# Inicialização
+w = 0
+b = 0
+alpha = 0.01
+epochs = 100
+
+n = len(X)
+loss_history = []
+
+# Treinamento com Gradient Descent
+for _ in range(epochs):
+y_pred = w * X + b
+error = y_pred - y
+
+loss = np.mean(error ** 2)
+loss_history.append(loss)
+
+# Gradientes
+dw = (2/n) * np.dot(error, X)
+db = (2/n) * np.sum(error)
+
+# Atualização dos parâmetros
+w -= alpha * dw
+b -= alpha * db
+
+print(f"Modelo: y = {w:.2f}x + {b:.2f}")
+
+# Plotando a curva de perda
+plt.plot(loss_history)
+plt.title("Evolução da função de perda")
+plt.xlabel("Epoch")
+plt.ylabel("Loss (MSE)")
+plt.grid()
+plt.show()
+\end{lstlisting}
+
+E obtemos como resultado:
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.45\textwidth]{cap02/otimizacao.png}
+\caption{Evolução da função de perda}
+\end{figure}
+
+Outro exemplo, Devemos otimizar a função:
+\[
+f(x) = x^4 - 3x^3 + 2
+\]
+Para encontrar o valor de $x$ que minimiza essa função (valor ótimo):
+\begin{lstlisting}[]
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Definindo a função e sua derivada
+def f(x):
+return x**4 - 3*x**3 + 2
+
+def grad_f(x):
+return 4*x**3 - 9*x**2  # derivada de f(x)
+
+# Inicialização
+x = 0.0               # ponto inicial
+alpha = 0.01          # taxa de aprendizado
+epochs = 100          # número de iterações
+trajectory = [x]      # para visualização
+
+# Gradiente Descendente
+for _ in range(epochs):
+grad = grad_f(x)
+x -= alpha * grad
+trajectory.append(x)
+
+# Visualização da função e caminho da otimização
+x_vals = np.linspace(-1, 3, 400)
+y_vals = f(x_vals)
+
+plt.plot(x_vals, y_vals, label="Função f(x)")
+plt.plot(trajectory, f(np.array(trajectory)), 'ro-', label="Caminho do gradiente")
+plt.xlabel("x")
+plt.ylabel("f(x)")
+plt.title("Otimização via Gradiente Descendente")
+plt.legend()
+plt.grid(True)
+plt.show()
+
+print(f"Valor ótimo aproximado: x = {x:.4f}")	
+\end{lstlisting}	
+
+E obtemos como resultado:
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{cap02/otimizacao2.png}
+	\caption{Valor ótimo aproximado}
+\end{figure}
+
 \section{Terminamos?}
-Como conceitos sim, mas como prática permita-me deixar um exercício. A \textbf{Scikit-Learn} nos oferece uma base sobre de cistos (Câncer de Mama) encontrados em pacientes de \textit{Wisconsin} com classificação se é malígno (212 amostras) ou benigno (357 amostras). Para usá-la importar a biblioteca:
+Com conceitos sim, mas como prática permita-me deixar este pequeno exercício. A \textbf{Scikit-Learn} nos oferece uma base sobre de cistos (Câncer de Mama) encontrados em pacientes de \textit{Wisconsin} com classificação se é malígno (212 amostras) ou benigno (357 amostras). Para usá-la devemos importar a biblioteca:
 \begin{lstlisting}[]
 from sklearn.datasets import load_breast_cancer
 \end{lstlisting}
 
+Esta é a função densidade da distribuição normal:
+\[
+p(x) = \frac{1}{\sqrt{2\pi\sigma^2}} \cdot \exp\left(-\frac{(x - \mu)^2}{2\sigma^2}\right)
+\]
 Carregamos os dados:
 \begin{lstlisting}[]
 cancer = load_breast_cancer()
@@ -886,6 +1343,6 @@ X_train, X_test, y_train, y_test = train_test_split(cancer.data, cancer.target, 
 
 A variável \textit{data} contém os atributos preditores enquanto que \textit{target} se a paciente teve um tipo malígno ou não (atributo dependente). Pronto, agora é com você. Aplicar os conhecimentos que vimos nesse capítulo para definir quais são os melhores atributo a usar e o modelo colhendo todos os resultados possíveis.
 
-No endereço \url{https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html} está disponibilizada a documentação sobre esta base.
+No endereço: \\  \url{https://scikit-learn.org/stable/modules/generated/sklearn.datasets.load_breast_cancer.html} está disponibilizada a documentação sobre esta base.
 
 \clearpage
