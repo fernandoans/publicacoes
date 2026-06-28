@@ -46,18 +46,20 @@ Isso significa que podemos dedicar mais tempo a entender como os motores funcion
 
 \textbf{ATENÇÃO}: Em todos os projetos descritos utilizaremos uma placa de prototipagem, \textit{jumpers} - fios para conexão (quantidade conforme vista no diagrama dos projetos) e um Raspberry PI Pico já configurado e iniciado para aceitar a programação MicroPython (veja diversos tutoriais e vídeos na Internet que ensinam como realizar este processo), que não serão descritos nos materiais necessários.
 
-\subsection{Projeto 1 - Controlar um LED}
+\section{Projetos com LEDs}
+
+\subsection{Controlar um LED}
 
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 LED vermelho
-	\item 1 Resistor de 220 $\Omega$
+	\item LED vermelho
+	\item Resistor de 220 $\Omega$
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagem/PicoProj1}
-	\caption{Esquemático para o Projeto 1}
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjLed01}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -79,7 +81,7 @@ while True:
 	utime.sleep(delay)
 \end{lstlisting}
 
-\subsection{Projeto 2 - Controlar vários LEDs}
+\subsection{Controlar vários LEDs}
 
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
@@ -89,8 +91,8 @@ Este projeto possui os seguintes materiais: \vspace{-1em}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagem/PicoProj2}
-	\caption{Esquemático para o Projeto 2}
+	\includegraphics[width=0.8\textwidth]{imagem/PicoProjLed02}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -114,52 +116,35 @@ led4 = Pin(22, Pin.OUT)
 led5 = Pin(21, Pin.OUT)
 delay = .40
 
+def selecionar(l1, l2, l3, l4, l5):
+  led1.value(l1)
+  led2.value(l2)
+  led3.value(l3)
+  led4.value(l4)
+  led5.value(l5)
+  utime.sleep(delay)
+
 while True:
-	led1.value(1)
-	led2.value(0)
-	led3.value(0)
-	led4.value(0)
-	led5.value(0)
-	utime.sleep(delay)
-	led1.value(0)
-	led2.value(1)
-	led3.value(0)
-	led4.value(0)
-	led5.value(0)
-	utime.sleep(delay)
-	led1.value(0)
-	led2.value(0)
-	led3.value(1)
-	led4.value(0)
-	led5.value(0)
-	utime.sleep(delay)
-	led1.value(0)
-	led2.value(0)
-	led3.value(0)
-	led4.value(1)
-	led5.value(0)
-	utime.sleep(delay)
-	led1.value(0)
-	led2.value(0)
-	led3.value(0)
-	led4.value(0)
-	led5.value(1)
-	utime.sleep(delay)
+  selecionar(1,0,0,0,0)
+  selecionar(0,1,0,0,0)
+  selecionar(0,0,1,0,0)
+  selecionar(0,0,0,1,0)
+  selecionar(0,0,0,0,1)
 \end{lstlisting}
 
-\subsection{Projeto 3 - LED que acende e apaga}
+\subsection{Controlar LED com PushButton}
 
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 LED vermelho
-	\item 1 PushButton
-	\item 1 Resistor de 220 $\Omega$
+	\item LED vermelho
+	\item PushButton
+	\item Resistor de 220 $\Omega$
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagem/PicoProj3}
-	\caption{Esquemático para o Projeto 3}
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjLed03}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -183,17 +168,161 @@ while True:
 		time.sleep(0.5)
 \end{lstlisting}
 
-\subsection{Projeto 4 - Display OLED}
-
+\subsection{LED RGB}
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 Módulo display OLED LCD 0,96" (SSD1306)
+	\item LED RGB
+	\item 3 resistores de 220 $\Omega$
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagem/PicoProj4}
-	\caption{Esquemático para o Projeto 4}
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjLed04}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+from machine import Pin,PWM
+import utime
+import random
+
+Led_R = PWM(Pin(13))
+Led_G = PWM(Pin(14))
+Led_B = PWM(Pin(15))
+
+# Define a frequencia
+Led_R.freq(2000)   
+Led_G.freq(2000)   
+Led_B.freq(2000)   
+
+while True:
+  # Cria valores aleatorios
+  R = random.randint(0,65535)      
+  G = random.randint(0,65535)
+  B = random.randint(0,65535)
+  print(R,G,B)   
+  Led_R.duty_u16(R)
+  Led_G.duty_u16(G)
+  Led_B.duty_u16(B) 
+  utime.sleep_ms(100)
+\end{lstlisting}
+
+\subsection{Ativar/Desativar LED RGB com Som}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Módulo LED RGB
+	\item Módulo de Sensor de Som
+\end{itemize}
+
+\textbf{ATENÇÃO} Ao usar o módulo os resistores já estão embutidos, caso use o LED RGB utilize, conforme o projeto anterior os resistores de 220 $\Omega$.
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjLed05}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+from machine import Pin,PWM
+from  utime  import sleep_ms
+
+# Porta interna pull-down
+sound = Pin(0, Pin.IN, Pin.PULL_DOWN)  
+Led_R = PWM(Pin(2))
+Led_G = PWM(Pin(3))
+Led_B = PWM(Pin(4))
+Led_R.freq(2000)   
+Led_G.freq(2000)  
+Led_B.freq(2000)   
+
+while True:
+  print(sound.value())
+  if sound.value() == 1:
+    Led_R.duty_u16(65535)
+    Led_G.duty_u16(65535)
+    Led_B.duty_u16(65535)
+    sleep_ms(2000)
+  else:
+    Led_R.duty_u16(0)
+    Led_G.duty_u16(0)
+    Led_B.duty_u16(0)
+\end{lstlisting}
+
+\subsection{Semáforo de Trânsito}
+
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item LED vermelho
+	\item LED verde
+	\item LED amarelo
+	\item 3 Resistores de 220 $\Omega$
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjLed06}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+Ligações dos \textit{jumpers}: \vspace{-1em}
+\begin{itemize}
+	\item VERMELHO: para a placa na GP2
+	\item AMARELO: para a placa na GP3
+	\item VERDE: para a placa na GP4
+	\item PRETO: para a placa na GND
+\end{itemize}
+
+\begin{lstlisting}
+import machine
+import time
+
+# Define os pinos
+PIN_RED = 2
+PIN_YELLOW = 3
+PIN_GREEN = 4
+
+# Marcar como saida
+red = machine.Pin(PIN_RED, machine.Pin.OUT)
+yellow = machine.Pin(PIN_YELLOW, machine.Pin.OUT)
+green = machine.Pin(PIN_GREEN, machine.Pin.OUT)
+
+# Garantir que o amarelo esta desligado
+yellow.value(0)
+
+while True:
+  # Ligar o verde
+  red.value(0)    # desligar vermelho
+  green.value(1)  # ligar verde
+  time.sleep(5)   # Esperar 5 segs
+
+  # Ligar o amarelo
+  green.value(1)  # desligar verde
+  yellow.value(1) # ligar amarelo
+  time.sleep(3)   # Esperar 3 segs
+
+  # Ligar o vermelho
+  yellow.value(1) # desligar amarelo
+  red.value(1)    # ligar vermelho
+  time.sleep(10)  # Esperar 10 segs
+\end{lstlisting}
+
+\textbf{DICA}: Como exercício troque os 3 LEDs por um único LED RGB.
+\textbf{DICA 2}: Outra atividade bem interessante é fazer com que o sinal mude apenas após pressionarmos um \textbf{pushbutton}.
+
+
+\section{Projetos com Telas}
+
+\subsection{Display OLED}
+
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Módulo display OLED LCD 0,96" (SSD1306)
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjTela01}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -233,18 +362,18 @@ oled.text("Raspberry Pi Pico", 0, 40)
 oled.show()
 \end{lstlisting}
 
-\subsection{Projeto 5 - Display OLED com Potenciômetro}
+\subsection{Display OLED com Potenciômetro}
 
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 Módulo display OLED LCD 0,96" (SSD1306)
-	\item 1 Potenciômetro de 10 K$\Omega$
+	\item Módulo display OLED LCD 0,96" (SSD1306)
+	\item Potenciômetro de 10 K$\Omega$
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagem/PicoProj5}
-	\caption{Esquemático para o Projeto 5}
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjTela02}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -284,18 +413,18 @@ while True:
 	oled.show()
 \end{lstlisting}
 
-\subsection{Projeto 6 - Sensor de Distância}
+\subsection{Ver a Distância no Display OLED}
 
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 Módulo display OLED LCD 0,96" (SSD1306)
-	\item 1 Módulo Sensor Ultrassônico (HC-SR04)
+	\item Módulo display OLED LCD 0,96" (SSD1306)
+	\item Módulo Sensor Ultrassônico (HC-SR04)
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.7\textwidth]{imagem/PicoProj6}
-	\caption{Esquemático para o Projeto 6}
+	\includegraphics[width=0.7\textwidth]{imagem/PicoProjTela03}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -314,54 +443,55 @@ from ssd1306 import SSD1306_I2C
 from oled import Write, GFX, SSD1306_I2C
 from oled.fonts import ubuntu_mono_15, ubuntu_mono_20
 import utime
-
+	
 trigger = Pin(3, Pin.OUT)
 echo = Pin(2, Pin.IN)
-
+	
 def distancia():
-	tempo = 0
-	trigger.low()
-	utime.sleep_us(2)
-	trigger.high()
-	utime.sleep_us(5)
-	trigger.low()
-	while echo.value() == 0:
-		signaloff = utime.tick_us()
-	while echo.value() == 1:
-		signalon = utime.tick_us()
-	tempo = signalon - signaloff
-	return tempo
-
+  tempo = 0
+  trigger.low()
+  utime.sleep_us(2)
+  trigger.high()
+  utime.sleep_us(5)
+  trigger.low()
+  while echo.value() == 0:
+  signaloff = utime.tick_us()
+  while echo.value() == 1:
+	signalon = utime.tick_us()
+  tempo = signalon - signaloff
+  return tempo
+	
 WIDTH = 128
 HEIGHT = 64
-
+	
 i2c = I2C(0, sda=Pin(0), scl=Pin(1), freq=400000)
 oled = SSD1306_I2C(WIDTH, HEIGHT, i2c)
-
+	
 write15 = Write(oled, ubuntu_mono_15)
 write20 = Write(oled, ubuntu_mono_20)
-
+	
 while True:
-	distancia_cm = (distancia() * 0.0343) / 2
-	oled.fill(0)
-	write20.text("Distância: ", 0, 0)
-	write15.text(str(round(distancia_cm,1)) + " cm", 0, 20)
-	oled.show()
+  distancia_cm = (distancia() * 0.0343) / 2
+  oled.fill(0)
+  write20.text("Distância: ", 0, 0)
+  write15.text(str(round(distancia_cm,1)) + " cm", 0, 20)
+  oled.show()
 \end{lstlisting}
 
-\subsection{Projeto 7 - Acender Lâmpada com LDR}
+\section{Projetos com Sensores}
 
+\subsection{Acender Lâmpada com LDR}
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 Módulo LDR
-	\item 1 Módulo Relay
-	\item 1 Lâmpada, Bocal e Tomada (110/220v)
+	\item Módulo LDR
+	\item Módulo Relay
+	\item Lâmpada, Bocal e Tomada (110/220v)
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.8\textwidth]{imagem/PicoProj7}
-	\caption{Esquemático para o Projeto 7}
+	\includegraphics[width=0.8\textwidth]{imagem/PicoProjSen01}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -389,18 +519,17 @@ while True:
 	time.sleep(0.5)
 \end{lstlisting}
 
-\subsection{Projeto 8 - Alarme com Sensor de Proximidade}
-
+\subsection{Alarme com Sensor de Proximidade}
 Este projeto possui os seguintes materiais: \vspace{-1em}
 \begin{itemize}
-	\item 1 Módulo Sensor de Movimento - PIR (HC-SR501)
-	\item 1 Sensor Buzzer (Passivo)
+	\item Módulo Sensor de Movimento - PIR (HC-SR501)
+	\item Sensor Buzzer (Passivo)
 \end{itemize}
 
 \begin{figure}[H]
 	\centering
-	\includegraphics[width=0.6\textwidth]{imagem/PicoProj8}
-	\caption{Esquemático para o Projeto 8}
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjSen02}
+	\caption{Esquemático para o Projeto}
 \end{figure}
 
 Ligações dos \textit{jumpers}: \vspace{-1em}
@@ -429,6 +558,329 @@ while True:
     buzzer.value(0)
 \end{lstlisting}
 
+\subsection{Umidade e Temperatura com Sensor DHT11}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Módulo Sensor DHT11
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjSen03}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+Ligações dos \textit{jumpers}: \vspace{-1em}
+\begin{itemize}
+	\item ROXO: Buzzer para a placa na GP4
+	\item VERMELHO: da placa em 3.3v
+	\item PRETO: para a placa na GND
+\end{itemize}
+
+Primeiro precisamos disponibilizar a biblioteca \textbf{dht.py} na mesma pasta que estará o nosso programa.
+
+\begin{lstlisting}
+from machine import Pin, I2C
+import utime as time
+from dht import DHT11, InvalidChecksum
+
+while True:
+  time.sleep(5)
+  pin = Pin(28, Pin.OUT, Pin.PULL_DOWN)
+  sensor = DHT11(pin)
+  t  = (sensor.temperature)
+  h = (sensor.humidity)
+  print("Temperatura: {}".format(sensor.temperature))
+  print("Umidade: {}".format(sensor.humidity))
+\end{lstlisting}
+
+\subsection{Sensor de Chuva}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Sensor de Chuva
+	\item Módulo de Ajuste
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjSen04}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+from machine import Pin
+import utime
+
+# Definicao dos Pinos
+POWER_PIN = Pin(27, Pin.OUT)
+DO_PIN = Pin(2, Pin.IN)
+
+while True:
+  // Liga o sensor
+  POWER_PIN.value(1)
+  // Espera 10 milisegundos
+  utime.sleep_ms(10)
+  // Obtem o valor 
+  rain_state = DO_PIN.value()
+  // Desliga o sensor 
+  POWER_PIN.value(0)
+
+  if rain_state == 1:
+    print("Não está chovendo")
+  else:
+    print("Está chovendo")
+
+  # Pausa de 1 segundo
+  utime.sleep(1)  
+\end{lstlisting}
+
+\subsection{Sensor de Distância}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Módulo Sensor Ultrassônico (HC-SR04)
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.7\textwidth]{imagem/PicoProjSen05}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+from machine import Pin
+import utime
+
+// Conexoes dos pinos
+trigger = Pin(3, Pin.OUT)
+echo = Pin(2, Pin.IN)
+
+def distancia():
+  // Desliga o envio da informacao
+  trigger.low()
+  // Espera 2 microsegundos
+  utime.sleep_us(2)
+  // Envia a informacao  
+  trigger.high()
+  // Espera 5 microsegundos
+  utime.sleep_us(5)
+  // Desliga o envio da informacao
+  trigger.low()
+  // Espera o recebimento da informacao
+  while echo.value() == 0:
+    signaloff = utime.tick_us()
+  while echo.value() == 1:
+    signalon = utime.tick_us()
+  // Calcula o tempo entre o envio e o recebimento  
+  tempo = signalon - signaloff
+  return tempo
+
+while True:
+  // Velocidade do som 343 m/s ou 0.0343 cm/ms
+  distancia_cm = (distancia() * 0.0343) / 2
+  print("Distância: ", round(distancia_cm,1), "cm")
+  utime.sleep(1)
+\end{lstlisting}
+
+\subsection{Umidade e Temperatura com Sensor DS18B20}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Módulo Sensor DS18B20
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjSen06}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+import machine, onewire, ds18x20, time
+
+ds_pin = machine.Pin(16)
+ds_sensor = ds18x20.DS18X20(onewire.OneWire(ds_pin))
+
+roms = ds_sensor.scan()
+print('Found a ds18x20 device')
+
+while True:
+  ds_sensor.convert_temp()
+  time.sleep_ms(750)
+  for rom in roms:
+    print(ds_sensor.read_temp(rom))
+  time.sleep(2)
+\end{lstlisting}
+
+\subsection{Sensor IR}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Módulo Sensor IR
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjSen07}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\textbf{ATENÇÃO} este programa usa o LED interno que está ligado diretamente na GP25.
+
+\begin{lstlisting}
+from machine import Pin
+from utime import sleep_ms
+
+// Ligacoes dos pinos
+ir=Pin(21,Pin.IN)
+led=Pin(25,Pin.OUT)
+
+while True:
+  try:
+    if ir.value()==1:
+      led.value(0)
+    elif ir.value()==0:
+      led.value(1)
+    sleep_ms(50)
+  except KeyboardInterrupt:
+    break
+\end{lstlisting}
+
+\section{Uso de Motores}
+
+\subsection{Usar o Motor de Passo}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Motor de Passo (28BYJ-48) 
+	\item Driver para motor (ULN2003)
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjMot01}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+Ligações dos \textit{jumpers}: \vspace{-1em}
+\begin{itemize}
+	\item PRETO: IN1 para a placa na GP2
+	\item AMARELO: IN2 para a placa na GP3
+	\item VERDE: IN3 para a placa na GP4
+	\item CINZA: IN4 para a placa na GP5
+	\item AZUL: da placa na GND
+\end{itemize}
+
+\begin{lstlisting}
+from machine import Pin
+from time import sleep
+
+IN1 = Pin(2,Pin.OUT)
+IN2 = Pin(3,Pin.OUT)
+IN3 = Pin(4,Pin.OUT)
+IN4 = Pin(5,Pin.OUT)
+
+pins = [IN1, IN2, IN3, IN4]
+
+sequence = [[1,0,0,0],[0,1,0,0],[0,0,1,0],[0,0,0,1]]
+
+while True:
+	for step in sequence:
+		for i in range(len(pins)):
+			pins[i].value(step[i])
+			sleep(0.001)
+\end{lstlisting}
+
+\subsection{Servo Motor}
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Servo Motor (SG90)
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.6\textwidth]{imagem/PicoProjMot02}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+from machine import Pin, PWM
+from time import sleep
+
+servoPin = PWM(Pin(16))
+servoPin.freq(50)
+
+def servo(degrees):
+  # Limite em graus entre 0 e 180
+  if degrees > 180: degrees=180
+  if degrees < 0: degrees=0
+  # Maximo e minimo do ciclo de trabalho
+  maxDuty=9000
+  minDuty=1000
+  # Novo ciclo entre o max e min na proporcao deste valor
+  newDuty=minDuty+(maxDuty-minDuty)*(degrees/180)
+  # PWM do valor do servo
+  servoPin.duty_u16(int(newDuty))
+
+  while True:
+    # Inicia o Loop de 0 a 180 graus
+    for degree in range(0,180,1):
+      servo(degree)
+      sleep(0.001)
+      print("Incrementa:", degree, "graus")
+    # Inicia o Loop de 180 a 0 graus
+    for degree in range(180, 0, -1):
+      servo(degree)
+      sleep(0.001)
+      print("Retrocede:", degree, "graus")
+\end{lstlisting}
+
+\textbf{Explicação}: O \textit{duty cycle} representa quanto tempo o sinal fica em nível alto dentro de um período. Em outras palavras, define a largura do pulso do PWM. \vspace{-0.5em}
+\begin{itemize}[nolistsep]
+	\item Duty baixo - pulso curto - menos energia / menor posição do servo
+	\item Duty alto - pulso longo - mais energia / maior posição do servo
+	\item minDuty = 1000 - largura de pulso mínima (posição inicial do servo, ex.: 0°)
+	\item maxDuty = 9000 - largura de pulso máxima (posição final do servo, ex.: 180°)
+	\item degrees - ângulo desejado do servo (de 0 a 180)
+\end{itemize}
+No código, estamos controlando um servo motor no Raspberry Pi Pico (MicroPython), usando duty\_u16(), que recebe um valor de 0 a 65535 para definir o \textbf{PWM}. Quanto maior o \textit{duty}, maior o tempo em nível alto do sinal, e maior será o deslocamento do servo.
+
+\subsection{Motor DC com Ponte H}
+
+Este projeto possui os seguintes materiais: \vspace{-1em}
+\begin{itemize}
+	\item Motor DC
+	\item Driver para motor Ponte H (L298D)
+\end{itemize}
+
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.45\textwidth]{imagem/PicoProjMot03}
+	\caption{Esquemático para o Projeto}
+\end{figure}
+
+\begin{lstlisting}
+from machine import Pin
+import utime
+
+m1 = Pin(5, Pin.OUT)
+m2 = Pin(4, Pin.OUT)
+
+en1 = Pin(6, Pin.OUT)
+
+# Habilita o motor
+en1(1)
+
+while True:
+  # Avancar
+  m1(1)
+  m2(0)
+  utime.sleep(1)
+  # Parar
+  m1(0)
+  m2(0)
+  utime.sleep(1)
+  # Reverter
+  m1(0)
+  m2(1)
+  utime.sleep(1)
+\end{lstlisting}
 
 \section{Conclusão}
 O Raspberry Pi Pico é uma placa de microcontrolador notável por suas características robustas e custo acessível, rodando a linguagem de programação Python em sua variante MicroPython. Essa combinação oferece uma plataforma ideal para aprendizes, entusiastas e profissionais desenvolverem rapidamente protótipos funcionais. 
@@ -444,22 +896,7 @@ Esta abordagem prática e orientada por exemplos facilita o aprendizado e a inov
 %-----------------------------------------------------------------------------
 % REFERÊNCIAS
 %-----------------------------------------------------------------------------
-\begin{thebibliography}{7}
-  \bibitem{rur} 
-  A peça conta a história de um brilhante cientista, chamado Rossum, que desenvolve uma substância química similar ao protoplasma. Utiliza essa substância para construção de humanoides (robôs), com o intuito de que estes sejam obedientes e realizem todo o trabalho físico.
-
-  \bibitem{cs106a} 
-  Curso de Metodologia da programação de Stanford \\
-  \url{https://see.stanford.edu/Course/CS106A}
-  
-  \bibitem{openkareloficial} 
-  Página do OpenKarel no GitHub \\
-  \url{https://github.com/fernandoans/OpenKarel}
-  
-  \bibitem{bluej} 
-  Editor BlueJ para Java \\
-  \url{http://bluej.org/}
-
+\begin{thebibliography}{3}
   \input{../sty/referencias.tex}
 \end{thebibliography}
   

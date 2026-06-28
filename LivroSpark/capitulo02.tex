@@ -701,6 +701,253 @@ Em Python os lógicos são em letras maiúsculas (\textit{True} e \textit{False}
 spark.sparkContext.stop()
 \end{lstlisting}
 
-No próximo capítulo trataremos mais sobre meios estatísticos com o Spark.
+\section{Arquivos CSV e mais sobre Dataframes - Prática Simples}\index{Primeiros Exemplos}
+Nessa parte de prática simples, sem a menor enrolação, vamos revisar (e talvez até adicionar pequenos detalhes) do que já vimos anteriormente. A ideia é tente fazer primeiro como uma forma de exercício sem ler o comando descrito.
 
+Creio que já possuímos uma boa base para iniciarmos uma modesta \textbf{Análise de Dados}, neste caso, ainda, vamos usar dados fictícios, mas a ideia que trazemos aqui pode ser expandida. Criamos a nossa conexão:
+\begin{lstlisting}[]
+from pyspark.sql import SparkSession
+
+spark = SparkSession.builder \
+  .appName("Aplicacao Spark") \
+  .getOrCreate()
+\end{lstlisting}
+
+Dessa vez vamos simplificar ao máximo visto que já temos o conhecimento do que está ocorrendo por trás, quando não optamos pelos parâmetros de configuração todos os recursos disponíveis serão utilizados. Começamos por adicionar alguns dados no DataFrame:
+\begin{lstlisting}[]
+data = [
+  {"userId": 1, "payment": 100.0, "date": "2026-01-01"},
+  {"userId": 2, "payment": 150.5, "date": "2026-01-02"},
+  {"userId": 3, "payment": 200.75, "date": "2026-01-03"},
+  {"userId": 1, "payment": 50.25, "date": "2026-01-04"},
+  {"userId": 2, "payment": 80.0, "date": "2026-01-05"}
+]
+df = spark.createDataFrame(data)
+df.show()
+\end{lstlisting}
+
+E temos como resultado:
+\begin{verbatim}
++----------+-------+------+
+|      date|payment|userId|
++----------+-------+------+
+|2026-01-01|  100.0|     1|
+|2026-01-02|  150.5|     2|
+|2026-01-03| 200.75|     3|
+|2026-01-04|  50.25|     1|
+|2026-01-05|   80.0|     2|
++----------+-------+------+	
+\end{verbatim}
+
+Podemos ver o tipo dos dados e seu total com:
+\begin{lstlisting}[]
+for field in df.schema:
+  print(field)
+print("Total:", df.count()) 
+\end{lstlisting}
+
+E temos como resultado:
+\begin{verbatim}
+StructField('date', StringType(), True)
+StructField('payment', DoubleType(), True)
+StructField('userId', LongType(), True)
+Total: 5	
+\end{verbatim}
+
+Para adicionarmos mais dados ao conjunto, devemos ter em mente que o DataFrame é um objeto imutável, assim precisamos de um método JOIN para unir dois objetos:
+\begin{lstlisting}[]
+data = [
+  (4, 120.0, "2026-01-01"),
+  (2, 180.5, "2026-01-02"),
+  (3, 110.05, "2026-01-03")
+]
+df = df.unionByName(spark.createDataFrame(data, ["userId", "payment", "date"]))
+df.show()
+\end{lstlisting}
+
+E temos como resultado:
+\begin{verbatim}
++----------+-------+------+
+|      date|payment|userId|
++----------+-------+------+
+|2026-01-01|  100.0|     1|
+|2026-01-02|  150.5|     2|
+|2026-01-03| 200.75|     3|
+|2026-01-04|  50.25|     1|
+|2026-01-05|   80.0|     2|
+|2026-01-01|  120.0|     4|
+|2026-01-02|  180.5|     2|
+|2026-01-03| 110.05|     3|
++----------+-------+------+	
+\end{verbatim}
+
+Creio que com esse conjunto de 8 registros podemos realizar algumas atividades interessantes, mostrar apenas a coluna "userId" e "payment":
+
+\begin{lstlisting}[]
+df.select(
+  df.userId, df.payment
+).show()	
+\end{lstlisting}
+
+ou 
+
+\begin{lstlisting}[]
+df.select(
+  'userId', 'payment'
+).show()	
+\end{lstlisting}
+
+Criar uma nova coluna chamada "paymentsCents" que corresponde ao valor de "payment" multiplicado por 100, transformando-a para o tipo inteiro:
+\begin{lstlisting}[]
+df = df.withColumn("paymentsCents", (df.payment * 100).cast("int"))
+df.show()
+\end{lstlisting}
+
+E temos como resultado:
+\begin{verbatim}
++----------+-------+------+-------------+
+|      date|payment|userId|paymentsCents|
++----------+-------+------+-------------+
+|2026-01-01|  100.0|     1|        10000|
+|2026-01-02|  150.5|     2|        15050|
+|2026-01-03| 200.75|     3|        20075|
+|2026-01-04|  50.25|     1|         5025|
+|2026-01-05|   80.0|     2|         8000|
+|2026-01-01|  120.0|     4|        12000|
+|2026-01-02|  180.5|     2|        18050|
+|2026-01-03| 110.05|     3|        11005|
++----------+-------+------+-------------+	
+\end{verbatim}
+
+Para remover uma coluna podemos usar:
+
+\begin{lstlisting}[]
+df = df.drop('coluna')
+\end{lstlisting}
+
+Ou para eliminar várias colunas:
+\begin{lstlisting}[]
+df = df.drop("coluna1", "coluna2")	
+\end{lstlisting}
+
+ou também:
+\begin{lstlisting}[]
+colunas_para_remover = ["coluna1", "coluna2", "coluna3"]
+df = df.drop(*colunas_para_remover)	
+\end{lstlisting}
+
+\subsection{Como o WHERE do SQL}\index{Primeiros Exemplos}
+Para imitarmos o subcomando \textbf{WHERE} do SQL podemos usar:
+\begin{lstlisting}[]
+df.filter(
+  df.payment > 150
+).show()	
+\end{lstlisting}
+
+Ou mesmo:
+\begin{lstlisting}[]
+df.where(
+  df.payment > 150
+).show()	
+\end{lstlisting}
+
+No qual obtemos o mesmo resultado:
+\begin{verbatim}
++----------+-------+------+-------------+
+|      date|payment|userId|paymentsCents|
++----------+-------+------+-------------+
+|2026-01-02|  150.5|     2|        15050|
+|2026-01-03| 200.75|     3|        20075|
+|2026-01-02|  180.5|     2|        18050|
++----------+-------+------+-------------+	
+\end{verbatim}
+
+\subsection{Novas Colunas Calculáveis}\index{Primeiros Exemplos}
+Para adicionarmos mais colunas, precisamos da biblioteca funcions:
+\begin{lstlisting}[]
+import pyspark.sql.functions as F	
+\end{lstlisting}
+
+Vamos supor que se o pagamento for maior ou igual a 150, queremos mostrar "Large", caso seja maior ou igual a 100 (e menor que 150) "medium" e menor que 100 "small". Para isso na coluna "paymentType": 
+\begin{lstlisting}[]
+df.select(
+  'userId', 'payment',
+  F.when(
+    df.payment >= 150, 'large'
+  ).when(
+    df.payment >= 100, 'medium'
+  ).otherwise(
+    'small'
+  ).alias(
+    'paymentType'
+  )
+).show() 	
+\end{lstlisting}
+
+E temos como resultado:
+\begin{verbatim}
++------+-------+-----------+
+|userId|payment|paymentType|
++------+-------+-----------+
+|     1|  100.0|     medium|
+|     2|  150.5|      large|
+|     3| 200.75|      large|
+|     1|  50.25|      small|
+|     2|   80.0|      small|
+|     4|  120.0|     medium|
+|     2|  180.5|      large|
+|     3| 110.05|     medium|
++------+-------+-----------+	
+\end{verbatim}
+
+Aproveitamos para ver mais algumas funções da biblioteca "functions" como, \textbf{substring} (obtém parte de uma string), to\_date (converte o campo para data) e round (realiza o arredondamento do numérico):
+\begin{lstlisting}[]
+df2 = df.select(
+  'userId',
+  F.substring('date', 0, 4) \
+    .alias('year'),
+  F.to_date('date') \
+    .alias('parseDate'),
+  F.round('payment') \
+    .alias('roundedAmount')
+)
+df2.show()	
+\end{lstlisting}
+
+E temos como resultado:
+\begin{verbatim}
++------+----+----------+-------------+
+|userId|year| parseDate|roundedAmount|
++------+----+----------+-------------+
+|     1|2026|2026-01-01|        100.0|
+|     2|2026|2026-01-02|        151.0|
+|     3|2026|2026-01-03|        201.0|
+|     1|2026|2026-01-04|         50.0|
+|     2|2026|2026-01-05|         80.0|
+|     4|2026|2026-01-01|        120.0|
+|     2|2026|2026-01-02|        181.0|
+|     3|2026|2026-01-03|        110.0|
++------+----+----------+-------------+	
+\end{verbatim}
+
+E ao executar:
+\begin{lstlisting}[]
+for field in df2.schema:
+  print(field)
+\end{lstlisting}
+
+Vemos os tipos das colunas
+\begin{verbatim}
+StructField('userId', LongType(), True)
+StructField('year', StringType(), True)
+StructField('parseDate', DateType(), True)
+StructField('roundedAmount', DoubleType(), True)	
+\end{verbatim}
+
+E finalmente encerramos a seção com:
+\begin{lstlisting}[]
+spark.sparkContext.stop()
+\end{lstlisting}
+
+No próximo capítulo trataremos mais sobre meios estatísticos com o Spark.
 \clearpage

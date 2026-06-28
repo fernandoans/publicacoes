@@ -51,11 +51,11 @@ Graficamente seria essa imagem:
 	\caption{Arquitetura do Ambiente}
 \end{figure}
 
-A ideia original veio do \textbf{André Perez} que consiste na montagem de imagens Docker e a criação de um ambiente através do Docker Compose. O único detalhe que adicionei foi transpor de forma mais fácil para o iniciante. Primeiro devemos criar uma pasta para comportar os arquivos necessários que conterão os códigos para a criação das dos contêineres necessários e suas respectivas imagens.
+A ideia original veio do \textbf{André Perez} que consiste na montagem de imagens Docker e a criação de um ambiente através do Docker Compose. O único detalhe que adicionei foi transpor de forma mais fácil para o iniciante e corrigir alguns pontos. Primeiro devemos criar uma pasta para comportar os arquivos necessários que conterão os códigos para a criação das dos contêineres necessários e suas respectivas imagens.
 
 \textbf{Parte 1} - Criar um arquivo chamado \textbf{cluster-base.Dockerfile} (\textbf{ATENÇÃO}: Respeite as letras maiúsculas e minúsculas dos nomes e de seu conteúdo, tudo aqui é \textit{case-sensitive}) que servirá como camada base com o Sistema Operacional e o Python 3, através da seguinte codificação:
 \begin{lstlisting}[]
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:8-jre-focal
 
 RUN mkdir -p /opt/workspace && \
     apt-get update -y && \
@@ -144,7 +144,6 @@ Basicamente, precisamos de três delas: \textbf{jupyterlab} (editor de códigos)
 
 O último passo é o mais simples de todos e aí que entra o \textbf{docker compose}, precisamos a partir dessas imagens subir um contêiner da imagem do \textbf{jupyterlab}, mais um com a imagem do \textbf{spark-master} e ao menos dois (pode futuramente adicionar novos se assim desejar) com \textbf{spark-worker} e ligá-las na rede além de passar alguns passos para sua criação. Isso tudo será feito através de um arquivo chamado \textbf{docker-compose.yml} que possui o seguinte conteúdo:
 \begin{lstlisting}[]
-version: "3.6"
 services:
   jupyterlab:
     image: jupyterlab

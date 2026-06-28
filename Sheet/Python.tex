@@ -1,0 +1,180 @@
+\documentclass{article}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Python Cheat Sheet
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Identificação
+\newcommand{\pbtitulo}{\huge{\textbf{Python 3}}}
+\newcommand{\pbversao}{1.0}
+
+\usepackage{sty/cheatsheet}
+
+\begin{document}
+
+\begin{center}{\pbtitulo}\\
+{\large Fernando Anselmo - Versão \pbversao}
+\end{center}
+
+\begin{multicols*}{3}
+
+\tikzstyle{mybox} = [draw=contorno, fill=white, very thick,
+    rectangle, rounded corners, inner sep=10pt, inner ysep=10pt]
+\tikzstyle{fancytitle} =[fill=DarkBlue, text=white, font=\bfseries]
+
+%------------ Variáveis e E/S ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  Comentários: \\
+      \codigo{\# Linha comentada} \\[2mm]
+	  Variáveis e Tipos de Dados: \\
+      \textbf{Classe String:} \codigoAspas{nome = 'Alice' ou "Alice"} \\
+      \phantom{x}\hspace{4pt} Também permite 3 aspas simples ou duplas \\
+      \textbf{Classe Integer:} \codigo{idade = 30} \\
+      \phantom{x}\hspace{4pt} \codigo{0b010} (binário) \codigo{0o642} (octal) \codigo{0xF3} (hexadecimal) \\
+      \textbf{Classe Float:} \codigo{altura = 1.50}  \\
+      \phantom{x}\hspace{4pt} Notação científica: \codigo{altura = 1.7e-6}  \\
+      \textbf{Classe Boolean:} \codigo{e\_curiosa = True} \\
+      \textbf{Classe NoneType:} \codigo{nascimento = None} \\[2mm]
+	  Inicialização Conjunta: \\
+	  \codigoAspas{a = b = c = 20} \\
+	  \codigoAspas{a, b, c = 20, 21, 22} \\[2mm]
+	  Entrada e Saída de Informação: \\
+	  \codigo{nome = input("Informe seu nome: ")} \\
+	  \codigo{valor = eval(input("Informe um valor:"))} \\
+	  \codigo{print(nome)} \\
+	  \codigo{print(f"Possuo {valor}")} \\[2mm]
+	  Casting: \\
+	  \codigo{str(), int(), float(), bool()}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Variáveis e E/S};
+\end{tikzpicture}
+
+%------------ Sintaxe, Variáveis e Operadores ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+	\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+	  \textbf{Aritméticos:} \\
+	  \phantom{x}\hspace{4pt} \codigo{+} (adição) \\
+	  \phantom{x}\hspace{4pt} \codigo{-} (subtração) \\
+	  \phantom{x}\hspace{4pt} \codigo{*} (multiplicação) \\
+	  \phantom{x}\hspace{4pt} \codigo{/} (divisão real) \\
+	  \phantom{x}\hspace{4pt} \codigo{//} (divisão inteiro) \\
+	  \phantom{x}\hspace{4pt} \codigo{\%} (resto da divisão) \\
+	  \phantom{x}\hspace{4pt} \codigo{**} (exponenciação) \\
+	  \textbf{Comparação:} \\
+	  \phantom{x}\hspace{4pt} \codigo{==, !=, >, <, >=} e \codigo{<=} \\
+	  \textbf{Concatenadores Lógicos:} \\
+	  \phantom{x}\hspace{4pt} \codigo{and, or} e \codigo{not} \\
+	  \textbf{Identificadores:} \\
+	  \phantom{x}\hspace{4pt} \codigo{is, not} e \codigo{in}
+    \end{minipage}
+};
+\node[fancytitle, right=10pt] at (box.north west) {Operadores};
+\end{tikzpicture}
+
+%------------ Controle de Fluxo ---------------
+\begin{tikzpicture}
+  \node [mybox] (box){%
+    \begin{minipage}{0.3\textwidth} \vspace{0.5em}
+      \textbf{Comando de Decição if / elif / else}: \\
+      \codigo{idade = eval(input("Qual sua idade?"))} \\
+      \codigo{if idade < 18:} \\
+      \phantom{x}\hspace{4pt} \codigo{print("Você é de menor.")} \\
+      \codigo{elif idade < 60:} \\
+	  \phantom{x}\hspace{4pt} \codigo{print("Você é adulto.")} \\
+      \codigo{else:} \\
+      \phantom{x}\hspace{4pt} \codigo{print("Você é sênior.")} \\[2mm]
+      \textbf{Laço for} (interage somente com as Estruturas de Dados e a Classe String): \\
+      \codigo{for item in ['maçã', 'banana']:} \\
+      \phantom{x}\hspace{4pt} \codigo{print(item)} \\
+      \codigo{else:} \\
+      \phantom{x}\hspace{4pt} \codigo{print("Terminado")} \\[2mm]
+      \codigo{for i in range(5):} \\
+      \phantom{x}\hspace{4pt} \codigo{print(i)} \\[2mm]
+      \textbf{Laço while} (gera um laço condicional): \\
+      \codigo{vezes = eval(input("Quantas vezes deseja repetir? "))} \\
+	  \codigo{while vezes > 0:} \\
+      \phantom{x}\hspace{4pt} \codigo{print(vezes, 'vez')} \\
+      \phantom{x}\hspace{4pt} \codigo{vezes -= 1} \\
+      \codigo{else:} \\
+      \phantom{x}\hspace{4pt} \codigo{print("Terminado")}
+    \end{minipage}
+  };
+  \node[fancytitle, right=10pt] at (box.north west) {Controle de Fluxo};
+\end{tikzpicture}
+
+%------------ Bloco de Proteção ---------------
+\begin{tikzpicture}
+	\node [mybox] (box){%
+		\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+			São blocos utilizados para proteger o programa de \textbf{Entrada Externas} errôneas, que escapam do controle do programa: \\
+			\codigo{valor = input("Informe um valor: ")} \\
+			\codigo{try:} \\
+			\phantom{x}\hspace{4pt} \codigo{\# tenta converter para valor numérico} \\
+			\phantom{x}\hspace{4pt} \codigo{valor = eval(valor)} \\
+			\codigo{except ValueError:} \\
+			\phantom{x}\hspace{4pt} \codigo{print("Entrada Inválida")} \\
+			\codigo{else:} \\
+			\phantom{x}\hspace{4pt} \codigo{print("Nenhum erro aconteceu!")} \\
+			\codigo{finally:} \\
+			\phantom{x}\hspace{4pt} \codigo{print("Sempre vai executar!")}
+		\end{minipage}
+	};
+	\node[fancytitle, right=10pt] at (box.north west) {Bloco de Proteção};
+\end{tikzpicture}
+
+%------------ Estrutura de Dados ---------------
+\begin{tikzpicture}
+	\node [mybox] (box){%
+		\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+			\textbf{Listas - Classe List $\rhd$ a = []} (mutáveis): \\
+			\codigo{minha\_lst = [1, "a", 2, "b"]} \\
+			\codigo{print(minha\_lst[1]) \# Mostra a} \\
+			\codigo{minha\_lst.append(v) \# Adicionar final} \\
+			\codigo{minha\_lst.insert(p,v) \# Adic. na pos. 'p'} \\
+			\codigo{minha\_lst.remove(v) \# Remover o elemento} \\
+			\codigo{minha\_lst.pop() \# Remover do final} \\
+			\codigo{print(len(minha\_lst)) \# Tamanho da Lista} \\
+			\codigo{minha\_lst.sort() \# Ordernar os valores} \\
+			\codigo{minha\_lst.reverse() \# Inverter a lista} \\[2mm]
+			\textbf{Tuplas - Classe Tuple $\rhd$ a = ()} (imutáveis): \\
+            \codigo{minha\_tup = (1, "a", 2, "b")} \\
+            \codigo{minha\_tup[1] = 2 \# produz um erro} \\[2mm]
+			\textbf{Conjuntos - Classe Set $\rhd$ a = \{0\}} (elementos únicos): \\
+			\codigo{meu\_set = \{1, 2, 2, 2, 3, 3, 3\}} \\
+			\codigo{print(len(meu\_set)) \# Mostra 3} \\[2mm]
+			\textbf{Dicionários - Classe Dict $\rhd$ a = \{\}} (chaves únicas): \\
+			\codigo{meu\_dict = \{"nome": "Alice", "idade": 30\}} \\
+			\codigo{print(meu\_dic["nome"]) \# Mostra Alice} \\
+			\codigo{meu\_dic["cidade"] = 'País das Maravilhas'} \\
+			\codigo{meu\_dic.keys() \# Obtém as chaves} \\
+			\codigo{meu\_dic.values() \# Obtém os valores} \\
+			\codigo{meu\_dic.items() \# Obtém chaves e valores}
+		\end{minipage}
+	};
+	\node[fancytitle, right=10pt] at (box.north west) {Estrutura de Dados};
+\end{tikzpicture}
+
+%------------ Funções e List Comprehensions ---------------
+\begin{tikzpicture}
+	\node [mybox] (box){%
+		\begin{minipage}{0.3\textwidth} \vspace{0.5em}
+			\textbf{Funções}: \\
+			\codigo{def saudacao(nome="World"):} \\
+			\phantom{x}\hspace{4pt} \codigoAspas{return f"Hello, {nome}"} \\[2mm]
+			\codigo{print(saudacao("Python"))} \\
+			\codigo{print(saudacao())} \\[2mm]
+			\textbf{List Comprehensions}: \\
+			Este é um meio rápido para se obter uma lista, criar uma lista de valores ao quadrado de 0 a 4 \\
+			\codigo{quadrados = [i ** 2 for i in range(5)]}
+		\end{minipage}
+	};
+	\node[fancytitle, right=10pt] at (box.north west) {Funções e List Comprehensions};
+\end{tikzpicture}
+
+Página do Django: \url{https://www.python.org}
+
+\end{multicols*}
+\end{document}

@@ -1,4 +1,4 @@
-FROM openjdk:8-jre-slim
+FROM eclipse-temurin:8-jre-focal
 
 RUN mkdir -p /opt/workspace && \
     apt-get update -y && \
