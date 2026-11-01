@@ -1,0 +1,208 @@
+%-----------------------------------------------------------------------------
+% tutorial2.sty - Estilo da apostila "Prompts para o Dia a Dia"
+%-----------------------------------------------------------------------------
+
+% --- Codificação e idioma ---
+\usepackage[portuguese]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% --- Layout e geometria ---
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{setspace}
+\usepackage{parskip}
+\usepackage{titlesec}
+\usepackage{titling}
+\usepackage{microtype}
+
+% --- Gráficos e cores ---
+\usepackage{graphicx}
+\usepackage{xcolor}          % <-- substitui 'color' (redundante)
+\usepackage{tikz}            % <-- necessário para o tcolorbox/framemethod
+
+% --- Listagens e caixas ---
+\usepackage{listings}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings, skins, breakable}
+
+% --- Unicode e caracteres especiais ---
+\usepackage{newunicodechar}
+
+% --- Diversos ---
+\usepackage{caption}
+\usepackage{enumerate}
+\usepackage{enumitem}
+\usepackage{nicefrac}
+\usepackage{float}
+\usepackage{wrapfig}
+\usepackage{array}
+\usepackage[framemethod=TikZ]{mdframed}
+\usepackage{etoolbox}        % <-- necessário para \ifstrempty
+\usepackage{url} % codigo para as URLs
+
+% --- Fontes ---
+\usepackage{helvet}
+\usepackage{mathpazo}
+\renewcommand{\familydefault}{\rmdefault}
+
+\usepackage{fvextra}   % <-- substitui \usepackage{fancyvrb}
+
+%-----------------------------------------------------------------------------
+% Definição de valores padrão (usados em hyperref e fancyhdr)
+%-----------------------------------------------------------------------------
+\providecommand{\docTitle}{Prompts para o Dia a Dia}
+\providecommand{\docSubtitle}{Guia Prático de Engenharia de Prompts}
+\providecommand{\docAuthor}{Material de Estudo e Prática}
+\providecommand{\docVersion}{Versão 1.0}
+\providecommand{\docDate}{\today}
+
+%-----------------------------------------------------------------------------
+% Cores
+%-----------------------------------------------------------------------------
+\definecolor{primary}{RGB}{20, 50, 90}
+\definecolor{secondary}{RGB}{0, 120, 160}
+\definecolor{textgray}{RGB}{60, 60, 60}
+\definecolor{promptbg}{RGB}{250, 251, 252}   % <-- renomeado (evita conflito)
+\definecolor{prompttext}{RGB}{30, 30, 30}    % <-- agora está definido!
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+
+%-----------------------------------------------------------------------------
+% Geometria
+%-----------------------------------------------------------------------------
+\geometry{
+	top=2cm,
+	bottom=2.5cm,
+	left=2.5cm,
+	right=2.5cm,
+	headheight=15pt
+}
+
+%-----------------------------------------------------------------------------
+% Estilo dos títulos
+%-----------------------------------------------------------------------------
+\titleformat{\section}
+{\normalfont\sffamily\Large\bfseries\color{primary}}
+{\thesection}{0.5em}{}
+[\vspace{-1.0em}\color{secondary}\rule{\textwidth}{0.8pt}]
+
+\titleformat{\subsection}
+{\normalfont\sffamily\large\bfseries\color{secondary}}
+{\thesubsection}{1em}{}
+
+\titlespacing*{\section}{0pt}{1.4em}{0.8em}
+\titlespacing*{\subsection}{0pt}{1em}{0.5em}
+
+%-----------------------------------------------------------------------------
+% Espaçamento
+%-----------------------------------------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\linespread{1.15}
+
+%-----------------------------------------------------------------------------
+% Cabeçalhos e rodapés
+%-----------------------------------------------------------------------------
+\pagestyle{fancy}
+\lhead{}
+\chead{}
+\rhead{}
+\lfoot{\tiny \docTitle}
+\cfoot{\tiny \docVersion}
+\rfoot{\tiny Folha \thepage\ }
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+%-----------------------------------------------------------------------------
+% Colunas de tabela
+%-----------------------------------------------------------------------------
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{C}[1]{>{\centering\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\newcolumntype{R}[1]{>{\raggedleft\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\setlength{\tabcolsep}{18pt}
+\renewcommand{\arraystretch}{1.4}
+
+%-----------------------------------------------------------------------------
+% Nomes traduzidos
+%-----------------------------------------------------------------------------
+\addto\captionsportuguese{        % <-- 'portuguese' e não 'english'
+	\renewcommand{\contentsname}{Sumário}
+	\renewcommand{\listfigurename}{Figuras}
+	\renewcommand{\lstlistingname}{Listagem}
+	\renewcommand{\lstlistlistingname}{Listagens}
+	\renewcommand{\refname}{Referências}
+}
+
+%-----------------------------------------------------------------------------
+% Comandos de estilo de texto
+%-----------------------------------------------------------------------------
+\newcommand{\opcmenu}[1]{\color{DarkBlue}\textbf{#1}\color{Black}}
+\newcommand{\opcbotao}[1]{\color{DarkRed}\textbf{#1}\color{Black}}
+\newcommand{\codigo}[1]{{\ttfamily #1}}
+\newcommand{\aspas}[1]{"#1"}
+
+%-----------------------------------------------------------------------------
+% Bloco ATENÇÃO (mdframed)
+%-----------------------------------------------------------------------------
+\newenvironment{theo}[2][]{%
+	\ifstrempty{#1}%
+	{\mdfsetup{%
+			frametitle={%
+				\tikz[baseline=(current bounding box.east),outer sep=0pt]%
+				\node[anchor=east,rectangle,fill=red!20]%
+				{\strut ATENÇÃO};}%
+		}%
+	}{\mdfsetup{%
+			frametitle={%
+				\tikz[baseline=(current bounding box.east),outer sep=0pt]%
+				\node[anchor=east,rectangle,fill=red!20]%
+				{\strut ATENÇÃO:~#1};}%
+		}%
+	}%
+	\mdfsetup{%
+		innertopmargin=10pt,linecolor=red!20,%
+		linewidth=2pt,topline=true,%
+		frametitleaboveskip=\dimexpr-\ht\strutbox\relax%
+	}%
+	\begin{mdframed}[]\relax}{%
+	\end{mdframed} \vspace{-3mm}
+}
+
+%-----------------------------------------------------------------------------
+% Bloco PROMPT (verbatim com quebra automática, incluindo quebra em qualquer caractere)
+%-----------------------------------------------------------------------------
+% Comando para imprimir o título acima do prompt
+\newcommand{\prompttitle}[1]{%
+	\par\vspace{0.4em}%
+	\noindent{\sffamily\bfseries\small\color{primary}#1\par}%
+	\vspace{0.2em}%
+}
+
+% Ambiente listings (sem \par, sem \noindent no argumento)
+\lstnewenvironment{promptbox}[1][]{%
+	\prompttitle{#1}%
+	\lstset{%
+		basicstyle=\ttfamily\small,
+		breaklines=true,
+		breakatwhitespace=false,
+		columns=flexible,
+		keepspaces=true,
+		showstringspaces=false,
+		numbers=none,
+		xleftmargin=0pt,
+		xrightmargin=0pt,
+		aboveskip=0pt,
+		belowskip=0.4em,
+		literate=%
+		{á}{{\'a}}1 {à}{{\`a}}1 {ã}{{\~a}}1 {â}{{\^a}}1
+		{é}{{\'e}}1 {ê}{{\^e}}1 {í}{{\'i}}1
+		{ó}{{\'o}}1 {õ}{{\~o}}1 {ô}{{\^o}}1
+		{ú}{{\'u}}1 {ç}{{\c c}}1
+		{Á}{{\'A}}1 {À}{{\`A}}1 {Ã}{{\~A}}1 {Â}{{\^A}}1
+		{É}{{\'E}}1 {Ê}{{\^E}}1 {Í}{{\'I}}1
+		{Ó}{{\'O}}1 {Õ}{{\~O}}1 {Ô}{{\^O}}1
+		{Ú}{{\'U}}1 {Ç}{{\c C}}1,%
+	}%
+}{%
+	\vspace{0.2em}%
+}

@@ -1,0 +1,958 @@
+\documentclass[11pt, a4paper]{article}
+
+% --- Dados do documento ---
+\newcommand{\docTitle}{Prompts para o Dia a Dia}
+\newcommand{\docSubtitle}{Guia Prático de Engenharia de Prompts}
+\newcommand{\docAuthor}{Fernando Anselmo}
+\newcommand{\docCategory}{Material de Estudo e Prática}
+\newcommand{\docVersion}{Versão 1.0}
+\newcommand{\docDate}{\today}
+
+\usepackage{../sty/tutorial2}
+
+% --- Início do Documento ---
+\begin{document}
+	
+% =====================================================
+% CABEÇALHO DE TÍTULO
+% =====================================================
+\begingroup
+\setlength{\parskip}{0pt}
+
+% Linha decorativa superior (sem espaço extra antes)
+{\color{secondary}\rule{\textwidth}{2pt}}
+
+\vspace{0.3cm}
+
+% Título principal
+{\Huge\sffamily\bfseries\color{primary} \docTitle\par}
+
+\vspace{0.2cm}
+
+% Subtítulo
+{\Large\sffamily\color{secondary} \docSubtitle\par}
+
+\vspace{0.3cm}
+
+% Linha decorativa inferior
+{\color{secondary}\rule{\textwidth}{1.5pt}}
+
+\endgroup
+
+\textbf{Autor:} \docAuthor
+
+\textbf{Categoria:} \docCategory
+
+\textbf{Versão:} \docVersion
+
+% =====================================================
+% SEÇÃO INTRODUTÓRIA: SOBRE ESTA APOSTILA
+% =====================================================
+\textbf{Resumo:} Reúne conceitos, coletânea de exemplos e boas práticas sobre a \textbf{engenharia de prompts}, com o objetivo de capacitar o leitor a se comunicar de forma clara e eficiente com ferramentas de inteligência artificial generativa. Ao longo do material, você encontrará desde os fundamentos básicos até técnicas avançadas de refinamento, sempre com exemplos aplicáveis ao dia a dia.
+
+\textbf{A quem se destina:} profissionais, estudantes e curiosos que desejam extrair o máximo de ferramentas como ChatGPT, Gemini, Claude e similares.
+
+\textbf{Como usar:} leia os capítulos na ordem apresentada para uma progressão natural, ou consulte diretamente os tópicos de seu interesse conforme a necessidade.
+
+% =====================================================
+% SEÇÃO INTRODUTÓRIA: O QUE É ENGENHARIA DE PROMPTS
+% =====================================================
+\section*{Introdução}
+\addcontentsline{toc}{section}{Introdução}
+
+Antes de começarmos deixe-me explicar que nas seções dedicadas aos \textit{prompts} não pretendo declamar autoria sobre nenhum deles, o que fiz foi recolher, as vezes melhorar, pedir auxílio para a IA se o prompt está bom e capturar e guardar em uma Probola.
+
+A engenharia de prompts é a prática de criar, testar e aprimorar instruções fornecidas às ferramentas de inteligência artificial (IA) para obter respostas mais precisas, relevantes e alinhadas aos objetivos desejados. Embora o termo prompt também seja utilizado na programação para indicar que um sistema aguarda uma interação do usuário, no contexto da inteligência artificial ele representa as instruções que orientam o modelo na execução de uma tarefa.
+
+Neste contexto, atuarei como seu especialista em engenharia de prompts. Você poderá apresentar uma ideia, um problema ou um objetivo que deseja alcançar utilizando inteligência artificial. A partir dessas informações, farei perguntas para compreender suas necessidades, esclarecer os requisitos e identificar oportunidades de aprimoramento. Com base nas suas respostas, construirei um prompt claro, estruturado e otimizado, aplicando boas práticas de engenharia de prompts para aumentar a qualidade, a consistência e a relevância dos resultados obtidos. 
+
+\subsection*{Melhore seu prompt}
+O padrão: Contexto + Papel + Tarefa + Formato é uma excelente estrutura para criar prompts mais eficazes e obter respostas alinhadas aos seus objetivos. Assim sendo, a partir de agora, utilizaremos esses quatro elementos como referência para desenvolver nossos prompts:
+\begin{itemize}
+	\item \textbf{Contexto}: compreender o cenário, o problema e as informações necessárias para realizar a tarefa.
+	\item \textbf{Papel}: definir a função, a especialidade ou a perspectiva que a inteligência artificial deverá assumir.
+	\item \textbf{Tarefa}: especificar claramente o que deverá ser feito, incluindo objetivos e requisitos.
+	\item \textbf{Formato}: estabelecer como a resposta deverá ser apresentada, considerando estrutura, extensão, linguagem e nível de detalhamento.
+\end{itemize}
+
+\textbf{Exemplo de prompt fraco}: "Escreve um e-mail para o cliente sobre o atraso na entrega." 
+
+\textbf{Exemplo de prompt forte}: "Aja como um gerente de atendimento de uma empresa de móveis planejados. Escreva um e-mail para um cliente avisando que a entrega vai atrasar 5 dias por problema no fornecedor. O tom deve ser transparente, sem parecer que estamos nos desculpando demais, e o e-mail deve terminar oferecendo um desconto de 5\% como compensação. Máximo de 120 palavras." 
+
+Facilmente observamos que o segundo prompt gera um resultado praticamente pronto para ser enviado, enquanto o primeiro exige uma boa dose de ajustes. A diferença está na forma como as instruções são elaboradas.
+
+Essa é a diferença entre:
+\begin{itemize}
+	\item Prompt ingênuo: pede o que você quer e recebe o que pediu, mesmo que seja impossível.
+	\item Prompt robusto: pede o que você quer e uma avaliação honesta de se aquilo é alcançável.
+\end{itemize}
+
+Um prompt forte não é necessariamente robusto, vamos realizar uma análise e correção desse prompt (E-mail de atraso)
+
+É um prompt curto e claro, sendo que a maioria dos problemas dele é de calibragem, não de estrutura. Sete pontos:
+\begin{enumerate}
+	\item "Transparente, sem parecer que estamos nos desculpando demais" é uma instrução de tom, não de conteúdo. O modelo entende "não se desculpar demais" de formas diferentes: pode cortar o pedido de desculpas por completo, pode substituir por linguagem corporativa fria, ou pode manter o pedido mas sem repetição. Sem critério, o resultado é imprevisível. Falta dizer o que deve estar presente (reconhecimento do impacto, responsabilidade, ação concreta) e o que deve estar ausente (repetição de "desculpe", autoflagelação, justificativa longa).
+	\item "Problema no fornecedor" é vago e coloca a culpa fora. Isso pode soar como terceirização de responsabilidade ("a culpa não é nossa"). Para o cliente, o fornecedor é invisível — ele comprou da sua empresa. O prompt deveria orientar como mencionar a causa sem transferir culpa e sem expor detalhe interno desnecessário.
+	\item "Desconto de 5\% como compensação" sem contexto. 5\% de quê? Do valor total? Do saldo? É aplicado como abatimento, cashback, crédito? O modelo vai inventar. E "compensação" sem como e quando aplicar gera ambiguidade que vira novo problema no atendimento.
+	\item Falta o insumo essencial: quem é o cliente e qual é o pedido. O prompt não inclui: nome do cliente, número do pedido, valor, data original, nova data. O modelo vai usar placeholders genéricos ([Nome], [pedido]) — o que é aceitável, mas precisa ser explicitamente pedido, senão ele inventa dados fictícios que parecem reais.
+	\item "Máximo de 120 palavras" é bom, mas não diz o que priorizar. Em 120 palavras, você não cabe: saudação calorosa + explicação detalhada + pedido de desculpas elaborado + desconto + encerramento. O modelo vai cortar algo — e provavelmente vai cortar o pedido de desculpas ou a explicação, não o que você queria cortar. Falta dizer o que é essencial e o que é descartável.
+	\item Falta o canal e o contexto do relacionamento. Um e-mail para cliente novo é diferente de um para cliente recorrente; um para cliente que já reclamou é diferente de um para cliente que ainda não sabe do atraso. O tom "transparente, sem excesso de desculpas" muda conforme o histórico.
+	\item Falta instrução sobre o que não dizer. Em comunicação de crise, o que se evita é tão importante quanto o que se inclui: não prometer o que não se controla, não dar detalhes internos, não usar jargão corporativo, não minimizar o impacto ("apenas 5 dias"), não prometer compensação além do autorizado.
+\end{enumerate}
+
+\textbf{Há ainda um ponto silencioso}: o e-mail tem um objetivo implícito que o prompt não nomeia — preservar o relacionamento e evitar que o cliente cancele ou reclame publicamente. Sem esse objetivo explícito, o modelo escreve um e-mail "correto" mas que pode não atingir o que você realmente quer.
+
+Agora vamos criar uma versão corrigida e realmente robusta dele:
+
+\begin{promptbox}[E-mail de atraso de entrega ao cliente]
+Aja como gerente de atendimento de uma empresa de móveis planejados, escrevendo em nome da empresa. Vou te dar os dados e as regras; escreva o e-mail final.
+
+Dados do caso (se eu não preencher algum, use um placeholder entre colchetes, não invente valor):
+ Cliente: [nome]
+ Número do pedido: [número]
+ Data original de entrega: [data]
+ Nova data de entrega: [data]
+ Causa: problema no fornecedor de [componente/insumo]
+ Compensação autorizada: desconto de 5\% sobre [valor total / saldo restante], aplicado como [abatimento na próxima fatura / crédito / estorno]
+ Histórico do cliente: [primeira compra / recorrente / já reclamou do atraso / ainda não sabe do atraso]
+
+O que o e-mail precisa conter (essencial, nesta ordem):
+ Assunto claro, com número do pedido (sem alarmismo, sem "URGENTE")
+ Reconhecimento direto do atraso e da nova data - na primeira ou segunda frase
+ Uma frase de responsabilidade da empresa (sem culpar o fornecedor publicamente; se mencionar a causa, diga "problema na nossa cadeia de fornecimento", não "o fornecedor falhou")
+ Ação concreta: o que a empresa está fazendo para garantir a nova data
+ A compensação de 5%, com como e quando será aplicada
+ Um canal direto de contato para o cliente (nome + telefone/e-mail do gerente)
+ 
+O que o e-mail NÃO deve conter (regras de exclusão):
+ Repetição de "desculpe" (uma vez basta; o reconhecimento vem dos fatos, não da repetição)
+ Autoflagelação ("falhamos vergonhosamente", "não temos desculpa")
+ Justificativa longa sobre o fornecedor (o cliente não precisa do detalhe interno)
+ Minimização do impacto ("apenas 5 dias", "pequeno atraso")
+ Promessa que a empresa não controla ("garantimos que não vai atrasar de novo")
+ Jargão corporativo ("sinergia", "alinhamento", "tratativa")
+ Compensação além dos 5% autorizados
+ Tom frio ou formal demais (é atendimento, não comunicado jurídico)
+
+Tom:
+ Transparente e direto: o cliente deve entender o que aconteceu e o que vai acontecer em uma leitura.
+ Responsável sem subserviência: a empresa assume o problema e resolve.
+ Humano, não corporativo: frases curtas, voz ativa, sem "informamos que".
+ 
+Formato e limite:
+ Máximo 120 palavras no corpo (assunto não conta).
+ Se precisar cortar, corte explicação da causa primeiro, depois agradecimento, nunca o reconhecimento, a nova data ou a compensação.
+ 
+Depois do e-mail, liste em uma linha: 
+ O que ficou implícito (o que o cliente vai inferir) e o que ficou fora de propósito (o que você decidiu não incluir e por quê).
+
+Regras gerais:
+ Se algum dado essencial estiver em branco, use placeholder - não invente nome, valor, data nem número de pedido.
+ Se você não tiver certeza sobre convenção de atendimento no setor de móveis planejados, sinalize.
+ Sem introdução antes do e-mail; comece direto pelo assunto.
+\end{promptbox}
+
+As ferramentas de inteligência artificial generativa são capazes de realizar diversas tarefas, mas precisam de comandos claros e bem estruturados para oferecer resultados mais precisos e alinhados às expectativas do usuário. Quando um prompt é muito vago, as respostas tendem a ser genéricas ou diferentes do que se esperava. Por isso, quanto mais detalhes relevantes forem fornecidos, maiores serão as chances de obter um resultado satisfatório.
+
+A engenharia de prompts é importante para aprimorar a interação entre usuários e ferramentas de inteligência artificial, tornando as respostas mais úteis e relevantes. Além disso, contribui para o uso responsável dessas tecnologias, ajudando a prevenir a geração de conteúdos inadequados.
+
+Entre as técnicas utilizadas estão a cadeia de pensamento, que consiste em estruturar instruções para orientar a IA na resolução de um problema, e a engenharia de prompt reversa, na qual o usuário apresenta um resultado desejado e solicita à ferramenta que elabore um prompt capaz de produzi-lo. Essas técnicas ajudam a explorar melhor os recursos da inteligência artificial e a obter resultados mais próximos do esperado.
+
+\subsection*{Prompts robustos e testados}
+Com tudo o que disse não espere encontrar prompts incompletos como: \textit{"Faça uma auditoria completa do meu CV final: [cole]. Verifique cada seção: compatibilidade com ATS, força das palavras-chave, qualidade das conquistas, clareza da formatação, impacto do resumo, relevância das habilidades, adequação do tamanho. Dê uma nota de 0 a 10 para cada seção. Diga-me exatamente o que ainda está fraco e a correção precisa para cada item. Quero que este CV tire 90+ antes de enviá-lo para qualquer lugar"}.
+
+É ótimo para mostrar conhecimento em redes sociais e conseguir \textit{likes} de ingênuos, mas é um prompt péssimo, existem uma série de erros nele, sete erros para ser mais específico, sendo um deles grave:
+\begin{enumerate}
+	\item A "nota 90+" volta pela porta dos fundos. Não existe score único de ATS, mas aqui a meta aparece como "quero que este CV tire 90+". O modelo vai inventar notas por seção para satisfazer o pedido, e vai otimizar para uma métrica fictícia. Pior: notas numéricas criam falsa precisão - um "7/10 em palavras-chave" parece medido, mas é atribuído arbitrariamente.
+	\item Sete dimensões auditadas ao mesmo tempo, sem hierarquia. Compatibilidade ATS, palavras-chave, conquistas, formatação, resumo, habilidades e tamanho têm pesos diferentes e ordens de prioridade. Se o formato quebra o parsing de ATS, pouco importa que as conquistas sejam boas. Sem hierarquia, o modelo distribui atenção igualmente e não sabe o que corrigir primeiro.
+	\item Falta o cargo-alvo. Auditoria de CV sem vaga-alvo é auditoria no vácuo. "Impacto do resumo" e "relevância das habilidades" só fazem sentido contra um alvo. Sem isso, o modelo audita o CV como objeto genérico — e o veredito é inútil.
+	\item Notas numéricas por seção não são acionáveis. Saber que "formatação = 7/10" não diz o que mudar. A correção precisa ser o defeito específico + a reescrita, não a nota. A nota é o resumo do diagnóstico, não o diagnóstico.
+	\item "Faça uma auditoria completa" sem checklist. "Completa" é vago. O que compõe uma auditoria? Sem checklist explícito, cada execução audita coisas diferentes - e não se consegue comparar versões do CV ao longo do tempo.
+	\item Risco de fabricação no "correção precisa". Se o modelo sugere "adicione um número ao bullet 3", ele pode sugerir um número - o mesmo problema fatal do prompt D. A trava de [CONFIRMAR] precisa estar aqui.
+	\item Falta a pergunta mais importante de uma auditoria final: "o CV está pronto para enviar?" O prompt termina em "o que ainda está fraco", sem um veredito de prontidão. Você sai com uma lista de problemas e sem saber se pode enviar hoje ou se precisa de outra rodada.
+	\item Há ainda um problema silencioso: o modelo não conhece o histórico do CV. Sem saber em que versão você está (primeira? décima?), nem o que já tentou, a auditoria trata tudo como se fosse a primeira vez - e você pode receber sugestões que já aplicou.
+\end{enumerate}
+
+Teremos prompts completos, bem escritos e principalmente, testados. Não se preocupe com o tamanho de cada prompt ou qual IA deve usar (qualquer uma servirá e entenderá muito bem o pedido).
+
+\section*{Turbinar minhas leituras}
+\addcontentsline{toc}{section}{Prompts}
+\begin{promptbox}[A. Entender o livro antes de começar]
+Aja como um crítico literário e professor de literatura. Vou ler [título], de [autor], e quero um panorama preparatório antes de começar. Organize a resposta nas seguintes seções, nesta ordem:
+
+O autor em 3-5 linhas - quem é, época, estilo, lugar na tradição literária.
+
+Contexto histórico, social e cultural - o que estava acontecendo quando a obra foi escrita e como isso a molda.
+
+Temas principais e ideias centrais - liste de 3 a 5, cada um com 1-2 frases.
+
+Personagens principais (se for ficção) ou conceitos-chave (se for não-ficção) - com breve descrição de cada.
+
+O que devo ter em mente ao ler - 2-3 dicas de leitura (ex.: estrutura incomum, simbolismo recorrente, dificuldade de linguagem).
+
+Regras: seja direto, sem enrolação; use linguagem acessível; se não tiver certeza de algum fato, sinalize em vez de inventar. Extensão total: até ~500 palavras."
+\end{promptbox}
+
+\begin{promptbox}[B. Criar um cronograma de leitura]
+Aja como um planejador de estudos. Quero um cronograma de leitura para [título], de [autor].
+
+Dados:
+
+Total de páginas: [x]
+
+Prazo desejado: [x] dias
+
+Minha disponibilidade: [ex.: 40 min por dia, de segunda a sexta] ou [ex.: 1h aos fins de semana]
+
+Nível de dificuldade que espero: [leve / médio / denso]
+
+Instruções:
+
+Divida a leitura em blocos diários, indicando páginas (e capítulos, se você souber a divisão da edição; se não souber, diga que está estimando por páginas).
+
+Se o livro tiver capítulos de tamanhos muito diferentes, não corte capítulos no meio - ajuste o número de páginas do dia.
+
+Inclua 1 dia de folga a cada 6 dias de leitura (ou 2, se o prazo permitir) para não acumular atraso.
+
+Apresente como tabela: Dia | Páginas | Capítulos | Observação (ex.: 'capítulo denso', 'trecho descritivo').
+
+No fim, dê 2 dicas para manter o ritmo (ex.: o que fazer se atrasar, como marcar o progresso).
+
+Regras: seja realista; se o prazo for apertado demais para o número de páginas, avise antes de montar e sugira um prazo alternativo. Não invente números de capítulos se não tiver certeza.
+\end{promptbox}
+
+\begin{promptbox}[C. Esclarecer dúvidas durante a leitura]
+Aja como um professor de literatura explicando um trecho para um leitor atento, mas não especialista. Analise o trecho abaixo de [título], de [autor]:
+
+'[trecho]'
+
+Contexto que já tenho: [ex.: já li até o capítulo X / é a primeira vez que leio o autor / conheço o enredo geral].
+
+Estruture a resposta assim:
+
+Paráfrase - o que está sendo dito, literalmente, em 2-3 frases.
+
+O que o texto sugere - evite afirmar 'a intenção do autor'; fale do que o trecho permite ler (ambiguidades, escolhas de linguagem, tom).
+
+Duas ou três interpretações possíveis - cada uma com 1-2 frases e o que no trecho a sustenta.
+
+Conexões - no máximo duas: uma com outra obra literária e uma com um conceito teórico/filosófico. Só inclua se a conexão for realmente pertinente; se não houver, diga isso.
+
+Conexão com o tema central - como este trecho ecoa ou complica o tema maior da obra.
+
+Regras: ancore cada afirmação em uma palavra, imagem ou estrutura do próprio trecho; não invente citações; se o trecho for ambíguo, diga que é ambíguo em vez de resolver a ambiguidade. Linguagem clara, sem jargão desnecessário. Extensão: até ~400 palavras.
+\end{promptbox}
+
+\begin{promptbox}[D. Organizar suas anotações]
+Aja como um assistente de estudos literários. Vou colar abaixo minhas anotações e citações do livro [titulo], de [autor]. Organize-as agrupando por tipo e intenção - por exemplo: falas de personagens, descrições de cenário, diálogos marcantes, passagens temáticas, trechos que geraram dúvida. Para cada grupo: (1) apresente as citações em lista; (2) acrescente uma linha explicando por que elas se agrupam ali; (3) indique a página ou capítulo, se eu tiver fornecido. Se alguma citação puder pertencer a mais de um grupo, coloque-a no grupo principal e mencione os secundários entre parênteses. Não reescreva nem "melhore" minhas citações - preserve o texto original. No fim, sugira 2 ou 3 categorias adicionais que eu não usei, mas que poderiam ser úteis. Formato: títulos de seção + listas. Se eu não tiver fornecido página/capítulo, apenas omita essa informação, sem inventar.
+\end{promptbox}
+
+\begin{promptbox}[E. Preparar-se para discutir ou escrever sobre o livro]
+Aja como um professor que vai me arguir sobre [titulo], de [autor]. Com base no que li (e nas anotações que eu colar, se eu colar), monte um roteiro de preparação com: (1) 5 perguntas de compreensão que uma discussão séria exigiria, com uma resposta-síntese de 2-3 frases cada; (2) 3 perguntas abertas ou polêmicas, sem resposta pronta, para eu pensar; (3) 3 armadilhas comuns de leitura deste livro (interpretações fáceis ou enganosas) e por que são armadilhas; (4) uma lista de 5 passagens-chave que eu deveria saber localizar, com indicação do que cada uma demonstra. Regras: não invente citações literais; se não tiver certeza de uma passagem, descreva-a em vez de citá-la. Se eu não colar anotações, baseie-se no conhecimento geral da obra e sinalize isso no início. Linguagem direta, sem jargão. Extensão: até ~600 palavras.
+\end{promptbox}
+
+\begin{promptbox}[F. Produzir resumos e resenhas]
+Aja como crítico literário escrevendo uma resenha para publicação. Com base nas minhas anotações e marcações abaixo sobre [titulo], de [autor]] produza uma resenha com esta estrutura:
+
+Abertura (2-3 frases) - uma cena, imagem ou questão que fisgue o leitor, sem entregar o enredo.
+
+O livro em poucas linhas - do que trata, onde se passa, quem protagoniza. Regra anti-spoiler: não revele reviravoltas, mortes, revelações de identidade ou o desfecho; limite-se ao que aparece no primeiro terço ou ao que a contracapa já informa.
+
+Personagens e relações - análise de 2 a 4 personagens centrais, com foco no que eles representam e como se relacionam, não no que fazem.
+
+Temas centrais - 3 temas, cada um conectado explicitamente a um trecho que eu marquei (cite o trecho entre aspas, se eu o tiver fornecido; caso contrário, descreva-o).
+
+Avaliação da escrita - o que a prosa do autor faz bem, com 1 exemplo concreto (ritmo, diálogo, descrição, estrutura).
+
+Minha impressão final - NÃO invente. Em vez de escrever a minha impressão, deixe um espaço marcado como: [SUA IMPRESSÃO AQUI: escreva 3-5 frases sobre o que sentiu ao terminar o livro]. Eu preencho depois.
+
+Regras: tom envolvente, mas sem adjetivos vazios ("incrível", "emocionante") sem justificativa; nada de spoilers; se eu não fornecer anotações suficientes para alguma seção, sinalize em vez de preencher com generalidades. Extensão: ~500-700 palavras.
+\end{promptbox}
+
+\subsection*{Dicas úteis nessa seção}
+Nunca peça ao modelo um conteúdo que só existe na sua cabeça (sua impressão, sua opinião, sua experiência). Peça que ele deixe o espaço preparado para você preencher, ou que faça perguntas para extrair isso de você.
+
+Regra geral, que vale para todo prompt de \textit{"me dê ideias de X"}. Não peça uma lista. Peça uma sequência com relação explícita entre os itens. Listas são fáceis de gerar e fáceis de esquecer. Sequências obrigam o modelo a pensar em progressão - e obrigam você a executar em ordem.
+
+\section*{Plano de Estudo}
+\addcontentsline{toc}{section}{Prompts}
+
+\begin{promptbox}[A. Criar um plano de aprendizado personalizado]
+Aja como um designer instrucional experiente em aprendizagem de adultos. 
+Quero um plano de aprendizado para [habilidade], do nível iniciante absoluto até um objetivo definido.
+
+Meus dados:
+  Conhecimento atual: [descreva o que você já sabe]
+  Tempo disponível: [horas por semana], distribuídas em [ex.: 3 sessões de 1h]
+  Estilo de aprendizado: [visual/prático/leitura/auditivo]
+  Objetivo final, definido de forma observável: [ex.: "conversar 15 min em espanhol sobre temas do dia a dia" / "construir um app CRUD sozinho"]
+  Prazo desejado: [x semanas]
+
+Antes de montar o plano:
+  Avalie se o objetivo é realista no prazo com o tempo disponível. Se não for, diga isso primeiro e proponha duas alternativas: (a) manter o objetivo e estender o prazo; (b) manter o prazo e reduzir o escopo do objetivo. Só monte o plano depois que eu escolher.
+  Se você não tiver conhecimento confiável dos recursos específicos dessa habilidade, diga isso e trabalhe com princípios gerais de aprendizagem em vez de inventar nomes de cursos, livros ou ferramentas.
+
+Estrutura do plano (por semana):
+  Foco da semana (1 frase)
+  Tópicos em ordem, com tempo estimado para cada um
+  Atividade principal, adaptada ao meu estilo de aprendizado ([visual/prático/leitura]) - explique como ela reflete esse estilo
+  Marco verificável - algo que eu consiga fazer ou mostrar ao fim da semana, não apenas "entender"
+  Métrica de progresso - como sei que avancei (ex.: gravar 1 min de fala, resolver 5 exercícios, escrever 1 resumo)
+
+Regras adicionais:
+ A cada 4 semanas, inclua uma semana de consolidação e revisão, não de conteúdo novo.
+ Inclua um plano de contingência: o que fazer se eu atrasar 1 semana (o que cortar primeiro, o que nunca cortar).
+ No fim, liste 3 sinais de que o plano precisa ser refeito (ex.: objetivo mudou, tempo caiu pela metade, dificuldade acima do esperado).
+
+Formato: tabela semanal + seções curtas de orientação. Extensão: o mais enxuto possível sem perder detalhe.
+\end{promptbox}
+
+\begin{promptbox}[B. Ter conceitos explicados de várias maneiras]
+Aja como um professor que domina tanto o conceito quanto a arte de explicá-lo. Quero entender [conceito].
+
+Meu contexto:
+ Por que quero entender isso: [ex.: preciso aplicar no trabalho / curiosidade / pré-requisito para outro assunto]
+ Onde eu travei: [ex.: não entendo o que significa X / entendo a definição mas não vejo utilidade / confundo com Y]
+ O que já sei sobre o tema: [breve]
+
+Explique em 4 camadas, nesta ordem, cada uma construindo sobre a anterior:
+ A intuição - a ideia central em linguagem cotidiana, sem jargão, em 2-3 frases. (Não "como se eu tivesse 10 anos" - como se eu tivesse pressa e nenhum vocabulário técnico.)
+ A analogia - uma comparação com algo do mundo real que capture a estrutura do conceito (não apenas a superfície). Diga explicitamente onde a analogia funciona e onde ela quebra.
+ A explicação técnica - a definição precisa, com os termos corretos, as partes que compõem o conceito e como elas se relacionam. Aqui pode usar jargão, mas defina cada termo na primeira aparição.
+ O cenário concreto - uma situação específica (real ou hipotética) em que o conceito aparece em ação, com detalhes suficientes para eu reconhecê-lo quando encontrar algo parecido.
+
+Regras:
+ As quatro camadas devem ser distintas, não quatro reformulações da mesma ideia.
+ Não repita entre camadas; cada uma acrescenta algo que a anterior não tinha.
+ Se o conceito tiver variações ou escolas diferentes (ex.: definição A vs. definição B), mencione isso na camada 3.
+ Se você não tiver certeza sobre algum ponto, sinalize em vez de preencher com plausibilidade.
+
+Ao final, para verificar se eu entendi:
+ Faça 2 perguntas que eu deveria conseguir responder se a explicação funcionou.
+ Indique 1 erro comum que pessoas cometem ao aprender esse conceito.
+ Formato: as 4 camadas como seções numeradas, seguidas das duas perguntas e do erro comum. Extensão: até ~500 palavras.
+\end{promptbox}
+
+\begin{promptbox}[C. Criar projetos práticos que importam]
+Aja como um mentor que já orientou dezenas de pessoas a construir portfólios reais na área de [habilidade].
+
+Meus dados:
+ Habilidade: [habilidade]
+ Nível atual: [iniciante/intermediário/avançado], com [breve descrição do que já consigo fazer sozinho]
+ Interesses: [o que me motiva - ex.: jogos, música, saúde, finanças pessoais, educação]
+ Contexto real onde posso aplicar: [ex.: meu trabalho, minha comunidade, um problema que enfrento]
+ Tempo disponível por projeto: [horas], distribuídas em [ex.: 2 sessões por semana]
+
+Crie 5 ideias de projetos com progressão real de dificuldade. Cada projeto deve declarar explicitamente:
+ Título e problema que resolve - em 1 frase, algo concreto (não "praticar X", mas "resolver Y").
+ Por que é adequado ao meu nível - o que ele exige que eu já saiba e o que ele introduz de novo.
+ O que muda em relação ao projeto anterior - a progressão não é só "mais difícil"; é: nova técnica? novo escopo? nova restrição (prazo, qualidade, autonomia)? Seja explícito.
+ Entregável visível - o que eu mostro a alguém em 2 minutos para provar que fiz. Se não houver entregável claro, o projeto não é de portfólio.
+ Etapas em ordem, com estimativa de tempo realista (conte pesquisa, erros e finalização; quando em dúvida, superestime).
+ O que vou aprender - habilidade técnica + habilidade prática (ex.: tomar decisão de escopo, documentar, apresentar).
+ Definição de "pronto" - critério objetivo de conclusão. Ex.: "roda sem erro em 3 cenários", "tem README", "gravei demo de 1 min".
+
+Regras adicionais:
+ Os 5 projetos devem acumular: cada um reaproveita algo do anterior (código, aprendizado, material) ou aprofunda um aspecto dele. Não quero 5 projetos soltos.
+ Se algum projeto exigir um recurso que eu não informei ter (ferramenta paga, hardware, acesso a dados), sinalize e ofereça alternativa.
+ Inclua 1 projeto "teto": o mais ambicioso que ainda cabe no meu tempo, para eu saber onde está o limite.
+ Ao final, diga qual dos 5 eu deveria começar primeiro e por quê.
+
+Formato: um bloco por projeto, com os 7 itens nomeados. Extensão: o mais enxuto possível sem perder o detalhe acionável.	
+\end{promptbox}
+
+\begin{promptbox}[D. Obter respostas instantâneas para perguntas específicas]
+Aja como um tutor que responde dúvidas pontuais com precisão cirúrgica. Estou travado em [habilidade/tópico].
+
+Onde estou:
+ O que eu não entendo: [descreva exatamente o ponto]
+ Como eu descreveria meu travamento: [ ] não entendo o que isso significa / [ ] entendo o que é, mas não sei quando ou por que usar / [ ] sei usar, mas o resultado sai errado ou inconsistente / [ ] entendo isolado, mas não vejo como se conecta ao resto
+ O que já tentei: [ex.: li a definição, vi um vídeo, tentei aplicar em X e deu Y]
+
+Antes de responder:
+ Reformule minha pergunta em uma frase, do jeito que você a entendeu. Se a minha pergunta estiver mal formulada ou partir de uma premissa errada, diga isso primeiro e proponha a pergunta correta.
+
+Se faltar informação para responder com precisão, faça até 2 perguntas antes de prosseguir. Se não precisar, siga direto.
+
+Depois, responda nesta ordem:
+ A ideia central - em 2-3 frases, o que resolve meu travamento. Sem rodeios.
+ Por que funciona assim - o mecanismo ou a lógica por trás. Aqui, conecte explicitamente ao tipo de travamento que eu marquei acima.
+ Erros comuns no meu ponto exato - não os erros genéricos do tema, mas os erros de quem está travado onde eu estou. Se houver mais de um, ordene do mais frequente ao menos.
+ Um exemplo isomórfico - mesma estrutura do meu caso, mas com contexto, números ou nomes diferentes, para eu poder consultar sem copiar. Depois, aponte o que no exemplo corresponde ao quê no meu caso.
+
+Para eu verificar se entendi:
+ Faça 1 pergunta de aplicação que eu deveria conseguir responder se a explicação funcionou (não uma pergunta de memória; uma que exija usar o conceito).
+ Indique 1 sinal de que ainda não entendi - um sintoma que eu deveria observar em mim mesmo.
+
+Regras: se você não tiver certeza sobre algum ponto, sinalize em vez de preencher com plausibilidade. Não repita a mesma ideia em itens diferentes. Formato: seções numeradas como acima. Extensão: até ~400 palavras.
+\end{promptbox}
+
+\begin{promptbox}[E. Criar flashcards e materiais de estudo personalizados]
+Aja como um designer de materiais de estudo que trabalha com repetição espaçada e prática de recuperação. Quero um guia de estudos para [tópico].
+
+Meus dados:
+ Objetivo: [prova / certificação / uso prático / entender de verdade]
+ Contexto de uso: [ex.: vou revisar em sessões de 20 min / preciso consultar no trabalho / é pré-requisito para outro assunto]
+ O que já domino do tópico: [breve]
+ Onde costumo errar: [ex.: confundo termos parecidos / esqueço fórmulas / entendo mas não aplico]
+
+Estrutura do guia:
+ Parte 1 - Mapa de conceitos (não fixe em 20; deixe o tópico determinar)
+  Liste os conceitos realmente memorizáveis do tópico, em número adequado (entre 10 e 25, se o tópico permitir). Para cada um: nome curto + 1 frase de definição. Ordene por dependência (o que precisa vir antes de quê). Marque com * os 5 mais críticos.
+
+ Parte 2 - Flashcards (apenas para os conceitos do mapa)
+  Para cada conceito, 1 ou 2 flashcards no formato:
+   Frente: pergunta curta que testa uma única coisa
+   Verso: resposta em até 2 linhas, sem parágrafos
+  Tipo: definição / aplicação / distinção / exceção (varie os tipos, não faça 20 de definição)
+  Regras: nada de perguntas com "explique" ou "discuta"; nada de respostas longas. Se um conceito não render um bom flashcard, diga isso em vez de forçar.
+
+ Parte 3 - Mnemônicos
+  Só para os conceitos marcados com *. Para cada: o mnemônico + por que ele funciona (que associação ele explora). Se não houver mnemônico natural para um conceito, diga isso em vez de inventar um forçado.
+
+ Parte 4 - Equívocos ancorados
+  Liste os equívocos mais comuns, cada um atrelado ao conceito específico onde ele ocorre (ex.: "Conceito 7: é comum achar que X, mas na verdade Y"). Ordene do mais frequente ao menos.
+
+ Parte 5 - Autoavaliação (diferente dos flashcards)
+  5 a 8 perguntas que testem os mesmos conceitos, mas em contexto de aplicação - situações, casos, comparações, não definições repetidas. Cada pergunta com resposta comentada (não só a resposta; por que aquela resposta).
+
+Regras adicionais:
+ Se o tópico não tiver 20 conceitos memorizáveis, não infle - diga quantos tem de fato.
+ Se você não tiver certeza sobre um mnemônico, equívoco ou conceito, sinalize em vez de preencher.
+
+Formato: seções numeradas, com os conceitos numerados de forma consistente em todas as partes (o conceito 7 na Parte 1 é o mesmo na Parte 4).
+
+Extensão: enxuta o suficiente para ser usada em sessões curtas. Prefira corte a verbosidade.
+
+Ao final:
+ Diga em que ordem estudar (quais conceitos primeiro, quais revisar juntos).
+ Indique 1 sinal de que eu só decorei, mas não entendi - um sintoma observável.
+\end{promptbox}
+
+\begin{promptbox}[F. Aprender por meio da técnica de Feynman]
+Aja como um tutor que aplica a Técnica de Feynman de verdade - em ciclo, não em uma resposta só. Quero entender [conceito].
+
+Contexto:
+ Por que quero entender: [ex.: prova / aplicar no trabalho / pré-requisito]
+ O que já sei: [breve]
+ Onde suspeito que vou travar: [ex.: confundo com X / não entendo o porquê]
+ Como vamos proceder - em etapas separadas, uma por vez:
+
+Etapa 1 - Você me dá o alvo, não a explicação.
+ Antes de explicar qualquer coisa, liste os elementos que uma explicação completa deste conceito deveria conter (ex.: definição, mecanismo, condições de uso, exceções, relação com conceitos vizinhos). Isso vira o critério contra o qual você vai avaliar minha explicação depois. Não explique o conceito ainda.
+
+Etapa 2 - Eu explico primeiro.
+ Você me pede para explicar [conceito] com minhas próprias palavras, como se estivesse ensinando alguém que não sabe nada. Me dá um formato mínimo para eu seguir (ex.: "diga o que é, para que serve, como funciona, e dê um exemplo"). E para aqui - espere minha resposta.
+
+Etapa 3 - Você diagnostica, usando o alvo da Etapa 1.
+ Quando eu enviar minha explicação, avalie contra os elementos listados na Etapa 1. Para cada lacuna, classifique:
+  Ausente - não mencionei
+  Errado - mencionei, mas incorretamente
+  Vago - mencionei, mas sem precisão
+  Desconectado - certo, mas sem ligação com o resto
+ Não elogie por educação; seja específico. Se eu acertei algo, diga o que foi e por que está certo.
+
+Etapa 4 - Você reensina apenas o que faltou.
+ Não repita a explicação inteira. Reensine só as lacunas da Etapa 3, na ordem em que aparecem. Para cada uma: explique de forma simples, dê um exemplo, e diga como saber que entendi (um sinal observável).
+
+Etapa 5 - Fechamos o ciclo.
+ Peça que eu explique de novo apenas os pontos que você reensinou. Se eu ainda errar, repita a Etapa 4 só nesses pontos. Só encerre quando eu conseguir explicar sem os erros anteriores.
+
+Regras:
+ Nunca invente a minha explicação. Se eu não respondi ainda, pare e espere.
+ Se você não tiver certeza sobre algum ponto do conceito, sinalize em vez de preencher.
+ Se o conceito tiver mais de uma interpretação ou escola, mencione isso na Etapa 1 (entra no alvo).
+ Linguagem simples nas Etapas 1 e 4; precisão técnica nas Etapas 3 e 5.
+
+Formato: uma etapa por resposta, sem adiantar as seguintes.
+
+Comece agora pela Etapa 1.
+\end{promptbox}
+
+\subsection*{Dicas úteis nessa seção}
+O maior risco deste prompt não é o modelo errar - é ele acertar demais. Quatro explicações bonitas e coerentes podem produzir a ilusão de entendimento sem que a ficha caia de fato. Isso se chama fluência ilusória: você lê, acha claro, e não consegue aplicar.
+
+Por isso a correção mais importante foi adicionar verificação ao final (as 2 perguntas e o erro comum). Sem isso, o prompt é confortável, mas não necessariamente eficaz.
+
+A mesma lógica vale para o conjunto: todo prompt de aprendizado deveria terminar com um teste de compreensão, não apenas com a entrega do conteúdo. No prompt A isso aparece como "marco verificável"; aqui, como perguntas de checagem.
+
+\section*{Correção do meu CV}
+\addcontentsline{toc}{section}{Prompts}
+
+\begin{promptbox}[A. Analisador de raio-X do CV]
+Aja como um recrutador sênior que já triou milhares de CVs para vagas de [cargo/área] em [indústria/setor]. Vou anexar meu CV abaixo e quero uma análise operacional, não motivacional.
+	
+Contexto obrigatório (se eu não preencher, pergunte antes de analisar):
+ Cargo-alvo: (ex.: analista de dados pleno)
+ Descrição da vaga (se houver): [cole os requisitos principais]
+ Minha situação: [ex.: empregado buscando transição / desempregado / recém-formado]
+ Setor: [ex.: tecnologia, saúde, finanças - ou "transição entre setores"]
+	
+Antes de analisar:
+ Se algum campo de contexto estiver em branco, pergunte antes de prosseguir.
+ Não presuma cargo nem setor.
+ Se o CV não tiver informação suficiente para avaliar algum eixo, diga isso em vez de preencher com suposições.
+
+Analise em quatro eixos separados:
+ Eixo 1 - Triagem de 10 segundos (o que salta ou afunda)
+  Liste os sinais concretos que um recrutador capta na primeira passada: cargo atual legível? anos de experiência visíveis? cargo-alvo reconhecível? formatação legível? Se houver risco de descarte, diga qual sinal o dispara e por quê - sem falar em "seções", fale em elementos específicos.
+
+ Eixo 2 - Forma (layout, ordem, extensão)
+  Avalie: extensão adequada ao nível? ordem das seções condiz com o esperado para o cargo-alvo? legibilidade (fonte, espaçamento, bullets)? consistência (datas, tempos verbais, formatação)? Aponte o que muda e o que fica.
+	
+ Eixo 3 - Conteúdo (conquistas e relevância)
+  Para cada experiência listada no CV, avalie:
+   A conquista é resultado ou tarefa? (tarefa = "responsável por X"; resultado = "reduzi X em Y%")
+   Tem número, escala ou consequência?
+   É relevante para o cargo-alvo ou é ruído?
+   Classifique cada bullet como: forte / fraca / irrelevante / ambígua. Para as fracas e ambíguas, reescreva em uma versão melhor (não diga "melhore"; mostre como).
+	
+ Eixo 4 - Riscos de rejeição (não "a única coisa")
+  Liste todos os riscos plausíveis de rejeição, ordenados por gravidade. Para cada um: qual é o risco, por que um recrutador se incomodaria, e como mitigar (o que reescrever, mover, ou remover). Se houver apenas um risco relevante, diga que é apenas um - não force um único motivo se houver vários, e não invente um se não houver.
+	
+Priorização (o mais importante):
+ Ao final, monte uma lista das 5 correções com maior retorno, ordenadas por impacto. Para cada uma: o que mudar, onde no CV, e o efeito esperado na triagem.
+	
+Regras:
+ Seja específico: aponte o bullet, a linha, a seção exata. Crítica genérica não serve.
+ Não use adjetivos de efeito ("desastroso", "incrível") sem justificar com o critério.
+ Se algo estiver bom, diga o que está bom e por quê - para eu saber o que não mexer.
+ Se você não tiver certeza sobre convenções do setor/região, sinalize em vez de afirmar.
+ Formato: quatro eixos + priorização. Sem introdução motivacional.
+\end{promptbox}
+
+\textbf{ATENÇÃO}: Não esqueça de adicionar seu currículo.
+
+\begin{promptbox}[B. Decodificador da descrição da vaga]
+Aja como um recrutador experiente que sabe ler vagas nas entrelinhas. Vou colar a descrição de uma vaga e quero uma decodificação ancorada no texto, não em suposições sobre a empresa.
+	
+Insumos obrigatórios (se eu não preencher algum, pergunte antes de analisar):
+ Descrição da vaga: [cole a descrição aqui]
+ Empresa e setor: [nome, se souber / setor / tamanho aproximado]
+ Meu perfil resumido (opcional, mas recomendado): [ex.: 5 anos em X, mudei de Y para Z, tenho experiência em A e B]
+ Meu objetivo: [ex.: passar na triagem / me preparar para entrevista / decidir se vale a pena me candidatar]
+	
+Antes de decodificar:
+ Se a descrição for curta ou genérica demais para inferências confiáveis, diga isso primeiro e trabalhe só com o que o texto sustenta.
+ Se você não tiver informação sobre a empresa, não invente cultura, valores ou prioridades; marque essas inferências como "genéricas do setor", não da empresa.
+	
+Decodifique em cinco camadas:
+
+1. O que a vaga diz explicitamente
+ Separe em: requisitos obrigatórios (must-have) e desejáveis (nice-to-have). Cite o trecho exato de cada um. Não parafraseie - transcreva.
+	
+2. O que a vaga implica (habilidades ocultas)
+ Para cada inferência, mostre o trecho que a sustenta e o tipo de raciocínio:
+  Repetição (ex.: "autonomia" aparece 3x -> espera-se alguém que não precise de supervisão)
+  Verbo escolhido (ex.: "estruturar" vs. "manter" indica nível de senioridade)
+  Omissão (ex.: não menciona equipe -> possível trabalho solo ou liderança não dita)
+  Contexto do setor (ex.: "ritmo acelerado" em startup significa algo diferente de em banco)
+  Classifique cada inferência por confiança: alta / média / baixa.
+	
+3. Sinais de alerta para um candidato
+ Liste os pontos em que um candidato sem determinada experiência ou sinal tende a ser descartado - sempre ancorado em um requisito ou inferência específica da camada anterior. Se não houver sinal claro, diga que não há em vez de inventar.
+	
+4. Palavras-chave para o CV
+ Não fixe em 3. Liste as palavras/expressões que precisam aparecer no CV para passar na triagem automática e humana. Para cada uma:
+  O termo exato (como aparece na vaga)
+  Onde deve aparecer (resumo, experiência, habilidades)
+  Se é obrigatória ou reforço
+  Como você apareceria se eu já tenho essa experiência (dê uma formulação de exemplo)
+  Se eu fornecer meu perfil, cruze: quais dessas palavras eu já demonstro e quais preciso evidenciar melhor.
+	
+5. O que o gerente realmente valoriza (e a vaga não diz)
+ Aqui separe duas coisas:
+  Inferível do texto: o que a vaga sugere sobre prioridades (ex.: ênfase em "resultados mensuráveis" -> espera-se alguém orientado a métricas).
+  Não inferível: o que só se sabe com informação sobre a empresa, o time ou a cultura. Se não tiver essa informação, diga que não é possível saber e indique como descobrir (ex.: pesquisar no LinkedIn, perguntar na entrevista, olhar reviews).
+	
+Ao final:
+ 3 a 5 ajustes concretos no meu CV/material para esta vaga, em ordem de impacto.
+ 2 ou 3 perguntas que eu deveria fazer na entrevista para confirmar as inferências de confiança baixa.
+ 1 sinal de que esta vaga pode não valer a pena - um indício no texto de que o papel ou a empresa têm um problema (ex.: acúmulo de funções, requisitos contraditórios, linguagem que revela alta rotatividade).
+	
+Regras:
+ Toda inferência precisa citar o trecho que a origina. Sem trecho, é suposição - e deve ser marcada como tal.
+ Não use generalidades de vaga ("querem alguém proativo") sem ancoragem no texto.
+ Se algo não for decodificável, diga "não é possível inferir" em vez de preencher.
+ Formato: cinco camadas numeradas + fechamento. Sem introdução motivacional.
+\end{promptbox}
+
+\begin{promptbox}[C. Otimizador para bypass de ATS]
+Aja como alguém que entende como ATS funcionam na prática - incluindo seus limites. Não finja ter acesso a um ATS real nem atribua notas numéricas; trabalhe com princípios verificáveis de correspondência entre CV e vaga.
+	
+Insumos obrigatórios (se eu não preencher, pergunte antes):
+ Meu CV atual: [cole o CV]
+ Descrição da vaga: [cole a vaga]
+ País/região da candidatura: [ex.: Brasil, EUA, Europa] - as convenções de ATS variam
+ Plataforma, se souber: [ex.: Gupy, Workday, LinkedIn Easy Apply]
+
+Antes de otimizar:
+ Deixe claro que não existe nota única de ATS e que você não pode medir minha pontuação. Se o meu CV é reprovado, as causas prováveis são: formato ilegível, ausência de termos-chave, falta de correspondência com a vaga, ou problemas de estrutura - analise por aí, não por score inventado.
+	
+Se você não tiver certeza sobre a convenção de ATS da minha região/plataforma, sinalize em vez de afirmar.
+	
+Etapa 1 - Diagnóstico de correspondência (não de score)
+Liste:
+ Termos da vaga que aparecem no meu CV - com onde aparecem
+ Termos da vaga que não aparecem - e classifique cada um como:
+ Tenho experiência, falta o termo (corrigível com reescrita)
+ Tenho algo próximo, mas não equivalente (corrigível com reformulação honesta)
+ Não tenho (não se resolve com palavra-chave - ver Etapa 4)
+ Termos boilerplate (presentes em quase toda vaga, baixo poder de diferenciação) vs. termos diferenciadores (específicos da vaga, alto poder)
+	
+Etapa 2 - Diagnóstico de formato e estrutura (o que quebra ATS)
+ Aponte problemas que realmente atrapalham parsing:
+ Colunas, tabelas, caixas de texto, cabeçalhos/rodapés
+ Fontes não-padrão, ícones no lugar de texto
+ Títulos de seção não convencionais ("Minha jornada" em vez de "Experiência")
+ Datas em formato inconsistente
+ PDF gerado de imagem (não-parseável)
+ Diga o que mudar e por quê. Se o formato estiver OK, diga que está OK.
+	
+Etapa 3 - Reescrita de Experiência e Habilidades
+Para cada alteração:
+ Antes (transcreva o bullet original)
+ Depois (reescrito)
+ O que mudou (termo adicionado? estrutura? verbo? número?)
+ De onde vem a informação (a mudança se baseia no que já estava no CV? ou em algo que eu preciso confirmar?)
+	
+Regras da reescrita:
+ Use os termos da vaga onde eles são verdadeiros para mim. Se eu não tenho a experiência, não invente.
+ Não empilhe palavras-chave. 
+ Não transforme bullets em listas de termos. Um termo por frase, no contexto certo.
+ Não invente números, cargos, ferramentas ou responsabilidades. Se um número ou termo precisa vir de mim, deixe [CONFIRMAR: ...] no lugar.
+ Preserve o que já está bom. Não reescreva por reescrever.
+ Se a vaga pede algo que eu não tenho, diga claramente: isso é lacuna real e precisa ser tratada na Etapa 4.
+	
+Etapa 4 - Lacunas reais (o que palavra-chave não resolve)
+Liste o que a vaga pede e eu não tenho. Para cada item:
+ É eliminatória (sem ela, não passo) ou desejável?
+ O que posso fazer: buscar formação rápida, destacar algo adjacente, ou aceitar que a vaga não é para mim.
+ Se for eliminatória e eu não tiver como cobrir, diga com clareza: candidatar-se provavelmente não vale o esforço - não empurre uma candidatura inviável.
+	
+Etapa 5 - Verificação final
+ O CV reescrito continua legível para humanos (não virou lista de termos)?
+ Os termos-chave aparecem naturalmente em contexto?
+ Alguma afirmação precisa da minha confirmação antes de eu enviar? Liste tudo com [CONFIRMAR].
+	
+Regras gerais:
+ Não prometa pontuação de ATS. Não invente score. Não simule um ATS que você não tem.
+ Se algo não for verificável, diga "não é possível medir".
+ Priorize mudanças por impacto na triagem real: formato > correspondência de termos ] força dos bullets.
+ Formato: cinco etapas, com antes/depois na Etapa 3. Sem introdução motivacional.
+\end{promptbox}
+
+\begin{promptbox}[D. Transformar as conquistas]
+Aja como um revisor de CV que sabe transformar tarefas em resultados sem inventar nada. Vou colar minhas descrições atuais e quero que você as reescreva com honestidade - marcando o que precisa da minha confirmação em vez de preencher com números plausíveis.
+	
+Insumos obrigatórios (se eu não preencher, pergunte antes):
+ Cargo-alvo: [ex.: analista de dados pleno em fintech]
+ Setor: [ex.: tecnologia, saúde, educação]
+ Nível: [júnior / pleno / sênior / liderança]
+
+Minhas descrições atuais: [cole os bullets do CV]
+ 
+Para cada bullet, se você tiver: o problema que existia antes, o que você fez, e o que mudou depois. Se não tiver, tudo bem - deixe em branco.
+	
+Antes de reescrever:
+ Se algum bullet não tiver informação suficiente para virar resultado, não invente. Marque [FALTA INFO: o que eu preciso saber para reescrever isto].
+ Se eu não fornecer números, não sugira números plausíveis. Em vez disso, pergunte: "que dado você tem para estimar isso?" - e dê exemplos de onde procurar (relatórios do período, e-mails, métricas do time).
+	
+Etapa 1 - Diagnóstico de cada bullet
+Para cada bullet, classifique:
+ Tarefa (descreve o que você fazia, não o que mudou)
+ Resultado sem número (mudou algo, mas sem métrica)
+ Resultado com número (já é forte - só ajustar forma)
+ Vago (não dá para saber o que você fez)
+ E diga o que falta em cada um: número? contexto? verbo mais preciso? clareza de escopo?
+	
+Etapa 2 - Reescrita com três formatos possíveis
+ Não force a mesma fórmula em todos. Escolha o formato que cabe no bullet:
+ Fórmula completa (quando há número e impacto): verbo + o que fiz + resultado mensurável + impacto
+ Fórmula de resultado (quando há resultado, mas impacto é indireto ou desconhecido): verbo + o que fiz + resultado
+ Fórmula de escopo (quando não há número, mas há complexidade): verbo + o que fiz + escala/contexto que dá dimensão
+	
+Para cada bullet:
+ Antes: transcreva o original
+ Depois: a reescrita, no formato que couber
+ O que mudou: o que foi ajustado e por quê
+ O que falta: se ficou [CONFIRMAR: número X] ou [FALTA INFO: Y], diga exatamente o que eu preciso buscar
+	
+Regras da reescrita:
+ Não invente números, ferramentas, escopo, cargos ou responsabilidades. Se o dado não veio de mim, vai como [CONFIRMAR] ou [FALTA INFO], nunca como fato.
+ Não empilhe adjetivos ("inovador", "estratégico", "robusto") sem conteúdo. Adjetivo sem fato é ruído.
+ Não use verbos inflados para o meu nível. Se sou júnior, "liderei" só se for verdade. Prefira verbos compatíveis com a senioridade.
+ Não transforme todo bullet em fórmula completa. Se a fórmula não cabe, use outra - ou diga que o bullet deveria ser removido do CV.
+ Preserve o que já está bom. Se um bullet já é resultado com número, só ajuste forma, não reescreva.
+ Se algum bullet for fraco demais e não tiver conserto, diga com clareza: "este bullet não agrega; considere remover ou substituir por [tipo de conquista]."
+	
+Etapa 3 - Verbos por nível
+ Liste os verbos que usei e diga se são compatíveis com meu nível (júnior/pleno/sênior/liderança). Se algum estiver inflado, substitua. Se algum estiver fraco, sugira alternativa.
+	
+Etapa 4 - Onde procurar os números que faltam
+ Para cada [CONFIRMAR] ou [FALTA INFO], dê uma dica concreta de onde buscar o dado:
+ Relatórios do período (quantos clientes atendi?)
+ E-mails e atas (que problema resolvi? qual foi o prazo?)
+ Métricas do time (qual era o volume antes e depois?)
+ Comparação temporal (como era antes de eu entrar?)
+ Não sugira valores. Sugira fontes.
+	
+Etapa 5 - Verificação final
+ Todos os bullets são verdadeiros (nada inventado)?
+ Os [CONFIRMAR] e [FALTA INFO] estão marcados e visíveis?
+ O conjunto não soa artificial (todos os bullets com a mesma estrutura)?
+ Algum bullet deveria ser removido em vez de reescrito?
+	
+Regras gerais:
+ O objetivo não é "fazer o recrutador parar de rolar" - é fazer o recrutador entender rápido o que eu entreguei e por que isso importa para a vaga. Especificidade e relevância fazem isso; floreio não.
+ Se você não tiver certeza sobre a convenção do meu setor/região, sinalize.
+ Formato: cinco etapas, com antes/depois na Etapa 2. Sem introdução motivacional.
+\end{promptbox}
+
+\begin{promptbox}[E. Leitor de mentes do recrutador]
+Aja como um recrutador experiente simulando a triagem real de uma vaga. Deixe claro desde o início: você não tem acesso à mente de recrutadores reais nem ao pool de candidatos; o que você fará é uma simulação baseada em princípios conhecidos de triagem (clareza, relevância, sinais de risco, evidência de resultado). Trate a saída como hipótese fundamentada, não como veredito.
+	
+Insumos obrigatórios (se eu não preencher, pergunte antes):
+ Descrição da vaga: [cole a vaga]
+ Meu CV: [cole o CV]
+ Meu nível: [júnior / pleno / sênior / liderança]
+ Meu objetivo com esta análise: [ex.: entender por que sou descartado / ajustar antes de enviar / decidir se vale me candidatar]
+	
+Antes de simular:
+ Se o CV for longo ou o contexto for insuficiente, diga que a simulação será parcial.
+ Se você não tiver informação sobre a empresa ou o setor, não invente cultura; trabalhe apenas com o que a vaga e o CV permitem inferir.
+ Não escreva cena nem monólogo interno. Faça diagnóstico ancorado em elementos concretos do CV e da vaga.
+	
+Etapa 1 - Triagem em 6 segundos (sinais, não veredito binário)
+Liste, na ordem em que um recrutador captaria:
+ O que salta imediatamente (cargo legível? anos de experiência? correspondência com o título da vaga? senioridade visível?)
+ O que gera atrito (formatação, extensão, ordem, jargão, lacunas inexplicadas)
+ O que gera dúvida (algo que faz o recrutador hesitar, não descartar)
+ Para cada item: transcreva o elemento do CV que o origina. Sem transcrição, não vale.
+	
+Etapa 2 - Veredito de triagem (com nuance, não binário)
+ Em vez de "selecionado ou descartado", classifique em um dos três:
+ Avançaria para leitura detalhada - por quê (cite os sinais)
+ Ficaria na pilha intermediária - por quê (o que falta para avançar)
+ Seria descartado - por qual sinal concreto (cite o elemento)
+ Se o veredito depender de informação que você não tem (ex.: se o recrutador valoriza diploma X), diga isso e apresente os dois cenários.
+	
+Etapa 3 - Primeira coisa que chama atenção (positiva)
+ Diga qual elemento do CV capta atenção primeiro e por que ele funciona para esta vaga. Se não houver nada que se destaque, diga com clareza: "nada se destaca nos primeiros 6 segundos" - o que é, por si só, um diagnóstico.
+
+Etapa 4 - Sinais que enfraquecem (não "a única coisa")
+Liste todos os sinais que reduzem as chances, ordenados por gravidade. Para cada um:
+ O elemento no CV (transcrito)
+ Por que um recrutador se incomodaria
+ Se é problema real (ex.: falta de correspondência com a vaga) ou viés de leitura (ex.: formato incomum, lacuna que tem explicação)
+ Como mitigar: reescrever, mover, remover, ou contextualizar
+ Se houver apenas um sinal relevante, diga que é apenas um. Não force um único motivo quando há vários, e não invente um quando não há.
+	
+Etapa 5 - O que faria o recrutador ligar (com trava de honestidade)
+Descreva a qualidade ou evidência que de fato faria um recrutador querer conversar. Depois, separe:
+ O que eu já tenho e não estou destacando - reescreva o bullet para evidenciar
+ O que eu não tenho - diga com clareza que isso não se resolve com reescrita; resolve-se com experiência, formação ou escolha de vaga diferente
+ O que você não pode afirmar - se depender de informação sobre a empresa/recrutador, sinalize
+ 
+Proibição explícita:
+ Não sugira que eu invente experiência, números, cargos ou ferramentas para me aproximar do que faria o recrutador ligar.
+ Se a única forma de chegar lá for fabricar, diga: "isto não se resolve neste CV; requer experiência real que você não tem".
+	
+Etapa 6 - Verificação final
+ Os sinais apontados estão transcritos do CV ou são impressão sem base?
+ O veredito é defensável com os elementos citados?
+ Há algo que depende de informação externa e foi marcado como tal?
+ Alguma sugestão minha exigiria inventar algo? Se sim, remova.
+	
+Regras gerais:
+ Trate a simulação como hipótese fundamentada, não como verdade. Diga isso no início e no fim.
+ Não escreva cena. Não finja ser um recrutador específico. Não cite "200 CVs" como se tivesse acesso ao pool.
+ Priorize sinais objetivos (correspondência com a vaga, clareza, evidência de resultado) sobre impressões subjetivas (estilo, formato, instituição).
+ Formato: seis etapas numeradas. Sem introdução motivacional, sem monólogo interno.
+\end{promptbox}
+
+\begin{promptbox}[F. Auditoria final do CV]
+Aja como um revisor sênior que faz a auditoria final de um CV antes do envio. Seu trabalho não é elogiar nem dar notas de efeito: é encontrar o que ainda pode derrubar a candidatura e dizer exatamente como corrigir.
+	
+Insumos obrigatórios (se eu não preencher, pergunte antes):
+ Meu CV final: [cole o CV]
+ Cargo-alvo: [ex.: gerente de projetos em ONG]
+ Nível: [júnior / pleno / sênior / liderança]
+ País/região e idioma do CV: [ex.: Brasil, português]
+ Versão: [ex.: 3a. revisão, já apliquei correções de ATS e conquistas]
+ O que já tentei e não funcionou: [opcional, evita sugestões repetidas]
+	
+Declare antes de auditar:
+ Você não pode atribuir nota real de ATS nem prever aprovação automática. Não dê nota numérica por seção: dê diagnóstico específico e correção.
+ Se algum dado do CV não for suficiente para auditar alguma dimensão, diga em vez de preencher.
+	
+Antes da auditoria:
+ Se faltar algum insumo obrigatório, pergunte antes de prosseguir.
+ Não invente números, ferramentas, cargos ou experiências ao sugerir correções. Onde faltar dado meu, use [CONFIRMAR: ...].
+ Audite as sete dimensões em ordem de prioridade (esta ordem importa):
+	
+1. Formatação e parseabilidade (a mais crítica)
+ É legível por ATS? (colunas, tabelas, caixas, cabeçalhos, fontes, PDF-imagem)
+ Títulos de seção convencionais? Datas consistentes?
+ Extensão adequada ao nível?
+ Se o formato quebra parsing, isso é a primeira coisa a corrigir - nada abaixo importa antes disso.
+	
+2. Correspondência com o cargo-alvo
+ O cargo-alvo é reconhecível nos primeiros 10 segundos?
+ As palavras-chave da vaga aparecem onde importam (título, resumo, experiência)?
+ Algum termo é boilerplate em vez de diferenciador?
+ Há lacunas de correspondência? Classifique: tenho experiência mas falta o termo / tenho algo próximo / não tenho (não se resolve com reescrita).
+	
+3. Resumo
+ Diz o que sou, para que vaga, e com que evidência?
+ Ou é genérico ("profissional dedicado com experiência em...")?
+ Reescreva se estiver fraco.
+	
+4. Conquistas
+ Para cada bullet: é tarefa, resultado sem número, resultado com número, ou vago?
+ Há número, escala ou consequência?
+ É relevante para o cargo-alvo ou ruído?
+ Aponte os bullets fracos e reescreva - marcando [CONFIRMAR] onde faltar dado meu.
+	
+5. Habilidades
+ Lista é relevante ou virou depósito?
+ Separa técnicas de comportamentais? (depende da convenção do país)
+ Há habilidade que aparece na vaga e não está no CV?
+
+6. Consistência interna
+ Datas, tempos verbais, formatação de bullets, nomes de empresas/cargos consistentes?
+ Alguma contradição entre seções (ex.: resumo diz X, experiência mostra Y)?
+	
+7. Legibilidade humana
+ Um humano entende a trajetória em uma passada?
+ Há algo que soa artificial (todos os bullets com a mesma fórmula, adjetivos empilhados, verbos inflados para o nível)?
+	
+Para cada dimensão, entregue:
+ Status: OK / precisa ajuste / crítico
+ O que está específico (transcreva o elemento do CV)
+ Por que é problema (consequência concreta na triagem)
+ Correção exata (o que mudar, onde, como fica depois)
+	
+Depois da auditoria:
+ A. Priorização
+  Liste as correções em ordem de impacto na triagem, não em ordem de seção. Para cada uma: o que muda, onde, e o efeito esperado. Se houver mais de cinco correções, agrupe as menores.
+
+ B. Itens [CONFIRMAR]
+  Liste tudo o que precisa da minha confirmação antes de eu enviar - números, datas, escopo, ferramentas. Não sugira valores; diga o que eu preciso checar.
+ 
+ C. Veredito de prontidão
+  Responda com clareza uma das três:
+   Pronto para enviar - sem correções críticas pendentes
+   Pronto após ajustes menores - liste quais, em ordem
+   Não enviar ainda - há problema crítico (formato quebrado, falta de correspondência, lacuna eliminatória); diga qual e o que fazer
+	
+ Se o veredito for "não enviar ainda" e a lacuna for real (experiência que falta), diga com clareza: isto não se resolve neste CV; requer experiência que você não tem ou vaga diferente.
+	
+Regras gerais:
+ Sem notas numéricas. Sem "90+". Sem score de ATS inventado.
+ Toda crítica precisa transcrever o elemento do CV que a origina.
+ Toda correção precisa ser acionável - reescrita, movida, removida, ou [CONFIRMAR].
+ Se um item já está bom, diga o que está bom e por quê - para eu não mexer.
+ Se você não tiver certeza sobre convenção regional/setorial, sinalize.
+ Formato: sete dimensões + priorização + veredito. Sem introdução motivacional.
+\end{promptbox}
+
+\subsection*{Dicas úteis nessa seção}
+A regra geral deste bloco de CV, todo prompt de candidatura deve separar o que o modelo sabe (do documento fornecido), o que ele infere (com base em critérios explícitos), e o que ele não pode saber (empresa, cultura, gerente). Sem essa separação, inferência vira fato, e fato vira estratégia errada.
+
+Dois ajustes opcionais que valem considerar:
+\begin{itemize}
+	\item Se está decidindo se candidatar, acrescente: "Ao final, dê uma nota de 0 a 10 para meu encaixe na vaga, com base no meu perfil fornecido, e diga o que pesou mais na nota." Isso transforma a decodificação em ferramenta de decisão, não só de preparação.
+	\item Se existe a descrição em inglês e vai se candidatar em português (ou vice-versa), acrescente: "Indique também as palavras-chave na versão no outro idioma, respeitando as convenções de CV de cada país." Candidaturas internacionais falham muito por tradução literal de termos.
+\end{itemize}
+
+E o fio condutor do bloco inteiro, que vale como fecho: Todo prompt de candidatura pede ao modelo algo que não tem (a mente do recrutador, a nota do ATS, a cultura da empresa, os números que não foram fornecidos). A correção é sempre: declarar o inacessível, ancorar no documento, transcrever o elemento, travar a invenção com [CONFIRMAR], e terminar em veredito acionável.
+
+\section*{Professor particular de idiomas}
+\addcontentsline{toc}{section}{Prompts}
+1. Parceiro de Conversação \\
+"Estou aprendendo [idioma] no nível [nível]. Tenha uma conversa natural comigo inteiramente em [idioma]. Comece no meu nível e aumente gradualmente a dificuldade. Corrija meus erros imediatamente, explique por que estão errados e, depois, continue a conversa."
+
+2. Professor de Gramática \\
+"Estou tendo dificuldade com [tópico de gramática] em [idioma]. Explique de forma simples usando exemplos do dia a dia. Mostre erros comuns e, depois, me dê cinco exercícios. Confira minhas respostas e explique o que eu errei."
+
+3. Construtor de Vocabulário \\
+"Quero melhorar meu vocabulário de [idioma] em torno de [tópico]. Dê-me 20 palavras e expressões úteis que os falantes nativos realmente usam. Para cada uma, dê o significado, um exemplo e um erro comum. Depois, faça um quiz comigo."
+
+4. Coach de Pronúncia \\
+"Eu falo [seu idioma] e estou aprendendo [idioma-alvo]. Identifique os sons que provavelmente serão difíceis para mim. Explique como produzir cada um, os erros comuns e me dê palavras para praticar."
+
+5. Simulador de Falante Nativo \\
+"Aja como um falante nativo de [país]. Tenha uma conversa casual comigo sobre [tópico]. Use expressões naturais e frases do dia a dia. Se eu disser algo que soe pouco natural, explique como um falante nativo diria isso."
+
+6. Coach de Fluência \\
+"Quero me tornar fluente em conversação em [idioma] dentro de [prazo]. Atualmente estou no nível [nível] e tenho [X horas] por semana. Crie um plano semanal que abranja fala, compreensão auditiva, gramática, vocabulário, pronúncia e leitura. Dê-me tarefas diárias e teste meu progresso."
+
+\section*{Aprender inglês}
+\addcontentsline{toc}{section}{Prompts}
+1. Amigo de conversa diária \\
+"Você é um falante de inglês nativo e amigável. Vamos conversar por 10 minutos em inglês sobre [tópico]. Por favor, corrija meus erros depois de cada mensagem e sugira como eu poderia falar de maneira mais natural." 
+
+2. Detector de erros de gramática \\
+"Crie um quiz de 10 perguntas sobre [tema gramatical]. Depois de cada resposta minha, explique o que errei e reforce a regra com um novo exemplo curto." 
+
+3. Turbo vocabulário com memorização \\
+"Ensine-me 15 palavras úteis sobre [tema]. Para cada palavra, inclua: significado simples, uma frase do dia a dia e um truque de memória (imagem, rima ou associação)." 
+
+4. Treinador de pronúncia \\
+"Analise esta gravação [inserir áudio ou texto para o modelo ler]. Diga onde minha pronúncia precisa melhorar (sons específicos) e me dê 2 exercícios práticos com exemplos para treinar." 
+
+5. Guia de cultura + idioma real \\
+"Explique a expressão idiomática [exemplo] usada nos EUA/Reino Unido com: significado, 2 exemplos de uso e uma situação em que seria estranho usar." 
+
+6. Imersão auditiva inteligente \\
+"Crie um áudio de 2 minutos em inglês no nível [A1-C1] sobre [tema] e forneça: transcrição, lista de vocabulário difícil e 3 perguntas de compreensão." 
+
+7. 'Médico do texto' \\
+"Revise este parágrafo [colar texto]. Depois: a) Corrija meus erros; b) Explique meus 3 principais problemas; c) Mostre a versão nativa/natural do texto." 
+
+8. Criador automático de flashcards \\
+"Transforme essas [X] palavras em flashcards de inglês com: pergunta (frase com espaço para completar) + resposta + tradução simples. Formato compatível com Anki." 
+
+9. Plano de imersão personalizado (30 min/dia) \\
+"Monte um plano de 4 semanas para eu estudar inglês 30 min por dia, baseado no meu nível [A1-C1]. Inclua links para: vídeos, podcasts, leitura e conversas. Atualize semanalmente com base no meu progresso." 
+
+10. Checkpoint de progresso \\
+"Crie uma checklist semanal para me levar do nível [nível atual] para [nível objetivo] em 90 dias, com metas pequenas, recursos sugeridos e um teste rápido semanal para medir evolução." 
+
+\section*{Organizar a alimentação}
+\addcontentsline{toc}{section}{Prompts}
+1. Busca por tipos de refeições \\
+"Eu quero uma lista com [inserir quantidade] refeições adequadas para a minha dieta de [inserir o tipo de dieta]. Sou [inserir informações sobre seu peso, altura, nível de atividade física e outras informações que podem ser relevantes para a dieta]. As refeições devem ser [inserir nível de dificuldade, tempo disponível para o preparo e outras restrições que você pode ter. Ex.: gluten-free]. Mostre refeições variadas e insira o valor nutricional de cada uma delas". 
+
+2. Criação de cardápio semanal \\
+"Crie um cardápio semanal adequado para uma dieta de [inserir objetivo]. Vou inserir informações sobre peso, altura, nível de atividade física e outras informações que podem ser relevantes para a dieta]. Gostaria de [inserir o prazo para atingir o objetivo]. Segue algumas informações sobre a minha alimentação atual: [inserir a alimentação diária, detalhando o que come e bebe em cada refeição]".
+
+3. Destaque de restrições alimentares \\
+"Crie uma rotina alimentar semanal segura para uma pessoa [inserir a sua restrição alimentar]. Aqui estão as informações que você precisa: [Em formato de lista, informe objetivo, preferências alimentares, números de refeições por dia, condições de preparo, medicação e/ou suplementação (caso haja) e as informações sobre sexo, peso, altura e nível de atividade física que realiza]".
+
+4. Adaptação com a rotina \\
+"Crie uma sugestão de alimentos que posso preparar e consumir em até [inserir tempo] durante [inserir período]. Gostaria que esses alimentos fossem [inserir informações sobre o tipo de dieta que busca e contexto sobre o seu pedido, Ex: Trabalho em home office e tenho uma hora de almoço todos os dias]".
+
+5. Orçamento e frequência de compras \\
+Monte uma dieta saudável para mim e adequada ao meu orçamento. Faço compras [inserir frequência] e posso gastar até [inserir orçamento]. [Complete o prompt com preferências alimentares, itens que você não consome e outros fatores que possam fazer sentido para a dieta desejada]. 
+
+\section*{Finalmente}
+\addcontentsline{toc}{section}{termino}
+Não gostou de nenhum desses prompts, transforme a própria IA em um gerador:
+\begin{enumerate}
+	\item Abra o ChatGPT, Claude, Deepseek ou Gemini.
+	\item Digite o seguinte comando: "Você é um especialista em engenharia de prompts. Vou apresentar uma ideia ou descrever o que desejo criar, e você me fará perguntas para entender melhor meus objetivos, esclarecer os requisitos e refinar a proposta. Com base nas minhas respostas, você desenvolverá um prompt claro, completo e bem estruturado, buscando o melhor resultado possível."
+	\item Responda às perguntas e copie o resultado gerado.
+\end{enumerate}
+
+\input{../sty/final.tex}
+
+%-----------------------------------------------------------------------------
+% REFERÊNCIAS
+%-----------------------------------------------------------------------------
+\begin{thebibliography}{3}
+	\input{../sty/referencias.tex}
+\end{thebibliography}
+
+\end{document}
